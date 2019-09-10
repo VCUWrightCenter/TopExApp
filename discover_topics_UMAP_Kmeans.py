@@ -636,7 +636,11 @@ if __name__ == "__main__":
         #cluster.fit_predict(data_scaled)
         if args.t == 0:
             print("Running HAC Analysis...")
-            dist = pairwise_distances(just_phrase_vecs, metric=args.m)
+            if args.m == "cosine":
+                dist = 1 - cosine_similarity(just_phrase_vecs)
+            else:
+                dist = pairwise_distances(just_phrase_vecs, metric=args.m)
+                
             linkage_matrix = ward(dist)
         
             Hs = range(1, 100)
@@ -655,7 +659,10 @@ if __name__ == "__main__":
             print("Thank You. Now Clustering...")
         else:
             print("Threshold specified, skipping silhouette analysis...")
-            dist = pairwise_distances(just_phrase_vecs, metric=args.m)
+            if args.m == "cosine":
+                dist = 1 - cosine_similarity(just_phrase_vecs)
+            else:
+                dist = pairwise_distances(just_phrase_vecs, metric=args.m)
             linkage_matrix = ward(dist)
             num_clusters = args.t
         #if args.m == "euclidean":
