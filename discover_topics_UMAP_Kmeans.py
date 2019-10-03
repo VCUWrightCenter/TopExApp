@@ -708,10 +708,13 @@ if __name__ == "__main__":
         #create dataframe with metadata
         df1 = pd.DataFrame(dict(label=just_phrase_ids, UMAP_cluster=cluster_assignments, phrase=just_phrase_text, x=embedding[:, 0], y=embedding[:, 1])) 
     
+       
+        
         #create interactive plot
         fig1 = px.scatter(df1, x="x", y="y", hover_name="label", color="UMAP_cluster", hover_data=["phrase", "label","UMAP_cluster"], color_continuous_scale='rainbow')
         title1 = args.o+"/"+args.p+"_UMAP_"+args.v+".png"
         plotly.offline.plot(fig1, filename=title1+'.html')
+        df1.to_pickle(title1+".pkl")
     
     if args.s == "mds" or args.s == "all":
 
