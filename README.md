@@ -214,3 +214,15 @@ outfile: ./results/UMAP_results_d10_TopicClusterResults_umap.txt
 
 
 ![UMAP Results](results/UMAP_results_d10.png)
+
+
+
+
+### Python Pickle File Usage
+
+This script now outputs a .pkl file with the UMAP dataframe in it for plotting.  It contains the node metadata and the xy-coordinates for the scatter plot.  While I restructure the program you can import this file into your vizualization for plotting as this is the object that the program will return once I've restructured it.
+
+>> df1 = pd.read_pickle("./results/filename.pkl")
+
+
+
