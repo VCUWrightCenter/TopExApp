@@ -1,11 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Left_Sidebar from '../Left-Sidebar/Left_Sidebar'
 
 function App() {
   return (
-    <div className="App">
-      Yay we did it!
+    <div>
+      <Left_Sidebar />
+      <div className='App'>
+        Yay we did it!
+      </div>
     </div>
   );
 }
