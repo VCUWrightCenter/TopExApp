@@ -1,7 +1,5 @@
 .right-sidebar{
     border: solid;
-    width: 15%;
-    height: 100%;
-    position: fixed;
-    right: 0vw;
+    grid-area: right;
+    height: 100%
 }

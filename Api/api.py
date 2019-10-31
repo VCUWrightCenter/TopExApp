@@ -14,7 +14,8 @@ def file_content():
     data = request.files
     for file in data:
         fileob = data[file]
-        print(fileob.read().decode())
+        #print(fileob.read().decode())
+        print("done. File received")
     return 'data'
 
 app.run()

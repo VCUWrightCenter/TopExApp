@@ -3,16 +3,15 @@ import './App.css';
 import Left_Sidebar from '../Left-Sidebar/Left_Sidebar'
 import Right_Sidebar from '../Right-Sidebar/Right-Sidebar.js'
 import Header from '../Header/Header'
+import Main from '../Main/Main'
 
 function App() {
   return (
-    <div className='main'>
+    <div className='main-content'>
       <Header />
-      <Left_Sidebar />
       <Right_Sidebar />
-      <div className='App'>
-        Main area
-      </div>
+      <Main />
+      <Left_Sidebar />
     </div>
   );
 }

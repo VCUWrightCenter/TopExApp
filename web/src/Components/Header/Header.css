@@ -1,5 +1,6 @@
 .Header{
-    height: 7%;
-    border: solid;
-    
+    top: 0;
+    left: 0;
+    border: solid; 
+    grid-area: header;
 }

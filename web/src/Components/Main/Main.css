@@ -1,0 +1,6 @@
+.main-wrapper{
+    text-align: center;
+    grid-area: main;
+    border:solid;
+    height: 100%
+}

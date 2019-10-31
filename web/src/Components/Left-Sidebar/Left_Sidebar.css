@@ -1,6 +1,15 @@
 .sidebar{
-    border: solid;
-    width: 15%;
     height: 100%;
-    position: fixed;    
+    border: solid;
+    grid-area: left;
+    position: relative;
+    resize: horizontal;
+    overflow: auto;
+    min-width: 16.2vw;
+}
+.file-input{
+    position: absolute;
+    vertical-align: bottom;
+    bottom: 0;
+    padding-bottom: 1vh;
 }
