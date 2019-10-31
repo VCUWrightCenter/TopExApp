@@ -11,7 +11,7 @@ function App() {
       <Left_Sidebar />
       <Right_Sidebar />
       <div className='App'>
-       Main area
+        Main area
       </div>
     </div>
   );
