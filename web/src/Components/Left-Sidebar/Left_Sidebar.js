@@ -21,7 +21,7 @@ class Left_Sidebar extends Component {
                     </div>
                 <div className='file-input'>
                     <form encType="multipart/form-data">
-                        <input type="file" multiple name="file" onChange={(e) => this.handleChange(e.target.files)} />
+                        <input type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.handleChange(e.target.files)} />
                     </form>
                 </div>
             </div>
