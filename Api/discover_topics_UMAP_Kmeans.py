@@ -416,8 +416,13 @@ def create_tfidf(documents1, documents2="none"):
 ### START MAIN
 #####################
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     
+def main(fileList): #fileList contains the contents of the files, but not metadata
+    for file in fileList:
+        print(file)
+    sys.exit()
+
     ## Parse input arguments
     parser = argparse.ArgumentParser(description='Parse a directory of files to identify top sentence phrases and cluster them to create topic clusters.')
     parser.add_argument('-i', metavar='inputfile', type=str, help='Path and name of input file list, listing the document names to process. One text file per document in .txt format is required.', required=True)
@@ -715,6 +720,10 @@ if __name__ == "__main__":
         title1 = args.o+"/"+args.p+"_UMAP_"+args.v+".png"
         plotly.offline.plot(fig1, filename=title1+'.html')
         df1.to_pickle(title1+".pkl")
+
+
+    ####DF1 is the file with the data we should return
+
     
     if args.s == "mds" or args.s == "all":
 
