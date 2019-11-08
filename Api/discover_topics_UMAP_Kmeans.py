@@ -383,7 +383,7 @@ def create_tfidf(documents1, documents2="none"):
     file_content = []
     for file_path in file_list:
         if file_path is not '':
-            file = open(file_path, "r")
+            file = open(file_path, "r", encoding="utf-8")
             text = file.read()
             file_content.append(text)    
 
@@ -416,45 +416,64 @@ def create_tfidf(documents1, documents2="none"):
 ### START MAIN
 #####################
 
+
+class Args():
+    def __init__(self, inputFile, tfidfcorpus, wordVectorType = 'tfidf', w2vBinFile = "", outputdir = "./", prefix = "analysis", windowSize = 6, goldStandard = "", threshold = 0, dimensions = 2, scatter_plot ="umap", umap_neighbors =15, distmetric="cosine"):
+        self.i = inputFile
+        self.c = tfidfcorpus
+        self.v = wordVectorType     
+        self.b = w2vBinFile
+        self.o = outputdir
+        self.p = prefix
+        self.w = windowSize
+        self.g = goldStandard
+        self.t = threshold
+        self.d = dimensions
+        self.s = scatter_plot
+        self.u = umap_neighbors
+        self.m = distmetric
+        self.include_input_in_tfidf = None
+        self.output_labeled_sentences = None
+        self.use_kmeans = None
+
+
+
 # if __name__ == "__main__":
     
-def main(fileList): #fileList contains the contents of the files, but not metadata
-    for file in fileList:
-        print(file)
-    sys.exit()
+def main(inputFile, tfidfcorpus, wordVectorType = 'tfidf', w2vBinFile = "", outputdir = "./", prefix = "analysis", windowSize = 6, goldStandard = "", threshold = 0, dimensions = 2, scatter_plot ="umap", umap_neighbors =15, distmetric="cosine"): #fileList contains the contents of the files, but not metadata
 
     ## Parse input arguments
-    parser = argparse.ArgumentParser(description='Parse a directory of files to identify top sentence phrases and cluster them to create topic clusters.')
-    parser.add_argument('-i', metavar='inputfile', type=str, help='Path and name of input file list, listing the document names to process. One text file per document in .txt format is required.', required=True)
-    parser.add_argument('-c', metavar='tfidfcorpus', type=str, help='Path and name of file containing a list of documents to use for creating the TF-IDF matrix. One text file per document in .txt format is required.', required=True)
-    parser.add_argument('-v', metavar='wordVectorType', type=str, help='The type of word vector to use. Options are tfidf, svd, umap, pretrained, local.', required=False, default="tfidf")
-    parser.add_argument('-b', metavar='w2vBinFile', type=str, help='The location and name of the pre-trained word2vec bin file.', required=False, default="")
-    parser.add_argument('-o', metavar='outputdir', type=str, help='Path to the output directory where results should be saved., Default is current working directory.', required=False, default='./')
-    parser.add_argument('-p', metavar='prefix', type=str, help='The unique output file name prefix to uniquely identify files.', required=False, default='analysis')
-    parser.add_argument('-w', metavar='windowSize', type=int, help='An integer representing the window size for sentence phrases feature extraction. Default is 6.', required=False, default=6)
-    parser.add_argument('-g', metavar='goldStandard', type=str, help='The path and file name of the gold standard file for the analyzed corpus.', required=False, default='')
-    parser.add_argument('-t', metavar='threshold', type=float, help='The threshold to use for cutting the dendrogram to make clusters.', required=False, default=0)
-    parser.add_argument('-d', metavar='dimensions', type=int, help='The number of dimentions to reduce the TF-IDF or WordVec to.', required=False, default=2)
-    parser.add_argument('-s', metavar='scatter-plot', type=str, help='The scatter plots you would like output. Valid values are umap, svd, mds, all. Default = umap', required=False, default='umap')
-    parser.add_argument('-u', metavar='umap-neighbors', type=int, help='The number of neighbors to use for UMAP dimension reduction. Default = 15', required=False, default=15)
-    parser.add_argument('-m', metavar='distmetric', type=str, help='The distance metric to use for HAC clustering.  Can be any accepted by pdist: ‘braycurtis’, ‘canberra’, ‘chebyshev’, ‘cityblock’, ‘correlation’, ‘cosine’, ‘dice’, ‘euclidean’, ‘hamming’, ‘jaccard’, ‘kulsinski’, ‘mahalanobis’, ‘matching’, ‘minkowski’, ‘rogerstanimoto’, ‘russellrao’, ‘seuclidean’, ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘yule’.', required=False, default='cosine')
+    # parser = argparse.ArgumentParser(description='Parse a directory of files to identify top sentence phrases and cluster them to create topic clusters.')
+    # parser.add_argument('-i', metavar='inputfile', type=str, help='Path and name of input file list, listing the document names to process. One text file per document in .txt format is required.', required=True)
+    # parser.add_argument('-c', metavar='tfidfcorpus', type=str, help='Path and name of file containing a list of documents to use for creating the TF-IDF matrix. One text file per document in .txt format is required.', required=True)
+    # parser.add_argument('-v', metavar='wordVectorType', type=str, help='The type of word vector to use. Options are tfidf, svd, umap, pretrained, local.', required=False, default="tfidf")
+    # parser.add_argument('-b', metavar='w2vBinFile', type=str, help='The location and name of the pre-trained word2vec bin file.', required=False, default="")
+    # parser.add_argument('-o', metavar='outputdir', type=str, help='Path to the output directory where results should be saved., Default is current working directory.', required=False, default='./')
+    # parser.add_argument('-p', metavar='prefix', type=str, help='The unique output file name prefix to uniquely identify files.', required=False, default='analysis')
+    # parser.add_argument('-w', metavar='windowSize', type=int, help='An integer representing the window size for sentence phrases feature extraction. Default is 6.', required=False, default=6)
+    # parser.add_argument('-g', metavar='goldStandard', type=str, help='The path and file name of the gold standard file for the analyzed corpus.', required=False, default='')
+    # parser.add_argument('-t', metavar='threshold', type=float, help='The threshold to use for cutting the dendrogram to make clusters.', required=False, default=0)
+    # parser.add_argument('-d', metavar='dimensions', type=int, help='The number of dimentions to reduce the TF-IDF or WordVec to.', required=False, default=2)
+    # parser.add_argument('-s', metavar='scatter-plot', type=str, help='The scatter plots you would like output. Valid values are umap, svd, mds, all. Default = umap', required=False, default='umap')
+    # parser.add_argument('-u', metavar='umap-neighbors', type=int, help='The number of neighbors to use for UMAP dimension reduction. Default = 15', required=False, default=15)
+    # parser.add_argument('-m', metavar='distmetric', type=str, help='The distance metric to use for HAC clustering.  Can be any accepted by pdist: ‘braycurtis’, ‘canberra’, ‘chebyshev’, ‘cityblock’, ‘correlation’, ‘cosine’, ‘dice’, ‘euclidean’, ‘hamming’, ‘jaccard’, ‘kulsinski’, ‘mahalanobis’, ‘matching’, ‘minkowski’, ‘rogerstanimoto’, ‘russellrao’, ‘seuclidean’, ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’, ‘yule’.', required=False, default='cosine')
     
-    parser.add_argument('--include_input_in_tfidf', help='Whether or not the input corpus should be included in the tf-idf matrix. If no then the average score across all documents is used for a words significance when generating phrases.', required=False, action="store_true")
+    # parser.add_argument('--include_input_in_tfidf', help='Whether or not the input corpus should be included in the tf-idf matrix. If no then the average score across all documents is used for a words significance when generating phrases.', required=False, action="store_true")
     
-    parser.add_argument('--output_labeled_sentences', help='Specify if you want the labeled sentence file saved.', required=False, action="store_true")
-    parser.add_argument('--use_kmeans', help='Specify if you want Kmeans to be run as the clustering algorithm. You will be asked to input the number of clusters dynamically after elbow plot generation. The default clustering algorithm is hierarchical agglomerative clustering. By using Kmeans, the distance metric is required to be Euclidean Distance, and any other distance metric specification will be ignored.', required=False, action="store_true")
+    # parser.add_argument('--output_labeled_sentences', help='Specify if you want the labeled sentence file saved.', required=False, action="store_true")
+    # parser.add_argument('--use_kmeans', help='Specify if you want Kmeans to be run as the clustering algorithm. You will be asked to input the number of clusters dynamically after elbow plot generation. The default clustering algorithm is hierarchical agglomerative clustering. By using Kmeans, the distance metric is required to be Euclidean Distance, and any other distance metric specification will be ignored.', required=False, action="store_true")
         
-    args = parser.parse_args()
+    args = Args(inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, windowSize, goldStandard, threshold, dimensions, scatter_plot, umap_neighbors, distmetric)
 
     ## args.i used to be "file_list.txt"
     ### import documents
-    file_list = open(args.i).read().strip().split('\n')
+    #file_list = open(args.i).read().strip().split('\n')
 
-    file_content = []
-    for file_path in file_list:
-        file = open(file_path, "r")
-        text = file.read()
-        file_content.append(text)    
+    file_content = inputFile
+    # for file_path in file_list:
+    #     file = open(file_path, "r")
+    #     text = file.read()
+    #     file_content.append(text)    
 
     ### Pre-processing corpus
     my_docs = []
@@ -719,7 +738,8 @@ def main(fileList): #fileList contains the contents of the files, but not metada
         fig1 = px.scatter(df1, x="x", y="y", hover_name="label", color="UMAP_cluster", hover_data=["phrase", "label","UMAP_cluster"], color_continuous_scale='rainbow')
         title1 = args.o+"/"+args.p+"_UMAP_"+args.v+".png"
         plotly.offline.plot(fig1, filename=title1+'.html')
-        df1.to_pickle(title1+".pkl")
+        #df1.to_pickle(title1+".pkl")
+        return df1.to_json()
 
 
     ####DF1 is the file with the data we should return

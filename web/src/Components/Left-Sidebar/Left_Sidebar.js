@@ -3,6 +3,7 @@ import './Left_Sidebar.css'
 import Axios from "axios";
 
 
+
 class Left_Sidebar extends Component {
 
     constructor(props){
@@ -60,7 +61,8 @@ class Left_Sidebar extends Component {
             }
         })
             .then((response) => {
-                console.log(response);
+                console.log("Response:");
+                console.table(response)
             })
             .catch((error) => {
                 console.log(error);

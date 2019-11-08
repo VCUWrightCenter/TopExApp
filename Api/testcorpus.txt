@@ -1,0 +1,38 @@
+doc.7.sent.5	Confidence
+doc.16.sent.1	Confidence
+doc.20.sent.7	Confidence
+doc.13.sent.2	Confidence
+doc.16.sent.3	Confidence
+doc.16.sent.2	Confidence
+doc.10.sent.4	Confidence
+doc.1.sent.8	Confidence
+doc.3.sent.2	Confidence
+doc.9.sent.3	Confidence
+doc.4.sent.3	Confidence
+doc.12.sent.11	Confidence
+doc.0.sent.2	Confidence
+doc.20.sent.3	Confidence
+doc.5.sent.2	Confidence
+doc.3.sent.5	Confidence
+doc.21.sent.2	Confidence
+doc.20.sent.5	Confidence
+doc.21.sent.0	Overwhelmed
+doc.3.sent.4	Overwhelmed
+doc.1.sent.6	Overwhelmed
+doc.19.sent.1	Overwhelmed
+doc.10.sent.3	Supportive Environment
+doc.13.sent.4	Supportive Environment
+doc.11.sent.1	Supportive Environment
+doc.5.sent.10	Supportive Environment
+doc.19.sent.6	Supportive Environment
+doc.9.sent.2	Supportive Environment
+doc.6.sent.4	Supportive Environment
+doc.7.sent.4	Supportive Environment
+doc.20.sent.8	Supportive Environment
+doc.1.sent.10	Supportive Environment
+doc.10.sent.5	Supportive Environment
+doc.18.sent.4	Supportive Environment
+doc.17.sent.1	Supportive Environment
+doc.14.sent.3	System Issues
+doc.14.sent.2	System Issues
+	

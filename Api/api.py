@@ -3,7 +3,6 @@ from flask import request
 from datetime import datetime
 from discover_topics_UMAP_Kmeans import main as script
 
-
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
@@ -34,7 +33,9 @@ def runScript():
         fileList.append(fileText)
         #print(fileList[0])
     #print(fileList)
-    script(fileList)
-    return 'a'
+    result = script(inputFile = fileList, tfidfcorpus = '2019.03.12_SEED_TOPICS_AMY\FILELIST.txt', scatter_plot = "all", threshold = 8)
+    print(type(result))
+
+    return result
 
 app.run()
