@@ -418,7 +418,7 @@ def create_tfidf(documents1, documents2="none"):
 
 
 class Args():
-    def __init__(self, inputFile, tfidfcorpus, wordVectorType = 'tfidf', w2vBinFile = "", outputdir = "./", prefix = "analysis", windowSize = 6, goldStandard = "", threshold = 0, dimensions = 2, scatter_plot ="umap", umap_neighbors =15, distmetric="cosine"):
+    def __init__(self, inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "", outputdir = "./", prefix = "analysis", windowSize = 6, goldStandard = "", threshold = 0, dimensions = 2, scatter_plot ="umap", umap_neighbors =15, distmetric="cosine"):
         self.i = inputFile
         self.c = tfidfcorpus
         self.v = wordVectorType     
@@ -440,7 +440,7 @@ class Args():
 
 # if __name__ == "__main__":
     
-def main(inputFile, tfidfcorpus, wordVectorType = 'tfidf', w2vBinFile = "", outputdir = "./", prefix = "analysis", windowSize = 6, goldStandard = "", threshold = 0, dimensions = 2, scatter_plot ="umap", umap_neighbors =15, distmetric="cosine"): #fileList contains the contents of the files, but not metadata
+def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "", outputdir = "./", prefix = "analysis", windowSize = 6, goldStandard = "", threshold = 0, dimensions = 2, scatter_plot ="umap", umap_neighbors =15, distmetric="cosine"): #fileList contains the contents of the files, but not metadata
 
     ## Parse input arguments
     # parser = argparse.ArgumentParser(description='Parse a directory of files to identify top sentence phrases and cluster them to create topic clusters.')
@@ -463,6 +463,7 @@ def main(inputFile, tfidfcorpus, wordVectorType = 'tfidf', w2vBinFile = "", outp
     # parser.add_argument('--output_labeled_sentences', help='Specify if you want the labeled sentence file saved.', required=False, action="store_true")
     # parser.add_argument('--use_kmeans', help='Specify if you want Kmeans to be run as the clustering algorithm. You will be asked to input the number of clusters dynamically after elbow plot generation. The default clustering algorithm is hierarchical agglomerative clustering. By using Kmeans, the distance metric is required to be Euclidean Distance, and any other distance metric specification will be ignored.', required=False, action="store_true")
         
+        #Pass in blank corpus if you dont watnt o add anything to the tfidf
     args = Args(inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, windowSize, goldStandard, threshold, dimensions, scatter_plot, umap_neighbors, distmetric)
 
     ## args.i used to be "file_list.txt"

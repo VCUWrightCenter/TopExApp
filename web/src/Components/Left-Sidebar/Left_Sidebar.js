@@ -8,7 +8,7 @@ class Left_Sidebar extends Component {
 
     constructor(props){
         super(props);
-        this.state = {fileList: "a"};
+        this.state = {fileList: ""};
     }
 
 
@@ -31,7 +31,7 @@ class Left_Sidebar extends Component {
     }
 
     handleChange(files) {
-        console.log(files)
+        //console.log(files)
         let formData = new FormData()
        
 
@@ -39,7 +39,7 @@ class Left_Sidebar extends Component {
             formData.append("File" + i, files[i])
         }
 
-        console.table(files);
+        //console.table(files);
         var fr = new FileReader();
         fr.readAsText(files[0]);
         fr.onloadend = () => { console.log(fr.result) }

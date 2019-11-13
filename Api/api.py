@@ -25,7 +25,6 @@ def file_content():
 @app.route('/runScript', methods=["POST"])
 def runScript():
     data = request.files
-
     fileList = []
     for file in data:
         fileob = data[file]
