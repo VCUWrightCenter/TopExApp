@@ -732,7 +732,7 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
         embedding = reducer.fit_transform(dist)
         #create dataframe with metadata
         df1 = pd.DataFrame(dict(label=just_phrase_ids, UMAP_cluster=cluster_assignments, phrase=just_phrase_text, x=embedding[:, 0], y=embedding[:, 1])) 
-    
+        return df1.to_json()
        
         
         #create interactive plot
@@ -740,7 +740,7 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
         title1 = args.o+"/"+args.p+"_UMAP_"+args.v+".png"
         plotly.offline.plot(fig1, filename=title1+'.html')
         #df1.to_pickle(title1+".pkl")
-        return df1.to_json()
+
 
 
     ####DF1 is the file with the data we should return
