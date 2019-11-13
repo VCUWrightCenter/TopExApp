@@ -759,11 +759,12 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
 
         #create data frame that has the result of the MDS plus the cluster numbers and titles
         df2 = pd.DataFrame(dict(x=xs, y=ys, MDS_cluster=cluster_assignments, label=just_phrase_ids, phrase=just_phrase_text)) 
+        eturn df2.to_json()
 
         #create interactive plot
-        fig2 = px.scatter(df2, x="x", y="y", hover_name="label", color="MDS_cluster", hover_data=["phrase", "label","MDS_cluster"], color_continuous_scale='rainbow')
-        title2 = args.o+"/"+args.p+"_MDS_"+args.v+".png"
-        plotly.offline.plot(fig2, filename=title2+'.html')
+        #fig2 = px.scatter(df2, x="x", y="y", hover_name="label", color="MDS_cluster", hover_data=["phrase", "label","MDS_cluster"], color_continuous_scale='rainbow')
+        #title2 = args.o+"/"+args.p+"_MDS_"+args.v+".png"
+        #plotly.offline.plot(fig2, filename=title2+'.html')
     
     if args.s == "svd" or args.s == "all":
         ### Create and save SVD Scatter Plot
@@ -771,11 +772,12 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
     
         #create dataframe with metadata
         df3 = pd.DataFrame(dict(label=just_phrase_ids, SVD_cluster=cluster_assignments, phrase=just_phrase_text, x=svd2d[:, 0], y=svd2d[:, 1])) 
+        return df3.to_json()
     
         #create interactive plot
-        fig3 = px.scatter(df3, x="x", y="y", hover_name="label", color="SVD_cluster", hover_data=["phrase", "label","SVD_cluster"], color_continuous_scale='rainbow')
-        title3 = args.o+"/"+args.p+"_SVD_"+args.v+".png"
-        plotly.offline.plot(fig3, filename=title3+'.html')
+        # fig3 = px.scatter(df3, x="x", y="y", hover_name="label", color="SVD_cluster", hover_data=["phrase", "label","SVD_cluster"], color_continuous_scale='rainbow')
+        # title3 = args.o+"/"+args.p+"_SVD_"+args.v+".png"
+        # plotly.offline.plot(fig3, filename=title3+'.html')
     
     
     
