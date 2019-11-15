@@ -759,7 +759,7 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
 
         #create data frame that has the result of the MDS plus the cluster numbers and titles
         df2 = pd.DataFrame(dict(x=xs, y=ys, MDS_cluster=cluster_assignments, label=just_phrase_ids, phrase=just_phrase_text)) 
-        eturn df2.to_json()
+        return df2.to_json()
 
         #create interactive plot
         #fig2 = px.scatter(df2, x="x", y="y", hover_name="label", color="MDS_cluster", hover_data=["phrase", "label","MDS_cluster"], color_continuous_scale='rainbow')
