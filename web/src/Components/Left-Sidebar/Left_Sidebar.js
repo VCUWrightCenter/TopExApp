@@ -33,6 +33,11 @@ class Left_Sidebar extends Component {
         );
     }
 
+    //This method takes in the form data, sends it to the api, 
+    //and then sends it to the parent element (App) so that
+    //it can be passed to the Main component.
+    //It must be async so that it does not pass data to App before
+    //the data is returned
     async handleChange(files) {
         //console.log(files)
         let formData = new FormData()
@@ -60,6 +65,7 @@ class Left_Sidebar extends Component {
 
     }
 
+    //Responsible for sending the POST request which runs the script
     async runScript(formData) {
         var cors = "http://127.0.0.1:8080/"
         var url = "http://127.0.0.1:5000/runScript"
