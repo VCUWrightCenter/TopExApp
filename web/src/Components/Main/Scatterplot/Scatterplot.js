@@ -42,7 +42,6 @@ class Scatterplot extends Component {
         var numKeys = Object.keys(objArray[0]).length
         console.log(numKeys)
 
-
         //Loop through the new list of objects to create "complete" objects
         for (var i = 0; i < numKeys; i++) {
             let tempObj = {}
@@ -59,11 +58,17 @@ class Scatterplot extends Component {
     }
 
     drawChart() {
+
+        console.log(this.convertToJson(this.props.data))
+
         let data = this.reformatJSON()
 
+        console.log(data)
+
+
         var margin = { top: 10, right: 30, bottom: 30, left: 60 },
-            width = 800,
-            height = 800;
+            width = 600,
+            height = 600;
 
         // append the svg object to the body of the page
         var svg = d3.select("#node")
