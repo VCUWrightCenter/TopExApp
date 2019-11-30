@@ -13,6 +13,9 @@ class Left_Sidebar extends Component {
         this.state = { fileList: [] };
     }
 
+    
+    //This sends data to the APP component so that it can be sent to Main/Scatterplot
+    // and create the graph
     sendGraphData = (graphData) => {
         this.props.graphData(graphData)
     }
@@ -27,18 +30,16 @@ class Left_Sidebar extends Component {
                         {this.state.fileList.map((fileName) => {
                         return (<div key={fileName}>
                             <label htmlFor={fileName}>{fileName}</label>
-                            <input id={fileName} type='checkBox' onChange={(e) => this.handleFilelist(e)} value={fileName} defaultChecked />
+                            <input id={fileName} type='checkBox' value={fileName} defaultChecked />
                         </div>
                         )
                     })
                     }
-
                 </div>
                 <div className='file-input'>
-
                     <form encType="multipart/form-data" onSubmit = {(e) => this.handleChange(e)}>
                         <input type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)}/>
-                        <button className="submitButton"> Run </button>
+                        <button id = "submitButton" className="submitButton"> Run </button>
                     </form>
                 </div>
             </div>
@@ -51,6 +52,9 @@ class Left_Sidebar extends Component {
     //It must be async so that it does not pass data to App before
     //the data is returned
     async handleChange(event) {
+
+        document.getElementById('submitButton').disabled = true;
+
         event.preventDefault()
 
         let formChildren = event.target.children
@@ -83,10 +87,7 @@ class Left_Sidebar extends Component {
 
         this.sendGraphData(response)
 
-        //call this before sending the data to the api
-        //In order for this to work, we need to change the data to being sent on button click rather than by 
-        // when you add files. Otherwise, it is going to either grab all of the files bc default value is checked, or none bc none have loaded in yet
-        let checkedElements = this.getCheckedFiles(files)
+        document.getElementById('submitButton').disabled = false;
 
     }
 
@@ -106,6 +107,9 @@ class Left_Sidebar extends Component {
         return await data
     }
 
+
+
+    //This method updates the file list in the left sidebar with the uploaded file names
     updateFileList(files) {
 
         let fileData = []
@@ -113,8 +117,6 @@ class Left_Sidebar extends Component {
         for (var file in files) {
             fileData.push(files[file].name)
         }
-
-        // console.log(fileData)
 
         let modifiedFilelist = fileData.filter((value, index, arr) => {
             // console.log(value)
@@ -124,10 +126,11 @@ class Left_Sidebar extends Component {
         this.setState({
             fileList: modifiedFilelist
         }, () => { console.log("state changed" + modifiedFilelist) }
-        )
+        )   
     }
 
-
+    //Returns the names of the files that have been checked, and returns them. 
+    //This is used to determine which files to send to the api
     getCheckedFiles() {
         try {
             let fileListElements = document.getElementById("fileList").children
@@ -175,17 +178,6 @@ class Left_Sidebar extends Component {
 
     }
 
-
-    handleFilelist(event) {
-        console.log(event.target.checked)
-    }
-
-    submitData() {
-        let checkedFileDivs = this.getCheckedFiles();
-
-        console.log(checkedFileDivs)
-
-    }
 
 }
 

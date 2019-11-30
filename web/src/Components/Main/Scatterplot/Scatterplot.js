@@ -7,7 +7,6 @@ class Scatterplot extends Component {
         super(props);
     }
 
-
     componentDidUpdate() {
         this.drawChart();
     }
@@ -64,7 +63,6 @@ class Scatterplot extends Component {
         let data = this.reformatJSON()
 
         console.log(data)
-
 
         var margin = { top: 10, right: 30, bottom: 30, left: 60 },
             width = 600,

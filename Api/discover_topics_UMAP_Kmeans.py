@@ -439,6 +439,8 @@ class Args():
 
 
 # if __name__ == "__main__":
+
+## create a return object and append everything that we want to return throughout execution.
     
 def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "", outputdir = "./", prefix = "analysis", windowSize = 6, goldStandard = "", threshold = 0, dimensions = 2, scatter_plot ="umap", umap_neighbors =15, distmetric="cosine"): #fileList contains the contents of the files, but not metadata
 
@@ -841,7 +843,9 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
             topics_ary.append(this)
         main_cluster_topics.append(topics_ary[0])
         #print("Cluster " + str(r) + " Keywords: " + str(topics_ary[0]))
-    
+
+
+    # main_cluster_topics should also be returned on the final object
     
     ### Print and Save Results
     raw_sent = []
@@ -851,6 +855,8 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
         for sent in sents:
             tmp.append(sent)
         raw_sent.append(tmp)
+
+    #raw_sent contains the full sentences. We need to append this to the returned object
 
     title = args.o+"/"+args.p+"_TopicClusterResults_"+args.v+".txt" 
     outfile = open(title, "w")
