@@ -103,6 +103,7 @@ class Left_Sidebar extends Component {
         })
 
         const data = response.data
+        console.log(data)
 
         return await data
     }

@@ -436,7 +436,20 @@ class Args():
         self.output_labeled_sentences = None
         self.use_kmeans = None
 
+class returnObject():
+    def __init__(self, df1 = None, df2 = None, df3 = None, main_cluster_topics = None, raw_sent = None):
+        self.df1 = df1
+        self.df2 = df2
+        self.df3 = df3
+        self.main_cluster_topics = main_cluster_topics
+        self.raw_sent = raw_sent
 
+    def __iter__(self):
+        yield 'df1', self.df1
+        yield 'df2', self.df2
+        yield 'df3', self.df3
+        yield 'main_cluster_topics', self.main_cluster_topics
+        yield 'raw_sent', self.raw_sent
 
 # if __name__ == "__main__":
 
@@ -444,6 +457,7 @@ class Args():
     
 def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "", outputdir = "./", prefix = "analysis", windowSize = 6, goldStandard = "", threshold = 0, dimensions = 2, scatter_plot ="umap", umap_neighbors =15, distmetric="cosine"): #fileList contains the contents of the files, but not metadata
 
+    finalObject = returnObject()
     ## Parse input arguments
     # parser = argparse.ArgumentParser(description='Parse a directory of files to identify top sentence phrases and cluster them to create topic clusters.')
     # parser.add_argument('-i', metavar='inputfile', type=str, help='Path and name of input file list, listing the document names to process. One text file per document in .txt format is required.', required=True)
@@ -734,13 +748,13 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
         embedding = reducer.fit_transform(dist)
         #create dataframe with metadata
         df1 = pd.DataFrame(dict(label=just_phrase_ids, UMAP_cluster=cluster_assignments, phrase=just_phrase_text, x=embedding[:, 0], y=embedding[:, 1])) 
-        return df1.to_json()
+        finalObject.df1 = df1.to_json()
        
         
         #create interactive plot
-        fig1 = px.scatter(df1, x="x", y="y", hover_name="label", color="UMAP_cluster", hover_data=["phrase", "label","UMAP_cluster"], color_continuous_scale='rainbow')
-        title1 = args.o+"/"+args.p+"_UMAP_"+args.v+".png"
-        plotly.offline.plot(fig1, filename=title1+'.html')
+        # fig1 = px.scatter(df1, x="x", y="y", hover_name="label", color="UMAP_cluster", hover_data=["phrase", "label","UMAP_cluster"], color_continuous_scale='rainbow')
+        # title1 = args.o+"/"+args.p+"_UMAP_"+args.v+".png"
+        # plotly.offline.plot(fig1, filename=title1+'.html')
         #df1.to_pickle(title1+".pkl")
 
 
@@ -761,7 +775,7 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
 
         #create data frame that has the result of the MDS plus the cluster numbers and titles
         df2 = pd.DataFrame(dict(x=xs, y=ys, MDS_cluster=cluster_assignments, label=just_phrase_ids, phrase=just_phrase_text)) 
-        return df2.to_json()
+        finalObject.df2 = df2.to_json()
 
         #create interactive plot
         #fig2 = px.scatter(df2, x="x", y="y", hover_name="label", color="MDS_cluster", hover_data=["phrase", "label","MDS_cluster"], color_continuous_scale='rainbow')
@@ -774,7 +788,7 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
     
         #create dataframe with metadata
         df3 = pd.DataFrame(dict(label=just_phrase_ids, SVD_cluster=cluster_assignments, phrase=just_phrase_text, x=svd2d[:, 0], y=svd2d[:, 1])) 
-        return df3.to_json()
+        finalObject.df3 = df3.to_json()
     
         #create interactive plot
         # fig3 = px.scatter(df3, x="x", y="y", hover_name="label", color="SVD_cluster", hover_data=["phrase", "label","SVD_cluster"], color_continuous_scale='rainbow')
@@ -793,7 +807,7 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
     print("Number of Clusters: " + str(len(numpy.unique(df["cluster"]))))
     
     num_clusters = set(df["cluster"])
-    doc_names = file_list
+    # doc_names = file_list
 
     cluster_topics = []
     cluster_sentences = []
@@ -801,7 +815,6 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
 
     for c in num_clusters:
         topic_labels = list(df[df["cluster"]==c]["label"])
-        
         
         sent_coords = [[int(x.split(".")[1]), int(x.split(".")[3])] for x in topic_labels if len(x.split(".")) > 1 ]
     
@@ -843,9 +856,9 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
             topics_ary.append(this)
         main_cluster_topics.append(topics_ary[0])
         #print("Cluster " + str(r) + " Keywords: " + str(topics_ary[0]))
-
-
+        
     # main_cluster_topics should also be returned on the final object
+    finalObject.main_cluster_topics = main_cluster_topics
     
     ### Print and Save Results
     raw_sent = []
@@ -857,28 +870,31 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
         raw_sent.append(tmp)
 
     #raw_sent contains the full sentences. We need to append this to the returned object
+    finalObject.raw_sent = raw_sent
 
-    title = args.o+"/"+args.p+"_TopicClusterResults_"+args.v+".txt" 
-    outfile = open(title, "w")
+    return dict(finalObject)
 
-    print("outfile: " + title)
+    # title = args.o+"/"+args.p+"_TopicClusterResults_"+args.v+".txt" 
+    # outfile = open(title, "w")
 
-    outfile.write("Cluster\tDocument.Num\tDocument.Name\tSentence.Num\tSentence.Text\nPhrase.Text")
+    # print("outfile: " + title)
+
+    # outfile.write("Cluster\tDocument.Num\tDocument.Name\tSentence.Num\tSentence.Text\nPhrase.Text")
     ## for each cluster
-    for c in range(0,len(main_cluster_topics)):
-        topic_labels = list(df[df["cluster"]==c]["label"])
-        sent_coords = [[int(x.split(".")[1]), int(x.split(".")[3])] for x in topic_labels if len(x.split(".")) > 1]
-        outfile.write("Cluster " + str(c) + " Keywords: " + ', '.join(main_cluster_topics[c]) + "\n")
+    # for c in range(0,len(main_cluster_topics)):
+    #     topic_labels = list(df[df["cluster"]==c]["label"])
+    #     sent_coords = [[int(x.split(".")[1]), int(x.split(".")[3])] for x in topic_labels if len(x.split(".")) > 1]
+    #     outfile.write("Cluster " + str(c) + " Keywords: " + ', '.join(main_cluster_topics[c]) + "\n")
     
-        ## sent_coords has each element formatted as [doc number, sentence number]
-        for s in sent_coords:
-            if len(s) > 1:
-                outfile.write(str(c) + "\t" + str(s[0]) + "\t" + doc_names[s[0]] + "\t" + str(s[1]) + "\t" + 
-                          raw_sent[s[0]][s[1]] + "\t" + str(doc_top_phrases[s[0]][s[1]]) +"\n")
-            else:
-                outfile.write(str(c) + "\t" + str(s) + "\t" + str(s) + "\t" + str(s) + "\t" + 
-                          str(s) + "\t" + str(s) +"\n")                  
-    outfile.close()
+    #     ## sent_coords has each element formatted as [doc number, sentence number]
+    #     for s in sent_coords:
+    #         if len(s) > 1:
+    #             outfile.write(str(c) + "\t" + str(s[0]) + "\t" + doc_names[s[0]] + "\t" + str(s[1]) + "\t" + 
+    #                       raw_sent[s[0]][s[1]] + "\t" + str(doc_top_phrases[s[0]][s[1]]) +"\n")
+    #         else:
+    #             outfile.write(str(c) + "\t" + str(s) + "\t" + str(s) + "\t" + str(s) + "\t" + 
+    #                       str(s) + "\t" + str(s) +"\n")                  
+    # outfile.close()
 
 
     
@@ -955,7 +971,8 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
             #print( + "\t\t" + str(closest_to_gold[g]) + "\t\t" + str(TP) + "\t\t" + str(FP) + "\t\t" + str(FN) + "\t\t" + str(P) + "\t\t" + str(R) + "\t\t" + str(F1))
             print('{:<24s}{:^10s}{:^4s}{:^4s}{:^4s}{:^8s}{:^8s}{:^8s}'.format(str(g),str(closest_to_gold[g]),str(TP),str(FP),str(FN),str(P),str(R),str(F1)))
         print(dash)
-
+    
+    return dict(finalObject)
 ################
 ## END MAIN
 ################
