@@ -5,10 +5,13 @@ class Scatterplot extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            dataframe_identifier: 0
+        }
     }
 
     componentDidUpdate() {
-        this.drawChart(0);
+        this.drawChart(this.state.dataframe_identifier);
     }
 
     convertToJson(jsonString) {
@@ -39,8 +42,8 @@ class Scatterplot extends Component {
         dataframeArray[1] = this.convertToJson(APIReturnObject.df2)
         dataframeArray[2] = this.convertToJson(APIReturnObject.df3)
 
-        for (var data in dataframeArray) {
-            data = dataframeArray[data]
+        for (var index in dataframeArray) {
+            let data = dataframeArray[index]
             console.log("This is the data tht is being processed in reformat json")
             console.log(data)
             //Put every object into an array
@@ -67,11 +70,39 @@ class Scatterplot extends Component {
                     var currentObject = objArray[obj]
                     var currentKey = Object.keys(currentObject)[i]
                     tempObj[label] = currentObject[currentKey]
-
-                    //This is where we should add on the cluster info as well as the raw sentence information. After this we dont need the UMAP_cluster raw a label fields, but unless it is easy to get rid of, its probably not worth getting rid of them
-                    let clusterNum = currentObject.UMAP_Cluster
                 }
+
+
+                //This is where we should add on the cluster info as well as the raw sentence information. After this we dont need the UMAP_cluster raw a label fields, but unless it is easy to get rid of, its probably not worth getting rid of them
+                let sentenceInfo = tempObj.label
+                const sentenceRegex = /\d\d|\d/g
+                let matchArr = sentenceInfo.match(sentenceRegex) //extract the words from the label
+                let doc = matchArr[0]
+                let sentenceNumber = matchArr[1]
+                let document = raw_sentences[doc]
+                tempObj["raw_sent"] = document[sentenceNumber]
                 completeObjects.push(tempObj)
+
+                console.log(index)
+                let clusterNumber;
+                if (index == 0) {
+                    clusterNumber = tempObj.UMAP_cluster
+                    tempObj["cluster_info"] = main_cluster_topics[clusterNumber]
+                }
+                else if (index == 1) {
+                    clusterNumber = tempObj.MDS_cluster
+                    tempObj["cluster_info"] = main_cluster_topics[clusterNumber]
+                }
+
+                else if (index == 2) {
+                    clusterNumber = tempObj.SVD_cluster
+                    tempObj["cluster_info"] = main_cluster_topics[clusterNumber]
+                }
+                else {
+                    console.error("Error at reformat JSON")
+                    alert("Error")
+                    return
+                }
             }
             console.log(completeObjects)
 
@@ -90,10 +121,12 @@ class Scatterplot extends Component {
         console.log(dataArray)
         let data = dataArray[dataFrameNumber]
 
+
+
         var margin = { top: 10, right: 30, bottom: 30, left: 60 },
             width = 600,
             height = 600;
-
+        d3.select("svg").remove();
         // append the svg object to the body of the page
         var svg = d3.select("#node")
             .append("svg")
@@ -128,10 +161,21 @@ class Scatterplot extends Component {
             .attr("cy", function (d) { return y(d.y) })
             .attr("r", 3)
 
+        document.getElementById('dfSelectContainer').hidden = false
+
     }
 
     render() {
-        return <div id="node"></div>
+        return (
+            <React.Fragment>
+                <div id="node"></div>
+                <div id="dfSelectContainer" hidden='true'>
+                    <input type='radio' id='dataframe1Radio' name='dfSelect' value='1' onClick={() => this.setState({ dataframe_identifier: 0 })} defaultChecked />
+                    <input type='radio' id='dataframe2Radio' name='dfSelect' value='2' onClick={() => this.setState({ dataframe_identifier: 1 })} />
+                    <input type='radio' id='dataframe3Radio' name='dfSelect' value='3' onClick={() => this.setState({ dataframe_identifier: 2 })} />
+                </div>
+            </React.Fragment>
+        )
     }
 }
 

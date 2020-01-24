@@ -3,7 +3,6 @@
     border: solid;
     grid-area: left;
     position: relative;
-    resize: horizontal;
     overflow: auto;
     min-width: 16.2vw;
 }
