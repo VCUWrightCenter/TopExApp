@@ -748,6 +748,7 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
         embedding = reducer.fit_transform(dist)
         #create dataframe with metadata
         df1 = pd.DataFrame(dict(label=just_phrase_ids, UMAP_cluster=cluster_assignments, phrase=just_phrase_text, x=embedding[:, 0], y=embedding[:, 1])) 
+        #pd.min() pd.max() np.min() to find the min and max of the dataframes for scaling the d3 graph
         finalObject.df1 = df1.to_json()
        
         
@@ -785,7 +786,6 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
     if args.s == "svd" or args.s == "all":
         ### Create and save SVD Scatter Plot
         svd2d =  TruncatedSVD(n_components = 2, random_state = 42).fit_transform(dist)
-    
         #create dataframe with metadata
         df3 = pd.DataFrame(dict(label=just_phrase_ids, SVD_cluster=cluster_assignments, phrase=just_phrase_text, x=svd2d[:, 0], y=svd2d[:, 1])) 
         finalObject.df3 = df3.to_json()
