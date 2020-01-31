@@ -12,8 +12,21 @@ class Scatterplot extends Component {
         }
     }
 
-    componentDidUpdate() {
-        this.drawChart(this.state.dataframe_identifier);
+    //This is for the radio buttons
+    componentDidUpdate(){
+        this.drawChart(this.state.dataframe_identifier)
+    }
+    
+    //This is to get the graph to show upp in the tab
+    componentDidMount() {
+        if(this.props.data){
+            this.drawChart(this.state.dataframe_identifier);
+        }
+        else{
+            console.log("No scatterplot data")
+            console.log(this.state.completeObjectsArray)
+        }
+        
     }
 
     convertToJson(jsonString) {
@@ -37,10 +50,11 @@ class Scatterplot extends Component {
             let completeObjectsArray = []
             //Begin data reformatting
             var APIReturnObject = this.convertToJson(this.props.data)
+            console.log(APIReturnObject)
             var raw_sentences = APIReturnObject.raw_sent
             var main_cluster_topics = APIReturnObject.main_cluster_topics
-            console.table(raw_sentences)
-            console.table(main_cluster_topics)
+            // console.table(raw_sentences)
+            // console.table(main_cluster_topics)
             var dataframeArray = []
             dataframeArray[0] = this.convertToJson(APIReturnObject.df1)
             dataframeArray[1] = this.convertToJson(APIReturnObject.df2)
@@ -127,13 +141,15 @@ class Scatterplot extends Component {
 
     drawChart(dataFrameNumber) {
 
-        console.log(this.convertToJson(this.props.data))
+        //console.log(this.convertToJson(this.props.data))
 
         let dataArray = this.reformatJSON()
         console.log("This is the reformatted json that should contains the data for all 3 of the datafrmaes")
         console.log(dataArray)
         let data = dataArray[dataFrameNumber]
 
+        console.log("This is the data in drawChart that is used in d3")
+        console.log(data)
 
 
         var margin = { top: 10, right: 30, bottom: 30, left: 60 },
