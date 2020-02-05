@@ -25,6 +25,8 @@ export default class Main extends Component {
                 panes: panes
             })
         }
+
+        document.getElementById('tabs').hidden=false;
     }
 
 
@@ -34,7 +36,7 @@ export default class Main extends Component {
     render() {
         return (
             <div className='main-wrapper'>
-                <div className='main'>
+                <div id='tabs' className='main' hidden='true'>
                     <Tab panes={this.state.panes} renderActiveOnly={false} />
                 </div>
             </div>

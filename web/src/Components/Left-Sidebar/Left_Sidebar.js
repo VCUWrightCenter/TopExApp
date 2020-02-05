@@ -24,13 +24,12 @@ class Left_Sidebar extends Component {
     render() {
         return (
             <div className='sidebar'>
-                
                 <div id="fileList" className='fileList'>
                     file list:
                         {this.state.fileList.map((fileName) => {
-                        return (<div key={fileName}>
-                            <label htmlFor={fileName} className = 'fileListEntry'>{fileName}</label>
-                            <input id={fileName} type='checkBox' value={fileName} defaultChecked />
+                        return (<div className='fileListEntry' key={fileName}>
+                            <label htmlFor={fileName} className='file-list-label' >{fileName}</label>
+                            <input id={fileName} type='checkBox' className='file-list-checkbox' value={fileName} defaultChecked />
                         </div>
                         )
                     })

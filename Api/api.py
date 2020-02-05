@@ -33,7 +33,7 @@ def runScript():
         #print(fileList[0])
     #print(fileList)
     result = script(inputFile = fileList, tfidfcorpus = '2019.03.12_SEED_TOPICS_AMY\FILELIST.txt', scatter_plot = "all", threshold = 8)
-    print(type(result))
+    #print(type(result))
 
     return result
 
