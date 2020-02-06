@@ -13,7 +13,7 @@ export default class Main extends Component {
     }
 
     componentDidUpdate() {
-        console.log("MAIN UPDATED WITH PROPS = ")
+        //console.log("MAIN UPDATED WITH PROPS = ")
         let panes = [
             { menuItem: 'Tab 1', pane: {key: 'pane1', content: <Scatterplot data = {this.props.graphData}/>}},
             { menuItem: 'Tab 2', pane: 'tab 2 content'},
