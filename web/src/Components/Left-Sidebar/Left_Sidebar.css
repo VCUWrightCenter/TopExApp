@@ -13,4 +13,15 @@
 }
 
 .fileListEntry{
+    margin-top: 10px;
+}
+
+.file-list-checkbox{
+    width: 20%;
+    float: right;
+}
+
+.file-list-label{
+    font-size: 1.1rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
