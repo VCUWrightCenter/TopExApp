@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import './Left_Sidebar.css'
 import Axios from "axios";
+import { json } from "d3";
 
 
 
@@ -82,7 +83,12 @@ class Left_Sidebar extends Component {
 
         }
 
-        var response = await this.runScript(formData)
+
+        let scriptArgs = {tfidfcorpus:'2019.03.12_SEED_TOPICS_AMY/FILELIST.txt', scatter_plot:"all", threshold: 8}
+
+        scriptArgs=JSON.stringify(scriptArgs)
+        
+        var response = await this.runScript(formData, scriptArgs)
 
         this.sendGraphData(response)
 
@@ -91,12 +97,19 @@ class Left_Sidebar extends Component {
     }
 
     //Responsible for sending the POST request which runs the script
-    async runScript(formData) {
+    async runScript(formData, scriptArgs) {
         var cors = "http://127.0.0.1:8080/"
         var url = "http://127.0.0.1:5000/runScript"
 
+        const blob = new Blob([scriptArgs], {
+            type: 'application/json'
+          });
+
+        formData.append('scriptArgs',blob)
+
         const response = await Axios.post(cors + url, formData, {
             headers: {
+                'Accept': 'application/json',
                 'Content-Type': 'multipart/form-data'
             }
         })

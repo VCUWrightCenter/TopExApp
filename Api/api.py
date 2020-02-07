@@ -2,6 +2,7 @@ import flask
 from flask import request
 from datetime import datetime
 from discover_topics_UMAP_Kmeans import main as script
+import json
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -25,14 +26,22 @@ def file_content():
 @app.route('/runScript', methods=["POST"])
 def runScript():
     data = request.files
+    #print('Data')
+    #print(data)
     fileList = []
     for file in data:
         fileob = data[file]
-        fileText = fileob.read().decode()
-        fileList.append(fileText)
+        print()
+        if fileob.content_type == 'application/json':
+            scriptArgs = json.loads(fileob.stream.read())
+            print(scriptArgs)
+        else:
+
+            fileText = fileob.read().decode()
+            fileList.append(fileText)
         #print(fileList[0])
     #print(fileList)
-    result = script(inputFile = fileList, tfidfcorpus = '2019.03.12_SEED_TOPICS_AMY\FILELIST.txt', scatter_plot = "all", threshold = 8)
+    result = script(inputFile = fileList, tfidfcorpus = scriptArgs["tfidfcorpus"], scatter_plot = scriptArgs["scatter_plot"], threshold = scriptArgs["threshold"])
     #print(type(result))
 
     return result
