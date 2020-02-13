@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import './Left_Sidebar.css'
 import Axios from "axios";
 import { json } from "d3";
+import { Tab } from 'semantic-ui-react'
 
 
 
@@ -11,36 +12,61 @@ class Left_Sidebar extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { fileList: [] };
+        this.state = {
+            fileList: [],
+            leftTabs: null
+        };
+
     }
 
-    
+
     //This sends data to the APP component so that it can be sent to Main/Scatterplot
     // and create the graph
     sendGraphData = (graphData) => {
         this.props.graphData(graphData)
     }
 
+    generateFileInput() {
+        return (<div className='sidebar'>
+            <div id="fileList" className='fileList'>
+                file list:
+            {this.state.fileList.map((fileName) => {
+                    return (<div className='fileListEntry' key={fileName}>
+                        <label htmlFor={fileName} className='file-list-label' >{fileName}</label>
+                        <input id={fileName} type='checkBox' className='file-list-checkbox' value={fileName} defaultChecked />
+                    </div>
+                    )
+                })
+                }
+            </div>
+            <div className='file-input'>
+                <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
+                    <input type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
+                    <button id="submitButton" className="submitButton"> Run </button>
+                </form>
+            </div>
+        </div>)
+    }
+
+    componentDidMount() {
+
+        this.setState({
+            leftTabs: this.generateFileInput()
+        })
+
+        document.getElementById('tabs').hidden = false;
+    }
 
     render() {
+        let panes = [
+            { menuItem: 'File input', render: () => <Tab.Pane>{this.generateFileInput()}</Tab.Pane> },
+            { menuItem: 'Tab 2', pane: 'tab 2 content' },
+        ]
+
         return (
-            <div className='sidebar'>
-                <div id="fileList" className='fileList'>
-                    file list:
-                        {this.state.fileList.map((fileName) => {
-                        return (<div className='fileListEntry' key={fileName}>
-                            <label htmlFor={fileName} className='file-list-label' >{fileName}</label>
-                            <input id={fileName} type='checkBox' className='file-list-checkbox' value={fileName} defaultChecked />
-                        </div>
-                        )
-                    })
-                    }
-                </div>
-                <div className='file-input'>
-                    <form encType="multipart/form-data" onSubmit = {(e) => this.handleChange(e)}>
-                        <input type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)}/>
-                        <button id = "submitButton" className="submitButton"> Run </button>
-                    </form>
+            <div className='left-wrapper'>
+                <div id='tabs' className='sidebar'>
+                    <Tab panes={panes} />
                 </div>
             </div>
         );
@@ -60,8 +86,8 @@ class Left_Sidebar extends Component {
         let formChildren = event.target.children
         let input;
 
-        for(let i in formChildren){
-            if(formChildren[i].nodeName == "INPUT"){
+        for (let i in formChildren) {
+            if (formChildren[i].nodeName == "INPUT") {
                 input = formChildren[i]
             }
         }
@@ -74,20 +100,20 @@ class Left_Sidebar extends Component {
 
         console.log(checkedFiles)
         for (var i = 0; i < files.length; i++) {
-            if(checkedFiles.includes(files[i].name)){
+            if (checkedFiles.includes(files[i].name)) {
                 formData.append("File" + i, files[i])
             }
-            else{
+            else {
                 console.log(files[i].name + " is not checked")
             }
 
         }
 
 
-        let scriptArgs = {tfidfcorpus:'2019.03.12_SEED_TOPICS_AMY/FILELIST.txt', scatter_plot:"all", threshold: 8}
+        let scriptArgs = { tfidfcorpus: '2019.03.12_SEED_TOPICS_AMY/FILELIST.txt', scatter_plot: "all", threshold: 8 }
 
-        scriptArgs=JSON.stringify(scriptArgs)
-        
+        scriptArgs = JSON.stringify(scriptArgs)
+
         var response = await this.runScript(formData, scriptArgs)
 
         this.sendGraphData(response)
@@ -103,9 +129,9 @@ class Left_Sidebar extends Component {
 
         const blob = new Blob([scriptArgs], {
             type: 'application/json'
-          });
+        });
 
-        formData.append('scriptArgs',blob)
+        formData.append('scriptArgs', blob)
 
         const response = await Axios.post(cors + url, formData, {
             headers: {
@@ -139,7 +165,7 @@ class Left_Sidebar extends Component {
         this.setState({
             fileList: modifiedFilelist
         }, () => { console.log("state changed" + modifiedFilelist) }
-        )   
+        )
     }
 
     //Returns the names of the files that have been checked, and returns them. 
