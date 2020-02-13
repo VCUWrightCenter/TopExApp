@@ -59,14 +59,14 @@ class Left_Sidebar extends Component {
 
     render() {
         let panes = [
-            { menuItem: 'File input', render: () => <Tab.Pane>{this.generateFileInput()}</Tab.Pane> },
+            { menuItem: 'File input', pane: { key: 'pane1', content: this.generateFileInput() } },
             { menuItem: 'Tab 2', pane: 'tab 2 content' },
         ]
 
         return (
             <div className='left-wrapper'>
                 <div id='tabs' className='sidebar'>
-                    <Tab panes={panes} />
+                    <Tab panes={panes} renderActiveOnly={false}/>
                 </div>
             </div>
         );
