@@ -376,16 +376,21 @@ def merge_doc_lists(doc1, doc2):
 def create_tfidf(documents1, documents2="none"):
     ### import documents
     if documents2 == "none":
-        file_list = open(documents1).read().strip().split('\n')
+        documents1 = re.sub('\r', '', documents1)
+        file_content = documents1.strip().split('<newdoc>')
+        file_content.pop()
     else:
-        file_list = merge_doc_lists(documents1, documents2)
+        file_content = (documents1 + documents2)
 
-    file_content = []
-    for file_path in file_list:
-        if file_path is not '':
-            file = open(file_path, "r", encoding="utf-8")
-            text = file.read()
-            file_content.append(text)    
+
+    # file_content = []
+    # for file_path in file_list:
+    #     if file_path is not '':
+    #         file = open(file_path, "r", encoding="utf-8")
+    #         text = file.read()
+    #         file_content.append(text)
+    print("FILE CONTENT")
+    print(file_content)
 
     ### Pre-processing corpus
     my_docs = []

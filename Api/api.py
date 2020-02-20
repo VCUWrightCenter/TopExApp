@@ -41,7 +41,8 @@ def runScript():
             fileList.append(fileText)
         #print(fileList[0])
     #print(fileList)
-    result = script(inputFile = fileList, tfidfcorpus = scriptArgs["tfidfcorpus"], scatter_plot = scriptArgs["scatter_plot"], threshold = scriptArgs["threshold"])
+    #print(scriptArgs)
+    result = script(inputFile = fileList, tfidfcorpus = scriptArgs["tfidfcorpus"], scatter_plot = scriptArgs["scatter_plot"], threshold = int(scriptArgs["threshold"]))
     #print(type(result))
 
     return result

@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import './Left_Sidebar.css'
 import Axios from "axios";
 import { json } from "d3";
-import { Tab } from 'semantic-ui-react'
+import { Tab, Dropdown } from 'semantic-ui-react'
+import Scatterplot from "../Main/Scatterplot/Scatterplot";
 
 
 
@@ -19,6 +20,25 @@ class Left_Sidebar extends Component {
 
     }
 
+    componentDidMount() {
+        document.getElementById('tabs').hidden = false;
+    }
+
+    render() {
+        let panes = [
+            { menuItem: 'File input', pane: { key: 'pane1', content: this.generateFileInput() } },
+            { menuItem: 'Options', pane: { key: 'pane2', content: this.generateScriptArgsTab() } },
+        ]
+
+        return (
+            <div className='left-wrapper'>
+                <div id='tabs' className='sidebar'>
+                    <Tab panes={panes} renderActiveOnly={false} />
+                </div>
+            </div>
+        );
+    }
+
 
     //This sends data to the APP component so that it can be sent to Main/Scatterplot
     // and create the graph
@@ -29,13 +49,313 @@ class Left_Sidebar extends Component {
 
     //Responsible for generating the jsx in the script args tab
     generateScriptArgsTab() {
+
+        const wordVectorType = [{
+            key: 'tfidf',
+            text: 'tfidf',
+            value: 'tfidf'
+        },
+        {
+            key: 'svd',
+            text: 'svd',
+            value: 'svd'
+        },
+        {
+            key: 'umap',
+            text: 'umap',
+            value: 'umap'
+        },
+        {
+            key: 'pretrained',
+            text: 'pretrained',
+            value: 'pretrained'
+        },
+        {
+            key: 'local',
+            text: 'local',
+            value: 'local'
+        }
+        ]
+
+        const DistanceMetric = [{
+            key: 'braycurtis',
+            text: 'braycurtis',
+            value: 'braycurtis'
+        },
+        {
+            key: 'canberra',
+            text: 'canberra',
+            value: 'canberra'
+        },
+        {
+            key: 'chebyshev',
+            text: 'chebyshev',
+            value: 'chebyshev'
+        },
+        {
+            key: 'cityblock',
+            text: 'cityblock',
+            value: 'cityblock'
+        },
+        {
+            key: 'correlation',
+            text: 'correlation',
+            value: 'correlation'
+        },
+        {
+            key: 'cosine',
+            text: 'cosine',
+            value: 'cosine'
+        },
+        {
+            key: 'dice',
+            text: 'dice',
+            value: 'dice'
+        },
+        {
+            key: 'euclidean',
+            text: 'euclidean',
+            value: 'euclidean'
+        },
+        {
+            key: 'hamming',
+            text: 'hamming',
+            value: 'hamming'
+        },
+        {
+            key: 'jaccard',
+            text: 'jaccard',
+            value: 'jaccard'
+        },
+        {
+            key: 'kulsinski',
+            text: 'kulsinski',
+            value: 'kulsinski'
+        },
+        {
+            key: 'mahalanobis',
+            text: 'mahalanobis',
+            value: 'mahalanobis'
+        },
+        {
+            key: 'matching',
+            text: 'matching',
+            value: 'matching'
+        },
+        {
+            key: 'minkowski',
+            text: 'minkowski',
+            value: 'minkowski'
+        },
+        {
+            key: 'rogerstanimoto',
+            text: 'rogerstanimoto',
+            value: 'rogerstanimoto'
+        },
+        {
+            key: 'russellrao',
+            text: 'russellrao',
+            value: 'russellrao'
+        },
+        {
+            key: 'seuclidean',
+            text: 'seuclidean',
+            value: 'seuclidean'
+        },
+        {
+            key: 'sokalmichener',
+            text: 'sokalmichener',
+            value: 'sokalmichener'
+        },
+        {
+            key: 'sokalsneath',
+            text: 'sokalsneath',
+            value: 'sokalsneath'
+        },
+        {
+            key: 'sqeuclidean',
+            text: 'sqeuclidean',
+            value: 'sqeuclidean'
+        },
+        {
+            key: 'yule',
+            text: 'yule',
+            value: 'yule'
+        }
+        ]
         return (
             <div>
-                <label htmlFor='input1'>Input1</label>
-                <input type ='text' id='input1'/>
-            </div>
+
+                <div>
+                    <label htmlFor='tfidfcorpuslabel'>tfidfcorpus</label>
+                    <input type='file' webkitdirectory="" mozdirectory="" multiple id='tfidfcorpus' />
+                </div>
+
+
+                <div>
+                    <label>Word Vector Type </label>
+                    <Dropdown placeholder='Select wordVectorType'
+                        clearable
+                        fluid
+                        selection
+                        options={wordVectorType}
+                        onChange={this.getDropdownValue} />
+                </div>
+
+
+                <div>
+                    <label htmlFor='w2vBinFilelabel'>w2vBinFile</label>
+                    <input type='file' id='w2vBinFile' />
+                </div>
+
+
+                <div>
+                    <label htmlFor='prefixlabel'>prefix</label>
+                    <input type='text' id='prefix' />
+                </div>
+
+
+                <div>
+                    <label htmlFor='windowSizelabel'>windowSize</label>
+                    <input type='text' id='windowSize' />
+                </div>
+
+
+                <div>
+                    <label htmlFor='goldStandardlabel'>goldStandard</label>
+                    <input type='file' id='goldStandard' />
+                </div>
+
+
+                <div>
+                    <label htmlFor='thresholdlabel'>threshold</label>
+                    <input type='number' id='threshold' />
+                </div>
+
+
+                <div>
+                    <label htmlFor='dimensionslabel'>dimensions</label>
+                    <input type='number' id='dimensions' />
+                </div>
+
+
+                <div>
+                    {/* <label htmlFor='scatter_plot'>scatter_plot</label>
+                <input type='text' id='scatter_plot' /> */}
+                </div>
+
+
+                <div>
+                    <label htmlFor='umap_neighborslabel'>umap_neighbors</label>
+                    <input type='number' id='umap_neighbors' />
+                </div>
+
+
+                <div>
+                    <label>Distance metric </label>
+                    <Dropdown placeholder='Select Distance metric'
+                        fluid
+                        clearable
+                        selection
+                        options={DistanceMetric}
+                        onChange={this.getDropdownValue} />
+                </div>
+
+
+                <div>
+                    <label htmlFor='include_input_in_tfidflabel'>include_input_in_tfidf</label>
+                    <input type='text' id='include_input_in_tfidf' />
+                </div>
+
+
+                <div>
+                    <label htmlFor='output_labeled_sentenceslabel'>output_labeled_sentences</label>
+                    <input type='text' id='output_labeled_sentences' />
+                </div>
+
+
+                <div>
+                    <label htmlFor='use_kmeanslabel'>use_kmeans</label>
+                    <input type='text' id='use_kmeans' />
+                </div>
+
+            </div >
         )
     }
+
+    getFileContents(file){
+        return new Promise((resolve, reject) => {
+            let contents = ""
+            const reader = new FileReader()
+            reader.onloadend = function (e) {
+              contents = e.target.result
+              resolve(contents)
+            }
+            reader.onerror = function (e) {
+              reject(e)
+            }
+            reader.readAsText(file)
+          })
+    }
+
+    async getScriptArgs() {
+        
+        let temp = '';
+        let tfidfcorpus = document.getElementById('tfidfcorpus').files
+        for (let i = 0; i < tfidfcorpus.length; i++){
+            temp += await this.getFileContents(tfidfcorpus[i])
+            temp += '<newdoc>' //add this so we can split on it in the create_tfidf funtion in script
+        }
+        tfidfcorpus = temp;
+        temp = '';
+        //console.log(tfidfcorpus);
+        let wordVectorType = this.state.wordVectorType;
+        let w2vBinFile = document.getElementById('w2vBinFile').value;
+        let prefix = document.getElementById('prefix').value;
+        let windowSize = document.getElementById('windowSize').value;
+        let goldStandard = document.getElementById('goldStandard').files[0];
+
+        if (goldStandard) {
+            goldStandard = this.getFileContents(goldStandard)
+        }
+
+        let threshold = document.getElementById('threshold').value;
+        let dimensions = document.getElementById('dimensions').value;
+        let umap_neighbors = document.getElementById('umap_neighbors').value;
+        let DistanceMetric = this.state.DistanceMetric;
+        let include_input_in_tfidf = document.getElementById('include_input_in_tfidf').value;
+        let output_labeled_sentences = document.getElementById('output_labeled_sentences').value;
+        let use_kmeans = document.getElementById('use_kmeans').value;
+
+        let args = {
+            'tfidfcorpus': tfidfcorpus,//This caused some issues. Need clarification
+            'wordVectorType': wordVectorType,
+            'w2vBinFile': w2vBinFile,
+            'prefix': prefix,
+            'goldStandard': goldStandard,
+            'windowSize': windowSize,
+            'threshold': threshold,
+            'dimensions': dimensions,
+            'umap_neighbors': umap_neighbors,
+            'DistanceMetric': DistanceMetric,
+            'include_input_in_tfidf': include_input_in_tfidf,
+            'include_input_in_tfidf': include_input_in_tfidf,
+            'output_labeled_sentences': output_labeled_sentences,
+            'use_kmeans': use_kmeans,
+            scatter_plot: 'all' //Dafault this to all?
+        }
+
+        return args;
+
+    }
+
+    getDropdownValue = (event, data) => {
+        this.setState({
+            [data.name]: data.value
+        })
+    }
+
+
 
     //Responsible for generating the jsx in the file input tab
     generateFileInput() {
@@ -58,25 +378,6 @@ class Left_Sidebar extends Component {
                 </form>
             </div>
         </div>)
-    }
-
-    componentDidMount() {
-        document.getElementById('tabs').hidden = false;
-    }
-
-    render() {
-        let panes = [
-            { menuItem: 'File input', pane: { key: 'pane1', content: this.generateFileInput() } },
-            { menuItem: 'Tab 2', pane: { key: 'pane2', content: this.generateScriptArgsTab() } },
-        ]
-
-        return (
-            <div className='left-wrapper'>
-                <div id='tabs' className='sidebar'>
-                    <Tab panes={panes} renderActiveOnly={false} />
-                </div>
-            </div>
-        );
     }
 
     //This method takes in the form data, sends it to the api,
@@ -117,8 +418,11 @@ class Left_Sidebar extends Component {
         }
 
         //Need to change this so that it takes in the data from the script args tab
-        let scriptArgs = { tfidfcorpus: '2019.03.12_SEED_TOPICS_AMY/FILELIST.txt', scatter_plot: "all", threshold: 8 }
+        //let scriptArgs = { tfidfcorpus: '2019.03.12_SEED_TOPICS_AMY/FILELIST.txt', scatter_plot: "all", threshold: 8 }
 
+        let scriptArgs = await this.getScriptArgs()
+
+        console.log("This should show up right after scriptargs is done")
         scriptArgs = JSON.stringify(scriptArgs)
 
         var response = await this.runScript(formData, scriptArgs)
