@@ -26,8 +26,20 @@ class Left_Sidebar extends Component {
         this.props.graphData(graphData)
     }
 
+
+    //Responsible for generating the jsx in the script args tab
+    generateScriptArgsTab() {
+        return (
+            <div>
+                <label htmlFor='input1'>Input1</label>
+                <input type ='text' id='input1'/>
+            </div>
+        )
+    }
+
+    //Responsible for generating the jsx in the file input tab
     generateFileInput() {
-        return (<div className='sidebar'>
+        return (<div>
             <div id="fileList" className='fileList'>
                 file list:
             {this.state.fileList.map((fileName) => {
@@ -49,24 +61,19 @@ class Left_Sidebar extends Component {
     }
 
     componentDidMount() {
-
-        this.setState({
-            leftTabs: this.generateFileInput()
-        })
-
         document.getElementById('tabs').hidden = false;
     }
 
     render() {
         let panes = [
             { menuItem: 'File input', pane: { key: 'pane1', content: this.generateFileInput() } },
-            { menuItem: 'Tab 2', pane: 'tab 2 content' },
+            { menuItem: 'Tab 2', pane: { key: 'pane2', content: this.generateScriptArgsTab() } },
         ]
 
         return (
             <div className='left-wrapper'>
                 <div id='tabs' className='sidebar'>
-                    <Tab panes={panes} renderActiveOnly={false}/>
+                    <Tab panes={panes} renderActiveOnly={false} />
                 </div>
             </div>
         );
@@ -109,7 +116,7 @@ class Left_Sidebar extends Component {
 
         }
 
-
+        //Need to change this so that it takes in the data from the script args tab
         let scriptArgs = { tfidfcorpus: '2019.03.12_SEED_TOPICS_AMY/FILELIST.txt', scatter_plot: "all", threshold: 8 }
 
         scriptArgs = JSON.stringify(scriptArgs)
@@ -141,7 +148,7 @@ class Left_Sidebar extends Component {
         })
 
         const data = response.data
-        console.log(data)
+        //console.log(data)
 
         return await data
     }
