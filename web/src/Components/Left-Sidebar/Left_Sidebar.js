@@ -53,7 +53,8 @@ class Left_Sidebar extends Component {
         const wordVectorType = [{
             key: 'tfidf',
             text: 'tfidf',
-            value: 'tfidf'
+            value: 'tfidf',
+            dropDownID: "wordVectorType"
         },
         {
             key: 'svd',
@@ -80,7 +81,8 @@ class Left_Sidebar extends Component {
         const DistanceMetric = [{
             key: 'braycurtis',
             text: 'braycurtis',
-            value: 'braycurtis'
+            value: 'braycurtis',
+            dropDownID: 'DistanceMetric'
         },
         {
             key: 'canberra',
@@ -257,6 +259,7 @@ class Left_Sidebar extends Component {
                         fluid
                         clearable
                         selection
+                        id="distmet"
                         options={DistanceMetric}
                         onChange={this.getDropdownValue} />
                 </div>
@@ -309,23 +312,19 @@ class Left_Sidebar extends Component {
         tfidfcorpus = temp;
         temp = '';
         //console.log(tfidfcorpus);
-        let wordVectorType = this.state.wordVectorType;
-        let w2vBinFile = document.getElementById('w2vBinFile').value;
-        let prefix = document.getElementById('prefix').value;
-        let windowSize = document.getElementById('windowSize').value;
-        let goldStandard = document.getElementById('goldStandard').files[0];
-
-        if (goldStandard) {
-            goldStandard = this.getFileContents(goldStandard)
-        }
+        let wordVectorType = this.state.wordVectorType == null ? null : this.state.wordVectorType;
+        let w2vBinFile = document.getElementById('w2vBinFile').files[0]  == null ? null: this.getFileContents(document.getElementById('w2vBinFile').files[0]); //This needs to be changed to a file input
+        let prefix = document.getElementById('prefix').value  == '' ? null: document.getElementById('prefix').value;
+        let windowSize = document.getElementById('windowSize').value  == '' ? null: document.getElementById('windowSize').value;
+        let goldStandard = document.getElementById('goldStandard').files[0]  == null ? null: this.getFileContents(document.getElementById('goldStandard').files[0]);
 
         let threshold = document.getElementById('threshold').value;
-        let dimensions = document.getElementById('dimensions').value;
-        let umap_neighbors = document.getElementById('umap_neighbors').value;
-        let DistanceMetric = this.state.DistanceMetric;
-        let include_input_in_tfidf = document.getElementById('include_input_in_tfidf').value;
-        let output_labeled_sentences = document.getElementById('output_labeled_sentences').value;
-        let use_kmeans = document.getElementById('use_kmeans').value;
+        let dimensions = document.getElementById('dimensions').value == '' ? null: document.getElementById('dimensions').value;
+        let umap_neighbors = document.getElementById('umap_neighbors').value  == '' ? null: document.getElementById('umap_neighbors').value;
+        let DistanceMetric = this.state.DistanceMetric == null ? null : this.state.DistanceMetric;
+        let include_input_in_tfidf = document.getElementById('include_input_in_tfidf').value  == '' ? null: document.getElementById('include_input_in_tfidf').value;
+        let output_labeled_sentences = document.getElementById('output_labeled_sentences').value  == '' ? null: document.getElementById('output_labeled_sentences').value;
+        let use_kmeans = document.getElementById('use_kmeans').value  == '' ? null: document.getElementById('use_kmeans').value;
 
         let args = {
             'tfidfcorpus': tfidfcorpus,//This caused some issues. Need clarification
@@ -342,7 +341,8 @@ class Left_Sidebar extends Component {
             'include_input_in_tfidf': include_input_in_tfidf,
             'output_labeled_sentences': output_labeled_sentences,
             'use_kmeans': use_kmeans,
-            scatter_plot: 'all' //Dafault this to all?
+            scatter_plot: 'all',//Default values. Are these appropriate
+            outputdir: "./" 
         }
 
         return args;
@@ -350,9 +350,11 @@ class Left_Sidebar extends Component {
     }
 
     getDropdownValue = (event, data) => {
+
+        let dataName = data.options[0].dropDownID
         this.setState({
-            [data.name]: data.value
-        })
+            [dataName]: data.value
+        });
     }
 
 
@@ -405,8 +407,6 @@ class Left_Sidebar extends Component {
         let checkedFiles = this.getCheckedFiles()
 
         let formData = new FormData()
-
-        console.log(checkedFiles)
         for (var i = 0; i < files.length; i++) {
             if (checkedFiles.includes(files[i].name)) {
                 formData.append("File" + i, files[i])
@@ -422,15 +422,46 @@ class Left_Sidebar extends Component {
 
         let scriptArgs = await this.getScriptArgs()
 
-        console.log("This should show up right after scriptargs is done")
-        scriptArgs = JSON.stringify(scriptArgs)
+        //Perform form validation here
 
-        var response = await this.runScript(formData, scriptArgs)
+        if (this.validateArgs(scriptArgs, files)){
 
-        this.sendGraphData(response)
+            scriptArgs = JSON.stringify(scriptArgs)
 
-        document.getElementById('submitButton').disabled = false;
+            var response = await this.runScript(formData, scriptArgs)
+    
+            this.sendGraphData(response)
+    
+            document.getElementById('submitButton').disabled = false;
+        }
+        else{
+            return
+        }
 
+    }
+
+    validateArgs(scriptArgs, files){
+        if(scriptArgs.threshold == ''){
+            alert('Threshhold must be specified.');
+            document.getElementById('submitButton').disabled = false;
+            document.getElementById('threshold').focus()
+            return false;
+        }
+
+        if(files.length < 1){
+            alert('Must provide at least one input file')
+            document.getElementById('submitButton').disabled = false;
+            return false;
+        }
+
+        if(document.getElementById('tfidfcorpus').files.length < 1){
+            alert('Must provide at least one tfidfcorpus')
+            document.getElementById('submitButton').disabled = false;
+            return false;
+        }
+
+
+        return true;
     }
 
     //Responsible for sending the POST request which runs the script
@@ -452,7 +483,6 @@ class Left_Sidebar extends Component {
         })
 
         const data = response.data
-        //console.log(data)
 
         return await data
     }
@@ -475,7 +505,8 @@ class Left_Sidebar extends Component {
 
         this.setState({
             fileList: modifiedFilelist
-        }, () => { console.log("state changed" + modifiedFilelist) }
+        }
+        // }, () => { console.log("state changed" + modifiedFilelist) }
         )
     }
 
