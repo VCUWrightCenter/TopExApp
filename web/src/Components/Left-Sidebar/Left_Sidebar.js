@@ -286,46 +286,49 @@ class Left_Sidebar extends Component {
         )
     }
 
-    getFileContents(file){
+    getFileContents(file) {
         return new Promise((resolve, reject) => {
             let contents = ""
             const reader = new FileReader()
             reader.onloadend = function (e) {
-              contents = e.target.result
-              resolve(contents)
+                contents = e.target.result
+                resolve(contents)
             }
             reader.onerror = function (e) {
-              reject(e)
+                reject(e)
             }
             reader.readAsText(file)
-          })
+        })
     }
 
     async getScriptArgs() {
-        
+
         let temp = '';
         let tfidfcorpus = document.getElementById('tfidfcorpus').files
-        for (let i = 0; i < tfidfcorpus.length; i++){
+        for (let i = 0; i < tfidfcorpus.length; i++) {
             temp += await this.getFileContents(tfidfcorpus[i])
             temp += '<newdoc>' //add this so we can split on it in the create_tfidf funtion in script
         }
         tfidfcorpus = temp;
         temp = '';
         //console.log(tfidfcorpus);
-        let wordVectorType = this.state.wordVectorType == null ? null : this.state.wordVectorType;
-        let w2vBinFile = document.getElementById('w2vBinFile').files[0]  == null ? null: this.getFileContents(document.getElementById('w2vBinFile').files[0]); //This needs to be changed to a file input
-        let prefix = document.getElementById('prefix').value  == '' ? null: document.getElementById('prefix').value;
-        let windowSize = document.getElementById('windowSize').value  == '' ? null: document.getElementById('windowSize').value;
-        let goldStandard = document.getElementById('goldStandard').files[0]  == null ? null: this.getFileContents(document.getElementById('goldStandard').files[0]);
+        let wordVectorType = (this.state.wordVectorType == null) ? null : this.state.wordVectorType;
+        let w2vBinFile = document.getElementById('w2vBinFile').files[0] == null ? null : this.getFileContents(document.getElementById('w2vBinFile').files[0]); //This needs to be changed to a file input
+        let prefix = document.getElementById('prefix').value == '' ? null : document.getElementById('prefix').value;
+        let windowSize = document.getElementById('windowSize').value == '' ? null : document.getElementById('windowSize').value;
+        let goldStandard = document.getElementById('goldStandard').files[0] == null ? null : this.getFileContents(document.getElementById('goldStandard').files[0]);
 
         let threshold = document.getElementById('threshold').value;
-        let dimensions = document.getElementById('dimensions').value == '' ? null: document.getElementById('dimensions').value;
-        let umap_neighbors = document.getElementById('umap_neighbors').value  == '' ? null: document.getElementById('umap_neighbors').value;
-        let DistanceMetric = this.state.DistanceMetric == null ? null : this.state.DistanceMetric;
-        let include_input_in_tfidf = document.getElementById('include_input_in_tfidf').value  == '' ? null: document.getElementById('include_input_in_tfidf').value;
-        let output_labeled_sentences = document.getElementById('output_labeled_sentences').value  == '' ? null: document.getElementById('output_labeled_sentences').value;
-        let use_kmeans = document.getElementById('use_kmeans').value  == '' ? null: document.getElementById('use_kmeans').value;
+        let dimensions = document.getElementById('dimensions').value == '' ? null : document.getElementById('dimensions').value;
+        let umap_neighbors = document.getElementById('umap_neighbors').value == '' ? null : document.getElementById('umap_neighbors').value;
+        let DistanceMetric = (this.state.DistanceMetric == null) ? null : this.state.DistanceMetric;
+        let include_input_in_tfidf = document.getElementById('include_input_in_tfidf').value == '' ? null : document.getElementById('include_input_in_tfidf').value;
+        let output_labeled_sentences = document.getElementById('output_labeled_sentences').value == '' ? null : document.getElementById('output_labeled_sentences').value;
+        let use_kmeans = document.getElementById('use_kmeans').value == '' ? null : document.getElementById('use_kmeans').value;
 
+        console.log("DISTANCE METRIC");
+        console.log(typeof (DistanceMetric))
+        console.log(this.state.DistanceMetric)
         let args = {
             'tfidfcorpus': tfidfcorpus,//This caused some issues. Need clarification
             'wordVectorType': wordVectorType,
@@ -342,7 +345,7 @@ class Left_Sidebar extends Component {
             'output_labeled_sentences': output_labeled_sentences,
             'use_kmeans': use_kmeans,
             scatter_plot: 'all',//Default values. Are these appropriate
-            outputdir: "./" 
+            outputdir: "./"
         }
 
         return args;
@@ -350,11 +353,19 @@ class Left_Sidebar extends Component {
     }
 
     getDropdownValue = (event, data) => {
-
         let dataName = data.options[0].dropDownID
-        this.setState({
-            [dataName]: data.value
-        });
+
+
+        if (data.value == '') { //Weird cancelling bug
+            this.setState({
+                [dataName]: null
+            })
+        }
+        else {
+            this.setState({
+                [dataName]: data.value
+            });
+        }
     }
 
 
@@ -424,37 +435,37 @@ class Left_Sidebar extends Component {
 
         //Perform form validation here
 
-        if (this.validateArgs(scriptArgs, files)){
+        if (this.validateArgs(scriptArgs, files)) {
 
             scriptArgs = JSON.stringify(scriptArgs)
 
             var response = await this.runScript(formData, scriptArgs)
-    
+
             this.sendGraphData(response)
-    
+
             document.getElementById('submitButton').disabled = false;
         }
-        else{
+        else {
             return
         }
 
     }
 
-    validateArgs(scriptArgs, files){
-        if(scriptArgs.threshold == ''){
+    validateArgs(scriptArgs, files) {
+        if (scriptArgs.threshold == '') {
             alert('Threshhold must be specified.');
             document.getElementById('submitButton').disabled = false;
             document.getElementById('threshold').focus()
             return false;
         }
 
-        if(files.length < 1){
+        if (files.length < 1) {
             alert('Must provide at least one input file')
             document.getElementById('submitButton').disabled = false;
             return false;
         }
 
-        if(document.getElementById('tfidfcorpus').files.length < 1){
+        if (document.getElementById('tfidfcorpus').files.length < 1) {
             alert('Must provide at least one tfidfcorpus')
             document.getElementById('submitButton').disabled = false;
             return false;
@@ -506,7 +517,7 @@ class Left_Sidebar extends Component {
         this.setState({
             fileList: modifiedFilelist
         }
-        // }, () => { console.log("state changed" + modifiedFilelist) }
+            // }, () => { console.log("state changed" + modifiedFilelist) }
         )
     }
 

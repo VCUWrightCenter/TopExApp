@@ -41,7 +41,7 @@ def runScript():
             fileList.append(fileText)
         #print(fileList[0])
     #print(fileList)
-    #print(scriptArgs)
+    print(scriptArgs)
     result = script(inputFile = fileList, w2vBinFile=scriptArgs["w2vBinFile"], outputdir=scriptArgs["outputdir"], tfidfcorpus = scriptArgs["tfidfcorpus"], scatter_plot = scriptArgs["scatter_plot"], threshold = int(scriptArgs["threshold"]), wordVectorType = scriptArgs["wordVectorType"], prefix=scriptArgs["prefix"], windowSize=scriptArgs["windowSize"], goldStandard=scriptArgs["goldStandard"], dimensions=scriptArgs["dimensions"], umap_neighbors=scriptArgs["umap_neighbors"], distmetric=scriptArgs["DistanceMetric"] )
     #print(type(result))
 
