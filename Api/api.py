@@ -42,7 +42,7 @@ def runScript():
         #print(fileList[0])
     #print(fileList)
     print(scriptArgs)
-    result = script(inputFile = fileList, w2vBinFile=scriptArgs["w2vBinFile"], outputdir=scriptArgs["outputdir"], tfidfcorpus = scriptArgs["tfidfcorpus"], scatter_plot = scriptArgs["scatter_plot"], threshold = int(scriptArgs["threshold"]), wordVectorType = scriptArgs["wordVectorType"], prefix=scriptArgs["prefix"], windowSize=scriptArgs["windowSize"], goldStandard=scriptArgs["goldStandard"], dimensions=scriptArgs["dimensions"], umap_neighbors=scriptArgs["umap_neighbors"], distmetric=scriptArgs["DistanceMetric"] )
+    result = script(inputFile = fileList, w2vBinFile=scriptArgs["w2vBinFile"], outputdir=scriptArgs["outputdir"], tfidfcorpus = scriptArgs["tfidfcorpus"], scatter_plot = scriptArgs["scatter_plot"], threshold = int(scriptArgs["threshold"]), wordVectorType = scriptArgs["wordVectorType"], prefix=scriptArgs["prefix"], windowSize=scriptArgs["windowSize"], goldStandard=scriptArgs["goldStandard"], dimensions=scriptArgs["dimensions"], umap_neighbors=scriptArgs["umap_neighbors"], distmetric=scriptArgs["DistanceMetric"], include_input_in_tfidf=scriptArgs['include_input_in_tfidf'],output_labeled_sentences=scriptArgs['output_labeled_sentences'], use_kmeans=scriptArgs['use_kmeans']  )
     #print(type(result))
 
     return result

@@ -341,7 +341,6 @@ class Left_Sidebar extends Component {
             'umap_neighbors': umap_neighbors,
             'DistanceMetric': DistanceMetric,
             'include_input_in_tfidf': include_input_in_tfidf,
-            'include_input_in_tfidf': include_input_in_tfidf,
             'output_labeled_sentences': output_labeled_sentences,
             'use_kmeans': use_kmeans,
             scatter_plot: 'all',//Default values. Are these appropriate

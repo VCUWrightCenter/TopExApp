@@ -423,7 +423,7 @@ def create_tfidf(documents1, documents2="none"):
 
 
 class Args():
-    def __init__(self, inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, windowSize, goldStandard, threshold, dimensions, scatter_plot , umap_neighbors, distmetric):
+    def __init__(self, inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, windowSize, goldStandard, threshold, dimensions, scatter_plot , umap_neighbors, distmetric, include_input_in_tfidf, use_kmeans, output_labeled_sentences):
         self.i = inputFile if inputFile is not None else None
         self.c = tfidfcorpus if tfidfcorpus is not None else ""
         self.v = wordVectorType if wordVectorType is not None else 'tfidf' 
@@ -437,7 +437,7 @@ class Args():
         self.s = scatter_plot if scatter_plot is not None else "umap"
         self.u = int(umap_neighbors) if umap_neighbors is not None else 15
         self.m = distmetric if distmetric is not None else "cosine"
-        self.include_input_in_tfidf = None
+        self.include_input_in_tfidf = None #These last 3 need to be changed if we determine they are necessary options
         self.output_labeled_sentences = None
         self.use_kmeans = None
 
@@ -460,7 +460,7 @@ class returnObject():
 
 ## create a return object and append everything that we want to return throughout execution.
     
-def main(inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, windowSize, goldStandard , threshold , dimensions , scatter_plot, umap_neighbors , distmetric): #fileList contains the contents of the files, but not metadata
+def main(inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, windowSize, goldStandard, threshold, dimensions, scatter_plot , umap_neighbors, distmetric, include_input_in_tfidf, use_kmeans, output_labeled_sentences): #fileList contains the contents of the files, but not metadata
 
     print("DIMENSIONS")
     print(dimensions)
@@ -487,7 +487,7 @@ def main(inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, 
     # parser.add_argument('--use_kmeans', help='Specify if you want Kmeans to be run as the clustering algorithm. You will be asked to input the number of clusters dynamically after elbow plot generation. The default clustering algorithm is hierarchical agglomerative clustering. By using Kmeans, the distance metric is required to be Euclidean Distance, and any other distance metric specification will be ignored.', required=False, action="store_true")
         
         #Pass in blank corpus if you dont watnt o add anything to the tfidf
-    args = Args(inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, windowSize, goldStandard, threshold, dimensions, scatter_plot, umap_neighbors, distmetric)
+    args = Args(inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, windowSize, goldStandard, threshold, dimensions, scatter_plot , umap_neighbors, distmetric, include_input_in_tfidf, use_kmeans, output_labeled_sentences)
 
     print("ARGS")
     print(args)
