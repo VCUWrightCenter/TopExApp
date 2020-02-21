@@ -440,6 +440,10 @@ class Left_Sidebar extends Component {
 
             var response = await this.runScript(formData, scriptArgs)
 
+            if(response == null){
+                return;
+            }
+
             this.sendGraphData(response)
 
             document.getElementById('submitButton').disabled = false;
@@ -490,11 +494,18 @@ class Left_Sidebar extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'multipart/form-data'
             }
+        }).then((response) => {
+            const data = response.data
+            return data
+        }).catch((err) => {
+            console.error(err.message)
+            alert(err);
+            document.getElementById('submitButton').disabled = false;
         })
 
-        const data = response.data
+        
+        return response == null ? null:response
 
-        return await data
     }
 
 
