@@ -26,3 +26,4 @@
 /web/npm-debug.log*
 /web/yarn-debug.log*
 /web/yarn-error.log*
+Api/__pycache__/discover_topics_UMAP_Kmeans.cpython-37.pyc
