@@ -371,14 +371,33 @@ class Left_Sidebar extends Component {
 
     exportData(){
         if (this.state.graphData == null){
+            console.log(this.state.graphData)
             alert('No data to export')
         }
         else{
             console.log(this.state.graphData)
+            const element = document.createElement("a");
+            const file = new Blob([JSON.stringify(this.state.graphData)], {type: 'text/plain'});
+            element.href = URL.createObjectURL(file);
+            element.download = "export.txt";
+            document.body.appendChild(element); // Required for this to work in FireFox
+            element.click();
         }
     }
 
-    importData(){
+    async importData(e){
+        e.preventDefault()
+
+        let input = document.getElementById("importFileInput")
+
+        let file = input.files[0]
+
+        let fileContent = await this.getFileContents(file)
+        
+        this.sendGraphData(JSON.parse(fileContent))
+        
+        console.log(fileContent)
+
         
     }
 
@@ -402,7 +421,13 @@ class Left_Sidebar extends Component {
                     <input type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
                     <button id="submitButton" className="submitButton"> Run </button>
                 </form>
-                <button onClick={(e) => this.importData()}>Import</button>
+                <br/>
+                <form>
+                    <input id='importFileInput' type = "file" onSubmit />
+                    <button type='submit' onClick={(e) => this.importData(e)}>Import</button>
+                </form>
+
+                <br/>
                 <button onClick = {(e) => this.exportData()}>Export</button>
             </div>
         </div>)
@@ -460,6 +485,7 @@ class Left_Sidebar extends Component {
                 return;
             }
 
+            this.setState({graphData: response})
 
             this.sendGraphData(response)
 

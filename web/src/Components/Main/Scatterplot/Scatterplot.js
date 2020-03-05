@@ -49,9 +49,12 @@ class Scatterplot extends Component {
     reformatJSON() {
         if (this.state.pre_process_data != this.props.data) {
 
+            
             let completeObjectsArray = []
             //Begin data reformatting
             var APIReturnObject = this.convertToJson(this.props.data)
+            console.log("APIRETUIRN")
+            console.log(APIReturnObject)
             //console.log(APIReturnObject)
             var raw_sentences = APIReturnObject.raw_sent
             var main_cluster_topics = APIReturnObject.main_cluster_topics
