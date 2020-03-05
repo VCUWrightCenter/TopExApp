@@ -3,6 +3,8 @@ import * as d3 from "d3";
 
 class Scatterplot extends Component {
 
+   
+
 
     constructor(props) {
         super(props);
@@ -180,19 +182,41 @@ class Scatterplot extends Component {
         svg.append("g")
             .call(d3.axisLeft(y));
 
-        //Add dots
-        svg.append('g')
-            .selectAll("dot")
-            .data(data)
-            .enter()
-            .append("circle")
-            .attr("cx", function (d) { return x(d.x) })
-            .attr("cy", function (d) { return y(d.y) })
-            .attr("r", 3)
+         //Add dots
+         svg.append('g')
+         .selectAll("dot")
+         .data(data)
+         .enter()
+         .append("circle")
+         .attr("cx", function (d) { return x(d.x) }) //Plotting x value
+         .attr("cy", function (d) { return y(d.y) }) //Plotting y value
+         .attr("r", 3)
+         
+         .on('mouseover', function(d, i) {
+            console.log("mouseover on", this);
+            d3.select(this)
+              .transition()
+              .duration(100)
+              .attr('r', 10)
+              .attr('fill', 'gold');
+          })
+          .on('mouseout', function(d, i) {
+            console.log("mouseout", this);
+            d3.select(this)
+              .transition()
+              .duration(100)
+              .attr('r', 3)
+              .attr('fill', 'black');
+          })
 
-        document.getElementById('dfSelectContainer').hidden = false
+           
+           //source: 
+           //http://jonathansoma.com/tutorials/d3/clicking-and-hovering/ 
 
-    }
+     document.getElementById('dfSelectContainer').hidden = false
+
+ }
+    
 
     render() {
         return (
