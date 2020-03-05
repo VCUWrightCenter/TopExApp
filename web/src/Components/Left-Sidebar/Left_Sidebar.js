@@ -15,7 +15,8 @@ class Left_Sidebar extends Component {
         super(props);
         this.state = {
             fileList: [],
-            leftTabs: null
+            leftTabs: null,
+            graphData: null
         };
 
     }
@@ -330,7 +331,7 @@ class Left_Sidebar extends Component {
         console.log(typeof (DistanceMetric))
         console.log(this.state.DistanceMetric)
         let args = {
-            'tfidfcorpus': tfidfcorpus,//This caused some issues. Need clarification
+            'tfidfcorpus': tfidfcorpus,
             'wordVectorType': wordVectorType,
             'w2vBinFile': w2vBinFile,
             'prefix': prefix,
@@ -368,6 +369,19 @@ class Left_Sidebar extends Component {
     }
 
 
+    exportData(){
+        if (this.state.graphData == null){
+            alert('No data to export')
+        }
+        else{
+            console.log(this.state.graphData)
+        }
+    }
+
+    importData(){
+        
+    }
+
 
     //Responsible for generating the jsx in the file input tab
     generateFileInput() {
@@ -388,6 +402,8 @@ class Left_Sidebar extends Component {
                     <input type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
                     <button id="submitButton" className="submitButton"> Run </button>
                 </form>
+                <button onClick={(e) => this.importData()}>Import</button>
+                <button onClick = {(e) => this.exportData()}>Export</button>
             </div>
         </div>)
     }
@@ -443,6 +459,7 @@ class Left_Sidebar extends Component {
             if(response == null){
                 return;
             }
+
 
             this.sendGraphData(response)
 
