@@ -8,25 +8,26 @@ export default class Main extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            panes: null
+            panes: null,
+            graphData: null
         }
     }
 
     componentDidUpdate() {
-        //console.log("MAIN UPDATED WITH PROPS = ")
+        //console.log("MAIN UPDATED WITH PROPS")
         let panes = [
-            { menuItem: 'Tab 1', pane: {key: 'pane1', content: <Scatterplot data = {this.props.graphData}/>}},
-            { menuItem: 'Tab 2', pane: 'tab 2 content'},
-            { menuItem: 'Tab 3', pane: 'tab 3 content'},
+            { menuItem: 'Tab 1', pane: { key: 'pane1', content: <Scatterplot data={this.props.graphData} /> } },
+            { menuItem: 'Tab 2', pane: 'tab 2 content' },
+            { menuItem: 'Tab 3', pane: 'tab 3 content' },
         ]
 
-        if (this.state.panes == null) {
-            this.setState({
-                panes: panes
-            })
-        }
+    if(this.props.graphData != this.state.graphData)
+        this.setState({
+            panes: panes,
+            graphData: this.props.graphData
+        })
 
-        document.getElementById('tabs').hidden=false;
+        document.getElementById('tabs').hidden = false;
     }
 
 

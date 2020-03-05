@@ -9,19 +9,22 @@ import Main from '../Main/Main'
 
 class App extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {}
   }
 
   getGraphData = (graphData) => {
+    //console.log("APP RECEIVED NEW APP DATA")
     let newState = this.state;
     newState = {
       graphData: graphData
     }
-    console.log("graphData:  " + graphData)
+    //console.log("graphData:  " + graphData)
+
 
     this.setState(newState)
+
   }
 
   render() {
@@ -29,7 +32,7 @@ class App extends Component {
       <div className='main-content'>
         <Header />
         <Right_Sidebar />
-        <Main graphData = {JSON.stringify(this.state.graphData)}/>
+        <Main graphData={JSON.stringify(this.state.graphData)} />
         <Left_Sidebar graphData={this.getGraphData.bind(this)} />
       </div>
     );

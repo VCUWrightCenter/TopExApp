@@ -3,6 +3,7 @@ from flask import request
 from datetime import datetime
 from discover_topics_UMAP_Kmeans import main as script
 import json
+import sys
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -41,10 +42,13 @@ def runScript():
             fileList.append(fileText)
         #print(fileList[0])
     #print(fileList)
-    #print(scriptArgs)
-    result = script(inputFile = fileList, tfidfcorpus = scriptArgs["tfidfcorpus"], scatter_plot = scriptArgs["scatter_plot"], threshold = int(scriptArgs["threshold"]))
+    print(scriptArgs)
+    try:
+        result = script(inputFile = fileList, w2vBinFile=scriptArgs["w2vBinFile"], outputdir=scriptArgs["outputdir"], tfidfcorpus = scriptArgs["tfidfcorpus"], scatter_plot = scriptArgs["scatter_plot"], threshold = int(scriptArgs["threshold"]), wordVectorType = scriptArgs["wordVectorType"], prefix=scriptArgs["prefix"], windowSize=scriptArgs["windowSize"], goldStandard=scriptArgs["goldStandard"], dimensions=scriptArgs["dimensions"], umap_neighbors=scriptArgs["umap_neighbors"], distmetric=scriptArgs["DistanceMetric"], include_input_in_tfidf=scriptArgs['include_input_in_tfidf'],output_labeled_sentences=scriptArgs['output_labeled_sentences'], use_kmeans=scriptArgs['use_kmeans']  )
+    except:
+        return ("Unexpected error: ", sys.exc_info()[0])
     #print(type(result))
-
-    return result
+    else:
+        return result
 
 app.run()

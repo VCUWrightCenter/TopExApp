@@ -389,8 +389,8 @@ def create_tfidf(documents1, documents2="none"):
     #         file = open(file_path, "r", encoding="utf-8")
     #         text = file.read()
     #         file_content.append(text)
-    print("FILE CONTENT")
-    print(file_content)
+    #print("FILE CONTENT")
+    #print(file_content)
 
     ### Pre-processing corpus
     my_docs = []
@@ -423,21 +423,21 @@ def create_tfidf(documents1, documents2="none"):
 
 
 class Args():
-    def __init__(self, inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "", outputdir = "./", prefix = "analysis", windowSize = 6, goldStandard = "", threshold = 0, dimensions = 2, scatter_plot ="umap", umap_neighbors =15, distmetric="cosine"):
-        self.i = inputFile
-        self.c = tfidfcorpus
-        self.v = wordVectorType     
-        self.b = w2vBinFile
-        self.o = outputdir
-        self.p = prefix
-        self.w = windowSize
-        self.g = goldStandard
-        self.t = threshold
-        self.d = dimensions
-        self.s = scatter_plot
-        self.u = umap_neighbors
-        self.m = distmetric
-        self.include_input_in_tfidf = None
+    def __init__(self, inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, windowSize, goldStandard, threshold, dimensions, scatter_plot , umap_neighbors, distmetric, include_input_in_tfidf, use_kmeans, output_labeled_sentences):
+        self.i = inputFile if inputFile is not None else None
+        self.c = tfidfcorpus if tfidfcorpus is not None else ""
+        self.v = wordVectorType if wordVectorType is not None else 'tfidf' 
+        self.b = w2vBinFile if w2vBinFile is not None else ""
+        self.o = outputdir if outputdir is not None else "./"
+        self.p = prefix if prefix is not None else "analysis"
+        self.w = int(windowSize) if windowSize is not None else 6
+        self.g = goldStandard if goldStandard is not None else ""
+        self.t = int(threshold) if threshold is not None else 0
+        self.d = int(dimensions) if dimensions is not None else 2
+        self.s = scatter_plot if scatter_plot is not None else "umap"
+        self.u = int(umap_neighbors) if umap_neighbors is not None else 15
+        self.m = distmetric if distmetric is not None else "cosine"
+        self.include_input_in_tfidf = None #These last 3 need to be changed if we determine they are necessary options
         self.output_labeled_sentences = None
         self.use_kmeans = None
 
@@ -460,8 +460,10 @@ class returnObject():
 
 ## create a return object and append everything that we want to return throughout execution.
     
-def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "", outputdir = "./", prefix = "analysis", windowSize = 6, goldStandard = "", threshold = 0, dimensions = 2, scatter_plot ="umap", umap_neighbors =15, distmetric="cosine"): #fileList contains the contents of the files, but not metadata
+def main(inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, windowSize, goldStandard, threshold, dimensions, scatter_plot , umap_neighbors, distmetric, include_input_in_tfidf, use_kmeans, output_labeled_sentences): #fileList contains the contents of the files, but not metadata
 
+    print("DIMENSIONS")
+    print(dimensions)
     finalObject = returnObject()
     ## Parse input arguments
     # parser = argparse.ArgumentParser(description='Parse a directory of files to identify top sentence phrases and cluster them to create topic clusters.')
@@ -485,7 +487,10 @@ def main(inputFile, tfidfcorpus = "", wordVectorType = 'tfidf', w2vBinFile = "",
     # parser.add_argument('--use_kmeans', help='Specify if you want Kmeans to be run as the clustering algorithm. You will be asked to input the number of clusters dynamically after elbow plot generation. The default clustering algorithm is hierarchical agglomerative clustering. By using Kmeans, the distance metric is required to be Euclidean Distance, and any other distance metric specification will be ignored.', required=False, action="store_true")
         
         #Pass in blank corpus if you dont watnt o add anything to the tfidf
-    args = Args(inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, windowSize, goldStandard, threshold, dimensions, scatter_plot, umap_neighbors, distmetric)
+    args = Args(inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, windowSize, goldStandard, threshold, dimensions, scatter_plot , umap_neighbors, distmetric, include_input_in_tfidf, use_kmeans, output_labeled_sentences)
+
+    print("ARGS")
+    print(args)
 
     ## args.i used to be "file_list.txt"
     ### import documents

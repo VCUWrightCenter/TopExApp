@@ -10,12 +10,14 @@ class Scatterplot extends Component {
         super(props);
         this.state = {
             dataframe_identifier: 0,
-            completeObjectsArray: null
+            completeObjectsArray: null,
+            pre_process_data: null
         }
     }
 
     //This is for the radio buttons
     componentDidUpdate(){
+        //console.log("Scatteplot update")
         this.drawChart(this.state.dataframe_identifier)
     }
     
@@ -47,12 +49,12 @@ class Scatterplot extends Component {
     //The complete object also contain a cluster identifier. Not sure what this could be used for yet, but most likely could be used to color code clusters, and add on cluster specific info later
 
     reformatJSON() {
-        if (this.state.completeObjectsArray == null) {
+        if (this.state.pre_process_data != this.props.data) {
 
             let completeObjectsArray = []
             //Begin data reformatting
             var APIReturnObject = this.convertToJson(this.props.data)
-            console.log(APIReturnObject)
+            //console.log(APIReturnObject)
             var raw_sentences = APIReturnObject.raw_sent
             var main_cluster_topics = APIReturnObject.main_cluster_topics
             // console.table(raw_sentences)
@@ -102,7 +104,7 @@ class Scatterplot extends Component {
                     tempObj["raw_sent"] = document[sentenceNumber]
                     completeObjects.push(tempObj)
 
-                    console.log(index)
+                    //console.log(index)
                     let clusterNumber;
                     if (index == 0) {
                         clusterNumber = tempObj.UMAP_cluster
@@ -130,8 +132,10 @@ class Scatterplot extends Component {
                 // return completeObjects
             }
             this.setState({
-                dataframe_identifier: 0,
-                completeObjectsArray: completeObjectsArray})
+                dataframe_identifier: this.state.dataframe_identifier,
+                completeObjectsArray: completeObjectsArray,
+                pre_process_data: this.props.data
+            })
             return completeObjectsArray;
         }
         else{
@@ -146,12 +150,12 @@ class Scatterplot extends Component {
         //console.log(this.convertToJson(this.props.data))
 
         let dataArray = this.reformatJSON()
-        console.log("This is the reformatted json that should contains the data for all 3 of the datafrmaes")
-        console.log(dataArray)
+        //console.log("This is the reformatted json that should contains the data for all 3 of the datafrmaes")
+        //console.log(dataArray)
         let data = dataArray[dataFrameNumber]
 
-        console.log("This is the data in drawChart that is used in d3")
-        console.log(data)
+        //console.log("This is the data in drawChart that is used in d3")
+        //console.log(data)
 
 
         var margin = { top: 10, right: 30, bottom: 30, left: 60 },
@@ -221,7 +225,7 @@ class Scatterplot extends Component {
     render() {
         return (
             <React.Fragment>
-                <div id="node"></div>
+                <div className= 'graph' id="node"></div>
                 <div id="dfSelectContainer" hidden='true'>
                     <input type='radio' id='dataframe1Radio' name='dfSelect' value='1' onClick={() => this.setState({ dataframe_identifier: 0 })} defaultChecked />
                     <input type='radio' id='dataframe2Radio' name='dfSelect' value='2' onClick={() => this.setState({ dataframe_identifier: 1 })} />

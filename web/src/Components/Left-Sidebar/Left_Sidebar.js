@@ -15,7 +15,8 @@ class Left_Sidebar extends Component {
         super(props);
         this.state = {
             fileList: [],
-            leftTabs: null
+            leftTabs: null,
+            graphData: null
         };
 
     }
@@ -53,7 +54,8 @@ class Left_Sidebar extends Component {
         const wordVectorType = [{
             key: 'tfidf',
             text: 'tfidf',
-            value: 'tfidf'
+            value: 'tfidf',
+            dropDownID: "wordVectorType"
         },
         {
             key: 'svd',
@@ -80,7 +82,8 @@ class Left_Sidebar extends Component {
         const DistanceMetric = [{
             key: 'braycurtis',
             text: 'braycurtis',
-            value: 'braycurtis'
+            value: 'braycurtis',
+            dropDownID: 'DistanceMetric'
         },
         {
             key: 'canberra',
@@ -257,6 +260,7 @@ class Left_Sidebar extends Component {
                         fluid
                         clearable
                         selection
+                        id="distmet"
                         options={DistanceMetric}
                         onChange={this.getDropdownValue} />
                 </div>
@@ -283,52 +287,51 @@ class Left_Sidebar extends Component {
         )
     }
 
-    getFileContents(file){
+    getFileContents(file) {
         return new Promise((resolve, reject) => {
             let contents = ""
             const reader = new FileReader()
             reader.onloadend = function (e) {
-              contents = e.target.result
-              resolve(contents)
+                contents = e.target.result
+                resolve(contents)
             }
             reader.onerror = function (e) {
-              reject(e)
+                reject(e)
             }
             reader.readAsText(file)
-          })
+        })
     }
 
     async getScriptArgs() {
-        
+
         let temp = '';
         let tfidfcorpus = document.getElementById('tfidfcorpus').files
-        for (let i = 0; i < tfidfcorpus.length; i++){
+        for (let i = 0; i < tfidfcorpus.length; i++) {
             temp += await this.getFileContents(tfidfcorpus[i])
             temp += '<newdoc>' //add this so we can split on it in the create_tfidf funtion in script
         }
         tfidfcorpus = temp;
         temp = '';
         //console.log(tfidfcorpus);
-        let wordVectorType = this.state.wordVectorType;
-        let w2vBinFile = document.getElementById('w2vBinFile').value;
-        let prefix = document.getElementById('prefix').value;
-        let windowSize = document.getElementById('windowSize').value;
-        let goldStandard = document.getElementById('goldStandard').files[0];
-
-        if (goldStandard) {
-            goldStandard = this.getFileContents(goldStandard)
-        }
+        let wordVectorType = (this.state.wordVectorType == null) ? null : this.state.wordVectorType;
+        let w2vBinFile = document.getElementById('w2vBinFile').files[0] == null ? null : this.getFileContents(document.getElementById('w2vBinFile').files[0]); //This needs to be changed to a file input
+        let prefix = document.getElementById('prefix').value == '' ? null : document.getElementById('prefix').value;
+        let windowSize = document.getElementById('windowSize').value == '' ? null : document.getElementById('windowSize').value;
+        let goldStandard = document.getElementById('goldStandard').files[0] == null ? null : this.getFileContents(document.getElementById('goldStandard').files[0]);
 
         let threshold = document.getElementById('threshold').value;
-        let dimensions = document.getElementById('dimensions').value;
-        let umap_neighbors = document.getElementById('umap_neighbors').value;
-        let DistanceMetric = this.state.DistanceMetric;
-        let include_input_in_tfidf = document.getElementById('include_input_in_tfidf').value;
-        let output_labeled_sentences = document.getElementById('output_labeled_sentences').value;
-        let use_kmeans = document.getElementById('use_kmeans').value;
+        let dimensions = document.getElementById('dimensions').value == '' ? null : document.getElementById('dimensions').value;
+        let umap_neighbors = document.getElementById('umap_neighbors').value == '' ? null : document.getElementById('umap_neighbors').value;
+        let DistanceMetric = (this.state.DistanceMetric == null) ? null : this.state.DistanceMetric;
+        let include_input_in_tfidf = document.getElementById('include_input_in_tfidf').value == '' ? null : document.getElementById('include_input_in_tfidf').value;
+        let output_labeled_sentences = document.getElementById('output_labeled_sentences').value == '' ? null : document.getElementById('output_labeled_sentences').value;
+        let use_kmeans = document.getElementById('use_kmeans').value == '' ? null : document.getElementById('use_kmeans').value;
 
+        console.log("DISTANCE METRIC");
+        console.log(typeof (DistanceMetric))
+        console.log(this.state.DistanceMetric)
         let args = {
-            'tfidfcorpus': tfidfcorpus,//This caused some issues. Need clarification
+            'tfidfcorpus': tfidfcorpus,
             'wordVectorType': wordVectorType,
             'w2vBinFile': w2vBinFile,
             'prefix': prefix,
@@ -339,10 +342,10 @@ class Left_Sidebar extends Component {
             'umap_neighbors': umap_neighbors,
             'DistanceMetric': DistanceMetric,
             'include_input_in_tfidf': include_input_in_tfidf,
-            'include_input_in_tfidf': include_input_in_tfidf,
             'output_labeled_sentences': output_labeled_sentences,
             'use_kmeans': use_kmeans,
-            scatter_plot: 'all' //Dafault this to all?
+            scatter_plot: 'all',//Default values. Are these appropriate
+            outputdir: "./"
         }
 
         return args;
@@ -350,11 +353,34 @@ class Left_Sidebar extends Component {
     }
 
     getDropdownValue = (event, data) => {
-        this.setState({
-            [data.name]: data.value
-        })
+        let dataName = data.options[0].dropDownID
+
+
+        if (data.value == '') { //Weird cancelling bug
+            this.setState({
+                [dataName]: null
+            })
+        }
+        else {
+            this.setState({
+                [dataName]: data.value
+            });
+        }
     }
 
+
+    exportData(){
+        if (this.state.graphData == null){
+            alert('No data to export')
+        }
+        else{
+            console.log(this.state.graphData)
+        }
+    }
+
+    importData(){
+        
+    }
 
 
     //Responsible for generating the jsx in the file input tab
@@ -376,6 +402,8 @@ class Left_Sidebar extends Component {
                     <input type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
                     <button id="submitButton" className="submitButton"> Run </button>
                 </form>
+                <button onClick={(e) => this.importData()}>Import</button>
+                <button onClick = {(e) => this.exportData()}>Export</button>
             </div>
         </div>)
     }
@@ -405,8 +433,6 @@ class Left_Sidebar extends Component {
         let checkedFiles = this.getCheckedFiles()
 
         let formData = new FormData()
-
-        console.log(checkedFiles)
         for (var i = 0; i < files.length; i++) {
             if (checkedFiles.includes(files[i].name)) {
                 formData.append("File" + i, files[i])
@@ -422,15 +448,51 @@ class Left_Sidebar extends Component {
 
         let scriptArgs = await this.getScriptArgs()
 
-        console.log("This should show up right after scriptargs is done")
-        scriptArgs = JSON.stringify(scriptArgs)
+        //Perform form validation here
 
-        var response = await this.runScript(formData, scriptArgs)
+        if (this.validateArgs(scriptArgs, files)) {
 
-        this.sendGraphData(response)
+            scriptArgs = JSON.stringify(scriptArgs)
 
-        document.getElementById('submitButton').disabled = false;
+            var response = await this.runScript(formData, scriptArgs)
 
+            if(response == null){
+                return;
+            }
+
+
+            this.sendGraphData(response)
+
+            document.getElementById('submitButton').disabled = false;
+        }
+        else {
+            return
+        }
+
+    }
+
+    validateArgs(scriptArgs, files) {
+        if (scriptArgs.threshold == '') {
+            alert('Threshhold must be specified.');
+            document.getElementById('submitButton').disabled = false;
+            document.getElementById('threshold').focus()
+            return false;
+        }
+
+        if (files.length < 1) {
+            alert('Must provide at least one input file')
+            document.getElementById('submitButton').disabled = false;
+            return false;
+        }
+
+        if (document.getElementById('tfidfcorpus').files.length < 1) {
+            alert('Must provide at least one tfidfcorpus')
+            document.getElementById('submitButton').disabled = false;
+            return false;
+        }
+
+
+        return true;
     }
 
     //Responsible for sending the POST request which runs the script
@@ -449,12 +511,18 @@ class Left_Sidebar extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'multipart/form-data'
             }
+        }).then((response) => {
+            const data = response.data
+            return data
+        }).catch((err) => {
+            console.error(err.message)
+            alert(err);
+            document.getElementById('submitButton').disabled = false;
         })
 
-        const data = response.data
-        //console.log(data)
+        
+        return response == null ? null:response
 
-        return await data
     }
 
 
@@ -475,7 +543,8 @@ class Left_Sidebar extends Component {
 
         this.setState({
             fileList: modifiedFilelist
-        }, () => { console.log("state changed" + modifiedFilelist) }
+        }
+            // }, () => { console.log("state changed" + modifiedFilelist) }
         )
     }
 
