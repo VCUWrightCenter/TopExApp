@@ -9,16 +9,24 @@ export default class Main extends Component {
         super(props)
         this.state = {
             panes: null,
-            graphData: null
+            graphData: null,
+            pointData: null
         }
     }
+
+    getPointData = (pointData) => {
+        console.log("main point data" ,pointData);
+
+        this.props.pointData(pointData)
+    
+      }
 
     componentDidUpdate() {
         //console.log("MAIN UPDATED WITH PROPS")
         let panes = [
-            { menuItem: 'Tab 1', pane: { key: 'pane1', content: <Scatterplot data={this.props.graphData} /> } },
+            { menuItem: 'Tab 1', pane: { key: 'pane1', content: <Scatterplot data={this.props.graphData} pointData = {this.getPointData.bind(this)}/> }},
             { menuItem: 'Tab 2', pane: 'tab 2 content' },
-            { menuItem: 'Tab 3', pane: 'tab 3 content' },
+            { menuItem: 'Tab 3', pane: 'tab 3 content' }
         ]
 
     if(this.props.graphData != this.state.graphData)

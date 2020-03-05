@@ -27,12 +27,23 @@ class App extends Component {
 
   }
 
+
+  getPointData = (pointData) => {
+    console.log('app received point data',pointData)
+    let newState = this.state;
+    newState = {
+      pointData: pointData
+    }
+
+    this.setState(newState)
+  }
+
   render() {
     return (
       <div className='main-content'>
         <Header />
-        <Right_Sidebar />
-        <Main graphData={JSON.stringify(this.state.graphData)} />
+        <Right_Sidebar pointData = {this.state.pointData}/>
+        <Main graphData={JSON.stringify(this.state.graphData)} pointData = {this.getPointData.bind(this) }/>
         <Left_Sidebar graphData={this.getGraphData.bind(this)} />
       </div>
     );

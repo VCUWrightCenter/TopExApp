@@ -15,6 +15,11 @@ class Scatterplot extends Component {
         }
     }
 
+    sendPointData = (pointData) => {
+        console.log("sacatterplot sending ponit daat", pointData)
+        this.props.pointData(pointData)
+    }
+
     //This is for the radio buttons
     componentDidUpdate(){
         //console.log("Scatteplot update")
@@ -216,8 +221,9 @@ class Scatterplot extends Component {
               .attr('r', 3)
               .attr('fill', 'black');
           })
-          .on('click', function(d,i){
-            console.log("clicked", this)
+          .on('click', (d,i) => {
+            console.log("clicked", d)
+            this.sendPointData(JSON.stringify(d))
           })
 
            
