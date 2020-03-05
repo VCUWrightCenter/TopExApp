@@ -197,10 +197,11 @@ class Scatterplot extends Component {
          .append("circle")
          .attr("cx", function (d) { return x(d.x) }) //Plotting x value
          .attr("cy", function (d) { return y(d.y) }) //Plotting y value
+         .attr("test", "here")
          .attr("r", 3)
          
          .on('mouseover', function(d, i) {
-            console.log("mouseover on", this);
+            //console.log("mouseover on", this);
             d3.select(this)
               .transition()
               .duration(100)
@@ -208,12 +209,15 @@ class Scatterplot extends Component {
               .attr('fill', 'gold');
           })
           .on('mouseout', function(d, i) {
-            console.log("mouseout", this);
+            //console.log("mouseout", this);
             d3.select(this)
               .transition()
               .duration(100)
               .attr('r', 3)
               .attr('fill', 'black');
+          })
+          .on('click', function(d,i){
+            console.log("clicked", this)
           })
 
            
