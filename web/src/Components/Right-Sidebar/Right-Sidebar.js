@@ -17,6 +17,18 @@ class Right_Sidebar extends Component {
             let pointInfo = JSON.parse(this.props.pointData)
             //console.log(pointInfo)
 
+            let keys = Object.keys(pointInfo)
+            let cluster = ""
+            let clusterData = ""
+            for (let x in keys){
+                if (keys[x].includes("cluster")){
+                    console.log(keys[x])
+                    cluster = keys[x]
+                    clusterData = pointInfo[cluster]
+                    break;
+                }
+            }
+
 
             if (JSON.stringify(this.state.pointData) != JSON.stringify(pointInfo)) {
                 console.log(this.state.pointData)
@@ -26,7 +38,7 @@ class Right_Sidebar extends Component {
                     pointDisplay: (
                     <div>
                         <div>Label: {pointInfo.label}</div>
-                        <div>UMAP_Cluster: {pointInfo.UMAP_cluster}</div>
+                        <div>{cluster}: {clusterData}</div>
                         <div>Phrase: {pointInfo.phrase}</div>
                         <div>Raw Sentence: {pointInfo.raw_sent}</div>
                         <div>Cluster Info: {pointInfo.cluster_info}</div>
