@@ -327,9 +327,9 @@ class Left_Sidebar extends Component {
         let output_labeled_sentences = document.getElementById('output_labeled_sentences').value == '' ? null : document.getElementById('output_labeled_sentences').value;
         let use_kmeans = document.getElementById('use_kmeans').value == '' ? null : document.getElementById('use_kmeans').value;
 
-        console.log("DISTANCE METRIC");
-        console.log(typeof (DistanceMetric))
-        console.log(this.state.DistanceMetric)
+        // console.log("DISTANCE METRIC");
+        // console.log(typeof (DistanceMetric))
+        // console.log(this.state.DistanceMetric)
         let args = {
             'tfidfcorpus': tfidfcorpus,
             'wordVectorType': wordVectorType,
@@ -397,8 +397,21 @@ class Left_Sidebar extends Component {
         this.sendGraphData(JSON.parse(fileContent))
         
         console.log(fileContent)
+    }
 
-        
+    checkImportFile(e){
+        e.preventDefault()
+
+        let input = document.getElementById("importFileInput")
+
+        let file = input.files[0]
+
+        if (file != null) {
+            document.getElementById("importFileButton").hidden = false
+        }
+        else{
+            document.getElementById("importFileButton").hidden = true
+        }
     }
 
 
@@ -423,8 +436,8 @@ class Left_Sidebar extends Component {
                 </form>
                 <br/>
                 <form>
-                    <input id='importFileInput' type = "file" onSubmit />
-                    <button type='submit' onClick={(e) => this.importData(e)}>Import</button>
+                    <input id='importFileInput' type = "file" onSubmit onChange = {(e) => this.checkImportFile(e)}/>
+                    <button id='importFileButton' type='submit' hidden = "true" onClick={(e) => this.importData(e) }>Import</button>
                 </form>
 
                 <br/>

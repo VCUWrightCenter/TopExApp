@@ -1,3 +1,8 @@
-.graph{
-    background: grey;
+
+
+.gridContainer{
+    display: grid;
+}
+.gridItem{
+    grid-row-start: 1;
 }

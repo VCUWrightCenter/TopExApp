@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import * as d3 from "d3";
+import './Scatterplot.css'
+const saveSvgAsPng = require('save-svg-as-png')
 
 class Scatterplot extends Component {
 
-   
+
 
 
     constructor(props) {
@@ -21,21 +23,21 @@ class Scatterplot extends Component {
     }
 
     //This is for the radio buttons
-    componentDidUpdate(){
+    componentDidUpdate() {
         //console.log("Scatteplot update")
         this.drawChart(this.state.dataframe_identifier)
     }
-    
+
     //This is to get the graph to show upp in the tab
     componentDidMount() {
-        if(this.props.data){
+        if (this.props.data) {
             this.drawChart(this.state.dataframe_identifier);
         }
-        else{
+        else {
             console.log("No scatterplot data")
             console.log(this.state.completeObjectsArray)
         }
-        
+
     }
 
     convertToJson(jsonString) {
@@ -56,7 +58,7 @@ class Scatterplot extends Component {
     reformatJSON() {
         if (this.state.pre_process_data != this.props.data) {
 
-            
+
             let completeObjectsArray = []
             //Begin data reformatting
             var APIReturnObject = this.convertToJson(this.props.data)
@@ -146,11 +148,56 @@ class Scatterplot extends Component {
             })
             return completeObjectsArray;
         }
-        else{
+        else {
             console.log('data already processed')
             return this.state.completeObjectsArray;
         }
     }
+
+    exportSVGAsPNG() {
+        saveSvgAsPng.saveSvgAsPng(document.getElementById("scatterplotSVG"), "scatterplot.png")
+    }
+
+    createObjectFromItem(item) {
+
+        let keys = Object.keys(item)
+        let cluster = ""
+        let clusterData = ""
+        for (let x in keys) {
+            if (keys[x].includes("cluster")) {
+                //console.log(keys[x])
+                cluster = keys[x]
+                clusterData = item[cluster]
+                break;
+            }
+        }
+        let obj = {
+            x: item.x,
+            y: item.y,
+            [cluster]: clusterData,
+            cluster_info: item.cluster_info
+        }
+        return obj
+    }
+
+    exportDataForGraph() {
+        //Get the data we need to export
+        let data = this.state.completeObjectsArray[this.state.dataframe_identifier]
+        let exportData = data.map((obj) => this.createObjectFromItem(obj));
+        let exportDataStr = ''
+        for (let x in exportData) {
+            exportDataStr += JSON.stringify(exportData[x]) + '\n'
+        }
+        //console.log(exportDataList)
+
+        const element = document.createElement("a");
+        const file = new Blob([exportDataStr], { type: 'text/plain' });
+        element.href = URL.createObjectURL(file);
+        element.download = "ScatterPlotExport.txt";
+        document.body.appendChild(element); // Required for this to work in FireFox
+        element.click();
+    }
+
 
 
     drawChart(dataFrameNumber) {
@@ -161,6 +208,21 @@ class Scatterplot extends Component {
         //console.log("This is the reformatted json that should contains the data for all 3 of the datafrmaes")
         //console.log(dataArray)
         let data = dataArray[dataFrameNumber]
+
+        let xArr = data.map((obj) => obj.x)
+        let yArr = data.map((obj) => obj.y)
+        console.log("xarr", xArr)
+
+
+        let xMin = Math.min(...xArr) < 0 ? Math.min(...xArr) * 1.2 : Math.min(...xArr) * 0.8
+        let yMin = Math.min(...yArr) < 0 ? Math.min(...yArr) * 1.2 : Math.min(...yArr) * 0.8
+        let xMax = Math.max(...xArr) > 0 ? Math.max(...xArr) * 1.2 : Math.max(...xArr) * 0.8
+        let yMax = Math.max(...yArr) > 0 ? Math.max(...yArr) * 1.2 : Math.max(...yArr) * 0.8
+
+        console.log('xmin, xmax', xMin, xMax)
+        console.log('ymin, ymax', yMin, yMax)
+
+
 
         //console.log("This is the data in drawChart that is used in d3")
         //console.log(data)
@@ -175,13 +237,14 @@ class Scatterplot extends Component {
             .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
+            .attr("id", "scatterplotSVG")
             .append("g")
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
 
         // Add X axis
         var x = d3.scaleLinear()
-            .domain([-10, 10])
+            .domain([xMin, xMax])
             .range([0, width]);
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
@@ -189,61 +252,76 @@ class Scatterplot extends Component {
 
         // Add Y axis
         var y = d3.scaleLinear()
-            .domain([-10, 10])
+            .domain([yMin, yMax])
             .range([height, 0]);
         svg.append("g")
             .call(d3.axisLeft(y));
 
-         //Add dots
-         svg.append('g')
-         .selectAll("dot")
-         .data(data)
-         .enter()
-         .append("circle")
-         .attr("cx", function (d) { return x(d.x) }) //Plotting x value
-         .attr("cy", function (d) { return y(d.y) }) //Plotting y value
-         .attr("test", "here")
-         .attr("r", 3)
-         
-         .on('mouseover', function(d, i) {
-            //console.log("mouseover on", this);
-            d3.select(this)
-              .transition()
-              .duration(100)
-              .attr('r', 10)
-              .attr('fill', 'gold');
-          })
-          .on('mouseout', function(d, i) {
-            //console.log("mouseout", this);
-            d3.select(this)
-              .transition()
-              .duration(100)
-              .attr('r', 3)
-              .attr('fill', 'black');
-          })
-          .on('click', (d,i) => {
-            console.log("clicked", d)
-            this.sendPointData(JSON.stringify(d))
-          })
+        //Add dots
+        svg.append('g')
+            .selectAll("dot")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("cx", function (d) { return x(d.x) }) //Plotting x value
+            .attr("cy", function (d) { return y(d.y) }) //Plotting y value
+            .attr("test", "here")
+            .attr("r", 3)
+            .on('mouseover', function (d, i) {
+                //console.log("mouseover on", this);
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    //   .attr('r', 10)
+                    .attr('fill', 'gold');
+            })
+            .on('mouseout', function (d, i) {
+                //console.log("mouseout", this);
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    //.attr('r', 3)
+                    .attr('fill', 'black');
+            })
+            .on('click', (d, i) => {
+                console.log("clicked", d)
+                this.sendPointData(JSON.stringify(d))
+            })
 
-           
-           //source: 
-           //http://jonathansoma.com/tutorials/d3/clicking-and-hovering/ 
 
-     document.getElementById('dfSelectContainer').hidden = false
+        //source: 
+        //http://jonathansoma.com/tutorials/d3/clicking-and-hovering/ 
 
- }
-    
+        document.getElementById('dfSelectContainer').hidden = false
+
+    }
+
 
     render() {
         return (
             <React.Fragment>
-                <div className= 'graph' id="node"></div>
+                <div className='graph' id="node"></div>
                 <div id="dfSelectContainer" hidden='true'>
-                    <input type='radio' id='dataframe1Radio' name='dfSelect' value='1' onClick={() => this.setState({ dataframe_identifier: 0 })} defaultChecked />
-                    <input type='radio' id='dataframe2Radio' name='dfSelect' value='2' onClick={() => this.setState({ dataframe_identifier: 1 })} />
-                    <input type='radio' id='dataframe3Radio' name='dfSelect' value='3' onClick={() => this.setState({ dataframe_identifier: 2 })} />
+                    <div className="gridContainer">
+                        <div className='gridItem'>
+                            <label>UMAP</label>
+                            <input type='radio' id='dataframe1Radio' name='dfSelect' value='1' onClick={() => this.setState({ dataframe_identifier: 0 })} defaultChecked />
+                        </div>
+                        <div className='gridItem'>
+                            <label>MDS</label>
+                            <input type='radio' id='dataframe2Radio' name='dfSelect' value='2' onClick={() => this.setState({ dataframe_identifier: 1 })} />
+                        </div>
+                        <div className='gridItem'>
+                            <label>SVD</label>
+                            <input type='radio' id='dataframe3Radio' name='dfSelect' value='3' onClick={() => this.setState({ dataframe_identifier: 2 })} />
+                        </div>
+                    </div>
                 </div>
+                <div>
+                    <button onClick={(e) => this.exportSVGAsPNG()}>Export graph as png</button>
+                    <button onClick={() => this.exportDataForGraph()}>Export Graph Data</button>
+                </div>
+
             </React.Fragment>
         )
     }

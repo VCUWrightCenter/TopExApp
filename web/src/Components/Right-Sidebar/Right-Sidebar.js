@@ -31,17 +31,21 @@ class Right_Sidebar extends Component {
 
 
             if (JSON.stringify(this.state.pointData) != JSON.stringify(pointInfo)) {
-                console.log(this.state.pointData)
-                console.log(pointInfo)
+                let cluster_info = pointInfo.cluster_info.join(", ")
+                let phrase = pointInfo.phrase.join(", ")
                 this.setState({
                     pointData: pointInfo,
                     pointDisplay: (
                     <div>
                         <div>Label: {pointInfo.label}</div>
+                        <br/>
                         <div>{cluster}: {clusterData}</div>
-                        <div>Phrase: {pointInfo.phrase}</div>
+                        <br/>
+                        <div>Phrase: {phrase}</div>
+                        <br/>
                         <div>Raw Sentence: {pointInfo.raw_sent}</div>
-                        <div>Cluster Info: {pointInfo.cluster_info}</div>
+                        <br/>
+                        <div>Cluster Info: {cluster_info}</div>
                     </div>
                     )
                 })
