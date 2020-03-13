@@ -155,7 +155,21 @@ class Scatterplot extends Component {
     }
 
     exportSVGAsPNG() {
-        saveSvgAsPng.saveSvgAsPng(document.getElementById("scatterplotSVG"), "scatterplot.png")
+        let name = null
+        while (true) {
+            name = prompt("Enter name for export file", "export")
+            console.log("NAME", name)
+            if (name == null) {
+                return;
+            }
+            else if (name == "") {
+                alert("Name cannot be empty!")
+            }
+            else {
+                break;
+            }
+        }
+        saveSvgAsPng.saveSvgAsPng(document.getElementById("scatterplotSVG"), name + ".png")
     }
 
     createObjectFromItem(item) {
@@ -165,7 +179,7 @@ class Scatterplot extends Component {
         let clusterData = ""
         for (let x in keys) {
             if (keys[x].includes("cluster")) {
-                //console.log(keys[x])
+                //aconsole.log(keys[x])
                 cluster = keys[x]
                 clusterData = item[cluster]
                 break;
@@ -182,6 +196,20 @@ class Scatterplot extends Component {
 
     exportDataForGraph() {
         //Get the data we need to export
+        let name = null
+        while (true) {
+            name = prompt("Enter name for export file", "export")
+            console.log("NAME", name)
+            if (name == null) {
+                return;
+            }
+            else if (name == "") {
+                alert("Name cannot be empty!")
+            }
+            else {
+                break;
+            }
+        }
         let data = this.state.completeObjectsArray[this.state.dataframe_identifier]
         let exportData = data.map((obj) => this.createObjectFromItem(obj));
         let exportDataStr = ''
@@ -193,7 +221,7 @@ class Scatterplot extends Component {
         const element = document.createElement("a");
         const file = new Blob([exportDataStr], { type: 'text/plain' });
         element.href = URL.createObjectURL(file);
-        element.download = "ScatterPlotExport.txt";
+        element.download = name + ".txt";
         document.body.appendChild(element); // Required for this to work in FireFox
         element.click();
     }

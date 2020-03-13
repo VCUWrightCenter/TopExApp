@@ -369,23 +369,38 @@ class Left_Sidebar extends Component {
     }
 
 
-    exportData(){
-        if (this.state.graphData == null){
+    exportData() {
+        if (this.state.graphData == null) {
             console.log(this.state.graphData)
             alert('No data to export')
         }
-        else{
+        else {
+            let name = null
+            while (true) {
+                name = prompt("Enter name for export file", "export")
+                console.log("NAME", name)
+                if (name == null) { //cancel
+                    return;
+                }
+                else if (name == "") { //blank name
+                    alert("Name cannot be empty!")
+                }
+                else { // Valid name
+                    break;
+                }
+            }
             console.log(this.state.graphData)
             const element = document.createElement("a");
-            const file = new Blob([JSON.stringify(this.state.graphData)], {type: 'text/plain'});
+            const file = new Blob([JSON.stringify(this.state.graphData)], { type: 'text/plain' });
             element.href = URL.createObjectURL(file);
-            element.download = "export.txt";
+            element.download = name + ".txt";
             document.body.appendChild(element); // Required for this to work in FireFox
             element.click();
+            name = null;
         }
     }
 
-    async importData(e){
+    async importData(e) {
         e.preventDefault()
 
         let input = document.getElementById("importFileInput")
@@ -393,13 +408,13 @@ class Left_Sidebar extends Component {
         let file = input.files[0]
 
         let fileContent = await this.getFileContents(file)
-        
+
         this.sendGraphData(JSON.parse(fileContent))
-        
+
         console.log(fileContent)
     }
 
-    checkImportFile(e){
+    checkImportFile(e) {
         e.preventDefault()
 
         let input = document.getElementById("importFileInput")
@@ -409,7 +424,7 @@ class Left_Sidebar extends Component {
         if (file != null) {
             document.getElementById("importFileButton").hidden = false
         }
-        else{
+        else {
             document.getElementById("importFileButton").hidden = true
         }
     }
@@ -421,12 +436,12 @@ class Left_Sidebar extends Component {
             <div id="fileList" className='fileList'>
                 file list:
             {this.state.fileList.map((fileName) => {
-                    return (<div className='fileListEntry' key={fileName}>
-                        <label htmlFor={fileName} className='file-list-label' >{fileName}</label>
-                        <input id={fileName} type='checkBox' className='file-list-checkbox' value={fileName} defaultChecked />
-                    </div>
-                    )
-                })
+                return (<div className='fileListEntry' key={fileName}>
+                    <label htmlFor={fileName} className='file-list-label' >{fileName}</label>
+                    <input id={fileName} type='checkBox' className='file-list-checkbox' value={fileName} defaultChecked />
+                </div>
+                )
+            })
                 }
             </div>
             <div className='file-input'>
@@ -434,14 +449,14 @@ class Left_Sidebar extends Component {
                     <input type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
                     <button id="submitButton" className="submitButton"> Run </button>
                 </form>
-                <br/>
+                <br />
                 <form>
-                    <input id='importFileInput' type = "file" onSubmit onChange = {(e) => this.checkImportFile(e)}/>
-                    <button id='importFileButton' type='submit' hidden = "true" onClick={(e) => this.importData(e) }>Import</button>
+                    <input id='importFileInput' type="file" onSubmit onChange={(e) => this.checkImportFile(e)} />
+                    <button id='importFileButton' type='submit' hidden="true" onClick={(e) => this.importData(e)}>Import</button>
                 </form>
 
-                <br/>
-                <button onClick = {(e) => this.exportData()}>Export</button>
+                <br />
+                <button onClick={(e) => this.exportData()}>Export</button>
             </div>
         </div>)
     }
@@ -494,11 +509,11 @@ class Left_Sidebar extends Component {
 
             var response = await this.runScript(formData, scriptArgs)
 
-            if(response == null){
+            if (response == null) {
                 return;
             }
 
-            this.setState({graphData: response})
+            this.setState({ graphData: response })
 
             this.sendGraphData(response)
 
@@ -559,8 +574,8 @@ class Left_Sidebar extends Component {
             document.getElementById('submitButton').disabled = false;
         })
 
-        
-        return response == null ? null:response
+
+        return response == null ? null : response
 
     }
 
