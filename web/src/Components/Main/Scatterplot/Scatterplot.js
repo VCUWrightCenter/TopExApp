@@ -10,7 +10,8 @@ class Scatterplot extends Component {
         this.state = {
             dataframe_identifier: 0,
             completeObjectsArray: null,
-            pre_process_data: null
+            pre_process_data: null,
+            dimensions: null
         }
     }
 
@@ -31,9 +32,7 @@ class Scatterplot extends Component {
         }
     }
 
-
-
-    drawChart(dataFrameNumber) {
+    async drawChart(dataFrameNumber) {
 
         //console.log(this.convertToJson(this.props.data))
 
@@ -56,15 +55,39 @@ class Scatterplot extends Component {
         console.log('ymin, ymax', yMin, yMax)
 
 
-
         //console.log("This is the data in drawChart that is used in d3")
         //console.log(data)
 
+    
+        var margin = { top: 10, right: 30, bottom: 30, left: 60 }
+        let width = document.getElementById('mainWrapper').offsetWidth
+         - margin.left
+         - margin.right 
+         - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingRight) 
+         - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingLeft)
+
+        let height = document.getElementById('mainWrapper').offsetHeight - 
+        margin.top - 
+        margin.bottom - 
+        document.getElementsByClassName('ui segment')[0].offsetHeight 
+        - document.getElementById('exportButtons').offsetHeight 
+        - document.getElementById('dfSelectContainer').offsetHeight 
+        - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingTop) 
+        - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingBottom) 
+        - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).marginBottom)
+        - 6;
+
+        if (this.state.dimensions == null){
+            await this.setState({
+                dimensions: {width, height}
+            })
+        }
 
 
-        var margin = { top: 10, right: 30, bottom: 30, left: 60 },
-            width = 600,
-            height = 600;
+        console.log(this.state)
+        width = this.state.dimensions.width
+        height = this.state.dimensions.height
+        
         d3.select("svg").remove();
         // append the svg object to the body of the page
         var svg = d3.select("#node")
@@ -77,8 +100,6 @@ class Scatterplot extends Component {
             }))
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-
-
 
         // Add X axis
         var x = d3.scaleLinear()
@@ -138,13 +159,12 @@ class Scatterplot extends Component {
 
     }
 
-
     render() {
         return (
-            <React.Fragment>
+            <div id='graphContainer' className='graphContainer'>
                 <div className='graph' id="node"></div>
                 <div id="dfSelectContainer" hidden='true'>
-                    <div className="gridContainer">
+                    <div className="gridContainer" id='gridContainer'>
                         <div className='gridItem'>
                             <label>UMAP</label>
                             <input type='radio' id='dataframe1Radio' name='dfSelect' value='1' onClick={() => this.setState({ dataframe_identifier: 0 })} defaultChecked />
@@ -159,12 +179,12 @@ class Scatterplot extends Component {
                         </div>
                     </div>
                 </div>
-                <div>
+                <div id='exportButtons'>
                     <button onClick={(e) => util.exportSVGAsPNG(this)}>Export graph as png</button>
                     <button onClick={() => util.exportDataForGraph(this)}>Export Graph Data</button>
                 </div>
 
-            </React.Fragment>
+            </div>
         )
     }
 }
