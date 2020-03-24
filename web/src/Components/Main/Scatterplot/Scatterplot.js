@@ -61,6 +61,7 @@ class Scatterplot extends Component {
         //console.log(data)
 
 
+
         var margin = { top: 10, right: 30, bottom: 30, left: 60 },
             width = 600,
             height = 600;
@@ -71,9 +72,13 @@ class Scatterplot extends Component {
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .attr("id", "scatterplotSVG")
+            .call(d3.zoom().on("zoom", function () {
+                svg.attr("transform", d3.event.transform)
+            }))
             .append("g")
-            .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
+
 
         // Add X axis
         var x = d3.scaleLinear()
@@ -126,8 +131,6 @@ class Scatterplot extends Component {
                 //console.log("clicked", d)
                 util.sendPointData(JSON.stringify(d), this)
             })
-
-
         //source:
         //http://jonathansoma.com/tutorials/d3/clicking-and-hovering/
 
