@@ -5,9 +5,6 @@ const saveSvgAsPng = require('save-svg-as-png')
 
 class Scatterplot extends Component {
 
-
-
-
     constructor(props) {
         super(props);
         this.state = {
@@ -18,7 +15,7 @@ class Scatterplot extends Component {
     }
 
     sendPointData = (pointData) => {
-        console.log("sacatterplot sending ponit daat", pointData)
+        //console.log("sacatterplot sending ponit daat", pointData)
         this.props.pointData(pointData)
     }
 
@@ -51,13 +48,10 @@ class Scatterplot extends Component {
 
     //This method is responsible for formatting the JSON data we received into a format such that each object is "complete"
     //Complete = every object in the resulting array will hold all of the information for a single datapoint
-    //Now that we have the new return object, this method will need to be updated
     //The complete objects contain labels which correspond to the raw sentence which was used. We can use this info to add on the raw_sent to each complete object
-    //The complete object also contain a cluster identifier. Not sure what this could be used for yet, but most likely could be used to color code clusters, and add on cluster specific info later
 
     reformatJSON() {
         if (this.state.pre_process_data != this.props.data) {
-
 
             let completeObjectsArray = []
             //Begin data reformatting
@@ -67,8 +61,6 @@ class Scatterplot extends Component {
             //console.log(APIReturnObject)
             var raw_sentences = APIReturnObject.raw_sent
             var main_cluster_topics = APIReturnObject.main_cluster_topics
-            // console.table(raw_sentences)
-            // console.table(main_cluster_topics)
             var dataframeArray = []
             dataframeArray[0] = this.convertToJson(APIReturnObject.df1)
             dataframeArray[1] = this.convertToJson(APIReturnObject.df2)
@@ -226,6 +218,37 @@ class Scatterplot extends Component {
         element.click();
     }
 
+    clusterColor(clusterID) {
+        switch (clusterID % 4) {
+            case 0:
+                return "gold"
+            case 1:
+                return "black"
+
+            case 2:
+                return "green"
+
+            case 3:
+                return "blue"
+
+        }
+    }
+
+    getClusterColor(d) {
+        let keys = Object.keys(d)
+        let cluster = ""
+        let clusterData = ""
+        for (let x in keys) {
+            if (keys[x].includes("cluster")) {
+                console.log(keys[x])
+                cluster = keys[x]
+                clusterData = d[cluster]
+                break;
+            }
+        }
+        return this.clusterColor(clusterData)
+    }
+
 
 
     drawChart(dataFrameNumber) {
@@ -293,26 +316,32 @@ class Scatterplot extends Component {
             .append("circle")
             .attr("cx", function (d) { return x(d.x) }) //Plotting x value
             .attr("cy", function (d) { return y(d.y) }) //Plotting y value
-            .attr("test", "here")
             .attr("r", 3)
+            .attr("fill", (d, i) => {
+                return this.getClusterColor(d)
+            })
+            .attr("color", (d, i) => {
+                return this.getClusterColor(d)
+            })
             .on('mouseover', function (d, i) {
                 //console.log("mouseover on", this);
                 d3.select(this)
                     .transition()
                     .duration(100)
                     //   .attr('r', 10)
-                    .attr('fill', 'gold');
+                    .attr('fill', 'red');
             })
             .on('mouseout', function (d, i) {
                 //console.log("mouseout", this);
+                //console.log(this)
                 d3.select(this)
                     .transition()
                     .duration(100)
                     //.attr('r', 3)
-                    .attr('fill', 'black');
+                    .attr('fill', this.getAttribute("color"));
             })
             .on('click', (d, i) => {
-                console.log("clicked", d)
+                //console.log("clicked", d)
                 this.sendPointData(JSON.stringify(d))
             })
 
