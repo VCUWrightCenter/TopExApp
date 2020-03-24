@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from "d3";
 import './Scatterplot.css'
-import * as util from '../graphUtil.js' 
+import * as util from '../graphUtil.js'
 
 class Scatterplot extends Component {
 
@@ -29,6 +29,38 @@ class Scatterplot extends Component {
             console.log("No scatterplot data")
             console.log(this.state.completeObjectsArray)
         }
+    }
+
+
+    clusterColor(clusterID) {
+        switch (clusterID % 4) {
+            case 0:
+                return "gold"
+            case 1:
+                return "black"
+
+            case 2:
+                return "green"
+
+            case 3:
+                return "blue"
+
+        }
+    }
+
+    getClusterColor(d) {
+        let keys = Object.keys(d)
+        let cluster = ""
+        let clusterData = ""
+        for (let x in keys) {
+            if (keys[x].includes("cluster")) {
+                console.log(keys[x])
+                cluster = keys[x]
+                clusterData = d[cluster]
+                break;
+            }
+        }
+        return this.clusterColor(clusterData)
     }
 
 
@@ -97,32 +129,38 @@ class Scatterplot extends Component {
             .append("circle")
             .attr("cx", function (d) { return x(d.x) }) //Plotting x value
             .attr("cy", function (d) { return y(d.y) }) //Plotting y value
-            .attr("test", "here")
             .attr("r", 3)
+            .attr("fill", (d, i) => {
+                return this.getClusterColor(d)
+            })
+            .attr("color", (d, i) => {
+                return this.getClusterColor(d)
+            })
             .on('mouseover', function (d, i) {
                 //console.log("mouseover on", this);
                 d3.select(this)
                     .transition()
                     .duration(100)
                     //   .attr('r', 10)
-                    .attr('fill', 'gold');
+                    .attr('fill', 'red');
             })
             .on('mouseout', function (d, i) {
                 //console.log("mouseout", this);
+                //console.log(this)
                 d3.select(this)
                     .transition()
                     .duration(100)
                     //.attr('r', 3)
-                    .attr('fill', 'black');
+                    .attr('fill', this.getAttribute("color"));
             })
             .on('click', (d, i) => {
-                console.log("clicked", d)
+                //console.log("clicked", d)
                 this.sendPointData(JSON.stringify(d))
             })
 
 
-        //source: 
-        //http://jonathansoma.com/tutorials/d3/clicking-and-hovering/ 
+        //source:
+        //http://jonathansoma.com/tutorials/d3/clicking-and-hovering/
 
         document.getElementById('dfSelectContainer').hidden = false
 

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import './Left_Sidebar.css'
 import Axios from "axios";
-import { json } from "d3";
+import { json, treemapBinary } from "d3";
 import { Tab, Dropdown } from 'semantic-ui-react'
 import Scatterplot from "../Main/Scatterplot/Scatterplot";
 
@@ -406,12 +406,23 @@ class Left_Sidebar extends Component {
         let input = document.getElementById("importFileInput")
 
         let file = input.files[0]
+        let fileContent = await this.getFileContents(file);
 
-        let fileContent = await this.getFileContents(file)
 
-        this.sendGraphData(JSON.parse(fileContent))
+        if (fileContent != null && file.type == "text/plain") {
+            try {
+                this.sendGraphData(JSON.parse(fileContent))
+            }
+            catch (err) {
+                console.error(err)
+                alert(err);
+            }
 
-        console.log(fileContent)
+        }
+        else {
+            alert("Error parsing file. Must be a .txt file exported from previous run.")
+        }
+        //console.log(fileContent)
     }
 
     checkImportFile(e) {
