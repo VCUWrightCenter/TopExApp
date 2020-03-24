@@ -32,37 +32,6 @@ class Scatterplot extends Component {
     }
 
 
-    clusterColor(clusterID) {
-        switch (clusterID % 4) {
-            case 0:
-                return "gold"
-            case 1:
-                return "black"
-
-            case 2:
-                return "green"
-
-            case 3:
-                return "blue"
-
-        }
-    }
-
-    getClusterColor(d) {
-        let keys = Object.keys(d)
-        let cluster = ""
-        let clusterData = ""
-        for (let x in keys) {
-            if (keys[x].includes("cluster")) {
-                console.log(keys[x])
-                cluster = keys[x]
-                clusterData = d[cluster]
-                break;
-            }
-        }
-        return this.clusterColor(clusterData)
-    }
-
 
     drawChart(dataFrameNumber) {
 
@@ -131,10 +100,10 @@ class Scatterplot extends Component {
             .attr("cy", function (d) { return y(d.y) }) //Plotting y value
             .attr("r", 3)
             .attr("fill", (d, i) => {
-                return this.getClusterColor(d)
+                return util.getClusterColor(d)
             })
             .attr("color", (d, i) => {
-                return this.getClusterColor(d)
+                return util.getClusterColor(d)
             })
             .on('mouseover', function (d, i) {
                 //console.log("mouseover on", this);
@@ -155,7 +124,7 @@ class Scatterplot extends Component {
             })
             .on('click', (d, i) => {
                 //console.log("clicked", d)
-                this.sendPointData(JSON.stringify(d))
+                util.sendPointData(JSON.stringify(d), this)
             })
 
 

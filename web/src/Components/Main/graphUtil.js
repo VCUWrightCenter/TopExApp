@@ -1,9 +1,11 @@
+//This file holds all of the utility functions for all of the graphs
+//This allows for much easier creation of graphs since we do not have to worry about changing code in mulitple places
+
 
 const saveSvgAsPng = require('save-svg-as-png')
 
-export const sendPointData = (pointData) => {
-    console.log("sacatterplot sending ponit daat", pointData)
-    this.props.pointData(pointData)
+export const sendPointData = (pointData, getThis) => {
+    getThis.props.pointData(pointData)
 };
 
 export const convertToJson = (jsonString) => {
@@ -189,4 +191,35 @@ export const exportDataForGraph = (getThis) => {
     element.download = name + ".txt";
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
+}
+
+export const clusterColor = (clusterID) => {
+    switch (clusterID % 4) {
+        case 0:
+            return "gold"
+        case 1:
+            return "black"
+
+        case 2:
+            return "green"
+
+        case 3:
+            return "blue"
+
+    }
+}
+
+export const getClusterColor = (d) =>  {
+    let keys = Object.keys(d)
+    let cluster = ""
+    let clusterData = ""
+    for (let x in keys) {
+        if (keys[x].includes("cluster")) {
+            console.log(keys[x])
+            cluster = keys[x]
+            clusterData = d[cluster]
+            break;
+        }
+    }
+    return clusterColor(clusterData)
 }
