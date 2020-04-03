@@ -23,7 +23,7 @@ export const convertToJson = (jsonString) => {
 //The complete object also contain a cluster identifier. Not sure what this could be used for yet, but most likely could be used to color code clusters, and add on cluster specific info later
 
 export const reformatJSON = (getThis) => {
-    console.log(getThis)
+    console.log("REFORMAT JSON STATE",getThis)
     if (getThis.state.pre_process_data != getThis.props.data) {
 
         let completeObjectsArray = []
@@ -103,7 +103,7 @@ export const reformatJSON = (getThis) => {
                     return
                 }
             }
-            console.log(completeObjects)
+            //console.log(completeObjects)
 
             completeObjectsArray.push(completeObjects)
             // return completeObjects
@@ -121,7 +121,7 @@ export const reformatJSON = (getThis) => {
     }
 }
 
-export const exportSVGAsPNG = () => {
+export const exportSVGAsPNG = (id) => {
     let name = null
     while (true) {
         name = prompt("Enter name for export file", "export")
@@ -136,7 +136,7 @@ export const exportSVGAsPNG = () => {
             break;
         }
     }
-    saveSvgAsPng.saveSvgAsPng(document.getElementById("scatterplotSVG"), name + ".png")
+    saveSvgAsPng.saveSvgAsPng(document.getElementById(id), name + ".png")
 }
 
 export const createObjectFromItem = (item) => {
@@ -209,17 +209,72 @@ export const clusterColor = (clusterID) => {
     }
 }
 
-export const getClusterColor = (d) =>  {
-    let keys = Object.keys(d)
-    let cluster = ""
-    let clusterData = ""
+export const getClusterID = (obj) => {
+    let clusterID = ''
+    let keys = Object.keys(obj)
     for (let x in keys) {
         if (keys[x].includes("cluster")) {
             console.log(keys[x])
-            cluster = keys[x]
-            clusterData = d[cluster]
+            clusterID = keys[x]
             break;
         }
     }
-    return clusterColor(clusterData)
+    return clusterID
+}
+
+export const getClusterNum = (d) =>{
+    return d[getClusterID(d)]
+}
+
+export const getClusterColor = (d, max) =>  {
+
+    let clusterData = getClusterNum(d)
+    
+
+   //console.log("MAX",max)
+    let maxScaleVal = parseInt('DDDDDD', 16)
+    //console.log("max scale val", maxScaleVal)
+    let increment = Math.round(maxScaleVal/parseInt(max))
+    //console.log("Increment", increment)
+    //console.log("cluster", clusterData)
+    let color = maxScaleVal - (increment * parseInt(clusterData))
+    //console.log("Decided Color b4 convert", color)
+    color = color.toString(16)
+    //console.log("Decided Color", color)
+    return '#' + color
+
+    // return clusterColor(clusterData)
+}
+
+
+export const reformatJSONWordcloud = (rawData) =>{
+    let returnData = {}
+    for (let dataFrameNum in rawData){
+        let phraseTracker = {}
+        for (let objectIndex in rawData[dataFrameNum]){
+            let currentObject = rawData[dataFrameNum][objectIndex];
+            for (let phraseIndex in currentObject['phrase']){
+                let phrase = currentObject['phrase'][phraseIndex]
+                //console.log('phrase', phrase)
+                if (phrase in phraseTracker){
+                    phraseTracker[phrase] += 1
+                }
+                else{
+                    phraseTracker[phrase] = 1
+                }
+            }
+        }
+        returnData[dataFrameNum] = phraseTracker
+    }
+    // return returnData
+
+    let ret = {}
+    for (let x in returnData){
+        let arr = []
+        for (let phrase in returnData[x]){
+            arr.push({'phrase': phrase, 'value': returnData[x][phrase]})
+        }
+        ret[x] = arr
+    }
+    return ret
 }

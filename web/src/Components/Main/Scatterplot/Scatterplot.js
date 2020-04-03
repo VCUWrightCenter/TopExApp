@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from "d3";
 import './Scatterplot.css'
 import * as util from '../graphUtil.js'
+import { max } from 'd3';
 
 class Scatterplot extends Component {
 
@@ -41,9 +42,24 @@ class Scatterplot extends Component {
         //console.log(dataArray)
         let data = dataArray[dataFrameNumber]
 
+
+        //console.log("DATA", data)
+
+        let clusterID = util.getClusterID(data[0])
+        //console.log('clusterID',clusterID)
+
+        let max = 0;
+        data.forEach(element => {
+            if (max < element[clusterID]){
+                max = element[clusterID]
+            }
+        });
+        max++;
+        //console.log(max)
+
         let xArr = data.map((obj) => obj.x)
         let yArr = data.map((obj) => obj.y)
-        console.log("xarr", xArr)
+        //console.log("xarr", xArr)
 
 
         let xMin = Math.min(...xArr) < 0 ? Math.min(...xArr) * 1.2 : Math.min(...xArr) * 0.8
@@ -51,8 +67,8 @@ class Scatterplot extends Component {
         let xMax = Math.max(...xArr) > 0 ? Math.max(...xArr) * 1.2 : Math.max(...xArr) * 0.8
         let yMax = Math.max(...yArr) > 0 ? Math.max(...yArr) * 1.2 : Math.max(...yArr) * 0.8
 
-        console.log('xmin, xmax', xMin, xMax)
-        console.log('ymin, ymax', yMin, yMax)
+        //console.log('xmin, xmax', xMin, xMax)
+        //console.log('ymin, ymax', yMin, yMax)
 
 
         //console.log("This is the data in drawChart that is used in d3")
@@ -84,20 +100,20 @@ class Scatterplot extends Component {
         }
 
 
-        console.log(this.state)
+        //console.log(this.state)
         width = this.state.dimensions.width
         height = this.state.dimensions.height
         
-        d3.select("svg").remove();
+        d3.select("#scatterplotSVG").remove();
         // append the svg object to the body of the page
         var svg = d3.select("#node")
             .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .attr("id", "scatterplotSVG")
-            .call(d3.zoom().on("zoom", function () {
-                svg.attr("transform", d3.event.transform)
-            }))
+            // .call(d3.zoom().on("zoom", function () {
+            //     svg.attr("transform", d3.event.transform)
+            // }))
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
@@ -126,10 +142,10 @@ class Scatterplot extends Component {
             .attr("cy", function (d) { return y(d.y) }) //Plotting y value
             .attr("r", 3)
             .attr("fill", (d, i) => {
-                return util.getClusterColor(d)
+                return util.getClusterColor(d, max)
             })
             .attr("color", (d, i) => {
-                return util.getClusterColor(d)
+                return util.getClusterColor(d, max)
             })
             .on('mouseover', function (d, i) {
                 //console.log("mouseover on", this);
@@ -180,7 +196,7 @@ class Scatterplot extends Component {
                     </div>
                 </div>
                 <div id='exportButtons'>
-                    <button onClick={(e) => util.exportSVGAsPNG(this)}>Export graph as png</button>
+                    <button onClick={(e) => util.exportSVGAsPNG("scatterplotSVG")}>Export graph as png</button>
                     <button onClick={() => util.exportDataForGraph(this)}>Export Graph Data</button>
                 </div>
 

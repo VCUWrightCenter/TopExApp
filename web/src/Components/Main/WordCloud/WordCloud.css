@@ -1,0 +1,16 @@
+
+
+.gridContainer{
+    display: grid;
+}
+.gridItem{
+    grid-row-start: 1;
+}
+.graphContainer{
+    height: 100%;
+    width: 100%;
+}
+.graph{
+    height: 100%;
+    width: 100%;
+}

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import './Main.css'
 import Scatterplot from "./Scatterplot/Scatterplot.js"
+import WordCloud from "./WordCloud/WordCloud.js"
 import { Tab } from 'semantic-ui-react'
 
 export default class Main extends Component {
@@ -25,7 +26,7 @@ export default class Main extends Component {
         //console.log("MAIN UPDATED WITH PROPS")
         let panes = [
             { menuItem: 'Scatterplot', pane: { key: 'pane1', content: <Scatterplot data={this.props.graphData} pointData={this.getPointData.bind(this)} className='pane'/> } },
-            { menuItem: 'Tab 2', pane: 'tab 2 content' },
+            { menuItem: 'Word Cloud', pane: { key: 'pane2', content: <WordCloud data={this.props.graphData} pointData={this.getPointData.bind(this)} className='pane'/> }  },
             { menuItem: 'Tab 3', pane: 'tab 3 content' }
         ]
 
