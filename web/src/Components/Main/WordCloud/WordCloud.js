@@ -35,6 +35,8 @@ class WordCloud extends Component {
 
     async drawChart(dataFrameNumber) {
 
+        console.log(util.reformatJSON(this))
+
         let dataArray = util.reformatJSONWordcloud(util.reformatJSON(this))
 
         console.log("WORDCLOUD STATE", this.state)
@@ -118,7 +120,7 @@ class WordCloud extends Component {
                 return d.r;
             })
             .style("fill", function (d, i) {
-                console.log(d)
+                //console.log(d)
                 return 'black';
             });
 

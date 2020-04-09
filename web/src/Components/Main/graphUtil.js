@@ -23,7 +23,7 @@ export const convertToJson = (jsonString) => {
 //The complete object also contain a cluster identifier. Not sure what this could be used for yet, but most likely could be used to color code clusters, and add on cluster specific info later
 
 export const reformatJSON = (getThis) => {
-    console.log("REFORMAT JSON STATE",getThis)
+    //console.log("REFORMAT JSON STATE",getThis)
     if (getThis.state.pre_process_data != getThis.props.data) {
 
         let completeObjectsArray = []
@@ -222,19 +222,19 @@ export const getClusterID = (obj) => {
     return clusterID
 }
 
-export const getClusterNum = (d) =>{
+export const getClusterNum = (d) => {
     return d[getClusterID(d)]
 }
 
-export const getClusterColor = (d, max) =>  {
+export const getClusterColor = (d, max) => {
 
     let clusterData = getClusterNum(d)
-    
 
-   //console.log("MAX",max)
+
+    //console.log("MAX",max)
     let maxScaleVal = parseInt('DDDDDD', 16)
     //console.log("max scale val", maxScaleVal)
-    let increment = Math.round(maxScaleVal/parseInt(max))
+    let increment = Math.round(maxScaleVal / parseInt(max))
     //console.log("Increment", increment)
     //console.log("cluster", clusterData)
     let color = maxScaleVal - (increment * parseInt(clusterData))
@@ -247,19 +247,19 @@ export const getClusterColor = (d, max) =>  {
 }
 
 
-export const reformatJSONWordcloud = (rawData) =>{
+export const reformatJSONWordcloud = (rawData) => {
     let returnData = {}
-    for (let dataFrameNum in rawData){
+    for (let dataFrameNum in rawData) {
         let phraseTracker = {}
-        for (let objectIndex in rawData[dataFrameNum]){
+        for (let objectIndex in rawData[dataFrameNum]) {
             let currentObject = rawData[dataFrameNum][objectIndex];
-            for (let phraseIndex in currentObject['phrase']){
+            for (let phraseIndex in currentObject['phrase']) {
                 let phrase = currentObject['phrase'][phraseIndex]
                 //console.log('phrase', phrase)
-                if (phrase in phraseTracker){
+                if (phrase in phraseTracker) {
                     phraseTracker[phrase] += 1
                 }
-                else{
+                else {
                     phraseTracker[phrase] = 1
                 }
             }
@@ -269,10 +269,12 @@ export const reformatJSONWordcloud = (rawData) =>{
     // return returnData
 
     let ret = {}
-    for (let x in returnData){
+    for (let x in returnData) {
         let arr = []
-        for (let phrase in returnData[x]){
-            arr.push({'phrase': phrase, 'value': returnData[x][phrase]})
+        for (let phrase in returnData[x]) {
+            if (returnData[x][phrase] != 1) {
+                arr.push({ 'phrase': phrase, 'value': returnData[x][phrase] })
+            }
         }
         ret[x] = arr
     }
