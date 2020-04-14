@@ -4,6 +4,8 @@
 
 const saveSvgAsPng = require('save-svg-as-png')
 
+//Used to send data from child component to parent component
+//https://medium.com/@nipunadilhara/passing-data-between-different-components-using-react-c8e27319ee69
 export const sendPointData = (pointData, getThis) => {
     getThis.props.pointData(pointData)
 };
@@ -17,10 +19,11 @@ export const convertToJson = (jsonString) => {
 }
 
 //This method is responsible for formatting the JSON data we received into a format such that each object is "complete"
-//Complete = every object in the resulting array will hold all of the information for a single datapoint
+//Complete = every object in the resulting array will hold all of the information for a single datapoint. 
 //Now that we have the new return object, this method will need to be updated
 //The complete objects contain labels which correspond to the raw sentence which was used. We can use this info to add on the raw_sent to each complete object
 //The complete object also contain a cluster identifier. Not sure what this could be used for yet, but most likely could be used to color code clusters, and add on cluster specific info later
+//NOTE: This graph was intitially designed to format data for the scatterplot. However, more methods may need to be created when working with other types of graphs to correctly format the data. 
 
 export const reformatJSON = (getThis) => {
     //console.log("REFORMAT JSON STATE",getThis)
@@ -121,6 +124,7 @@ export const reformatJSON = (getThis) => {
     }
 }
 
+//This is what is called when you click the 'export as png' button under the graphs
 export const exportSVGAsPNG = (id) => {
     let name = null
     while (true) {
@@ -139,6 +143,7 @@ export const exportSVGAsPNG = (id) => {
     saveSvgAsPng.saveSvgAsPng(document.getElementById(id), name + ".png")
 }
 
+//Used in exportDataForGraph
 export const createObjectFromItem = (item) => {
 
     let keys = Object.keys(item)
@@ -161,6 +166,8 @@ export const createObjectFromItem = (item) => {
     return obj
 }
 
+//This is what is called when you click on the 'export graph data' button under each graph.
+//It essentially just exports a text file containing the data used to create the graph. 
 export const exportDataForGraph = (getThis) => {
     //Get the data we need to export
     let name = null
@@ -193,22 +200,7 @@ export const exportDataForGraph = (getThis) => {
     element.click();
 }
 
-export const clusterColor = (clusterID) => {
-    switch (clusterID % 4) {
-        case 0:
-            return "gold"
-        case 1:
-            return "black"
-
-        case 2:
-            return "green"
-
-        case 3:
-            return "blue"
-
-    }
-}
-
+//This is used to get key for the cluster type in each dataframe (UMAP, MDS, SVD)
 export const getClusterID = (obj) => {
     let clusterID = ''
     let keys = Object.keys(obj)
@@ -222,10 +214,13 @@ export const getClusterID = (obj) => {
     return clusterID
 }
 
+
+//This is used to get the specific cluster number of a data point
 export const getClusterNum = (d) => {
     return d[getClusterID(d)]
 }
 
+//Used in coloring graph. We are essentially just creating a color scale from 0 to the integer equivalent of DDDDDD
 export const getClusterColor = (d, max) => {
 
     let clusterData = getClusterNum(d)
@@ -245,7 +240,8 @@ export const getClusterColor = (d, max) => {
     // return clusterColor(clusterData)
 }
 
-
+//This is used to format the data for the wordcloud graph. 
+//NOTE: you must pass in data that has already been formatted by reformatJSON()
 export const reformatJSONWordcloud = (rawData) => {
     //console.log("raw data", rawData)
     let phraseTracker = {}
@@ -287,6 +283,8 @@ export const reformatJSONWordcloud = (rawData) => {
     return ret
 }
 
+
+//This is used to get the highest cluster number from a dataframe.
 export const getMax = (data) => {
     let max = 0;
     let clusterID = getClusterID(data[0])

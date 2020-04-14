@@ -38,7 +38,7 @@ class Right_Sidebar extends Component {
                 this.setState({
                     pointData: pointInfo,
                     pointDisplay: (
-                    <div className = 'text'>
+                    <div className = 'dataPointText'>
                         <div>Label: {pointInfo.label}</div>
                         <br/>
                         <div>{cluster}: {clusterData}</div>

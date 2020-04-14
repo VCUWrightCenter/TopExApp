@@ -29,7 +29,7 @@ export default class Main extends Component {
         let panes = [
             { menuItem: 'Scatterplot',  pane: { key: 'pane1', content: <Scatterplot data={this.props.graphData} pointData={this.getPointData.bind(this)}/> }, className:'fullWindow'},
             { menuItem: 'Word Cloud', pane: { key: 'pane2', content: <WordCloud data={this.props.graphData} pointData={this.getPointData.bind(this)}/>}, className:'fullWindow' },
-            { menuItem: 'Tab 3', pane: 'tab 3 content' }
+            { menuItem: 'Bubble graph', pane: 'Bubble graph placeholder' }
         ]
 
         if (this.props.graphData != this.state.graphData)

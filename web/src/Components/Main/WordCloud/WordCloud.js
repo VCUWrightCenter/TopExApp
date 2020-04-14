@@ -17,7 +17,7 @@ class WordCloud extends Component {
         }
     }
 
-    //This is for the radio buttons
+    //This is so we can update the garph based on either radio buttons or dropdowns etc...
     componentDidUpdate() {
         //console.log("Scatteplot update")
         this.drawChart(this.state.cluster_identifier)
@@ -34,6 +34,8 @@ class WordCloud extends Component {
         }
     }
 
+
+    //Reponsible for drawing the graph. This is the only place where D3 should live. 
     async drawChart(clusterNumber) {
 
         let unprocessed = util.reformatJSON(this)
@@ -75,7 +77,7 @@ class WordCloud extends Component {
             - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingTop)
             - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingBottom)
             - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).marginBottom)
-            + 15;
+            - 30
 
         if (this.state.dimensions == null) {
             await this.setState({
@@ -177,6 +179,8 @@ class WordCloud extends Component {
                 options={this.state.dropDownOptions}
                 onChange={(e, data) => this.setState({cluster_identifier: data.value})}
                 defaultValue={this.state.dropDownOptions == null ? "" : this.state.dropDownOptions[0] }
+                className='dropDown'
+                
                 />
                 <div className='graph' id="WordCloudNode"></div>
                 <div id='exportButtons' className='exportButtons'>

@@ -7,7 +7,7 @@ import React, { Component } from "react";
 import './Left_Sidebar.css'
 import Axios from "axios";
 import { Tab, Dropdown } from 'semantic-ui-react'
-import { Input, Button } from 'semantic-ui-react'
+import { Input, Button, Header } from 'semantic-ui-react'
 
 
 class Left_Sidebar extends Component {
@@ -197,7 +197,15 @@ class Left_Sidebar extends Component {
         return (
             <div className='scriptArgsTab'>
 
-                <div>
+                <Header as='h3'> *Required Parameters </Header>
+                <div className = 'spacing'>
+                    <Button
+                        color='yellow'
+                        content='*TFIDF Corpus File Input'
+                        icon='file'
+                        onClick={() => document.getElementById('tfidfcorpus').click()}
+                        className='buttonText'
+                        labelPosition="left" />
                     {/* <label htmlFor='tfidfcorpuslabel'>tfidfcorpus</label> */}
                     {this.state.tfidfcorpusFiles.map((fileName) => {
                         return (
@@ -207,12 +215,6 @@ class Left_Sidebar extends Component {
                         )
                     })
                     }
-                    <Button
-                        color='yellow'
-                        content='TFIDF Corpus File Input'
-                        icon='file'
-                        onClick={() => document.getElementById('tfidfcorpus').click()}
-                        className='buttonText' />
                     < input hidden type='file' webkitdirectory="" mozdirectory="" multiple id='tfidfcorpus' onChange={(e) => {
                         let files = document.getElementById('tfidfcorpus').files
                         let fileNames = []
@@ -223,8 +225,21 @@ class Left_Sidebar extends Component {
                     }} />
                 </div>
 
+                <div className = 'spacing'>
+                    <Input
+                        type='number'
+                        placeholder='*Threshold'
+                        id='threshold'
+                    />
+                    {/* <label htmlFor='thresholdlabel'>threshold</label>
+                    <input type='number' id='threshold' /> */}
+                </div>
 
-                <div>
+                <hr style={{ color: 'black', border: 'solid', width: '100%', borderWidth: '0.5px' }} />
+
+                <Header as='h3' className='header3'> Optional Parameters </Header>
+
+                <div className = 'spacing'>
                     {/* <label>Word Vector Type </label> */}
                     <Dropdown placeholder='Select wordVectorType'
                         clearable
@@ -235,7 +250,16 @@ class Left_Sidebar extends Component {
                 </div>
 
 
-                <div>
+                <div className = 'spacing'>
+
+                    <Button
+                        color='yellow'
+                        content='w2vBinFile'
+                        icon='file'
+                        onClick={() => document.getElementById('w2vBinFile').click()}
+                        labelPosition="left"
+                        className='buttonText'
+                    />
                     {this.state.w2vBinFileFileName.map((fileName) => {
                         return (
                             <div className='fileListEntry' key={fileName}>
@@ -244,13 +268,6 @@ class Left_Sidebar extends Component {
                         )
                     })
                     }
-                    <Button
-                        color='yellow'
-                        content='w2vBinFile'
-                        icon='file'
-                        onClick={() => document.getElementById('w2vBinFile').click()}
-                        className='buttonText'
-                    />
                     <input hidden type='file' id='w2vBinFile' onChange={(e) => {
                         let files = document.getElementById('w2vBinFile').files
                         let fileNames = []
@@ -262,7 +279,7 @@ class Left_Sidebar extends Component {
                 </div>
 
 
-                <div>
+                <div className = 'spacing'>
                     <Input
                         placeholder='Prefix Label'
                         id='prefix'
@@ -272,7 +289,7 @@ class Left_Sidebar extends Component {
                 </div>
 
 
-                <div>
+                <div className = 'spacing'>
                     <Input
                         placeholder='Window Size'
                         id='windowSize'
@@ -282,7 +299,16 @@ class Left_Sidebar extends Component {
                 </div>
 
 
-                <div>
+                <div className = 'spacing'>
+
+                    <Button
+                        color='yellow'
+                        content='goldStandard'
+                        icon='file'
+                        onClick={() => document.getElementById('goldStandard').click()}
+                        className='buttonText'
+                        labelPosition="left"
+                    />
                     {this.state.GoldStandardFileName.map((fileName) => {
                         return (
                             <div className='fileListEntry' key={fileName}>
@@ -291,13 +317,6 @@ class Left_Sidebar extends Component {
                         )
                     })
                     }
-                    <Button
-                        color='yellow'
-                        content='goldStandard'
-                        icon='file'
-                        onClick={() => document.getElementById('goldStandard').click()}
-                        className='buttonText'
-                    />
                     <input hidden type='file' id='goldStandard' onChange={(e) => {
                         let files = document.getElementById('goldStandard').files
                         let fileNames = []
@@ -309,18 +328,10 @@ class Left_Sidebar extends Component {
                 </div>
 
 
-                <div>
-                    <Input
-                        type='number'
-                        placeholder='Threshold'
-                        id='threshold'
-                    />
-                    {/* <label htmlFor='thresholdlabel'>threshold</label>
-                    <input type='number' id='threshold' /> */}
-                </div>
 
 
-                <div>
+
+                <div className = 'spacing'>
                     <Input
                         type='number'
                         placeholder='Dimensions'
@@ -331,7 +342,7 @@ class Left_Sidebar extends Component {
                 </div>
 
 
-                <div>
+                <div className = 'spacing'>
                     <Input
                         type='number'
                         placeholder='Umap Neighbors'
@@ -342,7 +353,7 @@ class Left_Sidebar extends Component {
                 </div>
 
 
-                <div>
+                <div className = 'spacing'>
                     {/* <label>Distance metric </label> */}
                     <Dropdown placeholder='Select Distance metric'
                         fluid
@@ -354,7 +365,7 @@ class Left_Sidebar extends Component {
                 </div>
 
 
-                <div>
+                <div className = 'spacing'>
                     <Input
                         placeholder='include_input_in_tfidflabel'
                         id='include_input_in_tfidflabel'
@@ -364,7 +375,7 @@ class Left_Sidebar extends Component {
                 </div>
 
 
-                <div>
+                <div className = 'spacing'>
                     <Input
                         placeholder='output_labeled_sentences'
                         id='output_labeled_sentences'
@@ -374,7 +385,7 @@ class Left_Sidebar extends Component {
                 </div>
 
 
-                <div>
+                <div className = 'spacing'>
                     <Input
                         placeholder='use_kmeanslabel'
                         id='use_kmeanslabel'
