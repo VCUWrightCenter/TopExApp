@@ -2,15 +2,23 @@
     text-align: center;
     grid-area: main;
     border:solid;
+    border-width: 2px;
+    border-left: 0px;
+    border-right: 0px;
     height: 100%;
     width: 100%
 }
 
 .main{
     width: 100%;
+    height: 100%
 }
 
-.pane{
+.borderless{
+    border: 0px;
+}
+
+.fullWindow{
     height: 100%;
-    width: 100%;
+    width: 100%
 }

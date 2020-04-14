@@ -2,30 +2,31 @@ import React, { Component } from 'react';
 import * as d3 from "d3";
 import './WordCloud.css'
 import * as util from '../graphUtil.js'
-import { max } from 'd3';
+import { Button, Dropdown } from 'semantic-ui-react'
 
 class WordCloud extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            dataframe_identifier: 0,
+            cluster_identifier: 0,
             completeObjectsArray: null,
             pre_process_data: null,
-            dimensions: null
+            dimensions: null,
+            dropDownOptions: null
         }
     }
 
     //This is for the radio buttons
-    // componentDidUpdate() {
-    //     //console.log("Scatteplot update")
-    //     this.drawChart(this.state.dataframe_identifier)
-    // }
+    componentDidUpdate() {
+        //console.log("Scatteplot update")
+        this.drawChart(this.state.cluster_identifier)
+    }
 
     // This is to get the graph to show upp in the tab
     componentDidMount() {
         if (this.props.data) {
-            this.drawChart(this.state.dataframe_identifier);
+            this.drawChart(this.state.cluster_identifier);
         }
         else {
             console.log("No WordCloud data")
@@ -33,17 +34,30 @@ class WordCloud extends Component {
         }
     }
 
-    async drawChart(dataFrameNumber) {
+    async drawChart(clusterNumber) {
 
-        console.log(util.reformatJSON(this))
+        let unprocessed = util.reformatJSON(this)
 
-        let dataArray = util.reformatJSONWordcloud(util.reformatJSON(this))
+        let dataArray = util.reformatJSONWordcloud(unprocessed)
 
-        console.log("WORDCLOUD STATE", this.state)
+        let data = { "children": dataArray[clusterNumber] }
 
-        let data = {"children": dataArray[dataFrameNumber]}
+        let max =  util.getMax(unprocessed[0])
 
-        console.log('data', dataArray)
+        if (this.state.dropDownOptions == null){
+            let arr = []
+            
+            console.log("MAX", max, dataArray[clusterNumber])
+            for (let i = 0; i < max; i++){
+                arr.push({key: i, text: "Cluster " + i, value: i })
+            }
+            this.setState({
+                dropDownOptions: arr
+            })
+        }
+        //console.log('Wordcloud state', this.state)
+
+        //console.log('data', dataArray)
 
         var margin = { top: 10, right: 30, bottom: 30, left: 60 }
         let width = document.getElementById('mainWrapper').offsetWidth
@@ -90,7 +104,7 @@ class WordCloud extends Component {
         // .attr("transform", "translate(" + margin.left + "," + margin.top + ")"
 
         var diameter = height;
-        var bubble = d3.pack({"children": data})
+        var bubble = d3.pack({ "children": data })
             .size([diameter, diameter])
             .padding(1.5);
 
@@ -120,8 +134,9 @@ class WordCloud extends Component {
                 return d.r;
             })
             .style("fill", function (d, i) {
-                //console.log(d)
-                return 'black';
+                console.log(d)
+                console.log(util.getClusterColor(d.data, max));
+                return util.getClusterColor(d.data, max);
             });
 
         node.append("text")
@@ -156,26 +171,24 @@ class WordCloud extends Component {
     render() {
         return (
             <div id='graphContainer' className='graphContainer'>
+                <Dropdown
+                selection
+                placeholder='Cluster Number'
+                options={this.state.dropDownOptions}
+                onChange={(e, data) => this.setState({cluster_identifier: data.value})}
+                defaultValue={this.state.dropDownOptions == null ? "" : this.state.dropDownOptions[0] }
+                />
                 <div className='graph' id="WordCloudNode"></div>
-                {/* <div id="dfSelectContainerWordCloud" hidden='true'>
-                    <div className="gridContainer" id='gridContainer'>
-                        <div className='gridItem'>
-                            <label>UMAP</label>
-                            <input type='radio' id='dataframe1Radio' name='dfSelect' value='1' onClick={() => this.setState({ dataframe_identifier: 0 })} defaultChecked />
-                        </div>
-                        <div className='gridItem'>
-                            <label>MDS</label>
-                            <input type='radio' id='dataframe2Radio' name='dfSelect' value='2' onClick={() => this.setState({ dataframe_identifier: 1 })} />
-                        </div>
-                        <div className='gridItem'>
-                            <label>SVD</label>
-                            <input type='radio' id='dataframe3Radio' name='dfSelect' value='3' onClick={() => this.setState({ dataframe_identifier: 2 })} />
-                        </div>
-                    </div>
-                </div> */}
-                <div id='exportButtons'>
-                    <button onClick={() => util.exportSVGAsPNG("WordCloudSVG")}>Export graph as png</button>
-                    <button onClick={() => util.exportDataForGraph(this)}>Export Graph Data</button>
+                <div id='exportButtons' className='exportButtons'>
+                    <Button
+                        onClick={(e) => util.exportSVGAsPNG("scatterplotSVG")}
+                        content="Export graph as png"
+                    />
+                    <Button
+                        onClick={() => util.exportDataForGraph(this)}
+                        content="Export graph data"
+                    />
+
                 </div>
 
             </div>

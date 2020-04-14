@@ -1,27 +1,50 @@
 .sidebar{
-    height: 100%;
     border: solid;
+    border-width: 2px;
+    border-left: 0px;
+    height: 100%;
     grid-area: left;
     position: relative;
-    overflow: auto;
-    min-width: 16.2vw;
-}
-.file-input{
-    vertical-align: bottom;
-    bottom: 0;
-    padding-bottom: 1vh;
-}
+    overflow-x: hidden;
+    overflow-wrap: normal;
 
-.fileListEntry{
-    margin-top: 10px;
 }
 
 .file-list-checkbox{
-    width: 20%;
-    float: right;
 }
+
+.fileListEntry{
+    width: 100%;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 
 .file-list-label{
     font-size: 1.1rem;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.pane{
+    border:none !important;
+    height: 96%
+}
+
+.buttonText{
+    color:black !important;
+}
+
+.fileList{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.scriptArgsTab{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }

@@ -1,3 +1,5 @@
+//This is where the data is diplayed when you click on a data point. 
+
 import React, { Component } from "react";
 import './Right-Sidebar.css'
 
@@ -36,7 +38,7 @@ class Right_Sidebar extends Component {
                 this.setState({
                     pointData: pointInfo,
                     pointDisplay: (
-                    <div>
+                    <div className = 'text'>
                         <div>Label: {pointInfo.label}</div>
                         <br/>
                         <div>{cluster}: {clusterData}</div>
@@ -51,7 +53,6 @@ class Right_Sidebar extends Component {
                 })
             }
         }
-
     }
 
 

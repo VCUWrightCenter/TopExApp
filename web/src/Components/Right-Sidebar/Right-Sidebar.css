@@ -1,9 +1,17 @@
 .right-sidebar{
     border: solid;
+    border-right: 0px;
+    border-width: 2px;
     grid-area: right;
     height: 100%
 }
 
 .a{
     font-size: 100px
+}
+
+.text{
+    font-size: 1.1rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 10px
 }

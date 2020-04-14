@@ -230,7 +230,6 @@ export const getClusterColor = (d, max) => {
 
     let clusterData = getClusterNum(d)
 
-
     //console.log("MAX",max)
     let maxScaleVal = parseInt('DDDDDD', 16)
     //console.log("max scale val", maxScaleVal)
@@ -248,35 +247,56 @@ export const getClusterColor = (d, max) => {
 
 
 export const reformatJSONWordcloud = (rawData) => {
-    let returnData = {}
-    for (let dataFrameNum in rawData) {
-        let phraseTracker = {}
-        for (let objectIndex in rawData[dataFrameNum]) {
-            let currentObject = rawData[dataFrameNum][objectIndex];
-            for (let phraseIndex in currentObject['phrase']) {
-                let phrase = currentObject['phrase'][phraseIndex]
-                //console.log('phrase', phrase)
-                if (phrase in phraseTracker) {
-                    phraseTracker[phrase] += 1
+    //console.log("raw data", rawData)
+    let phraseTracker = {}
+    for (let objectIndex in rawData[0]) {
+        let currentObject = rawData[0][objectIndex];
+        let clusterID = getClusterID(currentObject)
+        let clusterNum = currentObject[clusterID]
+        for (let phraseIndex in currentObject['phrase']) {
+            let phrase = currentObject['phrase'][phraseIndex]
+            //console.log('phrase', phrase)
+            if (clusterNum in phraseTracker) {
+                if (phrase in phraseTracker[clusterNum]) {
+                    phraseTracker[clusterNum][phrase] += 1
                 }
                 else {
-                    phraseTracker[phrase] = 1
+                    phraseTracker[clusterNum][phrase] = 1
                 }
             }
+            else {
+                let temp = {}
+                temp[phrase] = 1
+                phraseTracker[clusterNum] = temp
+            }
         }
-        returnData[dataFrameNum] = phraseTracker
     }
-    // return returnData
 
+    //console.log("return data", phraseTracker)
     let ret = {}
-    for (let x in returnData) {
+    for (let x in phraseTracker) {
         let arr = []
-        for (let phrase in returnData[x]) {
-            if (returnData[x][phrase] != 1) {
-                arr.push({ 'phrase': phrase, 'value': returnData[x][phrase] })
+        for (let phrase in phraseTracker[x]) {
+            if (phraseTracker[x][phrase] != 1) {
+                arr.push({ 'phrase': phrase, 'value': phraseTracker[x][phrase], "cluster": x })
             }
         }
         ret[x] = arr
     }
+    console.log("REt from reformat json Word cloud", ret)
     return ret
+}
+
+export const getMax = (data) => {
+    let max = 0;
+    let clusterID = getClusterID(data[0])
+    data.forEach(element => {
+        if (max < element[clusterID]) {
+            max = element[clusterID]
+        }
+    });
+    //increment since clusterID's start at 0
+    max++;
+
+    return max
 }

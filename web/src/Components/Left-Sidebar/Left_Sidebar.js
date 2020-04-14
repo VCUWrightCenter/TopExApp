@@ -1,10 +1,13 @@
+//This is the left sidebar component. It is EXTREMELY important to this web app.
+//This is where communication with the API happens. It is the gateway for data to enter and leave the web app. 
+//This is where files are uploaded to the web app, eitehr for import or processing. 
+//This is where the graph data is exported. NOTE: Data cannot be exported unless the user "processes" data. That is, unless you send and receive data from the API, you will not be able to export.
+
 import React, { Component } from "react";
 import './Left_Sidebar.css'
 import Axios from "axios";
-import { json, treemapBinary } from "d3";
 import { Tab, Dropdown } from 'semantic-ui-react'
-import Scatterplot from "../Main/Scatterplot/Scatterplot";
-
+import { Input, Button } from 'semantic-ui-react'
 
 
 class Left_Sidebar extends Component {
@@ -15,8 +18,13 @@ class Left_Sidebar extends Component {
         super(props);
         this.state = {
             fileList: [],
+            tfidfcorpusFiles: [],
             leftTabs: null,
-            graphData: null
+            graphData: null,
+            ImportButonDisabled: true,
+            ProcessingRunButtonDisabled: true,
+            GoldStandardFileName: [],
+            w2vBinFileFileName: []
         };
 
     }
@@ -27,14 +35,14 @@ class Left_Sidebar extends Component {
 
     render() {
         let panes = [
-            { menuItem: 'File input', pane: { key: 'pane1', content: this.generateFileInput() } },
-            { menuItem: 'Options', pane: { key: 'pane2', content: this.generateScriptArgsTab() } },
+            { menuItem: 'File input', pane: { key: 'pane1', content: this.generateFileInput(), className: "pane" } },
+            { menuItem: 'Options', pane: { key: 'pane2', content: this.generateScriptArgsTab(), className: "pane" } },
         ]
 
         return (
             <div className='left-wrapper'>
                 <div id='tabs' className='sidebar'>
-                    <Tab panes={panes} renderActiveOnly={false} />
+                    <Tab className='pane' menu={{ borderless: true, attached: true, tabular: true, fluid: true, widths: 2, }} panes={panes} renderActiveOnly={false} />
                 </div>
             </div>
         );
@@ -187,16 +195,37 @@ class Left_Sidebar extends Component {
         }
         ]
         return (
-            <div>
+            <div className='scriptArgsTab'>
 
                 <div>
-                    <label htmlFor='tfidfcorpuslabel'>tfidfcorpus</label>
-                    <input type='file' webkitdirectory="" mozdirectory="" multiple id='tfidfcorpus' />
+                    {/* <label htmlFor='tfidfcorpuslabel'>tfidfcorpus</label> */}
+                    {this.state.tfidfcorpusFiles.map((fileName) => {
+                        return (
+                            <div className='fileListEntry' key={fileName}>
+                                <label key={fileName} htmlFor={fileName} className='file-list-label' >{fileName}</label>
+                            </div>
+                        )
+                    })
+                    }
+                    <Button
+                        color='yellow'
+                        content='TFIDF Corpus File Input'
+                        icon='file'
+                        onClick={() => document.getElementById('tfidfcorpus').click()}
+                        className='buttonText' />
+                    < input hidden type='file' webkitdirectory="" mozdirectory="" multiple id='tfidfcorpus' onChange={(e) => {
+                        let files = document.getElementById('tfidfcorpus').files
+                        let fileNames = []
+                        Object.values(files).forEach((elem) => {
+                            fileNames.push(elem.name)
+                        })
+                        this.setState({ tfidfcorpusFiles: fileNames })
+                    }} />
                 </div>
 
 
                 <div>
-                    <label>Word Vector Type </label>
+                    {/* <label>Word Vector Type </label> */}
                     <Dropdown placeholder='Select wordVectorType'
                         clearable
                         fluid
@@ -207,55 +236,114 @@ class Left_Sidebar extends Component {
 
 
                 <div>
-                    <label htmlFor='w2vBinFilelabel'>w2vBinFile</label>
-                    <input type='file' id='w2vBinFile' />
+                    {this.state.w2vBinFileFileName.map((fileName) => {
+                        return (
+                            <div className='fileListEntry' key={fileName}>
+                                <label key={fileName} htmlFor={fileName} className='file-list-label' >{fileName}</label>
+                            </div>
+                        )
+                    })
+                    }
+                    <Button
+                        color='yellow'
+                        content='w2vBinFile'
+                        icon='file'
+                        onClick={() => document.getElementById('w2vBinFile').click()}
+                        className='buttonText'
+                    />
+                    <input hidden type='file' id='w2vBinFile' onChange={(e) => {
+                        let files = document.getElementById('w2vBinFile').files
+                        let fileNames = []
+                        Object.values(files).forEach((elem) => {
+                            fileNames.push(elem.name)
+                        })
+                        this.setState({ w2vBinFileFileName: fileNames })
+                    }} />
                 </div>
 
 
                 <div>
-                    <label htmlFor='prefixlabel'>prefix</label>
-                    <input type='text' id='prefix' />
+                    <Input
+                        placeholder='Prefix Label'
+                        id='prefix'
+                    />
+                    {/* <label htmlFor='prefixlabel'>prefix</label>
+                    <input type='text' id='prefix' /> */}
                 </div>
 
 
                 <div>
-                    <label htmlFor='windowSizelabel'>windowSize</label>
-                    <input type='text' id='windowSize' />
+                    <Input
+                        placeholder='Window Size'
+                        id='windowSize'
+                    />
+                    {/* <label htmlFor='windowSizelabel'>windowSize</label>
+                    <input type='text' id='windowSize' /> */}
                 </div>
 
 
                 <div>
-                    <label htmlFor='goldStandardlabel'>goldStandard</label>
-                    <input type='file' id='goldStandard' />
+                    {this.state.GoldStandardFileName.map((fileName) => {
+                        return (
+                            <div className='fileListEntry' key={fileName}>
+                                <label key={fileName} htmlFor={fileName} className='file-list-label' >{fileName}</label>
+                            </div>
+                        )
+                    })
+                    }
+                    <Button
+                        color='yellow'
+                        content='goldStandard'
+                        icon='file'
+                        onClick={() => document.getElementById('goldStandard').click()}
+                        className='buttonText'
+                    />
+                    <input hidden type='file' id='goldStandard' onChange={(e) => {
+                        let files = document.getElementById('goldStandard').files
+                        let fileNames = []
+                        Object.values(files).forEach((elem) => {
+                            fileNames.push(elem.name)
+                        })
+                        this.setState({ GoldStandardFileName: fileNames })
+                    }} />
                 </div>
 
 
                 <div>
-                    <label htmlFor='thresholdlabel'>threshold</label>
-                    <input type='number' id='threshold' />
+                    <Input
+                        type='number'
+                        placeholder='Threshold'
+                        id='threshold'
+                    />
+                    {/* <label htmlFor='thresholdlabel'>threshold</label>
+                    <input type='number' id='threshold' /> */}
                 </div>
 
 
                 <div>
-                    <label htmlFor='dimensionslabel'>dimensions</label>
-                    <input type='number' id='dimensions' />
+                    <Input
+                        type='number'
+                        placeholder='Dimensions'
+                        id='dimensions'
+                    />
+                    {/* <label htmlFor='dimensionslabel'>dimensions</label>
+                    <input type='number' id='dimensions' /> */}
                 </div>
 
 
                 <div>
-                    {/* <label htmlFor='scatter_plot'>scatter_plot</label>
-                <input type='text' id='scatter_plot' /> */}
+                    <Input
+                        type='number'
+                        placeholder='Umap Neighbors'
+                        id='umap_neighbors'
+                    />
+                    {/* <label htmlFor='umap_neighborslabel'>umap_neighbors</label>
+                    <input type='number' id='umap_neighbors' /> */}
                 </div>
 
 
                 <div>
-                    <label htmlFor='umap_neighborslabel'>umap_neighbors</label>
-                    <input type='number' id='umap_neighbors' />
-                </div>
-
-
-                <div>
-                    <label>Distance metric </label>
+                    {/* <label>Distance metric </label> */}
                     <Dropdown placeholder='Select Distance metric'
                         fluid
                         clearable
@@ -267,26 +355,39 @@ class Left_Sidebar extends Component {
 
 
                 <div>
-                    <label htmlFor='include_input_in_tfidflabel'>include_input_in_tfidf</label>
-                    <input type='text' id='include_input_in_tfidf' />
+                    <Input
+                        placeholder='include_input_in_tfidflabel'
+                        id='include_input_in_tfidflabel'
+                    />
+                    {/* <label htmlFor='include_input_in_tfidflabel'>include_input_in_tfidf</label>
+                    <input type='text' id='include_input_in_tfidf' /> */}
                 </div>
 
 
                 <div>
-                    <label htmlFor='output_labeled_sentenceslabel'>output_labeled_sentences</label>
-                    <input type='text' id='output_labeled_sentences' />
+                    <Input
+                        placeholder='output_labeled_sentences'
+                        id='output_labeled_sentences'
+                    />
+                    {/* <label htmlFor='output_labeled_sentenceslabel'>output_labeled_sentences</label>
+                    <input type='text' id='output_labeled_sentences' /> */}
                 </div>
 
 
                 <div>
-                    <label htmlFor='use_kmeanslabel'>use_kmeans</label>
-                    <input type='text' id='use_kmeans' />
+                    <Input
+                        placeholder='use_kmeanslabel'
+                        id='use_kmeanslabel'
+                    />
+                    {/* <label htmlFor='use_kmeanslabel'>use_kmeans</label>
+                    <input type='text' id='use_kmeans' /> */}
                 </div>
 
             </div >
         )
     }
 
+    //This is a utility function that is used to read in file contents
     getFileContents(file) {
         return new Promise((resolve, reject) => {
             let contents = ""
@@ -302,6 +403,7 @@ class Left_Sidebar extends Component {
         })
     }
 
+    //This function gets all values that are going to be passed to the API. 
     async getScriptArgs() {
 
         let temp = '';
@@ -344,7 +446,7 @@ class Left_Sidebar extends Component {
             'include_input_in_tfidf': include_input_in_tfidf,
             'output_labeled_sentences': output_labeled_sentences,
             'use_kmeans': use_kmeans,
-            scatter_plot: 'all',//Default values. Are these appropriate
+            scatter_plot: 'all',//Default values. Are these appropriate???
             outputdir: "./"
         }
 
@@ -352,6 +454,7 @@ class Left_Sidebar extends Component {
 
     }
 
+    //This function gets the data from the Semantic UI dropdowns in the options tab
     getDropdownValue = (event, data) => {
         let dataName = data.options[0].dropDownID
 
@@ -369,6 +472,7 @@ class Left_Sidebar extends Component {
     }
 
 
+    //This is the function that exports ALL of the graph data that is generated from the last call to the API
     exportData() {
         if (this.state.graphData == null) {
             console.log(this.state.graphData)
@@ -400,6 +504,7 @@ class Left_Sidebar extends Component {
         }
     }
 
+    // This is the function that is called when someone imports data. 
     async importData(e) {
         e.preventDefault()
 
@@ -425,6 +530,7 @@ class Left_Sidebar extends Component {
         //console.log(fileContent)
     }
 
+    //This is used to ensure the import file is not null
     checkImportFile(e) {
         e.preventDefault()
 
@@ -433,43 +539,85 @@ class Left_Sidebar extends Component {
         let file = input.files[0]
 
         if (file != null) {
-            document.getElementById("importFileButton").hidden = false
+            console.log("FILE NOT NULL")
+            this.setState({
+                ImportButonDisabled: false
+            })
         }
         else {
-            document.getElementById("importFileButton").hidden = true
+            console.log("FILE NILL")
+            this.setState({
+                ImportButonDisabled: true
+            })
         }
     }
 
 
     //Responsible for generating the jsx in the file input tab
     generateFileInput() {
-        return (<div>
-            <div id="fileList" className='fileList'>
-                file list:
-            {this.state.fileList.map((fileName) => {
-                return (<div className='fileListEntry' key={fileName}>
-                    <label htmlFor={fileName} className='file-list-label' >{fileName}</label>
-                    <input id={fileName} type='checkBox' className='file-list-checkbox' value={fileName} defaultChecked />
+        return (
+            <div>
+                <div className='file-input'>
+                    <Button.Group vertical>
+                        <Button
+                            color='yellow'
+                            loading={this.state.runningScript}
+                            onClick={() => { document.getElementById('fileProcessingInput').click(); }}
+                            icon="file"
+                            labelPosition="left"
+                            content='Upload files for processing'
+                            className='buttonText'
+                        />
+                        <Button
+                            color='black'
+                            loading={this.state.runningScript}
+                            onClick={(e) => { document.getElementById('submitButton').click() }}
+                            content='Run'
+                        />
+                        <div id="fileList" className='fileList'>
+                            {this.state.fileList.map((fileName) => {
+                                return (
+                                    <div className='fileListEntry' key={fileName}>
+                                        <label htmlFor={fileName} className='file-list-label' >{fileName}</label>
+                                        <input id={fileName} type='checkBox' className='file-list-checkbox' value={fileName} defaultChecked />
+                                    </div>
+                                )
+                            })
+                            }
+                        </div>
+                        <Button.Or />
+                        <Button
+                            color='yellow'
+                            onClick={() => document.getElementById('importFileInput').click()}
+                            icon="file"
+                            labelPosition="left"
+                            content='Upload files for import'
+                            className='buttonText'
+                        />
+                        <Button
+                            color='black'
+                            disabled={this.state.ImportButonDisabled}
+                            content="Import"
+                            onClick={(e) => this.importData(e)}
+                        />
+                        <Button.Or />
+                        <Button
+                            color='yellow'
+                            content="Export"
+                            onClick={(e) => this.exportData()}
+                            className='buttonText'
+                        />
+                    </Button.Group>
+                    <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
+                        <input hidden id='fileProcessingInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
+                        <button hidden id="submitButton" className="submitButton"> Run </button>
+                    </form>
+                    <form>
+                        <input id='importFileInput' type="file" hidden onChange={(e) => this.checkImportFile(e)} />
+                        <button id='importFileButton' type='submit' hidden onClick={(e) => this.importData(e)}>Import</button>
+                    </form>
                 </div>
-                )
-            })
-                }
-            </div>
-            <div className='file-input'>
-                <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
-                    <input type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
-                    <button id="submitButton" className="submitButton"> Run </button>
-                </form>
-                <br />
-                <form>
-                    <input id='importFileInput' type="file" onSubmit onChange={(e) => this.checkImportFile(e)} />
-                    <button id='importFileButton' type='submit' hidden="true" onClick={(e) => this.importData(e)}>Import</button>
-                </form>
-
-                <br />
-                <button onClick={(e) => this.exportData()}>Export</button>
-            </div>
-        </div>)
+            </div>)
     }
 
     //This method takes in the form data, sends it to the api,
@@ -480,6 +628,7 @@ class Left_Sidebar extends Component {
     async handleChange(event) {
 
         document.getElementById('submitButton').disabled = true;
+
 
         event.preventDefault()
 
@@ -507,14 +656,15 @@ class Left_Sidebar extends Component {
 
         }
 
-        //Need to change this so that it takes in the data from the script args tab
-        //let scriptArgs = { tfidfcorpus: '2019.03.12_SEED_TOPICS_AMY/FILELIST.txt', scatter_plot: "all", threshold: 8 }
 
         let scriptArgs = await this.getScriptArgs()
 
         //Perform form validation here
 
         if (this.validateArgs(scriptArgs, files)) {
+            this.setState({
+                runningScript: true
+            })
 
             scriptArgs = JSON.stringify(scriptArgs)
 
@@ -529,6 +679,9 @@ class Left_Sidebar extends Component {
             this.sendGraphData(response)
 
             document.getElementById('submitButton').disabled = false;
+            this.setState({
+                runningScript: false
+            })
         }
         else {
             return
@@ -536,7 +689,17 @@ class Left_Sidebar extends Component {
 
     }
 
+
+    //Used to validate data being passed to the API
     validateArgs(scriptArgs, files) {
+
+        if (files.length < 1) {
+            alert('Must provide at least one input file')
+            document.getElementById('submitButton').disabled = false;
+            return false;
+        }
+
+
         if (scriptArgs.threshold == '') {
             alert('Threshhold must be specified.');
             document.getElementById('submitButton').disabled = false;
@@ -544,11 +707,6 @@ class Left_Sidebar extends Component {
             return false;
         }
 
-        if (files.length < 1) {
-            alert('Must provide at least one input file')
-            document.getElementById('submitButton').disabled = false;
-            return false;
-        }
 
         if (document.getElementById('tfidfcorpus').files.length < 1) {
             alert('Must provide at least one tfidfcorpus')

@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import './Scatterplot.css'
 import * as util from '../graphUtil.js'
 import { max } from 'd3';
+import { Button } from 'semantic-ui-react'
 
 class Scatterplot extends Component {
 
@@ -33,6 +34,8 @@ class Scatterplot extends Component {
         }
     }
 
+
+    //Reponsible for drawing the graph. This is the only place where D3 should live. 
     async drawChart(dataFrameNumber) {
 
         //console.log(this.convertToJson(this.props.data))
@@ -48,18 +51,10 @@ class Scatterplot extends Component {
         let clusterID = util.getClusterID(data[0])
         //console.log('clusterID',clusterID)
 
-        let max = 0;
-        data.forEach(element => {
-            if (max < element[clusterID]){
-                max = element[clusterID]
-            }
-        });
-        max++;
-        //console.log(max)
+        let max = util.getMax(data)
 
         let xArr = data.map((obj) => obj.x)
         let yArr = data.map((obj) => obj.y)
-        //console.log("xarr", xArr)
 
 
         let xMin = Math.min(...xArr) < 0 ? Math.min(...xArr) * 1.2 : Math.min(...xArr) * 0.8
@@ -67,43 +62,34 @@ class Scatterplot extends Component {
         let xMax = Math.max(...xArr) > 0 ? Math.max(...xArr) * 1.2 : Math.max(...xArr) * 0.8
         let yMax = Math.max(...yArr) > 0 ? Math.max(...yArr) * 1.2 : Math.max(...yArr) * 0.8
 
-        //console.log('xmin, xmax', xMin, xMax)
-        //console.log('ymin, ymax', yMin, yMax)
-
-
-        //console.log("This is the data in drawChart that is used in d3")
-        //console.log(data)
-
-    
         var margin = { top: 10, right: 30, bottom: 30, left: 60 }
         let width = document.getElementById('mainWrapper').offsetWidth
-         - margin.left
-         - margin.right 
-         - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingRight) 
-         - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingLeft)
+            - margin.left
+            - margin.right
+            - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingRight)
+            - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingLeft)
 
-        let height = document.getElementById('mainWrapper').offsetHeight - 
-        margin.top - 
-        margin.bottom - 
-        document.getElementsByClassName('ui segment')[0].offsetHeight 
-        - document.getElementById('exportButtons').offsetHeight 
-        - document.getElementById('dfSelectContainer').offsetHeight 
-        - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingTop) 
-        - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingBottom) 
+
+        let height = document.getElementById('mainWrapper').offsetHeight -
+        margin.top -
+        margin.bottom -
+        document.getElementsByClassName('ui segment')[0].offsetHeight
+        - document.getElementById('exportButtons').offsetHeight
+        - document.getElementById('dfSelectContainer').offsetHeight
+        - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingTop)
+        - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingBottom)
         - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).marginBottom)
-        - 6;
+        ;
 
-        if (this.state.dimensions == null){
+        if (this.state.dimensions == null) {
             await this.setState({
-                dimensions: {width, height}
+                dimensions: { width, height }
             })
         }
 
-
-        //console.log(this.state)
         width = this.state.dimensions.width
         height = this.state.dimensions.height
-        
+
         d3.select("#scatterplotSVG").remove();
         // append the svg object to the body of the page
         var svg = d3.select("#node")
@@ -195,11 +181,18 @@ class Scatterplot extends Component {
                         </div>
                     </div>
                 </div>
-                <div id='exportButtons'>
-                    <button onClick={(e) => util.exportSVGAsPNG("scatterplotSVG")}>Export graph as png</button>
-                    <button onClick={() => util.exportDataForGraph(this)}>Export Graph Data</button>
+                <div id='exportButtons' className='exportButtons'>
+                    <Button
+                        onClick={(e) => util.exportSVGAsPNG("scatterplotSVG")}
+                        content="Export graph as png"
+                    />
+                    <Button
+                        onClick={() => util.exportDataForGraph(this)}
+                        content="Export graph data"
+                    />
+                    {/* <button onClick={(e) => util.exportSVGAsPNG("scatterplotSVG")}>Export graph as png</button>
+                    <button onClick={() => util.exportDataForGraph(this)}>Export Graph Data</button> */}
                 </div>
-
             </div>
         )
     }

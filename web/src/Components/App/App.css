@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  /* overflow: hidden; */
 }
 
 
@@ -22,4 +23,5 @@ html, body {
   display: grid;
   grid-template-columns: 1fr 4fr 1fr;
   grid-template-rows: 10% 90%;
+  overflow: hidden;
 }

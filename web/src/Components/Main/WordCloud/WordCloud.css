@@ -14,3 +14,8 @@
     height: 100%;
     width: 100%;
 }
+.exportButtons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}

@@ -1,3 +1,5 @@
+//This is the main component. It is a container for the graph components. 
+
 import React, { Component } from "react";
 import './Main.css'
 import Scatterplot from "./Scatterplot/Scatterplot.js"
@@ -25,8 +27,8 @@ export default class Main extends Component {
     componentDidUpdate() {
         //console.log("MAIN UPDATED WITH PROPS")
         let panes = [
-            { menuItem: 'Scatterplot', pane: { key: 'pane1', content: <Scatterplot data={this.props.graphData} pointData={this.getPointData.bind(this)} className='pane'/> } },
-            { menuItem: 'Word Cloud', pane: { key: 'pane2', content: <WordCloud data={this.props.graphData} pointData={this.getPointData.bind(this)} className='pane'/> }  },
+            { menuItem: 'Scatterplot',  pane: { key: 'pane1', content: <Scatterplot data={this.props.graphData} pointData={this.getPointData.bind(this)}/> }, className:'fullWindow'},
+            { menuItem: 'Word Cloud', pane: { key: 'pane2', content: <WordCloud data={this.props.graphData} pointData={this.getPointData.bind(this)}/>}, className:'fullWindow' },
             { menuItem: 'Tab 3', pane: 'tab 3 content' }
         ]
 
@@ -44,7 +46,7 @@ export default class Main extends Component {
         return (
             <div className='main-wrapper' id='mainWrapper'>
                 <div id='graphTabs' className='main' hidden='true'>
-                    <Tab panes={this.state.panes} renderActiveOnly={false} />
+                    <Tab className = 'fullWindow' menu = {{ fluid:true, widths:3,  attached: true , pointing: true , className: 'borderless'}} panes={this.state.panes} renderActiveOnly={false} />
                 </div>
             </div>
         );
