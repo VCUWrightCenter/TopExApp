@@ -185,7 +185,7 @@ class WordCloud extends Component {
                 <div className='graph' id="WordCloudNode"></div>
                 <div id='exportButtons' className='exportButtons'>
                     <Button
-                        onClick={(e) => util.exportSVGAsPNG("scatterplotSVG")}
+                        onClick={(e) => util.exportSVGAsPNG("WordCloudSVG")}
                         content="Export graph as png"
                     />
                     <Button

@@ -367,8 +367,8 @@ class Left_Sidebar extends Component {
 
                 <div className = 'spacing'>
                     <Input
-                        placeholder='include_input_in_tfidflabel'
-                        id='include_input_in_tfidflabel'
+                        placeholder='include_input_in_tfidf'
+                        id='include_input_in_tfidf'
                     />
                     {/* <label htmlFor='include_input_in_tfidflabel'>include_input_in_tfidf</label>
                     <input type='text' id='include_input_in_tfidf' /> */}
@@ -387,8 +387,8 @@ class Left_Sidebar extends Component {
 
                 <div className = 'spacing'>
                     <Input
-                        placeholder='use_kmeanslabel'
-                        id='use_kmeanslabel'
+                        placeholder='use_kmeans'
+                        id='use_kmeans'
                     />
                     {/* <label htmlFor='use_kmeanslabel'>use_kmeans</label>
                     <input type='text' id='use_kmeans' /> */}
