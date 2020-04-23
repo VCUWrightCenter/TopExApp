@@ -10,6 +10,7 @@ class Scatterplot extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            graphType: 'scatterplot',
             dataframe_identifier: 0,
             completeObjectsArray: null,
             pre_process_data: null,
@@ -79,7 +80,7 @@ class Scatterplot extends Component {
         - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingTop)
         - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingBottom)
         - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).marginBottom)
-        - 6;
+        ;
 
         if (this.state.dimensions == null) {
             await this.setState({

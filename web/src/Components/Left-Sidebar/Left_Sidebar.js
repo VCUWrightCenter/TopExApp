@@ -602,7 +602,7 @@ class Left_Sidebar extends Component {
                             onClick={() => document.getElementById('importFileInput').click()}
                             icon="file"
                             labelPosition="left"
-                            content='Upload files for import'
+                            content='Upload file for import'
                             className='buttonText'
                         />
                         <Button

@@ -9,11 +9,13 @@ class WordCloud extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            graphType: 'wordcloud',
             cluster_identifier: 0,
             completeObjectsArray: null,
             pre_process_data: null,
             dimensions: null,
-            dropDownOptions: null
+            dropDownOptions: null,
+            graphData: null,
         }
     }
 
@@ -40,7 +42,7 @@ class WordCloud extends Component {
 
         let unprocessed = util.reformatJSON(this)
 
-        let dataArray = util.reformatJSONWordcloud(unprocessed)
+        let dataArray = util.reformatJSONWordcloud(unprocessed,this)
 
         let data = { "children": dataArray[clusterNumber] }
 
@@ -49,7 +51,7 @@ class WordCloud extends Component {
         if (this.state.dropDownOptions == null){
             let arr = []
             
-            console.log("MAX", max, dataArray[clusterNumber])
+            //console.log("MAX", max, dataArray[clusterNumber])
             for (let i = 0; i < max; i++){
                 arr.push({key: i, text: "Cluster " + i, value: i })
             }
@@ -136,8 +138,8 @@ class WordCloud extends Component {
                 return d.r;
             })
             .style("fill", function (d, i) {
-                console.log(d)
-                console.log(util.getClusterColor(d.data, max));
+                //console.log(d)
+                //console.log(util.getClusterColor(d.data, max));
                 return util.getClusterColor(d.data, max);
             });
 

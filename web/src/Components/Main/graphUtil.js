@@ -1,6 +1,8 @@
 //This file holds all of the utility functions for all of the graphs
 //This allows for much easier creation of graphs since we do not have to worry about changing code in mulitple places
 
+import { json } from 'd3';
+
 
 const saveSvgAsPng = require('save-svg-as-png')
 
@@ -168,6 +170,7 @@ export const createObjectFromItem = (item) => {
 
 //This is what is called when you click on the 'export graph data' button under each graph.
 //It essentially just exports a text file containing the data used to create the graph. 
+//This does not work for Wordcloud graphs at the moment. 
 export const exportDataForGraph = (getThis) => {
     //Get the data we need to export
     let name = null
@@ -184,14 +187,26 @@ export const exportDataForGraph = (getThis) => {
             break;
         }
     }
-    let data = getThis.state.completeObjectsArray[getThis.state.dataframe_identifier]
-    let exportData = data.map((obj) => createObjectFromItem(obj));
+
+    let data;
     let exportDataStr = ''
-    for (let x in exportData) {
-        exportDataStr += JSON.stringify(exportData[x]) + '\n'
+    let exportData;
+    
+    if (getThis.state.graphType == 'scatterplot') {
+        data = getThis.state.completeObjectsArray[getThis.state.dataframe_identifier]
+        exportData = data.map((obj) => createObjectFromItem(obj));
+    }
+    else if (getThis.state.graphType == 'wordcloud') {
+        console.log("WORDCLOUD")
+        exportData = getThis.state.graphData
     }
     //console.log(exportDataList)
 
+    for (let x in exportData) {
+        console.log("X",x )
+        console.log("Export Data", exportData)
+        exportDataStr += JSON.stringify(exportData[x]) + '\n'
+    }
     const element = document.createElement("a");
     const file = new Blob([exportDataStr], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
@@ -242,7 +257,7 @@ export const getClusterColor = (d, max) => {
 
 //This is used to format the data for the wordcloud graph. 
 //NOTE: you must pass in data that has already been formatted by reformatJSON()
-export const reformatJSONWordcloud = (rawData) => {
+export const reformatJSONWordcloud = (rawData, getThis) => {
     //console.log("raw data", rawData)
     let phraseTracker = {}
     for (let objectIndex in rawData[0]) {
@@ -279,7 +294,12 @@ export const reformatJSONWordcloud = (rawData) => {
         }
         ret[x] = arr
     }
-    console.log("REt from reformat json Word cloud", ret)
+    console.log("Ret from reformat json Word cloud", ret)
+    if (JSON.stringify(getThis.state.graphData) != JSON.stringify(ret)) {
+        getThis.setState({
+            "graphData": ret
+        })
+    }
     return ret
 }
 
