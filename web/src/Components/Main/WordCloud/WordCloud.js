@@ -16,6 +16,7 @@ class WordCloud extends Component {
             dimensions: null,
             dropDownOptions: null,
             graphData: null,
+            max: 0,
         }
     }
 
@@ -36,32 +37,42 @@ class WordCloud extends Component {
         }
     }
 
+    async setDropDownOptions() {
+
+        let arr = []
+
+        //console.log("MAX", max, dataArray[clusterNumber])
+        for (let i = 0; i < this.state.max; i++) {
+            arr.push({ key: i, text: "Cluster " + i, value: i })
+        }
+        await this.setState({
+            dropDownOptions: arr
+        })
+    }
+
 
     //Reponsible for drawing the graph. This is the only place where D3 should live. 
     async drawChart(clusterNumber) {
 
         let unprocessed = util.reformatJSON(this)
 
-        let dataArray = util.reformatJSONWordcloud(unprocessed,this)
+        let dataArray = util.reformatJSONWordcloud(unprocessed, this)
 
         let data = { "children": dataArray[clusterNumber] }
 
-        let max =  util.getMax(unprocessed[0])
+        let max = util.getMax(unprocessed[0])
 
-        if (this.state.dropDownOptions == null){
-            let arr = []
-            
-            //console.log("MAX", max, dataArray[clusterNumber])
-            for (let i = 0; i < max; i++){
-                arr.push({key: i, text: "Cluster " + i, value: i })
-            }
-            this.setState({
-                dropDownOptions: arr
+        if (this.state.max != max) {
+            await this.setState({
+                max: max
             })
+            this.setDropDownOptions()
         }
-        //console.log('Wordcloud state', this.state)
 
-        //console.log('data', dataArray)
+        if (this.state.dropDownOptions == null) {
+            this.setDropDownOptions();
+        }
+
 
         var margin = { top: 10, right: 30, bottom: 30, left: 60 }
         let width = document.getElementById('mainWrapper').offsetWidth
@@ -70,16 +81,16 @@ class WordCloud extends Component {
             - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingRight)
             - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingLeft)
 
-        let height = document.getElementById('mainWrapper').offsetHeight -
-            margin.top -
-            margin.bottom -
-            document.getElementsByClassName('ui segment')[0].offsetHeight
-            - document.getElementById('exportButtons').offsetHeight
-            - document.getElementById('dfSelectContainer').offsetHeight
-            - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingTop)
-            - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingBottom)
-            - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).marginBottom)
-            - 30
+        let height = document.getElementById('mainWrapper').offsetHeight
+        // margin.top -
+        // margin.bottom -
+        // document.getElementsByClassName('ui segment')[0].offsetHeight
+        // - document.getElementById('exportButtons').offsetHeight
+        // - document.getElementById('dfSelectContainer').offsetHeight
+        // - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingTop)
+        // - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingBottom)
+        // - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).marginBottom)
+        // - 30
 
         if (this.state.dimensions == null) {
             await this.setState({
@@ -176,13 +187,16 @@ class WordCloud extends Component {
         return (
             <div id='graphContainer' className='graphContainer'>
                 <Dropdown
-                selection
-                placeholder='Cluster Number'
-                options={this.state.dropDownOptions}
-                onChange={(e, data) => this.setState({cluster_identifier: data.value})}
-                defaultValue={this.state.dropDownOptions == null ? "" : this.state.dropDownOptions[0] }
-                className='dropDown'
-                
+                    selection
+                    placeholder='Cluster Number'
+                    options={this.state.dropDownOptions}
+                    onChange={(e, data) => {
+                        this.setDropDownOptions()
+                        this.setState({ cluster_identifier: data.value });
+                    }}
+                    defaultValue={this.state.dropDownOptions == null ? "" : this.state.dropDownOptions[0]}
+                    className='dropDown'
+
                 />
                 <div className='graph' id="WordCloudNode"></div>
                 <div id='exportButtons' className='exportButtons'>
