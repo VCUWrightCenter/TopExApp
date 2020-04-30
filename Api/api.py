@@ -25,7 +25,7 @@ def runScript():
         print()
         if fileob.content_type == 'application/json':
             scriptArgs = json.loads(fileob.stream.read())
-            print(scriptArgs)
+            #print(scriptArgs)
         else:
 
             fileText = fileob.read().decode()

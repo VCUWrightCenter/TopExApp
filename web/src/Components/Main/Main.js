@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import './Main.css'
 import Scatterplot from "./Scatterplot/Scatterplot.js"
 import WordCloud from "./WordCloud/WordCloud.js"
+import BubbleGraph from "./BubbleGraph/BubbleGraph.js"
 import { Tab } from 'semantic-ui-react'
 
 export default class Main extends Component {
@@ -29,7 +30,7 @@ export default class Main extends Component {
         let panes = [
             { menuItem: 'Scatterplot',  pane: { key: 'pane1', content: <Scatterplot data={this.props.graphData} pointData={this.getPointData.bind(this)}/> }, className:'fullWindow'},
             { menuItem: 'Word Cloud', pane: { key: 'pane2', content: <WordCloud data={this.props.graphData} pointData={this.getPointData.bind(this)}/>}, className:'fullWindow' },
-            { menuItem: 'Bubble graph', pane: 'Bubble graph placeholder' }
+            { menuItem: 'Bubble graph', pane: { key: 'pane2', content: <BubbleGraph data={this.props.graphData} pointData={this.getPointData.bind(this)}/>}, className:'fullWindow' }
         ]
 
         if (this.props.graphData != this.state.graphData)
