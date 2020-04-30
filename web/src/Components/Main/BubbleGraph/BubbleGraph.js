@@ -10,7 +10,7 @@ class BubbleGraph extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            graphType: 'scatterplot',
+            graphType: 'BubbleGraph',
             dataframe_identifier: 0,
             completeObjectsArray: null,
             pre_process_data: null,
@@ -119,6 +119,11 @@ class BubbleGraph extends Component {
         svg.append("g")
             .call(d3.axisLeft(y));
 
+        // Add a scale for bubble size
+        var z = d3.scaleLinear()
+            .domain([200000, 1310000000])
+            .range([ 1, 40]);
+
         //Add dots
         svg.append('g')
             .selectAll("dot")
@@ -127,38 +132,44 @@ class BubbleGraph extends Component {
             .append("circle")
             .attr("cx", function (d) { return x(d.x) }) //Plotting x value
             .attr("cy", function (d) { return y(d.y) }) //Plotting y value
+            //.attr("r", function (d) { return z(d.) } ) //Need something here to represent cluster size
             .attr("r", 3)
-            .attr("fill", (d, i) => {
-                return util.getClusterColor(d, max)
-            })
-            .attr("color", (d, i) => {
-                return util.getClusterColor(d, max)
-            })
-            .on('mouseover', function (d, i) {
-                //console.log("mouseover on", this);
-                d3.select(this)
-                    .transition()
-                    .duration(100)
-                    //   .attr('r', 10)
-                    .attr('fill', 'red');
-            })
-            .on('mouseout', function (d, i) {
-                //console.log("mouseout", this);
-                //console.log(this)
-                d3.select(this)
-                    .transition()
-                    .duration(100)
-                    //.attr('r', 3)
-                    .attr('fill', this.getAttribute("color"));
-            })
-            .on('click', (d, i) => {
-                //console.log("clicked", d)
-                util.sendPointData(JSON.stringify(d), this)
-            })
-        //source:
-        //http://jonathansoma.com/tutorials/d3/clicking-and-hovering/
+            .style("fill", "gold")
+            //.style("opacity", "0.7")
+            .attr("stroke", "grey")
+            //Source: https://www.d3-graph-gallery.com/graph/bubble_basic.html
 
-        document.getElementById('dfSelectContainerBubbleGraph').hidden = false
+        //     .attr("fill", (d, i) => {
+        //         return util.getClusterColor(d, max)
+        //     })
+        //     .attr("color", (d, i) => {
+        //         return util.getClusterColor(d, max)
+        //     })
+        //     .on('mouseover', function (d, i) {
+        //         //console.log("mouseover on", this);
+        //         d3.select(this)
+        //             .transition()
+        //             .duration(100)
+        //             //   .attr('r', 10)
+        //             .attr('fill', 'red');
+        //     })
+        //     .on('mouseout', function (d, i) {
+        //         //console.log("mouseout", this);
+        //         //console.log(this)
+        //         d3.select(this)
+        //             .transition()
+        //             .duration(100)
+        //             //.attr('r', 3)
+        //             .attr('fill', this.getAttribute("color"));
+        //     })
+        //     .on('click', (d, i) => {
+        //         //console.log("clicked", d)
+        //         util.sendPointData(JSON.stringify(d), this)
+        //     })
+        // //source:
+        // //http://jonathansoma.com/tutorials/d3/clicking-and-hovering/
+
+        // document.getElementById('dfSelectContainerBubbleGraph').hidden = false
 
     }
 
