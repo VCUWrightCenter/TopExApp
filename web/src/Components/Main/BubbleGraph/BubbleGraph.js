@@ -1,3 +1,12 @@
+//What you should know before you work on the Bubble graph
+
+//Our objective was to take the clusters in the scatter plot and make one data point out of each cluster.
+//To accomplish this use this source to understand how to create a simple bubble graph https://www.d3-graph-gallery.com/graph/bubble_basic.html 
+//To figure out the size of the cluster, there must be a count on the number of data points in a cluster.  This count will be the size of the new data point.
+//Next find the averages of both the x and y values of that cluster to determine where the new large data point should be placed on the graph.
+//Do this using the data array "let data = dataArray[dataFrameNumber]" at line 56
+
+
 import React, { Component } from 'react';
 import * as d3 from "d3";
 import './BubbleGraph.css'
@@ -44,7 +53,7 @@ class BubbleGraph extends Component {
         let dataArray = util.reformatJSON(this)
         //console.log("This is the reformatted json that should contains the data for all 3 of the datafrmaes")
         //console.log(dataArray)
-        let data = dataArray[dataFrameNumber]
+        let data = dataArray[dataFrameNumber] //ARRAY FROM THE DIRECTIONS AT THE BEGINNING 
 
 
         //console.log("DATA", data)
@@ -121,7 +130,7 @@ class BubbleGraph extends Component {
 
         // Add a scale for bubble size
         var z = d3.scaleLinear()
-            .domain([200000, 1310000000])
+            .domain([1, 1000])
             .range([ 1, 40]);
 
         //Add dots
@@ -137,7 +146,7 @@ class BubbleGraph extends Component {
             .style("fill", "gold")
             //.style("opacity", "0.7")
             .attr("stroke", "grey")
-            //Source: https://www.d3-graph-gallery.com/graph/bubble_basic.html
+            //Source; some code from here: https://www.d3-graph-gallery.com/graph/bubble_basic.html
 
         //     .attr("fill", (d, i) => {
         //         return util.getClusterColor(d, max)
