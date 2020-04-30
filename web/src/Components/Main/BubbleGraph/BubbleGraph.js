@@ -30,7 +30,7 @@ class BubbleGraph extends Component {
             this.drawChart(this.state.dataframe_identifier);
         }
         else {
-            console.log("No scatterplot data")
+            console.log("No Bubble Graph data")
             console.log(this.state.completeObjectsArray)
         }
     }
