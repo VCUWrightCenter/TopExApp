@@ -144,41 +144,9 @@ class BubbleGraph extends Component {
             //.attr("r", function (d) { return z(d.) } ) //Need something here to represent cluster size
             .attr("r", 3)
             .style("fill", "gold")
-            //.style("opacity", "0.7")
             .attr("stroke", "grey")
             //Source; some code from here: https://www.d3-graph-gallery.com/graph/bubble_basic.html
 
-        //     .attr("fill", (d, i) => {
-        //         return util.getClusterColor(d, max)
-        //     })
-        //     .attr("color", (d, i) => {
-        //         return util.getClusterColor(d, max)
-        //     })
-        //     .on('mouseover', function (d, i) {
-        //         //console.log("mouseover on", this);
-        //         d3.select(this)
-        //             .transition()
-        //             .duration(100)
-        //             //   .attr('r', 10)
-        //             .attr('fill', 'red');
-        //     })
-        //     .on('mouseout', function (d, i) {
-        //         //console.log("mouseout", this);
-        //         //console.log(this)
-        //         d3.select(this)
-        //             .transition()
-        //             .duration(100)
-        //             //.attr('r', 3)
-        //             .attr('fill', this.getAttribute("color"));
-        //     })
-        //     .on('click', (d, i) => {
-        //         //console.log("clicked", d)
-        //         util.sendPointData(JSON.stringify(d), this)
-        //     })
-        // //source:
-        // //http://jonathansoma.com/tutorials/d3/clicking-and-hovering/
-
-        // document.getElementById('dfSelectContainerBubbleGraph').hidden = false
 
     }
 
