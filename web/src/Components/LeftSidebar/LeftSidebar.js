@@ -4,13 +4,13 @@
 //This is where the graph data is exported. NOTE: Data cannot be exported unless the user "processes" data. That is, unless you send and receive data from the API, you will not be able to export.
 
 import React, { Component } from "react";
-import './Left_Sidebar.css'
 import Axios from "axios";
-import { Tab, Dropdown } from 'semantic-ui-react'
-import { Input, Button, Header } from 'semantic-ui-react'
+import './LeftSidebar.css';
+import { Tab, Dropdown } from 'semantic-ui-react';
+import { Input, Button, Header } from 'semantic-ui-react';
 
 
-class Left_Sidebar extends Component {
+class LeftSidebar extends Component {
 
     filesToSend = [];
 
@@ -63,7 +63,7 @@ class Left_Sidebar extends Component {
             key: 'tfidf',
             text: 'tfidf',
             value: 'tfidf',
-            dropDownID: "wordVectorType"
+            dropdownid: "wordVectorType"
         },
         {
             key: 'svd',
@@ -91,7 +91,7 @@ class Left_Sidebar extends Component {
             key: 'braycurtis',
             text: 'braycurtis',
             value: 'braycurtis',
-            dropDownID: 'DistanceMetric'
+            dropdownid: 'DistanceMetric'
         },
         {
             key: 'canberra',
@@ -327,10 +327,6 @@ class Left_Sidebar extends Component {
                     }} />
                 </div>
 
-
-
-
-
                 <div className = 'spacing'>
                     <Input
                         type='number'
@@ -384,7 +380,6 @@ class Left_Sidebar extends Component {
                     <input type='text' id='output_labeled_sentences' /> */}
                 </div>
 
-
                 <div className = 'spacing'>
                     <Input
                         placeholder='use_kmeans'
@@ -428,21 +423,18 @@ class Left_Sidebar extends Component {
         //console.log(tfidfcorpus);
         let wordVectorType = (this.state.wordVectorType == null) ? null : this.state.wordVectorType;
         let w2vBinFile = document.getElementById('w2vBinFile').files[0] == null ? null : this.getFileContents(document.getElementById('w2vBinFile').files[0]); //This needs to be changed to a file input
-        let prefix = document.getElementById('prefix').value == '' ? null : document.getElementById('prefix').value;
-        let windowSize = document.getElementById('windowSize').value == '' ? null : document.getElementById('windowSize').value;
+        let prefix = document.getElementById('prefix').value === '' ? null : document.getElementById('prefix').value;
+        let windowSize = document.getElementById('windowSize').value === '' ? null : document.getElementById('windowSize').value;
         let goldStandard = document.getElementById('goldStandard').files[0] == null ? null : this.getFileContents(document.getElementById('goldStandard').files[0]);
 
         let threshold = document.getElementById('threshold').value;
-        let dimensions = document.getElementById('dimensions').value == '' ? null : document.getElementById('dimensions').value;
-        let umap_neighbors = document.getElementById('umap_neighbors').value == '' ? null : document.getElementById('umap_neighbors').value;
+        let dimensions = document.getElementById('dimensions').value === '' ? null : document.getElementById('dimensions').value;
+        let umap_neighbors = document.getElementById('umap_neighbors').value === '' ? null : document.getElementById('umap_neighbors').value;
         let DistanceMetric = (this.state.DistanceMetric == null) ? null : this.state.DistanceMetric;
-        let include_input_in_tfidf = document.getElementById('include_input_in_tfidf').value == '' ? null : document.getElementById('include_input_in_tfidf').value;
-        let output_labeled_sentences = document.getElementById('output_labeled_sentences').value == '' ? null : document.getElementById('output_labeled_sentences').value;
-        let use_kmeans = document.getElementById('use_kmeans').value == '' ? null : document.getElementById('use_kmeans').value;
+        let include_input_in_tfidf = document.getElementById('include_input_in_tfidf').value === '' ? null : document.getElementById('include_input_in_tfidf').value;
+        let output_labeled_sentences = document.getElementById('output_labeled_sentences').value === '' ? null : document.getElementById('output_labeled_sentences').value;
+        let use_kmeans = document.getElementById('use_kmeans').value === '' ? null : document.getElementById('use_kmeans').value;
 
-        // console.log("DISTANCE METRIC");
-        // console.log(typeof (DistanceMetric))
-        // console.log(this.state.DistanceMetric)
         let args = {
             'tfidfcorpus': tfidfcorpus,
             'wordVectorType': wordVectorType,
@@ -467,10 +459,9 @@ class Left_Sidebar extends Component {
 
     //This function gets the data from the Semantic UI dropdowns in the options tab
     getDropdownValue = (event, data) => {
-        let dataName = data.options[0].dropDownID
+        let dataName = data.options[0].dropdownid
 
-
-        if (data.value == '') { //Weird cancelling bug
+        if (data.value === '') { //Weird cancelling bug
             this.setState({
                 [dataName]: null
             })
@@ -493,11 +484,10 @@ class Left_Sidebar extends Component {
             let name = null
             while (true) {
                 name = prompt("Enter name for export file", "export")
-                console.log("NAME", name)
                 if (name == null) { //cancel
                     return;
                 }
-                else if (name == "") { //blank name
+                else if (name === "") { //blank name
                     alert("Name cannot be empty!")
                 }
                 else { // Valid name
@@ -525,7 +515,7 @@ class Left_Sidebar extends Component {
         let fileContent = await this.getFileContents(file);
 
 
-        if (fileContent != null && file.type == "text/plain") {
+        if (fileContent != null && file.type === "text/plain") {
             try {
                 this.sendGraphData(JSON.parse(fileContent))
             }
@@ -550,13 +540,11 @@ class Left_Sidebar extends Component {
         let file = input.files[0]
 
         if (file != null) {
-            console.log("FILE NOT NULL")
             this.setState({
                 ImportButonDisabled: false
             })
         }
         else {
-            console.log("FILE NILL")
             this.setState({
                 ImportButonDisabled: true
             })
@@ -647,7 +635,7 @@ class Left_Sidebar extends Component {
         let input;
 
         for (let i in formChildren) {
-            if (formChildren[i].nodeName == "INPUT") {
+            if (formChildren[i].nodeName === "INPUT") {
                 input = formChildren[i]
             }
         }
@@ -664,14 +652,11 @@ class Left_Sidebar extends Component {
             else {
                 console.log(files[i].name + " is not checked")
             }
-
         }
-
 
         let scriptArgs = await this.getScriptArgs()
 
         //Perform form validation here
-
         if (this.validateArgs(scriptArgs, files)) {
             this.setState({
                 runningScript: true
@@ -703,27 +688,27 @@ class Left_Sidebar extends Component {
 
     //Used to validate data being passed to the API
     validateArgs(scriptArgs, files) {
-
-        if (files.length < 1) {
-            alert('Must provide at least one input file')
-            document.getElementById('submitButton').disabled = false;
-            return false;
-        }
-
-
-        if (scriptArgs.threshold == '') {
-            alert('Threshhold must be specified.');
-            document.getElementById('submitButton').disabled = false;
-            document.getElementById('threshold').focus()
-            return false;
-        }
+        //TODO: Uncomment this
+        // if (files.length < 1) {
+        //     alert('Must provide at least one input file')
+        //     document.getElementById('submitButton').disabled = false;
+        //     return false;
+        // }
 
 
-        if (document.getElementById('tfidfcorpus').files.length < 1) {
-            alert('Must provide at least one tfidfcorpus')
-            document.getElementById('submitButton').disabled = false;
-            return false;
-        }
+        // if (scriptArgs.threshold == '') {
+        //     alert('Threshhold must be specified.');
+        //     document.getElementById('submitButton').disabled = false;
+        //     document.getElementById('threshold').focus()
+        //     return false;
+        // }
+
+
+        // if (document.getElementById('tfidfcorpus').files.length < 1) {
+        //     alert('Must provide at least one tfidfcorpus')
+        //     document.getElementById('submitButton').disabled = false;
+        //     return false;
+        // }
 
 
         return true;
@@ -733,7 +718,7 @@ class Left_Sidebar extends Component {
     async runScript(formData, scriptArgs) {
         var cors = "http://127.0.0.1:8080/"
         var url = "http://127.0.0.1:5000/runScript"
-
+        url = "http://127.0.0.1:5000/process"
         const blob = new Blob([scriptArgs], {
             type: 'application/json'
         });
@@ -800,7 +785,7 @@ class Left_Sidebar extends Component {
                         let checkbox = null
 
                         for (var elem in children) {
-                            if (children[elem].nodeName == "INPUT") {
+                            if (children[elem].nodeName === "INPUT") {
                                 checkbox = children[elem]
                                 break;
                             }
@@ -835,4 +820,4 @@ class Left_Sidebar extends Component {
 }
 
 
-export default Left_Sidebar
+export default LeftSidebar

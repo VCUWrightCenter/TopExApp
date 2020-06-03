@@ -11,7 +11,6 @@ import React, { Component } from 'react';
 import * as d3 from "d3";
 import './BubbleGraph.css'
 import * as util from '../graphUtil.js'
-import { max } from 'd3';
 import { Button } from 'semantic-ui-react'
 
 class BubbleGraph extends Component {
@@ -47,21 +46,8 @@ class BubbleGraph extends Component {
 
     //Reponsible for drawing the graph. This is the only place where D3 should live. 
     async drawChart(dataFrameNumber) {
-
-        //console.log(this.convertToJson(this.props.data))
-
         let dataArray = util.reformatJSON(this)
-        //console.log("This is the reformatted json that should contains the data for all 3 of the datafrmaes")
-        //console.log(dataArray)
         let data = dataArray[dataFrameNumber] //ARRAY FROM THE DIRECTIONS AT THE BEGINNING 
-
-
-        //console.log("DATA", data)
-
-        let clusterID = util.getClusterID(data[0])
-        //console.log('clusterID',clusterID)
-
-        let max = util.getMax(data)
 
         let xArr = data.map((obj) => obj.x)
         let yArr = data.map((obj) => obj.y)
@@ -129,9 +115,9 @@ class BubbleGraph extends Component {
             .call(d3.axisLeft(y));
 
         // Add a scale for bubble size
-        var z = d3.scaleLinear()
-            .domain([1, 1000])
-            .range([ 1, 40]);
+        // var z = d3.scaleLinear()
+        //     .domain([1, 1000])
+        //     .range([ 1, 40]);
 
         //Add dots
         svg.append('g')
@@ -154,7 +140,7 @@ class BubbleGraph extends Component {
         return (
             <div id='graphContainer' className='graphContainer'>
                 <div className='graph' id="BubbleGraphNode"></div>
-                <div id="dfSelectContainerBubbleGraph" hidden='true'>
+                <div id="dfSelectContainerBubbleGraph" hidden={true}>
                     <div className="gridContainer" id='gridContainer'>
                         <div className='gridItem'>
                             <label>UMAP</label>

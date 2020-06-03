@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as d3 from "d3";
 import './Scatterplot.css'
 import * as util from '../graphUtil.js'
-import { max } from 'd3';
 import { Button } from 'semantic-ui-react'
 
 class Scatterplot extends Component {
@@ -38,25 +37,13 @@ class Scatterplot extends Component {
 
     //Reponsible for drawing the graph. This is the only place where D3 should live. 
     async drawChart(dataFrameNumber) {
-
-        //console.log(this.convertToJson(this.props.data))
-
         let dataArray = util.reformatJSON(this)
-        //console.log("This is the reformatted json that should contains the data for all 3 of the datafrmaes")
-        //console.log(dataArray)
         let data = dataArray[dataFrameNumber]
-
-
-        //console.log("DATA", data)
-
-        let clusterID = util.getClusterID(data[0])
-        //console.log('clusterID',clusterID)
 
         let max = util.getMax(data)
 
         let xArr = data.map((obj) => obj.x)
         let yArr = data.map((obj) => obj.y)
-
 
         let xMin = Math.min(...xArr) < 0 ? Math.min(...xArr) * 1.2 : Math.min(...xArr) * 0.8
         let yMin = Math.min(...yArr) < 0 ? Math.min(...yArr) * 1.2 : Math.min(...yArr) * 0.8
@@ -166,7 +153,7 @@ class Scatterplot extends Component {
         return (
             <div id='graphContainer' className='graphContainer'>
                 <div className='graph' id="node"></div>
-                <div id="dfSelectContainer" hidden='true'>
+                <div id="dfSelectContainer" hidden={true}>
                     <div className="gridContainer" id='gridContainer'>
                         <div className='gridItem'>
                             <label>UMAP</label>

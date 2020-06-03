@@ -42,7 +42,7 @@ class WordCloud extends Component {
         let arr = []
 
         //console.log("MAX", max, dataArray[clusterNumber])
-        for (let i = 0; i < this.state.max; i++) {
+        for (let i = 0; i <= this.state.max; i++) {
             arr.push({ key: i, text: "Cluster " + i, value: i })
         }
         await this.setState({
@@ -62,7 +62,7 @@ class WordCloud extends Component {
 
         let max = util.getMax(unprocessed[0])
 
-        if (this.state.max != max) {
+        if (this.state.max !== max) {
             await this.setState({
                 max: max
             })
@@ -178,9 +178,6 @@ class WordCloud extends Component {
                 return d.r / 5;
             })
             .attr("fill", "white");
-
-        //document.getElementById('dfSelectContainerWordCloud').hidden = false
-
     }
 
     render() {
@@ -194,7 +191,7 @@ class WordCloud extends Component {
                         this.setDropDownOptions()
                         this.setState({ cluster_identifier: data.value });
                     }}
-                    defaultValue={this.state.dropDownOptions == null ? "" : this.state.dropDownOptions[0]}
+                    defaultValue={this.state.dropDownOptions == null ? "" : this.state.dropDownOptions[0].value}
                     className='dropDown'
 
                 />

@@ -30,10 +30,10 @@ export default class Main extends Component {
         let panes = [
             { menuItem: 'Scatterplot',  pane: { key: 'pane1', content: <Scatterplot data={this.props.graphData} pointData={this.getPointData.bind(this)}/> }, className:'fullWindow'},
             { menuItem: 'Word Cloud', pane: { key: 'pane2', content: <WordCloud data={this.props.graphData} pointData={this.getPointData.bind(this)}/>}, className:'fullWindow' },
-            { menuItem: 'Bubble graph', pane: { key: 'pane2', content: <BubbleGraph data={this.props.graphData} pointData={this.getPointData.bind(this)}/>}, className:'fullWindow' }
+            { menuItem: 'Bubble graph', pane: { key: 'pane3', content: <BubbleGraph data={this.props.graphData} pointData={this.getPointData.bind(this)}/>}, className:'fullWindow' }
         ]
 
-        if (this.props.graphData != this.state.graphData)
+        if (this.props.graphData !== this.state.graphData)
             this.setState({
                 panes: panes,
                 graphData: this.props.graphData
@@ -46,7 +46,7 @@ export default class Main extends Component {
     render() {
         return (
             <div className='main-wrapper' id='mainWrapper'>
-                <div id='graphTabs' className='main' hidden='true'>
+                <div id='graphTabs' className='main' hidden={true}>
                     <Tab className = 'fullWindow' menu = {{ fluid:true, widths:3,  attached: true , pointing: true , className: 'borderless'}} panes={this.state.panes} renderActiveOnly={false} />
                 </div>
             </div>

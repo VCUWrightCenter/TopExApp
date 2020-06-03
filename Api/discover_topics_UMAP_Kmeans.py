@@ -299,7 +299,7 @@ def get_phrase_vec_tfidf(doc_top_phrases, dictionary, term_matrix):
         for phrase in doc:
             p_vec = numpy.zeros(len(term_matrix[0]))
         
-            if phrase is not "none":
+            if phrase != "none":
                 new_vec = dictionary.doc2bow(phrase[1]) #convert phrase to a vector of ids and counts
                 vec_ids = [x[0] for x in new_vec]  #get word IDs in dictionary
                 for i in vec_ids:
@@ -318,7 +318,7 @@ def get_phrase_vec_w2v(doc_top_phrases, model2):
         for phrase in doc:
             p_vec = 0
         
-            if phrase is not "none":
+            if phrase != "none":
                 for tok in phrase[1]:
                     if tok in model2.wv.vocab:
                         p_vec = p_vec + model2.wv[tok] 
@@ -442,19 +442,19 @@ class Args():
         self.use_kmeans = None
 
 class returnObject():
-    def __init__(self, df1 = None, df2 = None, df3 = None, main_cluster_topics = None, raw_sent = None):
+    def __init__(self, df1 = None, df2 = None, df3 = None, main_cluster_topics = None, count = None):
         self.df1 = df1
         self.df2 = df2
         self.df3 = df3
         self.main_cluster_topics = main_cluster_topics
-        self.raw_sent = raw_sent
+        self.count = count
 
     def __iter__(self):
         yield 'df1', self.df1
         yield 'df2', self.df2
         yield 'df3', self.df3
         yield 'main_cluster_topics', self.main_cluster_topics
-        yield 'raw_sent', self.raw_sent
+        yield 'count', self.count
 
 # if __name__ == "__main__":
 
@@ -671,7 +671,7 @@ def main(inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, 
             num_clusters = input()
             print("Thank You. Now Clustering...")
         else:
-            print("Threshold specified, skipping silhouette analysis...")
+            print("Threshold specified (kmeans), skipping silhouette analysis...")
             num_clusters = args.t
         
         kmeans = KMeans(n_clusters=int(num_clusters), random_state=42).fit(just_phrase_vecs)
@@ -709,7 +709,7 @@ def main(inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, 
             num_clusters = int(input())
             print("Thank You. Now Clustering...")
         else:
-            print("Threshold specified, skipping silhouette analysis...")
+            print("Threshold specified (HAC), skipping silhouette analysis...")
             if args.m == "cosine":
                 dist = 1 - cosine_similarity(just_phrase_vecs)
             else:
@@ -749,7 +749,7 @@ def main(inputFile, tfidfcorpus, wordVectorType, w2vBinFile, outputdir, prefix, 
 
     df = pd.DataFrame(dict(label=just_phrase_ids, cluster=cluster_assignments, phrase=just_phrase_text)) 
 
-
+    args.s = "mds" #DEBUGGING
     if args.s == "umap" or args.s == "all":
         ### Create and save UMAP Scatter Plot
         #create the reducer
