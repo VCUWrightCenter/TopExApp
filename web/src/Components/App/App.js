@@ -18,7 +18,6 @@ class App extends Component {
 
   //Used to create graphs. 
   getGraphData = (graphData) => {
-    //console.log("APP RECEIVED NEW APP DATA")
     let newState = this.state;
     newState = {
       graphData: graphData
@@ -28,7 +27,6 @@ class App extends Component {
 
   //Used for passing data to right sidebar for display
   getPointData = (pointData) => {
-    console.log('app received point data', pointData)
     let newState = this.state;
     newState = {
       pointData: pointData

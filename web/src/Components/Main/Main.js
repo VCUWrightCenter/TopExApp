@@ -19,14 +19,10 @@ export default class Main extends Component {
     }
 
     getPointData = (pointData) => {
-        console.log("main point data", pointData);
-
         this.props.pointData(pointData)
-
     }
 
     componentDidUpdate() {
-        //console.log("MAIN UPDATED WITH PROPS")
         let panes = [
             { menuItem: 'Scatterplot',  pane: { key: 'pane1', content: <Scatterplot data={this.props.graphData} pointData={this.getPointData.bind(this)}/> }, className:'fullWindow'},
             { menuItem: 'Word Cloud', pane: { key: 'pane2', content: <WordCloud data={this.props.graphData} pointData={this.getPointData.bind(this)}/>}, className:'fullWindow' },

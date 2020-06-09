@@ -28,7 +28,6 @@ class BubbleGraph extends Component {
 
     //This is for the radio buttons
     componentDidUpdate() {
-        //console.log("Scatteplot update")
         this.drawChart(this.state.dataframe_identifier)
     }
 
@@ -36,10 +35,6 @@ class BubbleGraph extends Component {
     componentDidMount() {
         if (this.props.data) {
             this.drawChart(this.state.dataframe_identifier);
-        }
-        else {
-            console.log("No Bubble Graph data")
-            console.log(this.state.completeObjectsArray)
         }
     }
 

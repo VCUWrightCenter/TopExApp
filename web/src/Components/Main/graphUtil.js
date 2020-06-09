@@ -36,11 +36,9 @@ export const createPointObject = (data, cluster_topics, i) => {
 //NOTE: This graph was intitially designed to format data for the scatterplot. However, more methods may need to be created when working with other types of graphs to correctly format the data. 
 
 export const reformatJSON = (getThis) => {
-    //console.log("REFORMAT JSON STATE",getThis)
     if (getThis.state.pre_process_data !== getThis.props.data) {
         //Begin data reformatting
         var APIReturnObject = convertToJson(getThis.props.data)
-        console.log("APIRETUIRN", APIReturnObject)
 
         let umap = convertToJson(APIReturnObject.df1)
         let mds = convertToJson(APIReturnObject.df2)
@@ -118,7 +116,6 @@ export const exportDataForGraph = (getThis) => {
     let name = null
     while (true) {
         name = prompt("Enter name for export file", "export")
-        console.log("NAME", name)
         if (name == null) {
             return;
         }

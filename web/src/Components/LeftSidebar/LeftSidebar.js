@@ -420,7 +420,6 @@ class LeftSidebar extends Component {
         }
         tfidfcorpus = temp;
         temp = '';
-        //console.log(tfidfcorpus);
         let wordVectorType = (this.state.wordVectorType == null) ? null : this.state.wordVectorType;
         let w2vBinFile = document.getElementById('w2vBinFile').files[0] == null ? null : this.getFileContents(document.getElementById('w2vBinFile').files[0]); //This needs to be changed to a file input
         let prefix = document.getElementById('prefix').value === '' ? null : document.getElementById('prefix').value;
@@ -477,7 +476,6 @@ class LeftSidebar extends Component {
     //This is the function that exports ALL of the graph data that is generated from the last call to the API
     exportData() {
         if (this.state.graphData == null) {
-            console.log(this.state.graphData)
             alert('No data to export')
         }
         else {
@@ -494,7 +492,6 @@ class LeftSidebar extends Component {
                     break;
                 }
             }
-            console.log(this.state.graphData)
             const element = document.createElement("a");
             const file = new Blob([JSON.stringify(this.state.graphData)], { type: 'text/plain' });
             element.href = URL.createObjectURL(file);
@@ -528,7 +525,6 @@ class LeftSidebar extends Component {
         else {
             alert("Error parsing file. Must be a .txt file exported from previous run.")
         }
-        //console.log(fileContent)
     }
 
     //This is used to ensure the import file is not null
@@ -649,9 +645,6 @@ class LeftSidebar extends Component {
             if (checkedFiles.includes(files[i].name)) {
                 formData.append("File" + i, files[i])
             }
-            else {
-                console.log(files[i].name + " is not checked")
-            }
         }
 
         let scriptArgs = await this.getScriptArgs()
@@ -756,15 +749,12 @@ class LeftSidebar extends Component {
         }
 
         let modifiedFilelist = fileData.filter((value, index, arr) => {
-            // console.log(value)
             return value !== undefined && value.includes(".txt");
         })
 
         this.setState({
             fileList: modifiedFilelist
-        }
-            // }, () => { console.log("state changed" + modifiedFilelist) }
-        )
+        })
     }
 
     //Returns the names of the files that have been checked, and returns them. 
@@ -807,7 +797,6 @@ class LeftSidebar extends Component {
                 }
 
             }
-            //console.log(checkedElements)
             return checkedElements
 
         } catch (error) {

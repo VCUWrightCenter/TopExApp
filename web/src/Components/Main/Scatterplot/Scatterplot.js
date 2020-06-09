@@ -19,7 +19,6 @@ class Scatterplot extends Component {
 
     //This is for the radio buttons
     componentDidUpdate() {
-        //console.log("Scatteplot update")
         this.drawChart(this.state.dataframe_identifier)
     }
 
@@ -27,10 +26,6 @@ class Scatterplot extends Component {
     componentDidMount() {
         if (this.props.data) {
             this.drawChart(this.state.dataframe_identifier);
-        }
-        else {
-            console.log("No scatterplot data")
-            console.log(this.state.completeObjectsArray)
         }
     }
 
@@ -122,24 +117,18 @@ class Scatterplot extends Component {
                 return util.getClusterColor(d, max)
             })
             .on('mouseover', function (d, i) {
-                //console.log("mouseover on", this);
                 d3.select(this)
                     .transition()
                     .duration(100)
-                    //   .attr('r', 10)
                     .attr('fill', 'red');
             })
             .on('mouseout', function (d, i) {
-                //console.log("mouseout", this);
-                //console.log(this)
                 d3.select(this)
                     .transition()
                     .duration(100)
-                    //.attr('r', 3)
                     .attr('fill', this.getAttribute("color"));
             })
             .on('click', (d, i) => {
-                //console.log("clicked", d)
                 util.sendPointData(JSON.stringify(d), this)
             })
         //source:
