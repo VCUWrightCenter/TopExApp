@@ -88,9 +88,6 @@ class BubbleGraph extends Component {
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .attr("id", "BubbleGraphSVG")
-            // .call(d3.zoom().on("zoom", function () {
-            //     svg.attr("transform", d3.event.transform)
-            // }))
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
@@ -110,9 +107,9 @@ class BubbleGraph extends Component {
             .call(d3.axisLeft(y));
 
         // Add a scale for bubble size
-        // var z = d3.scaleLinear()
-        //     .domain([1, 1000])
-        //     .range([ 1, 40]);
+        var z = d3.scaleLinear()
+            .domain([1, 1000])
+            .range([ 1, 40]);
 
         //Add dots
         svg.append('g')
