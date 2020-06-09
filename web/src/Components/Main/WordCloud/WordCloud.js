@@ -22,7 +22,6 @@ class WordCloud extends Component {
 
     //This is so we can update the garph based on either radio buttons or dropdowns etc...
     componentDidUpdate() {
-        //console.log("Scatteplot update")
         this.drawChart(this.state.cluster_identifier)
     }
 
@@ -31,18 +30,12 @@ class WordCloud extends Component {
         if (this.props.data) {
             this.drawChart(this.state.cluster_identifier);
         }
-        else {
-            console.log("No WordCloud data")
-            console.log(this.state.completeObjectsArray)
-        }
     }
 
     async setDropDownOptions() {
 
         let arr = []
-
-        //console.log("MAX", max, dataArray[clusterNumber])
-        for (let i = 0; i < this.state.max; i++) {
+        for (let i = 0; i <= this.state.max; i++) {
             arr.push({ key: i, text: "Cluster " + i, value: i })
         }
         await this.setState({
@@ -62,7 +55,7 @@ class WordCloud extends Component {
 
         let max = util.getMax(unprocessed[0])
 
-        if (this.state.max != max) {
+        if (this.state.max !== max) {
             await this.setState({
                 max: max
             })
@@ -98,11 +91,8 @@ class WordCloud extends Component {
             })
         }
 
-
-        //console.log(this.state)
         width = this.state.dimensions.width
         height = this.state.dimensions.height
-
 
         d3.select("#WordCloudSVG").remove();
         // append the svg object to the body of the page
@@ -140,7 +130,6 @@ class WordCloud extends Component {
 
         node.append("title")
             .text(function (d) {
-                //console.log('d', d)
                 return d.data.phrase + ": " + d.value;
             });
 
@@ -149,8 +138,6 @@ class WordCloud extends Component {
                 return d.r;
             })
             .style("fill", function (d, i) {
-                //console.log(d)
-                //console.log(util.getClusterColor(d.data, max));
                 return util.getClusterColor(d.data, max);
             });
 
@@ -170,7 +157,6 @@ class WordCloud extends Component {
             .attr("dy", "1.3em")
             .style("text-anchor", "middle")
             .text(function (d) {
-                //console.log('D', d)
                 return d.data.value;
             })
             .attr("font-family", "Gill Sans", "Gill Sans MT")
@@ -178,9 +164,6 @@ class WordCloud extends Component {
                 return d.r / 5;
             })
             .attr("fill", "white");
-
-        //document.getElementById('dfSelectContainerWordCloud').hidden = false
-
     }
 
     render() {
@@ -194,7 +177,7 @@ class WordCloud extends Component {
                         this.setDropDownOptions()
                         this.setState({ cluster_identifier: data.value });
                     }}
-                    defaultValue={this.state.dropDownOptions == null ? "" : this.state.dropDownOptions[0]}
+                    defaultValue={this.state.dropDownOptions == null ? "" : this.state.dropDownOptions[0].value}
                     className='dropDown'
 
                 />

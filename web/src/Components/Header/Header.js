@@ -11,10 +11,10 @@ class Header extends Component {
     render() {
         return (
             <div className='Header'>
-                <img src={CSLogo} className='CSlogo' />
-                <img src={COElogo} className='COElogo' />
-                <img src={wrightCtrLogo} className='Wrightlogo' />
-                <img src={NLPLogo} className='NLPlogo' />
+                <img src={CSLogo} className='CSlogo' alt="VCU Computer Science logo"/>
+                <img src={COElogo} className='COElogo' alt="VCU College of Engineering logo"/>
+                <img src={wrightCtrLogo} className='Wrightlogo' alt="VCU Wright Center logo"/>
+                <img src={NLPLogo} className='NLPlogo' alt="VCU NLP lab logo"/>
             </div>
         );
     }

@@ -2,6 +2,7 @@
 2019.03.12_SEED_TOPICS_AMY/*
 .DS_Store
 
+env/*
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
@@ -26,4 +27,4 @@
 /web/npm-debug.log*
 /web/yarn-debug.log*
 /web/yarn-error.log*
-Api/__pycache__/discover_topics_UMAP_Kmeans.cpython-37.pyc
+Api/__pycache__/*
