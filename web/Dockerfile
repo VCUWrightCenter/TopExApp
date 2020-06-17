@@ -1,10 +1,10 @@
 FROM node:latest
 
-# Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY package.json /usr/src/app
+ENV PATH /app/node_modules/.bin:$PATH
+
+COPY . /app
 
 RUN npm install
 
