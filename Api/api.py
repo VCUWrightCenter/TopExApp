@@ -3,7 +3,7 @@ import sys
 import service
 
 app = Flask(__name__)
-app.config["DEBUG"] = True
+#app.config["DEBUG"] = True
 
 
 @app.route('/', methods=['GET'])
@@ -20,4 +20,4 @@ def process():
         return result
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0', port=5001, debug=True)

@@ -1,8 +1,8 @@
 2019.02.12_ChallengePrompt_March2017/*
 2019.03.12_SEED_TOPICS_AMY/*
 .DS_Store
-
-env/*
+Api/env
+env
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
