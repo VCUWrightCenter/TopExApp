@@ -1,11 +1,5 @@
-FROM node:latest
-
-WORKDIR /app
-
-ENV PATH /app/node_modules/.bin:$PATH
-
-COPY . /app
-
+FROM node:10.15.2-alpine
+RUN mkdir /frontend
+WORKDIR /frontend
+COPY package.json /frontend/package.json
 RUN npm install
-
-CMD ["npm","start"]

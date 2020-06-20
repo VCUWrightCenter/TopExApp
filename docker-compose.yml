@@ -1,26 +1,29 @@
-version" '1'
+version: '3'
 
 services:
   api:
-    build: ./Api
-    expose:
-      - 5000
-    ports:
-      - 5000:5000
+    build: api
+    command: ["flask", "run", "--host=0.0.0.0"]
     volumes:
-      - ./Api:/usr/src/app
+      - ./api:/backend
     environment:
       - FLASK_ENV=development
-      - FLASK_APP=api.py
-      - FLASK_DEBUG=1
-  frontend:
-    build: ./web
-    expose:
-      - 3000
+      - FLASK_APP=app.py
     ports:
-      - 3000:3000
+      - "5000:5000"
+
+  client:
+    build: web
+    command: ["npm", "start"]
     volumes:
-      - ./web/src:/usr/src/app/src
-      - ./web/public:/usr/src/app/public
-    links:
-      - "api:api"
+      - ./web:/frontend
+      - node-modules:/frontend/node_modules
+    environment:
+      - NODE_ENV=development
+    ports:
+      - '3000:3000'
+    depends_on:
+      - api
+
+volumes:
+  node-modules:
