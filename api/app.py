@@ -1,4 +1,4 @@
-from flask import request, Flask
+from flask import request, Flask, jsonify, make_response
 import sys
 import service
 
@@ -13,6 +13,11 @@ def process():
     try:
         result = service.process(request)
     except:
-        return ("Unexpected error: ", sys.exc_info()[0])
+        response = make_response(jsonify("Unexpected error: ", sys.exc_info()[0]))
     else:
-        return result
+        response = make_response(result)
+
+    # Add Access-Control-Allow-Origin header to allow cross-site request
+    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+
+    return response
