@@ -3,8 +3,6 @@ import sys
 import service
 
 app = Flask(__name__)
-#app.config["DEBUG"] = True
-
 
 @app.route('/', methods=['GET'])
 def home():
@@ -18,6 +16,3 @@ def process():
         return ("Unexpected error: ", sys.exc_info()[0])
     else:
         return result
-
-if __name__ == "__main__":
-    app.run(port=5000, debug=True)
