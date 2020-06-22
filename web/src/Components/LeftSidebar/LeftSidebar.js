@@ -709,16 +709,16 @@ class LeftSidebar extends Component {
 
     //Responsible for sending the POST request which runs the script
     async runScript(formData, scriptArgs) {
-        var cors = "http://127.0.0.1:8080/"
-        var url = "http://127.0.0.1:5000/runScript"
-        url = "http://127.0.0.1:5000/process"
+        // var cors = "http://127.0.0.1:8080/"
+        // var url = "http://127.0.0.1:5000/runScript"
+        // url = "http://localhost:5000/process"
         const blob = new Blob([scriptArgs], {
             type: 'application/json'
         });
 
         formData.append('scriptArgs', blob)
 
-        const response = await Axios.post(cors + url, formData, {
+        const response = await Axios.post("http://localhost:5000/process", formData, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'multipart/form-data'

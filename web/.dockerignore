@@ -1,6 +1,8 @@
-*.log
-package-lock.json
-node_modules
-README.md
-.git
+.vscode
 build
+node_modules
+.dockerignore
+*.log
+Dockerfile
+package-lock.json
+README.md
