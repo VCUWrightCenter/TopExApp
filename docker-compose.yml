@@ -15,6 +15,7 @@ services:
   client:
     build: web
     command: ["npm", "start"]
+    tty: true
     volumes:
       - ./web:/frontend
       - node-modules:/frontend/node_modules
