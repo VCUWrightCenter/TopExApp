@@ -7,8 +7,6 @@ import RightSidebar from '../RightSidebar/RightSidebar.js'
 import Header from '../Header/Header'
 import Main from '../Main/Main'
 
-
-
 class App extends Component {
 
   constructor(props) {
