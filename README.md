@@ -1,8 +1,14 @@
-## Running locally with Docker
+# Running locally with Docker
 ~/> docker-compose up --build
 
 
-## Running locally for development
+# Running locally for development
+
+## Requirements 
+- Python 3.8
+- node 6.9.0
+
+## Run Script
 ~/api> virtualenv env
 
 ~/api> env\Scripts\activate (Windows)
