@@ -150,14 +150,9 @@ export const exportDataForGraph = (getThis) => {
     element.click();
 }
 
-//Used in coloring graph. We are essentially just creating a color scale from 0 to the integer equivalent of DDDDDD
+// Deterministically generate color for each cluster
 export const getClusterColor = (d, max) => {
-    let clusterData = d.cluster
-    let maxScaleVal = parseInt('DDDDDD', 16)
-    let increment = Math.round(maxScaleVal / parseInt(max))
-    let color = maxScaleVal - (increment * parseInt(clusterData))
-    color = color.toString(16)
-    return '#' + color
+    return '#' + ('00000'+(Math.abs(Math.cos(d.cluster))*(1<<24)|0).toString(16)).slice(-6);
 }
 
 //This is used to format the data for the wordcloud graph. 

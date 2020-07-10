@@ -6,8 +6,7 @@
 import React, { Component } from "react";
 import Axios from "axios";
 import './LeftSidebar.css';
-import { Tab, Dropdown } from 'semantic-ui-react';
-import { Input, Button, Header } from 'semantic-ui-react';
+import { Input, Button, Header, Tab, Dropdown, Checkbox } from 'semantic-ui-react';
 
 
 class LeftSidebar extends Component {
@@ -23,7 +22,6 @@ class LeftSidebar extends Component {
             graphData: null,
             ImportButonDisabled: true,
             ProcessingRunButtonDisabled: true,
-            GoldStandardFileName: [],
             w2vBinFileFileName: []
         };
 
@@ -192,13 +190,28 @@ class LeftSidebar extends Component {
             key: 'yule',
             text: 'yule',
             value: 'yule'
-        }
-        ]
+        }]
+
+        const clusteringMethods = [
+            {
+                key: 'hac',
+                text: 'hac',
+                value: 'hac',
+                dropdownid: "clusteringMethod"
+            },
+            {
+                key: 'kmeans',
+                text: 'kmeans',
+                value: 'kmeans'
+            }
+        ];
+
         return (
             <div className='scriptArgsTab'>
 
-                <Header as='h3'> *Required Parameters </Header>
-                <div className = 'spacing'>
+                <Header as='h3'> Parameters </Header>
+
+                <div className='spacing'>
                     <Button
                         color='yellow'
                         content='*TFIDF Corpus File Input'
@@ -223,134 +236,101 @@ class LeftSidebar extends Component {
                         })
                         this.setState({ tfidfcorpusFiles: fileNames })
                     }} />
+                    &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="Upload files for seeding tfidf, but not included in clustering."></i>
                 </div>
 
-                <div className = 'spacing'>
+                <div className='spacing'>
+                    {/* <label>Clustering Method</label> */}
+                    <Dropdown placeholder='Select Clustering Method'
+                        fluid
+                        clearable
+                        selection
+                        id="clusteringMethod"
+                        options={clusteringMethods}
+                        onChange={this.getDropdownValue}>
+                    </Dropdown>
+                </div>
+
+                <div className='spacing'>
                     <Input
                         type='number'
-                        placeholder='*Threshold'
+                        placeholder='Threshold'
                         id='threshold'
                     />
-                    {/* <label htmlFor='thresholdlabel'>threshold</label>
-                    <input type='number' id='threshold' /> */}
+                    &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="Corresponds to the cut height of the dendrogram for HAC clustering and K for k-means clustering."></i>
                 </div>
 
-                <hr style={{ color: 'black', border: 'solid', width: '100%', borderWidth: '0.5px' }} />
-
-                <Header as='h3' className='header3'> Optional Parameters </Header>
-
-                <div className = 'spacing'>
-                    {/* <label>Word Vector Type </label> */}
-                    <Dropdown placeholder='Select wordVectorType'
+                <div className='spacing'>
+                    <Dropdown placeholder='Vectorization method'
                         clearable
                         fluid
                         selection
                         options={wordVectorType}
                         onChange={this.getDropdownValue} />
+                    &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="Method used for generating phrase vectors"></i>
                 </div>
 
-
-                <div className = 'spacing'>
-
-                    <Button
-                        color='yellow'
-                        content='w2vBinFile'
-                        icon='file'
-                        onClick={() => document.getElementById('w2vBinFile').click()}
-                        labelPosition="left"
-                        className='buttonText'
-                    />
-                    {this.state.w2vBinFileFileName.map((fileName) => {
-                        return (
-                            <div className='fileListEntry' key={fileName}>
-                                <label key={fileName} htmlFor={fileName} className='file-list-label' >{fileName}</label>
-                            </div>
-                        )
-                    })
-                    }
-                    <input hidden type='file' id='w2vBinFile' onChange={(e) => {
-                        let files = document.getElementById('w2vBinFile').files
-                        let fileNames = []
-                        Object.values(files).forEach((elem) => {
-                            fileNames.push(elem.name)
+                {this.state.wordVectorType === "pretrained" ?
+                    <div className='spacing'>
+                        <Button
+                            color='yellow'
+                            content='w2vBinFile'
+                            icon='file'
+                            onClick={() => document.getElementById('w2vBinFile').click()}
+                            labelPosition="left"
+                            className='buttonText'
+                        />
+                        {this.state.w2vBinFileFileName.map((fileName) => {
+                            return (
+                                <div className='fileListEntry' key={fileName}>
+                                    <label key={fileName} htmlFor={fileName} className='file-list-label' >{fileName}</label>
+                                </div>
+                            )
                         })
-                        this.setState({ w2vBinFileFileName: fileNames })
-                    }} />
-                </div>
+                        }
+                        <input hidden type='file' id='w2vBinFile' onChange={(e) => {
+                            let files = document.getElementById('w2vBinFile').files
+                            let fileNames = []
+                            Object.values(files).forEach((elem) => {
+                                fileNames.push(elem.name)
+                            })
+                            this.setState({ w2vBinFileFileName: fileNames })
+                        }} />
+                    </div> : null}
 
-
-                <div className = 'spacing'>
-                    <Input
-                        placeholder='Prefix Label'
-                        id='prefix'
-                    />
-                    {/* <label htmlFor='prefixlabel'>prefix</label>
-                    <input type='text' id='prefix' /> */}
-                </div>
-
-
-                <div className = 'spacing'>
+                <div className='spacing'>
                     <Input
                         placeholder='Window Size'
                         id='windowSize'
                     />
-                    {/* <label htmlFor='windowSizelabel'>windowSize</label>
-                    <input type='text' id='windowSize' /> */}
+                    &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="Length of phrase extracted from each sentence."></i>
                 </div>
 
-
-                <div className = 'spacing'>
-
-                    <Button
-                        color='yellow'
-                        content='goldStandard'
-                        icon='file'
-                        onClick={() => document.getElementById('goldStandard').click()}
-                        className='buttonText'
-                        labelPosition="left"
-                    />
-                    {this.state.GoldStandardFileName.map((fileName) => {
-                        return (
-                            <div className='fileListEntry' key={fileName}>
-                                <label key={fileName} htmlFor={fileName} className='file-list-label' >{fileName}</label>
-                            </div>
-                        )
-                    })
-                    }
-                    <input hidden type='file' id='goldStandard' onChange={(e) => {
-                        let files = document.getElementById('goldStandard').files
-                        let fileNames = []
-                        Object.values(files).forEach((elem) => {
-                            fileNames.push(elem.name)
-                        })
-                        this.setState({ GoldStandardFileName: fileNames })
-                    }} />
-                </div>
-
-                <div className = 'spacing'>
+                <div className='spacing'>
                     <Input
                         type='number'
                         placeholder='Dimensions'
                         id='dimensions'
                     />
-                    {/* <label htmlFor='dimensionslabel'>dimensions</label>
-                    <input type='number' id='dimensions' /> */}
+                    &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="Only relevant for UMAP and SVD clustering. Dimensions to which the tfidf matrix is reduced."></i>
                 </div>
 
-
-                <div className = 'spacing'>
+                <div className='spacing'>
                     <Input
                         type='number'
                         placeholder='Umap Neighbors'
                         id='umap_neighbors'
                     />
-                    {/* <label htmlFor='umap_neighborslabel'>umap_neighbors</label>
-                    <input type='number' id='umap_neighbors' /> */}
+                    &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="Only relevant for UMAP clustering"></i>
                 </div>
 
-
-                <div className = 'spacing'>
-                    {/* <label>Distance metric </label> */}
+                <div className='spacing'>
                     <Dropdown placeholder='Select Distance metric'
                         fluid
                         clearable
@@ -358,37 +338,21 @@ class LeftSidebar extends Component {
                         id="distmet"
                         options={DistanceMetric}
                         onChange={this.getDropdownValue} />
+                        &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="Distance metric is used to compare points for clustering"></i>
                 </div>
 
-
-                <div className = 'spacing'>
-                    <Input
-                        placeholder='include_input_in_tfidf'
-                        id='include_input_in_tfidf'
-                    />
-                    {/* <label htmlFor='include_input_in_tfidflabel'>include_input_in_tfidf</label>
-                    <input type='text' id='include_input_in_tfidf' /> */}
+                <div className='spacing'>
+                    <Checkbox id='include_input_in_tfidf' label="Include input in tfidf?" defaultChecked />
+                    &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="Checking this box means that token scores are calculated using the tfidf, otherwise average token scores are used."></i>
                 </div>
 
-
-                <div className = 'spacing'>
-                    <Input
-                        placeholder='output_labeled_sentences'
-                        id='output_labeled_sentences'
-                    />
-                    {/* <label htmlFor='output_labeled_sentenceslabel'>output_labeled_sentences</label>
-                    <input type='text' id='output_labeled_sentences' /> */}
+                <div className='spacing'>
+                    <Checkbox id='include_sentiment' label="Include sentiment?" title="" defaultChecked />
+                    &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="Checking this box means that part of speech and sentiment will be used to weight the importance of tokens."></i>
                 </div>
-
-                <div className = 'spacing'>
-                    <Input
-                        placeholder='use_kmeans'
-                        id='use_kmeans'
-                    />
-                    {/* <label htmlFor='use_kmeanslabel'>use_kmeans</label>
-                    <input type='text' id='use_kmeans' /> */}
-                </div>
-
             </div >
         )
     }
@@ -420,34 +384,30 @@ class LeftSidebar extends Component {
         }
         tfidfcorpus = temp;
         temp = '';
-        let wordVectorType = (this.state.wordVectorType == null) ? null : this.state.wordVectorType;
-        let w2vBinFile = document.getElementById('w2vBinFile').files[0] == null ? null : this.getFileContents(document.getElementById('w2vBinFile').files[0]); //This needs to be changed to a file input
-        let prefix = document.getElementById('prefix').value === '' ? null : document.getElementById('prefix').value;
-        let windowSize = document.getElementById('windowSize').value === '' ? null : document.getElementById('windowSize').value;
-        let goldStandard = document.getElementById('goldStandard').files[0] == null ? null : this.getFileContents(document.getElementById('goldStandard').files[0]);
 
-        let threshold = document.getElementById('threshold').value;
+        let clusteringMethod = (this.state.clusteringMethod == null) ? "hac" : this.state.clusteringMethod;
+        let threshold = document.getElementById('threshold').value === '' ? null : document.getElementById('threshold').value;
+        let wordVectorType = (this.state.wordVectorType == null) ? null : this.state.wordVectorType;
+        let w2vBinFile = document.getElementById('w2vBinFile')?.files[0] != null ? this.getFileContents(document.getElementById('w2vBinFile').files[0]) : null; //This needs to be changed to a file input
+        let windowSize = document.getElementById('windowSize').value === '' ? 6 : document.getElementById('windowSize').value;
         let dimensions = document.getElementById('dimensions').value === '' ? null : document.getElementById('dimensions').value;
         let umap_neighbors = document.getElementById('umap_neighbors').value === '' ? null : document.getElementById('umap_neighbors').value;
         let DistanceMetric = (this.state.DistanceMetric == null) ? null : this.state.DistanceMetric;
-        let include_input_in_tfidf = document.getElementById('include_input_in_tfidf').value === '' ? null : document.getElementById('include_input_in_tfidf').value;
-        let output_labeled_sentences = document.getElementById('output_labeled_sentences').value === '' ? null : document.getElementById('output_labeled_sentences').value;
-        let use_kmeans = document.getElementById('use_kmeans').value === '' ? null : document.getElementById('use_kmeans').value;
+        let include_input_in_tfidf = document.getElementById('include_input_in_tfidf').checked;
+        let include_sentiment = document.getElementById('include_sentiment').checked;
 
         let args = {
+            'clusteringMethod': clusteringMethod,
             'tfidfcorpus': tfidfcorpus,
             'wordVectorType': wordVectorType,
             'w2vBinFile': w2vBinFile,
-            'prefix': prefix,
-            'goldStandard': goldStandard,
             'windowSize': windowSize,
             'threshold': threshold,
             'dimensions': dimensions,
             'umap_neighbors': umap_neighbors,
             'DistanceMetric': DistanceMetric,
             'include_input_in_tfidf': include_input_in_tfidf,
-            'output_labeled_sentences': output_labeled_sentences,
-            'use_kmeans': use_kmeans,
+            'include_sentiment': include_sentiment,
             scatter_plot: 'all',//Default values. Are these appropriate???
             outputdir: "./"
         }
@@ -574,7 +534,7 @@ class LeftSidebar extends Component {
                                 return (
                                     <div className='fileListEntry' key={fileName}>
                                         <label htmlFor={fileName} className='file-list-label' >{fileName}</label>
-                                        <input id={fileName} type='checkBox' className='file-list-checkbox' value={fileName} defaultChecked />
+                                        <input id={fileName} type='checkBox' className='file-list-checkbox' defaultChecked />
                                     </div>
                                 )
                             })
@@ -709,14 +669,11 @@ class LeftSidebar extends Component {
 
     //Responsible for sending the POST request which runs the script
     async runScript(formData, scriptArgs) {
-        // var cors = "http://127.0.0.1:8080/"
-        // var url = "http://127.0.0.1:5000/runScript"
-        // url = "http://localhost:5000/process"
-        const blob = new Blob([scriptArgs], {
-            type: 'application/json'
+        let dict = JSON.parse(scriptArgs);
+        Object.keys(dict).forEach(function (key) {
+            console.log(key, dict[key]);
+            formData.append(key, dict[key]);
         });
-
-        formData.append('scriptArgs', blob)
 
         const response = await Axios.post("http://localhost:5000/process", formData, {
             headers: {
