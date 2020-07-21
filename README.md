@@ -17,6 +17,8 @@
 
 ~/api> pip install -r requirements.txt
 
+~/api> python -m nltk.downloader all
+
 ~/api> flask run 
 
 ~/web> npm install
