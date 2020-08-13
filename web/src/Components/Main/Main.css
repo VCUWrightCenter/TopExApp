@@ -1,10 +1,7 @@
 .main-wrapper{
     text-align: center;
     grid-area: main;
-    border:solid;
-    border-width: 2px;
-    border-left: 0px;
-    border-right: 0px;
+    border-top: 1px solid #dcdcdc;
     height: 100%;
     width: 100%
 }
@@ -14,11 +11,27 @@
     height: 100%
 }
 
-.borderless{
+.tabs{
     border: 0px;
 }
 
 .fullWindow{
     height: 100%;
-    width: 100%
+    width: 100%;
+}
+
+#graphTabs {
+    margin: 20px 0 0;
+}
+
+.menu {
+    border: none !important;
+}
+
+a.item {
+    width: 20% !important;
+}
+
+.ui.pointing.menu .active.item:after {
+    display: none;
 }

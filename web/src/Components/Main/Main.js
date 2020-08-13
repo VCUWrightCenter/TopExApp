@@ -43,7 +43,7 @@ export default class Main extends Component {
         return (
             <div className='main-wrapper' id='mainWrapper'>
                 <div id='graphTabs' className='main' hidden={true}>
-                    <Tab className = 'fullWindow' menu = {{ fluid:true, widths:3,  attached: true , pointing: true , className: 'borderless'}} panes={this.state.panes} renderActiveOnly={false} />
+                    <Tab className = 'fullWindow' menu = {{ fluid:true, widths:3,  attached: true , pointing: true , className: 'tabs'}} panes={this.state.panes} renderActiveOnly={false} />
                 </div>
             </div>
         );
