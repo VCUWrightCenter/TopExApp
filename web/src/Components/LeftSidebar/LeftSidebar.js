@@ -20,7 +20,7 @@ class LeftSidebar extends Component {
             tfidfcorpusFiles: [],
             leftTabs: null,
             graphData: null,
-            ImportButonDisabled: true,
+            ImportButtonDisabled: true,
             ProcessingRunButtonDisabled: true,
             w2vBinFileFileName: []
         };
@@ -208,7 +208,7 @@ class LeftSidebar extends Component {
         ];
 
         return (
-            <div className='scriptArgsTab'>
+            <div className='leftSidebarContainer scriptArgsTab'>
 
                 <Header as='h3'> Parameters </Header>
 
@@ -498,12 +498,12 @@ class LeftSidebar extends Component {
 
         if (file != null) {
             this.setState({
-                ImportButonDisabled: false
+                ImportButtonDisabled: false
             })
         }
         else {
             this.setState({
-                ImportButonDisabled: true
+                ImportButtonDisabled: true
             })
         }
     }
@@ -512,7 +512,7 @@ class LeftSidebar extends Component {
     //Responsible for generating the jsx in the file input tab
     generateFileInput() {
         return (
-            <div>
+            <div className="leftSidebarContainer">
                 <div className='file-input'>
                     <Button.Group vertical>
                         <Button
@@ -524,12 +524,7 @@ class LeftSidebar extends Component {
                             content='Upload files for processing'
                             className='buttonText'
                         />
-                        <Button
-                            color='black'
-                            loading={this.state.runningScript}
-                            onClick={(e) => { document.getElementById('submitButton').click() }}
-                            content='Run'
-                        />
+                        
                         <div id="fileList" className='fileList'>
                             {this.state.fileList.map((fileName) => {
                                 return (
@@ -541,6 +536,14 @@ class LeftSidebar extends Component {
                             })
                             }
                         </div>
+
+                        <Button
+                            color='black'
+                            loading={this.state.runningScript}
+                            onClick={(e) => { document.getElementById('submitButton').click() }}
+                            content='Run'
+                            className='action'
+                        />                        
                     </Button.Group>
                     <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
                         <input hidden id='fileProcessingInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
@@ -553,7 +556,7 @@ class LeftSidebar extends Component {
     //Responsible for generating the jsx in the file input tab
     generateFileImportExport() {
         return (
-            <div>
+            <div className="leftSidebarContainer">
                 <div className='file-input'>
                     <Button.Group vertical>
                         <Button
@@ -566,9 +569,10 @@ class LeftSidebar extends Component {
                         />
                         <Button
                             color='black'
-                            disabled={this.state.ImportButonDisabled}
+                            disabled={this.state.ImportButtonDisabled}
                             content="Import"
                             onClick={(e) => this.importData(e)}
+                            className='action'
                         />
                         <Button.Or />
                         <Button
