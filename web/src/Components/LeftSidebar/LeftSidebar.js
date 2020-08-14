@@ -33,8 +33,9 @@ class LeftSidebar extends Component {
 
     render() {
         let panes = [
-            { menuItem: 'File input', pane: { key: 'pane1', content: this.generateFileInput(), className: "pane" } },
-            { menuItem: 'Options', pane: { key: 'pane2', content: this.generateScriptArgsTab(), className: "pane" } },
+            { menuItem: 'File Manager', pane: { key: 'pane1', content: this.generateFileInput(), className: "pane" } },
+            { menuItem: 'Import/Export', pane: { key: 'pane2', content: this.generateFileImportExport(), className: "pane" } },
+            { menuItem: 'Options', pane: { key: 'pane3', content: this.generateScriptArgsTab(), className: "pane" } }
         ]
 
         return (
@@ -540,7 +541,21 @@ class LeftSidebar extends Component {
                             })
                             }
                         </div>
-                        <Button.Or />
+                    </Button.Group>
+                    <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
+                        <input hidden id='fileProcessingInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
+                        <button hidden id="submitButton" className="submitButton"> Run </button>
+                    </form>
+                </div>
+            </div>)
+    }
+
+    //Responsible for generating the jsx in the file input tab
+    generateFileImportExport() {
+        return (
+            <div>
+                <div className='file-input'>
+                    <Button.Group vertical>
                         <Button
                             color='yellow'
                             onClick={() => document.getElementById('importFileInput').click()}
@@ -563,10 +578,6 @@ class LeftSidebar extends Component {
                             className='buttonText'
                         />
                     </Button.Group>
-                    <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
-                        <input hidden id='fileProcessingInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
-                        <button hidden id="submitButton" className="submitButton"> Run </button>
-                    </form>
                     <form>
                         <input id='importFileInput' type="file" hidden onChange={(e) => this.checkImportFile(e)} />
                         <button id='importFileButton' type='submit' hidden onClick={(e) => this.importData(e)}>Import</button>

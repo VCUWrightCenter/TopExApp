@@ -56,3 +56,13 @@
 .spacing{
     margin-bottom: 10px
 }
+
+.sidebar a.item {
+    width: 120px !important;
+    border-bottom: 1px solid #dcdcdc !important;
+}
+
+.sidebar .ui.tabular.menu .active.item {
+    border-top: none !important;
+    border-radius: 0 !important;
+}
