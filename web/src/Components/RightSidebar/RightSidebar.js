@@ -2,6 +2,8 @@
 
 import React, { Component } from "react";
 import './RightSidebar.css'
+import * as util from '../Main/graphUtil.js'
+import { Button } from 'semantic-ui-react'
 
 class RightSidebar extends Component {
 
@@ -32,6 +34,19 @@ class RightSidebar extends Component {
                         <div class="card"><h4>Phrase</h4> {phrase}</div>
                         <div class="card"><h4>Raw Sentence</h4> {pointInfo.raw_sent}</div>
                         <div class="card"><h4>Cluster Info</h4> {cluster_info}</div>
+                        <div id='exportButtons' className='exportButtons'>
+                            <Button
+                                onClick={(e) => util.exportSVGAsPNG("scatterplotSVG")}
+                                content="Export Scatterplot"
+                                className="ui black button"
+                            />
+
+                            <Button
+                                onClick={(e) => util.exportSVGAsPNG("WordCloudSVG")}
+                                content="Export Word Cloud"
+                                className="ui black button"
+                            />
+                        </div>
                     </div>
                     )
                 })

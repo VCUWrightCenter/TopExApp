@@ -258,6 +258,7 @@ class LeftSidebar extends Component {
                         type='number'
                         placeholder='Threshold'
                         id='threshold'
+                        min='0'
                     />
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Corresponds to the cut height of the dendrogram for HAC clustering and K for k-means clustering."></i>
@@ -304,8 +305,10 @@ class LeftSidebar extends Component {
 
                 <div className='spacing'>
                     <Input
+                        type='number'
                         placeholder='Window Size'
                         id='windowSize'
+                        min='0'
                     />
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Length of phrase extracted from each sentence."></i>
@@ -316,6 +319,7 @@ class LeftSidebar extends Component {
                         type='number'
                         placeholder='Dimensions'
                         id='dimensions'
+                        min='0'
                     />
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Only relevant for UMAP and SVD clustering. Dimensions to which the tfidf matrix is reduced."></i>
@@ -326,6 +330,7 @@ class LeftSidebar extends Component {
                         type='number'
                         placeholder='Umap Neighbors'
                         id='umap_neighbors'
+                        min='0'
                     />
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Only relevant for UMAP clustering"></i>
