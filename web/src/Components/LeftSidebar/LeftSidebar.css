@@ -1,7 +1,6 @@
 .sidebar{
-    border: solid;
-    border-width: 2px;
-    border-left: 0px;
+    border-top: 1px solid #dcdcdc;
+    border-right: 1px solid #dcdcdc;
     height: 100%;
     grid-area: left;
     position: relative;
@@ -56,4 +55,42 @@
 
 .spacing{
     margin-bottom: 10px
+}
+
+.sidebar a.item {
+    width: 120px !important;
+    border-bottom: 1px solid #dcdcdc !important;
+}
+
+.sidebar .ui.tabular.menu .active.item {
+    border-top: none !important;
+    border-radius: 0 !important;
+}
+
+.button {
+    border-radius: 8px !important;
+}
+
+.action {
+    margin-top: 20px !important;
+    width: 50% !important;
+}
+
+.leftSidebarContainer {
+    margin: 0 auto;
+    width: 260px;
+}
+
+.spacing {
+    margin: 12px 0;
+}
+
+.ui.fluid.dropdown {
+    display: inline-block !important;
+    max-width: 210px;
+    min-width: 160px !important;
+}
+
+.ui.input>input[type="text"], .ui.input>input[type="number"] {
+    width: 210px;
 }

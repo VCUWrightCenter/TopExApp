@@ -2,6 +2,8 @@
 
 import React, { Component } from "react";
 import './RightSidebar.css'
+import * as util from '../Main/graphUtil.js'
+import { Button } from 'semantic-ui-react'
 
 class RightSidebar extends Component {
 
@@ -24,16 +26,27 @@ class RightSidebar extends Component {
                 this.setState({
                     pointData: pointInfo,
                     pointDisplay: (
-                    <div className = 'dataPointText'>
-                        <div>Label: {pointInfo.label}</div>
-                        <br/>
-                        <div>Cluster: {pointInfo.cluster}</div>
-                        <br/>
-                        <div>Phrase: {phrase}</div>
-                        <br/>
-                        <div>Raw Sentence: {pointInfo.raw_sent}</div>
-                        <br/>
-                        <div>Cluster Info: {cluster_info}</div>
+                    <div className = 'card-wrapper'>
+                        <div class="card">
+                            <div><span>Label</span> <h3>{pointInfo.label}</h3></div>
+                            <div><span>Cluster</span> <h3>{pointInfo.cluster}</h3></div>
+                        </div>
+                        <div class="card"><h4>Phrase</h4> {phrase}</div>
+                        <div class="card"><h4>Raw Sentence</h4> {pointInfo.raw_sent}</div>
+                        <div class="card"><h4>Cluster Info</h4> {cluster_info}</div>
+                        <div id='exportButtons' className='exportButtons'>
+                            <Button
+                                onClick={(e) => util.exportSVGAsPNG("scatterplotSVG")}
+                                content="Export Scatterplot"
+                                className="ui black button"
+                            />
+
+                            <Button
+                                onClick={(e) => util.exportSVGAsPNG("WordCloudSVG")}
+                                content="Export Word Cloud"
+                                className="ui black button"
+                            />
+                        </div>
                     </div>
                     )
                 })
@@ -47,7 +60,6 @@ class RightSidebar extends Component {
             <div className='right-sidebar'>
                 {this.state.pointDisplay}
             </div>
-
         );
     }
 }

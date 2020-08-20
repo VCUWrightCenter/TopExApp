@@ -74,16 +74,8 @@ class WordCloud extends Component {
             - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingRight)
             - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingLeft)
 
-        let height = document.getElementById('mainWrapper').offsetHeight
-        // margin.top -
-        // margin.bottom -
-        // document.getElementsByClassName('ui segment')[0].offsetHeight
-        // - document.getElementById('exportButtons').offsetHeight
-        // - document.getElementById('dfSelectContainer').offsetHeight
-        // - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingTop)
-        // - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingBottom)
-        // - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).marginBottom)
-        // - 30
+        let height = document.getElementById('mainWrapper').offsetHeight -
+        250
 
         if (this.state.dimensions == null) {
             await this.setState({
@@ -184,14 +176,10 @@ class WordCloud extends Component {
                 <div className='graph' id="WordCloudNode"></div>
                 <div id='exportButtons' className='exportButtons'>
                     <Button
-                        onClick={(e) => util.exportSVGAsPNG("WordCloudSVG")}
-                        content="Export graph as png"
-                    />
-                    <Button
                         onClick={() => util.exportDataForGraph(this)}
                         content="Export graph data"
+                        className="ui black button"
                     />
-
                 </div>
 
             </div>
