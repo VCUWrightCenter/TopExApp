@@ -143,15 +143,15 @@ class Scatterplot extends Component {
                 <div id="dfSelectContainer" hidden={true}>
                     <div className="gridContainer" id='gridContainer'>
                         <div className='gridItem'>
-                            <label for="dataframe1Radio">UMAP</label>
+                            <label htmlFor="dataframe1Radio">UMAP</label>
                             <input type='radio' id='dataframe1Radio' name='dfSelect' value='1' onClick={() => this.setState({ dataframe_identifier: 0 })} defaultChecked />
                         </div>
                         <div className='gridItem'>
-                            <label for="dataframe2Radio">MDS</label>
+                            <label htmlFor="dataframe2Radio">MDS</label>
                             <input type='radio' id='dataframe2Radio' name='dfSelect' value='2' onClick={() => this.setState({ dataframe_identifier: 1 })} />
                         </div>
                         <div className='gridItem'>
-                            <label for="dataframe3Radio">SVD</label>
+                            <label htmlFor="dataframe3Radio">SVD</label>
                             <input type='radio' id='dataframe3Radio' name='dfSelect' value='3' onClick={() => this.setState({ dataframe_identifier: 2 })} />
                         </div>
                     </div>
