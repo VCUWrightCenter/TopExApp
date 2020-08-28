@@ -11,7 +11,7 @@ class Scatterplot extends Component {
         this.state = {
             graphType: 'scatterplot',
             dataframe_identifier: 0,
-            completeObjectsArray: null,
+            dataPoints: null,
             pre_process_data: null,
             dimensions: null
         }
@@ -32,8 +32,7 @@ class Scatterplot extends Component {
 
     //Reponsible for drawing the graph. This is the only place where D3 should live. 
     async drawChart(dataFrameNumber) {
-        let dataArray = util.reformatJSON(this)
-        let data = dataArray[dataFrameNumber]
+        let data = util.reformatJSON(this)
 
         let max = util.getMax(data)
 

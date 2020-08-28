@@ -11,7 +11,7 @@ class WordCloud extends Component {
         this.state = {
             graphType: 'wordcloud',
             cluster_identifier: 0,
-            completeObjectsArray: null,
+            dataPoints: null,
             pre_process_data: null,
             dimensions: null,
             dropDownOptions: null,
@@ -47,13 +47,13 @@ class WordCloud extends Component {
     //Reponsible for drawing the graph. This is the only place where D3 should live. 
     async drawChart(clusterNumber) {
 
-        let unprocessed = util.reformatJSON(this)
+        let data = util.reformatJSON(this)
 
-        let dataArray = util.reformatJSONWordcloud(unprocessed, this)
+        let clusterArray = util.reformatJSONWordcloud(data, this)
 
-        let data = { "children": dataArray[clusterNumber] }
+        let clusterData = { "children": clusterArray[clusterNumber] }
 
-        let max = util.getMax(unprocessed[0])
+        let max = util.getMax(data)
 
         if (this.state.max !== max) {
             await this.setState({
@@ -101,11 +101,11 @@ class WordCloud extends Component {
         // .attr("transform", "translate(" + margin.left + "," + margin.top + ")"
 
         var diameter = height;
-        var bubble = d3.pack({ "children": data })
+        var bubble = d3.pack({ "children": clusterData })
             .size([diameter, diameter])
             .padding(1.5);
 
-        var nodes = d3.hierarchy(data)
+        var nodes = d3.hierarchy(clusterData)
             .sum(function (d) { return d.value });
 
         var node = svg.selectAll(".node")
