@@ -1,10 +1,10 @@
 import json
-import medtop.core as medtop
+import topex.core as topex
 import pandas as pd
 from flask import request
 
 class returnObject():
-    "Return object accepted by the MedTop application."
+    "Return object accepted by the TopEx application."
     def __init__(self, df1 = None, df2 = None, df3 = None, main_cluster_topics = None, count = None):
         self.df1 = df1
         self.df2 = df2
@@ -70,17 +70,18 @@ def process(request: request):
 def cluster(df:pd.DataFrame, seed_topics_df:pd.DataFrame, clustering_method:str, height:int, k:int, vectorization_method:str, window_size:int, dimensions:int, 
             umap_neighbors:int, dist_metric:str, include_input_in_tfidf:bool, include_sentiment:bool):
     "Clusters the sentences in a dataframe"
-    data, doc_df = medtop.import_data(df, save_results=False, file_name=None, stop_words_file=None)
-    tfidf, dictionary = medtop.create_tfidf(doc_df, seed_topics_df=seed_topics_df)
-    data = medtop.get_phrases(data, dictionary.token2id, tfidf, window_size, include_input_in_tfidf, include_sentiment)
-    data = medtop.get_vectors(vectorization_method, data, dictionary = dictionary, tfidf = tfidf)
-    data = medtop.assign_clusters(data, method=clustering_method, k=k, height=height, dist_metric=dist_metric)
-    cluster_df = medtop.get_cluster_topics(data, doc_df)
+    data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_file=None)
+    tfidf, dictionary = topex.create_tfidf(doc_df, seed_topics_df=seed_topics_df)
+    data = topex.get_phrases(data, dictionary.token2id, tfidf, window_size, include_input_in_tfidf, include_sentiment)
+    data = topex.get_vectors(vectorization_method, data, dictionary = dictionary, tfidf = tfidf)
+    data, linkage_matrix, max_height, height = topex.assign_clusters(data, method=clustering_method, k=k, height=height, dist_metric=dist_metric)
+    cluster_df = topex.get_cluster_topics(data, doc_df)
 
     finalObject = returnObject()
-    finalObject.df1 = medtop.visualize_clustering(data, method = "umap", show_chart = False, return_data = True).to_json()
-    finalObject.df2 = medtop.visualize_clustering(data, method = "mds", show_chart = False, return_data = True).to_json()
-    finalObject.df3 = medtop.visualize_clustering(data, method = "svd", show_chart = False, return_data = True).to_json()
+    #TODO: Only cluster once
+    finalObject.df1 = topex.visualize_clustering(data, method = "umap", show_chart = False, return_data = True).to_json()
+    finalObject.df2 = topex.visualize_clustering(data, method = "svd", show_chart = False, return_data = True).to_json()
+    finalObject.df3 = topex.visualize_clustering(data, method = "svd", show_chart = False, return_data = True).to_json()
     finalObject.main_cluster_topics = list(cluster_df.topics)
     finalObject.count = len(data)
     return dict(finalObject)

@@ -1,7 +1,0 @@
-README.md
-setup.py
-cs325_guiviz.egg-info/PKG-INFO
-cs325_guiviz.egg-info/SOURCES.txt
-cs325_guiviz.egg-info/dependency_links.txt
-cs325_guiviz.egg-info/requires.txt
-cs325_guiviz.egg-info/top_level.txt
