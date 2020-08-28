@@ -5,19 +5,23 @@ from flask import request
 
 class returnObject():
     "Return object accepted by the TopEx application."
-    def __init__(self, df1 = None, df2 = None, df3 = None, main_cluster_topics = None, count = None):
-        self.df1 = df1
-        self.df2 = df2
-        self.df3 = df3
+    def __init__(self, viz_df = None, data = None, linkage_matrix = None, main_cluster_topics = None, count = None, max_thresh=None, thresh = None):
+        self.viz_df = viz_df
+        self.data = data
+        self.linkage_matrix = linkage_matrix
         self.main_cluster_topics = main_cluster_topics
         self.count = count
+        self.max_thresh = max_thresh
+        self.thresh = thresh
 
     def __iter__(self):
-        yield 'df1', self.df1
-        yield 'df2', self.df2
-        yield 'df3', self.df3
+        yield 'viz_df', self.viz_df
+        yield 'data', self.data
+        yield 'linkage_matrix', self.linkage_matrix
         yield 'main_cluster_topics', self.main_cluster_topics
         yield 'count', self.count
+        yield 'max_thresh', self.max_thresh
+        yield 'thresh', self.thresh
 
 def cast_int(param: str):
     "Casts valid int parameter"
@@ -53,6 +57,7 @@ def process(request: request):
         seed_topics_df = None
 
     clustering_method = params['clusteringMethod']
+    visualization_method = params['visualizationMethod'] if str_valid(params['visualizationMethod']) else 'umap'
     height = cast_int(params['threshold']) if clustering_method == "hac" else None
     k = cast_int(params['threshold']) if clustering_method == "kmeans" else None
     vectorization_method = params['wordVectorType'] if str_valid(params['wordVectorType']) else 'tfidf'
@@ -65,23 +70,27 @@ def process(request: request):
     include_sentiment = bool(params['include_sentiment'])
 
     return cluster(df, seed_topics_df, clustering_method, height, k, vectorization_method, window_size, dimensions, umap_neighbors, dist_metric, 
-                include_input_in_tfidf, include_sentiment)
+                include_input_in_tfidf, include_sentiment, visualization_method)
 
 def cluster(df:pd.DataFrame, seed_topics_df:pd.DataFrame, clustering_method:str, height:int, k:int, vectorization_method:str, window_size:int, dimensions:int, 
-            umap_neighbors:int, dist_metric:str, include_input_in_tfidf:bool, include_sentiment:bool):
+            umap_neighbors:int, dist_metric:str, include_input_in_tfidf:bool, include_sentiment:bool, visualization_method:str):
     "Clusters the sentences in a dataframe"
     data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_file=None)
     tfidf, dictionary = topex.create_tfidf(doc_df, seed_topics_df=seed_topics_df)
     data = topex.get_phrases(data, dictionary.token2id, tfidf, window_size, include_input_in_tfidf, include_sentiment)
     data = topex.get_vectors(vectorization_method, data, dictionary = dictionary, tfidf = tfidf)
-    data, linkage_matrix, max_height, height = topex.assign_clusters(data, method=clustering_method, k=k, height=height, dist_metric=dist_metric)
+    data, linkage_matrix, max_thresh, thresh = topex.assign_clusters(data, method=clustering_method, k=k, height=height, dist_metric=dist_metric)
     cluster_df = topex.get_cluster_topics(data, doc_df)
 
     finalObject = returnObject()
     #TODO: Only cluster once
-    finalObject.df1 = topex.visualize_clustering(data, method = "umap", show_chart = False, return_data = True).to_json()
-    finalObject.df2 = topex.visualize_clustering(data, method = "svd", show_chart = False, return_data = True).to_json()
-    finalObject.df3 = topex.visualize_clustering(data, method = "svd", show_chart = False, return_data = True).to_json()
+    finalObject.viz_df = topex.visualize_clustering(data, method = visualization_method, show_chart = False, return_data = True).to_json()
+    finalObject.data = data.to_json()
+    finalObject.linkage_matrix = [list(row) for row in list(linkage_matrix)] if linkage_matrix is not None else []
+    # finalObject.df2 = topex.visualize_clustering(data, method = "svd", show_chart = False, return_data = True).to_json()
+    # finalObject.df3 = topex.visualize_clustering(data, method = "svd", show_chart = False, return_data = True).to_json()
     finalObject.main_cluster_topics = list(cluster_df.topics)
     finalObject.count = len(data)
+    finalObject.max_thresh = max_thresh
+    finalObject.thresh = thresh
     return dict(finalObject)

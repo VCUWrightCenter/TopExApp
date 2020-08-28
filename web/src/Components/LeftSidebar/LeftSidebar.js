@@ -207,6 +207,30 @@ class LeftSidebar extends Component {
             }
         ];
 
+        const visualizationMethods = [
+            {
+                key: 'umap',
+                text: 'umap',
+                value: 'umap',
+                dropdownid: "visualizationMethod"
+            },
+            {
+                key: 'svd',
+                text: 'svd',
+                value: 'svd'
+            },
+            {
+                key: 'tsne',
+                text: 'tsne',
+                value: 'tsne'
+            },
+            {
+                key: 'mds',
+                text: 'mds',
+                value: 'mds'
+            }
+        ];
+
         return (
             <div className='leftSidebarContainer scriptArgsTab'>
 
@@ -249,6 +273,17 @@ class LeftSidebar extends Component {
                         selection
                         id="clusteringMethod"
                         options={clusteringMethods}
+                        onChange={this.getDropdownValue}>
+                    </Dropdown>
+                </div>
+
+                <div className='spacing'>
+                    <Dropdown placeholder='Select Visualization Method'
+                        fluid
+                        clearable
+                        selection
+                        id="visualizationMethod"
+                        options={visualizationMethods}
                         onChange={this.getDropdownValue}>
                     </Dropdown>
                 </div>
@@ -392,6 +427,7 @@ class LeftSidebar extends Component {
         temp = '';
 
         let clusteringMethod = (this.state.clusteringMethod == null) ? "hac" : this.state.clusteringMethod;
+        let visualizationMethod = (this.state.visualizationMethod == null) ? "umap" : this.state.visualizationMethod;
         let threshold = document.getElementById('threshold').value === '' ? null : document.getElementById('threshold').value;
         let wordVectorType = (this.state.wordVectorType == null) ? null : this.state.wordVectorType;
         let w2vBinFile = document.getElementById('w2vBinFile')?.files[0] != null ? this.getFileContents(document.getElementById('w2vBinFile').files[0]) : null; //This needs to be changed to a file input
@@ -404,6 +440,7 @@ class LeftSidebar extends Component {
 
         let args = {
             'clusteringMethod': clusteringMethod,
+            'visualizationMethod': visualizationMethod,
             'tfidfcorpus': tfidfcorpus,
             'wordVectorType': wordVectorType,
             'w2vBinFile': w2vBinFile,
@@ -704,6 +741,9 @@ class LeftSidebar extends Component {
             const data = response.data
             return data
         }).catch((err) => {
+            this.setState({
+                runningScript: false
+            })
             console.error(err.message)
             alert(err);
             document.getElementById('submitButton').disabled = false;

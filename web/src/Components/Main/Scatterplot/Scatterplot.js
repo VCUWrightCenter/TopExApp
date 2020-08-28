@@ -11,7 +11,7 @@ class Scatterplot extends Component {
         this.state = {
             graphType: 'scatterplot',
             dataframe_identifier: 0,
-            completeObjectsArray: null,
+            dataPoints: null,
             pre_process_data: null,
             dimensions: null
         }
@@ -32,8 +32,7 @@ class Scatterplot extends Component {
 
     //Reponsible for drawing the graph. This is the only place where D3 should live. 
     async drawChart(dataFrameNumber) {
-        let dataArray = util.reformatJSON(this)
-        let data = dataArray[dataFrameNumber]
+        let data = util.reformatJSON(this)
 
         let max = util.getMax(data)
 
@@ -144,15 +143,15 @@ class Scatterplot extends Component {
                 <div id="dfSelectContainer" hidden={true}>
                     <div className="gridContainer" id='gridContainer'>
                         <div className='gridItem'>
-                            <label for="dataframe1Radio">UMAP</label>
+                            <label htmlFor="dataframe1Radio">UMAP</label>
                             <input type='radio' id='dataframe1Radio' name='dfSelect' value='1' onClick={() => this.setState({ dataframe_identifier: 0 })} defaultChecked />
                         </div>
                         <div className='gridItem'>
-                            <label for="dataframe2Radio">MDS</label>
+                            <label htmlFor="dataframe2Radio">MDS</label>
                             <input type='radio' id='dataframe2Radio' name='dfSelect' value='2' onClick={() => this.setState({ dataframe_identifier: 1 })} />
                         </div>
                         <div className='gridItem'>
-                            <label for="dataframe3Radio">SVD</label>
+                            <label htmlFor="dataframe3Radio">SVD</label>
                             <input type='radio' id='dataframe3Radio' name='dfSelect' value='3' onClick={() => this.setState({ dataframe_identifier: 2 })} />
                         </div>
                     </div>
