@@ -20,7 +20,7 @@ class LeftSidebar extends Component {
             tfidfcorpusFiles: [],
             leftTabs: null,
             graphData: null,
-            ImportButonDisabled: true,
+            ImportButtonDisabled: true,
             ProcessingRunButtonDisabled: true,
             w2vBinFileFileName: []
         };
@@ -33,8 +33,9 @@ class LeftSidebar extends Component {
 
     render() {
         let panes = [
-            { menuItem: 'File input', pane: { key: 'pane1', content: this.generateFileInput(), className: "pane" } },
-            { menuItem: 'Options', pane: { key: 'pane2', content: this.generateScriptArgsTab(), className: "pane" } },
+            { menuItem: 'File Manager', pane: { key: 'pane1', content: this.generateFileInput(), className: "pane" } },
+            { menuItem: 'Import/Export', pane: { key: 'pane2', content: this.generateFileImportExport(), className: "pane" } },
+            { menuItem: 'Options', pane: { key: 'pane3', content: this.generateScriptArgsTab(), className: "pane" } }
         ]
 
         return (
@@ -207,7 +208,7 @@ class LeftSidebar extends Component {
         ];
 
         return (
-            <div className='scriptArgsTab'>
+            <div className='leftSidebarContainer scriptArgsTab'>
 
                 <Header as='h3'> Parameters </Header>
 
@@ -257,6 +258,7 @@ class LeftSidebar extends Component {
                         type='number'
                         placeholder='Threshold'
                         id='threshold'
+                        min='0'
                     />
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Corresponds to the cut height of the dendrogram for HAC clustering and K for k-means clustering."></i>
@@ -303,8 +305,10 @@ class LeftSidebar extends Component {
 
                 <div className='spacing'>
                     <Input
+                        type='number'
                         placeholder='Window Size'
                         id='windowSize'
+                        min='0'
                     />
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Length of phrase extracted from each sentence."></i>
@@ -315,6 +319,7 @@ class LeftSidebar extends Component {
                         type='number'
                         placeholder='Dimensions'
                         id='dimensions'
+                        min='0'
                     />
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Only relevant for UMAP and SVD clustering. Dimensions to which the tfidf matrix is reduced."></i>
@@ -325,6 +330,7 @@ class LeftSidebar extends Component {
                         type='number'
                         placeholder='Umap Neighbors'
                         id='umap_neighbors'
+                        min='0'
                     />
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Only relevant for UMAP clustering"></i>
@@ -497,12 +503,12 @@ class LeftSidebar extends Component {
 
         if (file != null) {
             this.setState({
-                ImportButonDisabled: false
+                ImportButtonDisabled: false
             })
         }
         else {
             this.setState({
-                ImportButonDisabled: true
+                ImportButtonDisabled: true
             })
         }
     }
@@ -511,7 +517,7 @@ class LeftSidebar extends Component {
     //Responsible for generating the jsx in the file input tab
     generateFileInput() {
         return (
-            <div>
+            <div className="leftSidebarContainer">
                 <div className='file-input'>
                     <Button.Group vertical>
                         <Button
@@ -523,12 +529,7 @@ class LeftSidebar extends Component {
                             content='Upload files for processing'
                             className='buttonText'
                         />
-                        <Button
-                            color='black'
-                            loading={this.state.runningScript}
-                            onClick={(e) => { document.getElementById('submitButton').click() }}
-                            content='Run'
-                        />
+                        
                         <div id="fileList" className='fileList'>
                             {this.state.fileList.map((fileName) => {
                                 return (
@@ -540,7 +541,29 @@ class LeftSidebar extends Component {
                             })
                             }
                         </div>
-                        <Button.Or />
+
+                        <Button
+                            color='black'
+                            loading={this.state.runningScript}
+                            onClick={(e) => { document.getElementById('submitButton').click() }}
+                            content='Run'
+                            className='action'
+                        />                        
+                    </Button.Group>
+                    <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
+                        <input hidden id='fileProcessingInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
+                        <button hidden id="submitButton" className="submitButton"> Run </button>
+                    </form>
+                </div>
+            </div>)
+    }
+
+    //Responsible for generating the jsx in the file input tab
+    generateFileImportExport() {
+        return (
+            <div className="leftSidebarContainer">
+                <div className='file-input'>
+                    <Button.Group vertical>
                         <Button
                             color='yellow'
                             onClick={() => document.getElementById('importFileInput').click()}
@@ -551,9 +574,10 @@ class LeftSidebar extends Component {
                         />
                         <Button
                             color='black'
-                            disabled={this.state.ImportButonDisabled}
+                            disabled={this.state.ImportButtonDisabled}
                             content="Import"
                             onClick={(e) => this.importData(e)}
+                            className='action'
                         />
                         <Button.Or />
                         <Button
@@ -563,10 +587,6 @@ class LeftSidebar extends Component {
                             className='buttonText'
                         />
                     </Button.Group>
-                    <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
-                        <input hidden id='fileProcessingInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
-                        <button hidden id="submitButton" className="submitButton"> Run </button>
-                    </form>
                     <form>
                         <input id='importFileInput' type="file" hidden onChange={(e) => this.checkImportFile(e)} />
                         <button id='importFileButton' type='submit' hidden onClick={(e) => this.importData(e)}>Import</button>

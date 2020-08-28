@@ -54,8 +54,7 @@ class Scatterplot extends Component {
 
 
         let height = document.getElementById('mainWrapper').offsetHeight -
-        margin.top -
-        margin.bottom -
+        200 -
         document.getElementsByClassName('ui segment')[0].offsetHeight
         - document.getElementById('exportButtons').offsetHeight
         - document.getElementById('dfSelectContainer').offsetHeight
@@ -145,31 +144,25 @@ class Scatterplot extends Component {
                 <div id="dfSelectContainer" hidden={true}>
                     <div className="gridContainer" id='gridContainer'>
                         <div className='gridItem'>
-                            <label>UMAP</label>
+                            <label for="dataframe1Radio">UMAP</label>
                             <input type='radio' id='dataframe1Radio' name='dfSelect' value='1' onClick={() => this.setState({ dataframe_identifier: 0 })} defaultChecked />
                         </div>
                         <div className='gridItem'>
-                            <label>MDS</label>
+                            <label for="dataframe2Radio">MDS</label>
                             <input type='radio' id='dataframe2Radio' name='dfSelect' value='2' onClick={() => this.setState({ dataframe_identifier: 1 })} />
                         </div>
                         <div className='gridItem'>
-                            <label>SVD</label>
+                            <label for="dataframe3Radio">SVD</label>
                             <input type='radio' id='dataframe3Radio' name='dfSelect' value='3' onClick={() => this.setState({ dataframe_identifier: 2 })} />
                         </div>
                     </div>
                 </div>
-                <div id='exportButtons' className='exportButtons'>
-                    <Button
-                        onClick={(e) => util.exportSVGAsPNG("scatterplotSVG")}
-                        content="Export graph as png"
-                    />
-                    <Button
-                        onClick={() => util.exportDataForGraph(this)}
-                        content="Export graph data"
-                    />
-                    {/* <button onClick={(e) => util.exportSVGAsPNG("scatterplotSVG")}>Export graph as png</button>
-                    <button onClick={() => util.exportDataForGraph(this)}>Export Graph Data</button> */}
-                </div>
+                
+                <Button
+                    onClick={() => util.exportDataForGraph(this)}
+                    content="Export graph data"
+                    className="ui black button"
+                />
             </div>
         )
     }
