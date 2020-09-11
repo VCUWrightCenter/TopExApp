@@ -24,7 +24,8 @@ export const createPointObject = (data, cluster_topics, i) => {
         phrase: data.phrase[i],
         raw_sent: data.text[i],
         x: data.x[i],
-        y: data.y[i]
+        y: data.y[i],
+        valid: data.valid[i]
     }
 }
 
@@ -36,7 +37,6 @@ export const createPointObject = (data, cluster_topics, i) => {
 //NOTE: This graph was intitially designed to format data for the scatterplot. However, more methods may need to be created when working with other types of graphs to correctly format the data. 
 
 export const reformatJSON = (apiResultRaw) => {
-    console.log('Raw API result', apiResultRaw);
     if (apiResultRaw.state.pre_process_data !== apiResultRaw.props.data) {
         //Begin data reformatting
         var apiResult = convertToJson(apiResultRaw.props.data)
