@@ -598,33 +598,9 @@ class LeftSidebar extends Component {
 
     //Responsible for generating the jsx in the re-cluster tab
     generateReclusterTab() {
-        const reclusteringMethods = [
-            {
-                key: 'hac',
-                text: 'hac',
-                value: 'hac',
-                dropdownid: "reclusteringMethod"
-            },
-            {
-                key: 'kmeans',
-                text: 'kmeans',
-                value: 'kmeans'
-            }
-        ];
-
         return (
             <div className="leftSidebarContainer scriptArgsTab">
                 <div className='file-input'>
-                    <div className='spacing'>
-                        <Dropdown placeholder='Select Clustering Method'
-                            fluid
-                            clearable
-                            selection
-                            id="reclusteringMethod"
-                            options={reclusteringMethods}
-                            onChange={this.getDropdownValue}>
-                        </Dropdown>
-                    </div>
                     <div className='spacing'>
                         <Input
                             type='number'
@@ -793,7 +769,7 @@ class LeftSidebar extends Component {
         if (response == null) {
             return;
         }
-        console.log('response', response);
+        
         this.setState({ graphData: response })
 
         this.sendGraphData(response)
@@ -837,7 +813,7 @@ class LeftSidebar extends Component {
     async runScript(formData, scriptArgs) {
         let dict = JSON.parse(scriptArgs);
         Object.keys(dict).forEach(function (key) {
-            console.log(key, dict[key]);
+            // console.log(key, dict[key]);
             formData.append(key, dict[key]);
         });
 
@@ -865,12 +841,11 @@ class LeftSidebar extends Component {
 
     // POST to recluster endpoint
     async postRecluster(params) {
-        console.log('postRecluster', params, this.state.graphData);
         let dict = JSON.parse(params);
         let formData = new FormData();
 
         Object.keys(dict).forEach(function (key) {
-            console.log(key, dict[key]);
+            // console.log(key, dict[key]);
             formData.append(key, dict[key]);
         });
 

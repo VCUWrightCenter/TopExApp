@@ -33,7 +33,10 @@ class Scatterplot extends Component {
     //Reponsible for drawing the graph. This is the only place where D3 should live. 
     async drawChart(dataFrameNumber) {
         let data = util.reformatJSON(this)
-
+        
+        // Filter out points for clusters with < min_cluster_size
+        data = data.filter(p => p.valid);
+        
         let max = util.getMax(data)
 
         let xArr = data.map((obj) => obj.x)
@@ -131,9 +134,6 @@ class Scatterplot extends Component {
             })
         //source:
         //http://jonathansoma.com/tutorials/d3/clicking-and-hovering/
-
-        document.getElementById('dfSelectContainer').hidden = false
-
     }
 
     render() {

@@ -81,11 +81,14 @@ def cluster(df:pd.DataFrame, seed_topics_df:pd.DataFrame, clustering_method:str,
     data = topex.get_phrases(data, dictionary.token2id, tfidf, window_size, include_input_in_tfidf, include_sentiment)
     data = topex.get_vectors(vectorization_method, data, dictionary = dictionary, tfidf = tfidf)
     data, linkage_matrix, max_thresh, thresh = topex.assign_clusters(data, method=clustering_method, k=k, height=height, dist_metric=dist_metric)
+    viz_df = topex.visualize_clustering(data, method = visualization_method, show_chart = False, return_data = True)
+    viz_df['valid'] = True
+    data['valid'] = True # Show all points on the first run
     cluster_df = topex.get_cluster_topics(data, doc_df)
 
     finalObject = returnObject()
-    finalObject.viz_df = topex.visualize_clustering(data, method = visualization_method, show_chart = False, return_data = True).to_json()
-    finalObject.data = data[['id','text','tokens','phrase','vec','cluster']].to_json() #only return the needed subset of data columns
+    finalObject.viz_df = viz_df.to_json()
+    finalObject.data = data[['id','text','tokens','phrase','vec','cluster', 'valid']].to_json() #only return the needed subset of data columns
     finalObject.linkage_matrix = [list(row) for row in list(linkage_matrix)] if linkage_matrix is not None else []
     finalObject.main_cluster_topics = list(cluster_df.topics)
     finalObject.count = len(data)
@@ -112,11 +115,12 @@ def recluster(request: request):
     data, cluster_df = topex.recluster(data, viz_df, linkage_matrix=linkage_matrix, cluster_method=cluster_method, height=height, k=k, 
                                         min_cluster_size=min_cluster_size, topics_per_cluster=topics_per_cluster, show_chart=False)
     viz_df.cluster = data.cluster
+    viz_df['valid'] = data.valid
 
     # Return
     finalObject = returnObject()
     finalObject.viz_df = viz_df.to_json()
-    finalObject.data = data[['id','text','tokens','phrase','vec','cluster']].to_json() #only return the needed subset of data columns
+    finalObject.data = data[['id','text','tokens','phrase','vec','cluster','valid']].to_json() #only return the needed subset of data columns
     finalObject.linkage_matrix = [list(row) for row in list(linkage_matrix)] if linkage_matrix is not None else []
     finalObject.main_cluster_topics = list(cluster_df.topics)
     finalObject.count = len(data)
