@@ -72,7 +72,7 @@ def process(request: request):
     include_sentiment = bool(params['include_sentiment'])
 
     if dimensions is None:
-        dimensions = min(200,len(df)) if visualization_method == 'svd' else 2
+        dimensions = 2 if visualization_method == 'umap' else min(200,len(df))
 
     return cluster(df, seed_topics_df, clustering_method, height, k, vectorization_method, window_size, dimensions, umap_neighbors, cluster_dist_metric, 
                 include_input_in_tfidf, include_sentiment, visualization_method)
