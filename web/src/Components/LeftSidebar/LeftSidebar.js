@@ -87,11 +87,118 @@ class LeftSidebar extends Component {
         }
         ]
 
-        const DistanceMetric = [{
+        const ClusterDistanceMetric = [{
             key: 'braycurtis',
             text: 'braycurtis',
             value: 'braycurtis',
-            dropdownid: 'DistanceMetric'
+            dropdownid: 'ClusterDistanceMetric'
+        },
+        {
+            key: 'canberra',
+            text: 'canberra',
+            value: 'canberra'
+        },
+        {
+            key: 'chebyshev',
+            text: 'chebyshev',
+            value: 'chebyshev'
+        },
+        {
+            key: 'cityblock',
+            text: 'cityblock',
+            value: 'cityblock'
+        },
+        {
+            key: 'correlation',
+            text: 'correlation',
+            value: 'correlation'
+        },
+        {
+            key: 'cosine',
+            text: 'cosine',
+            value: 'cosine'
+        },
+        {
+            key: 'dice',
+            text: 'dice',
+            value: 'dice'
+        },
+        {
+            key: 'euclidean',
+            text: 'euclidean',
+            value: 'euclidean'
+        },
+        {
+            key: 'hamming',
+            text: 'hamming',
+            value: 'hamming'
+        },
+        {
+            key: 'jaccard',
+            text: 'jaccard',
+            value: 'jaccard'
+        },
+        {
+            key: 'kulsinski',
+            text: 'kulsinski',
+            value: 'kulsinski'
+        },
+        {
+            key: 'mahalanobis',
+            text: 'mahalanobis',
+            value: 'mahalanobis'
+        },
+        {
+            key: 'matching',
+            text: 'matching',
+            value: 'matching'
+        },
+        {
+            key: 'minkowski',
+            text: 'minkowski',
+            value: 'minkowski'
+        },
+        {
+            key: 'rogerstanimoto',
+            text: 'rogerstanimoto',
+            value: 'rogerstanimoto'
+        },
+        {
+            key: 'russellrao',
+            text: 'russellrao',
+            value: 'russellrao'
+        },
+        {
+            key: 'seuclidean',
+            text: 'seuclidean',
+            value: 'seuclidean'
+        },
+        {
+            key: 'sokalmichener',
+            text: 'sokalmichener',
+            value: 'sokalmichener'
+        },
+        {
+            key: 'sokalsneath',
+            text: 'sokalsneath',
+            value: 'sokalsneath'
+        },
+        {
+            key: 'sqeuclidean',
+            text: 'sqeuclidean',
+            value: 'sqeuclidean'
+        },
+        {
+            key: 'yule',
+            text: 'yule',
+            value: 'yule'
+        }]
+
+        const VisualizationDistanceMetric = [{
+            key: 'braycurtis',
+            text: 'braycurtis',
+            value: 'braycurtis',
+            dropdownid: 'VisualizationDistanceMetric'
         },
         {
             key: 'canberra',
@@ -373,15 +480,27 @@ class LeftSidebar extends Component {
                 </div>
 
                 <div className='spacing'>
-                    <Dropdown placeholder='Select Distance metric'
+                    <Dropdown placeholder='Select distance metric for clustering'
                         fluid
                         clearable
                         selection
-                        id="distmet"
-                        options={DistanceMetric}
+                        id="cluster_dist_metric"
+                        options={ClusterDistanceMetric}
                         onChange={this.getDropdownValue} />
                         &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Distance metric is used to compare points for clustering"></i>
+                    <i aria-hidden="true" className="question circle fitted icon" title="This distance metric is used to compare points for clustering"></i>
+                </div>
+
+                <div className='spacing'>
+                    <Dropdown placeholder='Select distance metric for visualization'
+                        fluid
+                        clearable
+                        selection
+                        id="viz_dist_metric"
+                        options={VisualizationDistanceMetric}
+                        onChange={this.getDropdownValue} />
+                        &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="This distance metric is used to compare points for visualization"></i>
                 </div>
 
                 <div className='spacing'>
@@ -435,7 +554,8 @@ class LeftSidebar extends Component {
         let windowSize = document.getElementById('windowSize').value === '' ? 6 : document.getElementById('windowSize').value;
         let dimensions = document.getElementById('dimensions').value === '' ? null : document.getElementById('dimensions').value;
         let umap_neighbors = document.getElementById('umap_neighbors').value === '' ? null : document.getElementById('umap_neighbors').value;
-        let DistanceMetric = (this.state.DistanceMetric == null) ? null : this.state.DistanceMetric;
+        let cluster_dist_metric = (this.state.ClusterDistanceMetric == null) ? null : this.state.ClusterDistanceMetric;
+        let viz_dist_metric = (this.state.VisualizationDistanceMetric == null) ? null : this.state.VisualizationDistanceMetric;
         let include_input_in_tfidf = document.getElementById('include_input_in_tfidf').checked;
         let include_sentiment = document.getElementById('include_sentiment').checked;
 
@@ -449,7 +569,8 @@ class LeftSidebar extends Component {
             'threshold': threshold,
             'dimensions': dimensions,
             'umap_neighbors': umap_neighbors,
-            'DistanceMetric': DistanceMetric,
+            'cluster_dist_metric': cluster_dist_metric,
+            'viz_dist_metric': viz_dist_metric,
             'include_input_in_tfidf': include_input_in_tfidf,
             'include_sentiment': include_sentiment,
             scatter_plot: 'all',//Default values. Are these appropriate???
