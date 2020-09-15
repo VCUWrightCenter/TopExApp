@@ -813,7 +813,7 @@ class LeftSidebar extends Component {
     async runScript(formData, scriptArgs) {
         let dict = JSON.parse(scriptArgs);
         Object.keys(dict).forEach(function (key) {
-            // console.log(key, dict[key]);
+            console.log(key, dict[key]);
             formData.append(key, dict[key]);
         });
 
