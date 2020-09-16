@@ -6,6 +6,9 @@
 import React, { Component } from "react";
 import Axios from "axios";
 import './LeftSidebar.css';
+import COElogo from '../../Pictures/2 Horizontal (hz)/Color (4c)/bm_CollEng_CompSci_RF_hz_4c.png'
+import CSLogo from '../../Pictures/CS/CS_main.png'
+import NLPLogo from '../../Pictures/dataminingfemale_final-01.png'
 import { Input, Button, Header, Tab, Dropdown, Checkbox } from 'semantic-ui-react';
 
 
@@ -22,7 +25,7 @@ class LeftSidebar extends Component {
             graphData: null,
             ImportButtonDisabled: true,
             ProcessingRunButtonDisabled: true,
-            w2vBinFileFileName: []
+            w2vBinFileFileName: [],
         };
 
     }
@@ -35,7 +38,8 @@ class LeftSidebar extends Component {
         let panes = [
             { menuItem: 'File Manager', pane: { key: 'pane1', content: this.generateFileInput(), className: "pane" } },
             { menuItem: 'Import/Export', pane: { key: 'pane2', content: this.generateFileImportExport(), className: "pane" } },
-            { menuItem: 'Options', pane: { key: 'pane3', content: this.generateScriptArgsTab(), className: "pane" } }
+            { menuItem: 'Parameters', pane: { key: 'pane3', content: this.generateScriptArgsTab(), className: "pane" } },
+            { menuItem: 'Acknowledgements', pane: { key: 'pane4', content: this.acknowledgementsTab(), className: "pane" } }
         ]
 
         return (
@@ -229,7 +233,7 @@ class LeftSidebar extends Component {
                         )
                     })
                     }
-                    < input hidden type='file' webkitdirectory="" mozdirectory="" multiple id='tfidfcorpus' onChange={(e) => {
+                    <input hidden type='file' webkitdirectory="" mozdirectory="" multiple id='tfidfcorpus' onChange={(e) => {
                         let files = document.getElementById('tfidfcorpus').files
                         let fileNames = []
                         Object.values(files).forEach((elem) => {
@@ -242,33 +246,25 @@ class LeftSidebar extends Component {
                 </div>
 
                 <div className='spacing'>
-                    {/* <label>Clustering Method</label> */}
-                    <Dropdown placeholder='Select Clustering Method'
-                        fluid
-                        clearable
-                        selection
-                        id="clusteringMethod"
-                        options={clusteringMethods}
-                        onChange={this.getDropdownValue}>
-                    </Dropdown>
-                </div>
-
-                <div className='spacing'>
+                    <label for="windowSize">Window Size</label>
                     <Input
                         type='number'
-                        placeholder='Threshold'
-                        id='threshold'
+                        placeholder='Window Size'
+                        defaultValue='6'
+                        id='windowSize'
                         min='0'
                     />
                     &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Corresponds to the cut height of the dendrogram for HAC clustering and K for k-means clustering."></i>
+                    <i aria-hidden="true" className="question circle fitted icon" title="Length of phrase extracted from each sentence."></i>
                 </div>
 
                 <div className='spacing'>
-                    <Dropdown placeholder='Vectorization method'
+                    <label for="vectorizationMethod">Vectorization Method</label>
+                    <Dropdown placeholder='Select a method'
                         clearable
                         fluid
                         selection
+                        id="vectorizationMethod"
                         options={wordVectorType}
                         onChange={this.getDropdownValue} />
                     &nbsp;
@@ -304,20 +300,11 @@ class LeftSidebar extends Component {
                     </div> : null}
 
                 <div className='spacing'>
-                    <Input
-                        type='number'
-                        placeholder='Window Size'
-                        id='windowSize'
-                        min='0'
-                    />
-                    &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Length of phrase extracted from each sentence."></i>
-                </div>
-
-                <div className='spacing'>
+                    <label for="dimensions">Dimensions</label>
                     <Input
                         type='number'
                         placeholder='Dimensions'
+                        defaultValue='200'
                         id='dimensions'
                         min='0'
                     />
@@ -326,18 +313,20 @@ class LeftSidebar extends Component {
                 </div>
 
                 <div className='spacing'>
-                    <Input
-                        type='number'
-                        placeholder='Umap Neighbors'
-                        id='umap_neighbors'
-                        min='0'
-                    />
-                    &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Only relevant for UMAP clustering"></i>
+                    <label for="clusteringMethod">Clustering Method</label>
+                    <Dropdown placeholder='Select a method'
+                        fluid
+                        clearable
+                        selection
+                        id="clusteringMethod"
+                        options={clusteringMethods}
+                        onChange={this.getDropdownValue}>
+                    </Dropdown>
                 </div>
 
                 <div className='spacing'>
-                    <Dropdown placeholder='Select Distance metric'
+                    <label for="distmet">Distance Metric</label>
+                    <Dropdown placeholder='Select distance metric'
                         fluid
                         clearable
                         selection
@@ -346,6 +335,32 @@ class LeftSidebar extends Component {
                         onChange={this.getDropdownValue} />
                         &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Distance metric is used to compare points for clustering"></i>
+                </div>
+
+                <div className='spacing'>
+                    <label for="threshold">Threshold</label>
+                    <Input
+                        type='number'
+                        placeholder='Threshold'
+                        defaultValue='20'
+                        id='threshold'
+                        min='0'
+                    />
+                    &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="Corresponds to the cut height of the dendrogram for HAC clustering and K for k-means clustering."></i>
+                </div>
+
+                <div className='spacing'>
+                    <label for="umap_neighbors">Umap Neighbors</label>
+                    <Input
+                        type='number'
+                        placeholder='Umap Neighbors'
+                        defaultValue='15'
+                        id='umap_neighbors'
+                        min='0'
+                    />
+                    &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="Only relevant for UMAP clustering"></i>
                 </div>
 
                 <div className='spacing'>
@@ -514,7 +529,7 @@ class LeftSidebar extends Component {
     }
 
 
-    //Responsible for generating the jsx in the file input tab
+    //Responsible for generating the jsx in the file input tab (at least 3 files need to be uploaded)
     generateFileInput() {
         return (
             <div className="leftSidebarContainer">
@@ -529,6 +544,14 @@ class LeftSidebar extends Component {
                             content='Upload files for processing'
                             className='buttonText'
                         />
+
+                        <Button
+                            color='black'
+                            loading={this.state.runningScript}
+                            onClick={(e) => { document.getElementById('submitButton').click() }}
+                            content='Run'
+                            className='action'
+                        />
                         
                         <div id="fileList" className='fileList'>
                             {this.state.fileList.map((fileName) => {
@@ -540,16 +563,10 @@ class LeftSidebar extends Component {
                                 )
                             })
                             }
-                        </div>
-
-                        <Button
-                            color='black'
-                            loading={this.state.runningScript}
-                            onClick={(e) => { document.getElementById('submitButton').click() }}
-                            content='Run'
-                            className='action'
-                        />                        
+                        </div>                 
                     </Button.Group>
+                    &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="At least 3 files are required in order for application to run."></i>
                     <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
                         <input hidden id='fileProcessingInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
                         <button hidden id="submitButton" className="submitButton"> Run </button>
@@ -593,6 +610,23 @@ class LeftSidebar extends Component {
                     </form>
                 </div>
             </div>)
+    }
+
+    acknowledgementsTab() {
+        return (
+            <div className='leftSidebarContainer acknowledgements'>
+                <Header as='h3'> Acknowledgements </Header>
+                <p>TopExApp (previously MedTop) was initially developed as a web app through the 2019-2020 CapStone program by Seniors in VCU's Computer Science Department under the supervision of Dr. Bridget McInnes and Amy Olex. We wish to thank Sean Kotrola, Aidan Myers, and Suzanne Prince for their excellent work in getting this application up and running! Here are links to the team's CapStone <a href="https://drive.google.com/file/d/1TGCaM7oXPxFwEJ5B5_nrGZqNnUetWPFB/view" target="_blank">Poster</a> and <a href="https://drive.google.com/file/d/1xRYlLpiYnCnI9Pdi6vbE4eTDUu0e09qB/view" target="_blank">Application Demonstration.</a></p>
+
+                <Header as='h3'> References </Header>
+                <p>Olex A, DiazGranados D, McInnes BT, and Goldberg S. Local Topic Mining for Reflective Medical Writing. Full Length Paper. AMIA Jt Summits Transl Sci Proc 2020;2020:459–68. PMCID: <a href="https://www-ncbi-nlm-nih-gov.proxy.library.vcu.edu/pmc/articles/PMC7233034/" target="_blank">PMC7233034</a></p>
+                
+                <Header as='h3'> Affiliates </Header>
+                <img src={COElogo} className='COElogo' alt="VCU College of Engineering logo"/>
+                <img src={CSLogo} className='CSlogo' alt="VCU Computer Science logo"/>
+                <img src={NLPLogo} className='NLPlogo' alt="VCU NLP lab logo"/>
+            </div>   
+        )
     }
 
     //This method takes in the form data, sends it to the api,
