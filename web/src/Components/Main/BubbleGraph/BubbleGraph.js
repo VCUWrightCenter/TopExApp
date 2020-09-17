@@ -20,7 +20,7 @@ class BubbleGraph extends Component {
         this.state = {
             graphType: 'BubbleGraph',
             dataframe_identifier: 0,
-            completeObjectsArray: null,
+            dataPoints: null,
             pre_process_data: null,
             dimensions: null
         }
@@ -41,8 +41,7 @@ class BubbleGraph extends Component {
 
     //Reponsible for drawing the graph. This is the only place where D3 should live. 
     async drawChart(dataFrameNumber) {
-        let dataArray = util.reformatJSON(this)
-        let data = dataArray[dataFrameNumber] //ARRAY FROM THE DIRECTIONS AT THE BEGINNING 
+        let data = util.reformatJSON(this)
 
         let xArr = data.map((obj) => obj.x)
         let yArr = data.map((obj) => obj.y)

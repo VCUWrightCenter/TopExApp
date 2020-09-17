@@ -37,6 +37,7 @@ class LeftSidebar extends Component {
     render() {
         let panes = [
             { menuItem: 'File Manager', pane: { key: 'pane1', content: this.generateFileInput(), className: "pane" } },
+            { menuItem: 'Re-Cluster', pane: { key: 'pane0', content: this.generateReclusterTab(), className: "pane" } },
             { menuItem: 'Import/Export', pane: { key: 'pane2', content: this.generateFileImportExport(), className: "pane" } },
             { menuItem: 'Parameters', pane: { key: 'pane3', content: this.generateScriptArgsTab(), className: "pane" } },
             { menuItem: 'Acknowledgements', pane: { key: 'pane4', content: this.acknowledgementsTab(), className: "pane" } }
@@ -208,6 +209,30 @@ class LeftSidebar extends Component {
                 key: 'kmeans',
                 text: 'kmeans',
                 value: 'kmeans'
+            }
+        ];
+
+        const visualizationMethods = [
+            {
+                key: 'umap',
+                text: 'umap',
+                value: 'umap',
+                dropdownid: "visualizationMethod"
+            },
+            {
+                key: 'svd',
+                text: 'svd',
+                value: 'svd'
+            },
+            {
+                key: 'tsne',
+                text: 'tsne',
+                value: 'tsne'
+            },
+            {
+                key: 'mds',
+                text: 'mds',
+                value: 'mds'
             }
         ];
 
@@ -407,6 +432,7 @@ class LeftSidebar extends Component {
         temp = '';
 
         let clusteringMethod = (this.state.clusteringMethod == null) ? "hac" : this.state.clusteringMethod;
+        let visualizationMethod = (this.state.visualizationMethod == null) ? "umap" : this.state.visualizationMethod;
         let threshold = document.getElementById('threshold').value === '' ? null : document.getElementById('threshold').value;
         let wordVectorType = (this.state.wordVectorType == null) ? null : this.state.wordVectorType;
         let w2vBinFile = document.getElementById('w2vBinFile')?.files[0] != null ? this.getFileContents(document.getElementById('w2vBinFile').files[0]) : null; //This needs to be changed to a file input
@@ -419,6 +445,7 @@ class LeftSidebar extends Component {
 
         let args = {
             'clusteringMethod': clusteringMethod,
+            'visualizationMethod': visualizationMethod,
             'tfidfcorpus': tfidfcorpus,
             'wordVectorType': wordVectorType,
             'w2vBinFile': w2vBinFile,
@@ -575,6 +602,56 @@ class LeftSidebar extends Component {
             </div>)
     }
 
+    //Responsible for generating the jsx in the re-cluster tab
+    generateReclusterTab() {
+        return (
+            <div className="leftSidebarContainer scriptArgsTab">
+                <div className='file-input'>
+                    <div className='spacing'>
+                        <Input
+                            type='number'
+                            placeholder='height or k'
+                            id='reclusterThreshold'
+                            min='1'
+                        />
+                            &nbsp;
+                            <i aria-hidden="true" className="question circle fitted icon" title="New height or k."></i>
+                    </div>                    
+                    <div className='spacing'>
+                        <Input
+                            type='number'
+                            placeholder='topics per cluster'
+                            id='reclusterTopicsPerCluster'
+                            min='1'
+                        />
+                            &nbsp;
+                            <i aria-hidden="true" className="question circle fitted icon" title="Topics per cluster."></i>
+                    </div>
+                    <div className='spacing'>
+                        <Input
+                            type='number'
+                            placeholder='min cluster size'
+                            id='reclusterMinClusterSize'
+                            min='1'
+                        />
+                            &nbsp;
+                            <i aria-hidden="true" className="question circle fitted icon" title="New height or k."></i>
+                    </div>
+                    <Button
+                        color='black'
+                        loading={this.state.runningScript}
+                        onClick={(e) => { document.getElementById('submitReclusterButton').click() }}
+                        content='Recluster'
+                        className='action'
+                    />
+                    <form encType="multipart/form-data" onSubmit={(e) => this.submitRecluster(e)}>
+                        <input hidden id='threshold' type="number" />
+                        <button hidden id="submitReclusterButton" className="submitButton"> Re-Cluster </button>
+                    </form>
+                </div>
+            </div>)
+    }
+
     //Responsible for generating the jsx in the file input tab
     generateFileImportExport() {
         return (
@@ -692,6 +769,40 @@ class LeftSidebar extends Component {
 
     }
 
+    async submitRecluster(event) {
+        document.getElementById('submitReclusterButton').disabled = true;
+        event.preventDefault()
+
+        // Recluster parameters
+        let params = {            
+            'minClusterSize': document.getElementById('reclusterMinClusterSize').value === '' ? 1 : document.getElementById('reclusterMinClusterSize').value,
+            'threshold': document.getElementById('reclusterThreshold').value === '' ? 5 : document.getElementById('reclusterThreshold').value,
+            'topicsPerCluster': document.getElementById('reclusterTopicsPerCluster').value === '' ? 8 : document.getElementById('reclusterTopicsPerCluster').value,
+            'clusteringMethod': this.state.clusteringMethod
+        };
+
+        this.setState({
+            runningScript: true
+        })
+
+        params = JSON.stringify(params)
+
+        var response = await this.postRecluster(params)
+
+        if (response == null) {
+            return;
+        }
+        
+        this.setState({ graphData: response })
+
+        this.sendGraphData(response)
+
+        document.getElementById('submitReclusterButton').disabled = false;
+        this.setState({
+            runningScript: false
+        })
+    }
+
 
     //Used to validate data being passed to the API
     validateArgs(scriptArgs, files) {
@@ -725,7 +836,7 @@ class LeftSidebar extends Component {
     async runScript(formData, scriptArgs) {
         let dict = JSON.parse(scriptArgs);
         Object.keys(dict).forEach(function (key) {
-            console.log(key, dict[key]);
+            // console.log(key, dict[key]);
             formData.append(key, dict[key]);
         });
 
@@ -738,9 +849,50 @@ class LeftSidebar extends Component {
             const data = response.data
             return data
         }).catch((err) => {
+            this.setState({
+                runningScript: false
+            })
             console.error(err.message)
             alert(err);
             document.getElementById('submitButton').disabled = false;
+        })
+
+
+        return response == null ? null : response
+
+    }
+
+    // POST to recluster endpoint
+    async postRecluster(params) {
+        let dict = JSON.parse(params);
+        let formData = new FormData();
+
+        Object.keys(dict).forEach(function (key) {
+            // console.log(key, dict[key]);
+            formData.append(key, dict[key]);
+        });
+
+        formData.append('max_thresh', this.state.graphData.max_thresh);
+        formData.append('n', this.state.graphData.count);
+        formData.append('data', this.state.graphData.data);
+        formData.append('viz_df', this.state.graphData.viz_df);
+        formData.append('linkage_matrix', this.state.graphData.linkage_matrix);
+
+        const response = await Axios.post("http://localhost:5000/recluster", formData, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then((response) => {
+            const data = response.data
+            return data
+        }).catch((err) => {
+            this.setState({
+                runningScript: false
+            })
+            console.error(err.message)
+            alert(err);
+            document.getElementById('submitReclusterButton').disabled = false;
         })
 
 

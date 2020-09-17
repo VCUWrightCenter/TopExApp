@@ -24,7 +24,8 @@ export const createPointObject = (data, cluster_topics, i) => {
         phrase: data.phrase[i],
         raw_sent: data.text[i],
         x: data.x[i],
-        y: data.y[i]
+        y: data.y[i],
+        valid: data.valid[i]
     }
 }
 
@@ -35,36 +36,29 @@ export const createPointObject = (data, cluster_topics, i) => {
 //The complete object also contain a cluster identifier. Not sure what this could be used for yet, but most likely could be used to color code clusters, and add on cluster specific info later
 //NOTE: This graph was intitially designed to format data for the scatterplot. However, more methods may need to be created when working with other types of graphs to correctly format the data. 
 
-export const reformatJSON = (getThis) => {
-    if (getThis.state.pre_process_data !== getThis.props.data) {
+export const reformatJSON = (apiResultRaw) => {
+    if (apiResultRaw.state.pre_process_data !== apiResultRaw.props.data) {
         //Begin data reformatting
-        var APIReturnObject = convertToJson(getThis.props.data)
+        var apiResult = convertToJson(apiResultRaw.props.data)
+        console.log('API result', apiResult);
 
-        let umap = convertToJson(APIReturnObject.df1)
-        let mds = convertToJson(APIReturnObject.df2)
-        let svd = convertToJson(APIReturnObject.df3)
-        let cluster_topics = APIReturnObject.main_cluster_topics
-
-        let umapObjects = []
-        let mdsObjects = []
-        let svdObjects = []
+        let viz_df = convertToJson(apiResult.viz_df);
+        let cluster_topics = apiResult.main_cluster_topics;
+        let dataPoints = [];
         
-        for (var i=0; i<APIReturnObject.count; i++){
-            umapObjects.push(createPointObject(umap, cluster_topics, i));
-            mdsObjects.push(createPointObject(mds, cluster_topics, i));
-            svdObjects.push(createPointObject(svd, cluster_topics, i));
+        for (var i=0; i<apiResult.count; i++){
+            dataPoints.push(createPointObject(viz_df, cluster_topics, i));
         }
-        let completeObjectsArray = [umapObjects, mdsObjects, svdObjects];
 
-        getThis.setState({
-            dataframe_identifier: getThis.state.dataframe_identifier,
-            completeObjectsArray: completeObjectsArray,
-            pre_process_data: getThis.props.data
+        apiResultRaw.setState({
+            dataframe_identifier: apiResultRaw.state.dataframe_identifier,
+            dataPoints: dataPoints,
+            pre_process_data: apiResultRaw.props.data
         })
-        return completeObjectsArray;
+        return dataPoints;
     }
     else {
-        return getThis.state.completeObjectsArray;
+        return apiResultRaw.state.dataPoints;
     }
 }
 
@@ -132,7 +126,7 @@ export const exportDataForGraph = (getThis) => {
     let exportData;
     
     if (getThis.state.graphType === 'scatterplot') {
-        data = getThis.state.completeObjectsArray[getThis.state.dataframe_identifier]
+        data = getThis.state.dataPoints
         exportData = data.map((obj) => createObjectFromItem(obj));
     }
     else if (getThis.state.graphType === 'wordcloud') {
@@ -157,47 +151,43 @@ export const getClusterColor = (d, max) => {
 
 //This is used to format the data for the wordcloud graph. 
 //NOTE: you must pass in data that has already been formatted by reformatJSON()
-export const reformatJSONWordcloud = (rawData, getThis) => {
-    let phraseTracker = {}
-    for (let objectIndex in rawData[0]) {
-        let currentObject = rawData[0][objectIndex];
-        let clusterNum = currentObject.cluster
-        for (let phraseIndex in currentObject['phrase']) {
-            let phrase = currentObject['phrase'][phraseIndex]
-            
-            if (clusterNum in phraseTracker) {
-                if (phrase in phraseTracker[clusterNum]) {
-                    phraseTracker[clusterNum][phrase] += 1
-                }
-                else {
-                    phraseTracker[clusterNum][phrase] = 1
-                }
-            }
-            else {
-                let temp = {}
-                temp[phrase] = 1
-                phraseTracker[clusterNum] = temp
-            }
-        }
-    }
+export const reformatJSONWordcloud = (data, getThis) => {
+    let tokenCounter = {}
+    data.forEach(sentence => {
+        let cluster = sentence.cluster
 
-    let ret = {}
-    for (let x in phraseTracker) {
-        let arr = []
-        for (let phrase in phraseTracker[x]) {
-            if (phraseTracker[x][phrase] !== 1) {
-                arr.push({ 'phrase': phrase, 'value': phraseTracker[x][phrase], "cluster": x })
+        sentence.phrase.forEach(token => {
+            // Initialize dictionary for cluster
+            if (!(cluster in tokenCounter)) {
+                tokenCounter[cluster] = {};
+            }
+
+            // Initialize dictionary for token within cluster
+            if (!(token in tokenCounter[cluster])) {
+                tokenCounter[cluster][token] = 1;
+            } else {
+                tokenCounter[cluster][token] += 1;
+            }           
+        });
+    });
+
+    let clusterTokenDict = {}
+    for (let cluster in tokenCounter) {
+        let tokenCounts = []
+        for (let token in tokenCounter[cluster]) {
+            if (tokenCounter[cluster][token] !== 1) {
+                tokenCounts.push({ 'phrase': token, 'value': tokenCounter[cluster][token], "cluster": cluster })
             }
         }
-        ret[x] = arr
+        clusterTokenDict[cluster] = tokenCounts
     }
     // Ret from reformat json Word cloud
-    if (JSON.stringify(getThis.state.graphData) !== JSON.stringify(ret)) {
+    if (JSON.stringify(getThis.state.graphData) !== JSON.stringify(clusterTokenDict)) {
         getThis.setState({
-            "graphData": ret
+            "graphData": clusterTokenDict
         })
     }
-    return ret
+    return clusterTokenDict
 }
 
 
