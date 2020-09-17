@@ -608,6 +608,7 @@ class LeftSidebar extends Component {
             <div className="leftSidebarContainer scriptArgsTab">
                 <div className='file-input'>
                     <div className='spacing'>
+                        <label for="reclusterThreshold">Height or K (needs to be less than ...)</label>
                         <Input
                             type='number'
                             placeholder='height or k'
@@ -618,6 +619,7 @@ class LeftSidebar extends Component {
                             <i aria-hidden="true" className="question circle fitted icon" title="New height or k."></i>
                     </div>                    
                     <div className='spacing'>
+                        <label for="reclusterTopicsPerCluster">Topics Per Cluster</label>
                         <Input
                             type='number'
                             placeholder='topics per cluster'
@@ -628,6 +630,7 @@ class LeftSidebar extends Component {
                             <i aria-hidden="true" className="question circle fitted icon" title="Topics per cluster."></i>
                     </div>
                     <div className='spacing'>
+                        <label for="reclusterMinClusterSize">Minimum Cluster Size</label>
                         <Input
                             type='number'
                             placeholder='min cluster size'
@@ -635,7 +638,7 @@ class LeftSidebar extends Component {
                             min='1'
                         />
                             &nbsp;
-                            <i aria-hidden="true" className="question circle fitted icon" title="New height or k."></i>
+                            <i aria-hidden="true" className="question circle fitted icon" title="Minimum cluster size."></i>
                     </div>
                     <Button
                         color='black'
@@ -693,10 +696,10 @@ class LeftSidebar extends Component {
         return (
             <div className='leftSidebarContainer acknowledgements'>
                 <Header as='h3'> Acknowledgements </Header>
-                <p>TopExApp (previously MedTop) was initially developed as a web app through the 2019-2020 CapStone program by Seniors in VCU's Computer Science Department under the supervision of Dr. Bridget McInnes and Amy Olex. We wish to thank Sean Kotrola, Aidan Myers, and Suzanne Prince for their excellent work in getting this application up and running! Here are links to the team's CapStone <a href="https://drive.google.com/file/d/1TGCaM7oXPxFwEJ5B5_nrGZqNnUetWPFB/view" target="_blank">Poster</a> and <a href="https://drive.google.com/file/d/1xRYlLpiYnCnI9Pdi6vbE4eTDUu0e09qB/view" target="_blank">Application Demonstration.</a></p>
+                <p>TopExApp (previously MedTop) was initially developed as a web app through the 2019-2020 CapStone program by Seniors in VCU's Computer Science Department under the supervision of Dr. Bridget McInnes and Amy Olex. We wish to thank Sean Kotrola, Aidan Myers, and Suzanne Prince for their excellent work in getting this application up and running! Here are links to the team's CapStone <a href="https://drive.google.com/file/d/1TGCaM7oXPxFwEJ5B5_nrGZqNnUetWPFB/view" target="_blank" rel="noopener noreferrer">Poster</a> and <a href="https://drive.google.com/file/d/1xRYlLpiYnCnI9Pdi6vbE4eTDUu0e09qB/view" target="_blank" rel="noopener noreferrer">Application Demonstration.</a></p>
 
                 <Header as='h3'> References </Header>
-                <p>Olex A, DiazGranados D, McInnes BT, and Goldberg S. Local Topic Mining for Reflective Medical Writing. Full Length Paper. AMIA Jt Summits Transl Sci Proc 2020;2020:459–68. PMCID: <a href="https://www-ncbi-nlm-nih-gov.proxy.library.vcu.edu/pmc/articles/PMC7233034/" target="_blank">PMC7233034</a></p>
+                <p>Olex A, DiazGranados D, McInnes BT, and Goldberg S. Local Topic Mining for Reflective Medical Writing. Full Length Paper. AMIA Jt Summits Transl Sci Proc 2020;2020:459–68. PMCID: <a href="https://www-ncbi-nlm-nih-gov.proxy.library.vcu.edu/pmc/articles/PMC7233034/" target="_blank" rel="noopener noreferrer">PMC7233034</a></p>
                 
                 <Header as='h3'> Affiliates </Header>
                 <img src={COElogo} className='COElogo' alt="VCU College of Engineering logo"/>
@@ -770,37 +773,50 @@ class LeftSidebar extends Component {
     }
 
     async submitRecluster(event) {
-        document.getElementById('submitReclusterButton').disabled = true;
-        event.preventDefault()
-
-        // Recluster parameters
-        let params = {            
-            'minClusterSize': document.getElementById('reclusterMinClusterSize').value === '' ? 1 : document.getElementById('reclusterMinClusterSize').value,
-            'threshold': document.getElementById('reclusterThreshold').value === '' ? 5 : document.getElementById('reclusterThreshold').value,
-            'topicsPerCluster': document.getElementById('reclusterTopicsPerCluster').value === '' ? 8 : document.getElementById('reclusterTopicsPerCluster').value,
-            'clusteringMethod': this.state.clusteringMethod
-        };
-
-        this.setState({
-            runningScript: true
-        })
-
-        params = JSON.stringify(params)
-
-        var response = await this.postRecluster(params)
-
-        if (response == null) {
-            return;
-        }
         
-        this.setState({ graphData: response })
+        console.log("Event:" + event);
+        console.log("Data:" + this.state.graphData.data);
+        console.log("Length:" + this.state.graphData.data.length);
+        console.log("Max Thresh:" + this.state.graphData.max_thresh);
+        console.log(document.getElementById('reclusterThreshold').value);
 
-        this.sendGraphData(response)
+        if (this.state.graphData.data.length > 0  && document.getElementById('reclusterThreshold').value < this.state.graphData.max_thresh) {
+            document.getElementById('submitReclusterButton').disabled = true;
+            event.preventDefault();
+        
+            // Recluster parameters
+            let params = {            
+                'minClusterSize': document.getElementById('reclusterMinClusterSize').value === '' ? 1 : document.getElementById('reclusterMinClusterSize').value,
+                'threshold': document.getElementById('reclusterThreshold').value === '' ? 5 : document.getElementById('reclusterThreshold').value,
+                'topicsPerCluster': document.getElementById('reclusterTopicsPerCluster').value === '' ? 8 : document.getElementById('reclusterTopicsPerCluster').value,
+                'clusteringMethod': this.state.clusteringMethod
+            };
+        
 
-        document.getElementById('submitReclusterButton').disabled = false;
-        this.setState({
-            runningScript: false
-        })
+            this.setState({
+                runningScript: true
+            })
+
+            params = JSON.stringify(params)
+
+            var response = await this.postRecluster(params)
+
+            if (response == null) {
+                return;
+            }
+            
+            this.setState({ graphData: response })
+
+            this.sendGraphData(response)
+
+            document.getElementById('submitReclusterButton').disabled = false;
+            this.setState({
+                runningScript: false
+            })
+        } else {
+            alert ("Please make sure there is data and that the reclustering height is greater than the max threshold.");
+            event.preventDefault();
+        }
     }
 
 
