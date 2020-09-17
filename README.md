@@ -1,18 +1,45 @@
-# Overview
+# Table of Contents
+
+- [Introduction](#intro)
+- [Installation](#install)
+  * [End-Users](#enduser)
+  * [Developers](#developers)
+- [TopEx Overview](#overview)
+- [Usage Instructions](#usage)
+  * [1: Importing Document Corpus or Previous Analysis File](usage1)
+    + [Import Document Corpus](#usage11)
+    + [Import Previous Analysis](#usage12)
+  * [2: Setting Analysis and Visualization Parameters](#usage2)
+    + [TF-IDF Corpus File Input](#usage11)
+    + [Sentence Embedding Parameters](#usage12)
+    + [Sentence Clustering Parameters](#usage13)
+    + [Visualization Parameters](#usage14)
+  * [3: Run Analysis](#usage3)
+  * [4: Explore and Export Results](#usage4)
+    + [Scatter Plot](#usage41)
+    + [Word Cloud](#usage42)
+- [Acknowledgements](#thanks)
+- [References](#paper)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents partially generated with markdown-toc</a></i></small>
+
+
+
+# Introduction <a name="intro">
 
 TopExApp provides a graphical user interface for the [TopEx Python library](https://pypi.org/project/topex/), and is an application designed for the exploration of topics in large sets of text. Originally designed to identify common challenges experienced by acting interns through their reflective writing responses [(Olex et al 2020)](#paper), this application can also be used for the exploration of topics in any set of texts.
 
-# Installation
+# Installation <a name="install">
 TopExApp runs as a web app within a Docker container and can be run as an end-user, or set up to run for UI development.  Any changes to the TopEx library must be made through the [TopEx python package GitHub repository](https://github.com/VCUWrightCenter/TopEx).
 
-## End-Users:
+## End-Users <a name="enduser">
 
-### Requierments:
+### Requierments
 
     - Docker Desktop [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
     - Internet Browser
 
-### Instructions:
+### Install Instructions
 
 1) Install Docker Desktop for Mac or Windows from [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop).
 
@@ -27,7 +54,7 @@ TopExApp runs as a web app within a Docker container and can be run as an end-us
     > docker-compose up --build
 
 
-## Developers
+## Developers <a name="developers">
 
 ### Requirements 
 - Python 3.8
@@ -52,11 +79,11 @@ From the command line, run the following:
 
     ~/web> npm start
 
-# TopEx Overview
+# TopEx Overview <a name="overview">
 
 The TopExApp was built as a graphical user interface for the TopEx python package (link to GitHub).  This application allows users to explore the topics present in a set of documents without having to program or be an NLP expert.  The algorithms behind TopEx are described in detail in [(Olex et al 2020)](#paper).  The 20,000 foot view is that TopEx assumes each sentence in a document discusses a different topic.  Sentences are then embedded into a numerical representation and clustered.  Sentences discussing similar topics should have numerically similar representations and be grouped in the same cluster.  A topic analysis is them run on each cluster to identify the key words associated with that group of sentences.  Clustering results are visualized as a scatter plot where each dot represents one sentence, or as a word cloud to aid in identifying which word are the most frequent in a given group a sentences.
 
-# Usage Instructions
+# Usage Instructions <a name="usage">
 
 The general workflow for TopEx is as follows:
 
@@ -65,9 +92,9 @@ The general workflow for TopEx is as follows:
  3) Run analysis
  4) Explore results
 
-## 1: Importing Document Corpus or Previous Analysis File
+## 1: Importing Document Corpus or Previous Analysis File <a name="usage1">
 
-### Import Document Corpus
+### Import Document Corpus <a name="usage11">
 
 To import documents into TopEx, each document must be saved as a text file and all text files should be saved in a single directory with no other files.  
 
@@ -76,7 +103,7 @@ To import documents into TopEx, each document must be saved as a text file and a
  3) Navigate to the directory with the corpus.
  4) Select the directory and the click "Upload".
     
-### Import Previous Analysis
+### Import Previous Analysis <a name="usage12">
 
 Analyses can be saved into a TopEx formatted file.  If you need to import an analysis file do the following:
 
@@ -84,11 +111,11 @@ Analyses can be saved into a TopEx formatted file.  If you need to import an ana
  2) Click on "Upload file for import".
  3) Navigate to the TopEx formatted file and click "Open".
 
-## 2: Setting Analysis and Visualization Parameters
+## 2: Setting Analysis and Visualization Parameters <a name="usage2">
 
 TopEx has a variety of parameters that can be set to customize your analysis.  There parameters are associated with how sentences are represented, how clustering is performed, and how the scatter plot is visualized.  To change the default parameters go to the "Parameters" tab in TopEx.  The list below explains what each parameter's function is.
 
-### TF-IDF Corpus File Input
+### TF-IDF Corpus File Input <a name="usage11">
 
 The TF-IDF matrix is used in two ways by TopEx: 1) Identification of most informative phrase for each sentence to be used for sentence representation. 2) Creation of word embeddings, which generate the final sentence embeddings (i.e. numerical sentence representations) for clustering.  Thus, the source corpus of the TF-IDF is very important as it is the backdrop for TopEx.  
 
@@ -103,7 +130,7 @@ To import additional documents for TF-IDF creation, select the "TFIDF Corpus Fil
 #### 3) Use a different corpus for TF-IDF
 To only use a different corpus for TF-IDF creation and NOT include the input corpus in the calculations, follow the directions for #2 above, then scroll to the bottom of the Parameters tab and UNCHECK the box for "Include input in tfidf?"
 
-### Sentence Embedding Parameters
+### Sentence Embedding Parameters <a name="usage12">
 
 These parameters control how a sentence is embeded into a numerical vector.  By default, A TF-IDF matrix is created using all documents in the corpus. This TF-IDF is used to reduce sentences to their most informative 6 word phrase (see [Olex et al 2020](#paper) for details).  The TF-IDF is then compressed down to 200 (or the number of documents minus 1) dimensions using Singular Value Decomposition (SVD) to reduce sparsity.  The SVD row vectors associated with each word in the sentence phrase is summed to generate the sentence embedding.
 
@@ -121,19 +148,19 @@ Dictates the method used to obtain word vectors for each of the words in the sel
 * **umap:** Compression done by the UMAP algorithm into the specified number of dimensions.
 * **pretrained:** Option allows you to upload pre-trained word vectors, such as those from Word2Vec. Must also include a BIN file containing the embeddings. Extracts word embeddings to the specified dimensions.
 
-#### Dimensions: 200
+#### Dimensions
 Determines the number of dimensions a word embedding will be for sentence representation and clustering.  Default is 200 or one less than the total number of documents, whichever is smaller.  This must be set no larger than the total number of documents!  For example, if you uploaded 100 documents your dimensions cannot be greater than 99.  Additionally, you must have at least 3 documents minimum.
 
-### Sentence Clustering Parameters
+### Sentence Clustering Parameters <a name="usage13">
 The sentence clustering parameters control how sentence embeddings are grouped together. By default, the K-means clustering algorithm is used, which requires Euclidean distance as the distance metric, to group sentences into 20 clusters.
 
-#### Clustering Method: Kmeans
+#### Clustering Method
 Determines the method used for clustering setnences. Options are:
 
-    * kmeans: Requires a pre-specified number of cluster to create. (Default)
-    * hac: Hierarchical Agglomerative Clustering requires a height at which to cut the generated dendrogram to create distinct clusters.
+* **kmeans:** Requires a pre-specified number of cluster to create. (Default)
+* **hac:** Hierarchical Agglomerative Clustering requires a height at which to cut the generated dendrogram to create distinct clusters.
 
-#### Clustering Distance Metric: Euclidean
+#### Clustering Distance Metric:
 Specifies the method used for determining sentence similarity. Options include:
 
 * **euclidean:** Uses Euclidean distance, which primarily considered similar magnitude of vector elements. Is required for K-Means clustering method. (Default)
@@ -144,7 +171,7 @@ Specifies the method used for determining sentence similarity. Options include:
 #### Threshold
 The threshold is either 1) the number of clusters, k, for K-Means clustering, or 2) the height of the dendrogram to cut in HAC.  Note that if using k-means you will get exactly k clusters; however, using HAC may take sone trial and error as the max height of the tree changes with each data set.  Default is set to 20, which is reasonable for both methods, but it is recommended all users should play with this parameter to identify the optimal value for their corpus.
 
-### Visualization Parameters
+### Visualization Parameters <a name="usage14">
 These parameters control how the scatter plot is created for visualization of the clusters.  The scatter plot data is a compression of the clustering distance matrix down to 2 dimensions.  It is NOT a direct vizualization of the compressed/raw TF-IDF.  Thus, the user may choose a different compression method for visualization.  Through many trials, we have found that UMAP using a cosine distance metric generates good visualizations that generally correspond to sentence clusters found using SVD compression; thus, UMAP is the default; however, other options can be explored.  Note, compression is always to 2 dimensions for 2-D scatter plot visualization.
 
 #### Visualization Method
@@ -166,21 +193,21 @@ Users have the option to re-calculate the distance matrix using a different dist
 #### UMAP Neighbors
 If choosing UMAP for visualization, you have the option of selecting the number of neighbors UMAP uses for its dimension reduction algorithm.  Defulat is set to 15, which is generally a good choice.  Lower values will create more tightly packed clusters, and larger numbers will create larger more spread out clusters on the scatter plot.
 
-## 3: Run Analysis
+## 3: Run Analysis <a name="usage3">
 Once all of the parameters have been set you are ready to run your analysis.  Navigate back over to the "File Manager" tab and hit "Run".  If you decide you want to exclude some files from a particular run, you can uncheck them in the File Manager tab before hitting "run" and they will be excluded.
 
-## 4: Explore and Export Results
+## 4: Explore and Export Results <a name="usage4">
 Results are shown in the center window as a scatter plot or word cloud.  
 
-### Scatter Plot
+### Scatter Plot <a name="usage41">
 In the scatter plot, each sentence that was clustered is represented by a dot.  Clicking on the dots in the scatter plot will bring up sentence and cluster information in the right most panel, including the key topic words for each cluster.  A tab delimited text file that can be opened in Excel is also saved that contains the cluster and topic analysis results.  To save the figures as images you can click on the "Save as PNG" buttons in the reight most panel.  Additionally, you can download the raw data for the scatter plot using the "Download Raw Data" button in the center console.  
 
-### Word Cloud
+### Word Cloud <a name="usage42">
 The word cloud tab shows the frequency of the top words in each cluster if sentences.  Larger words are more frequent.  This allows on to get a quick view of the terms used most frequently in the cluster.  Similar download options are avaliabel for the word cloud as for the scatter plot.
 
 
 
-# Acknowledgements
+# Acknowledgements <a name="thanks">
 
 TopExApp (previously MedTop) was initially developed as a web app through the 2019-2020 CapStone program by Seniors in VCU's Computer Science Department under the supervision of Dr. Bridget McInnes and Amy Olex. We wish to thank Sean Kotrola, Aidan Myers, and Suzanne Prince for their excellent work in getting this application up and running! Here are links to the team's CapStone [Poster](https://drive.google.com/file/d/1TGCaM7oXPxFwEJ5B5_nrGZqNnUetWPFB/view) and [Application Demonstration](https://drive.google.com/file/d/1xRYlLpiYnCnI9Pdi6vbE4eTDUu0e09qB/view). 
 
