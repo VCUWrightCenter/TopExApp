@@ -457,16 +457,27 @@ class LeftSidebar extends Component {
                 </div>
 
                 <div className='spacing'>
-                    <label for="distmet">Distance Metric</label>
-                    <Dropdown placeholder='Select distance metric'
+                    <Dropdown placeholder='Select distance metric for clustering'
                         fluid
                         clearable
                         selection
-                        id="distmet"
-                        options={DistanceMetric}
+                        id="cluster_dist_metric"
+                        options={ClusterDistanceMetric}
                         onChange={this.getDropdownValue} />
                         &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Distance metric is used to compare points for clustering"></i>
+                    <i aria-hidden="true" className="question circle fitted icon" title="This distance metric is used to compare points for clustering"></i>
+                </div>
+
+                <div className='spacing'>
+                    <Dropdown placeholder='Select distance metric for visualization'
+                        fluid
+                        clearable
+                        selection
+                        id="viz_dist_metric"
+                        options={VisualizationDistanceMetric}
+                        onChange={this.getDropdownValue} />
+                        &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="This distance metric is used to compare points for visualization"></i>
                 </div>
 
                 <div className='spacing'>
