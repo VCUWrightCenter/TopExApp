@@ -457,7 +457,8 @@ class LeftSidebar extends Component {
                 </div>
 
                 <div className='spacing'>
-                    <Dropdown placeholder='Select distance metric for clustering'
+                    <label for="cluster_dist_metric">Distance Metric for Clustering</label>
+                    <Dropdown placeholder='Select distance metric'
                         fluid
                         clearable
                         selection
@@ -469,7 +470,8 @@ class LeftSidebar extends Component {
                 </div>
 
                 <div className='spacing'>
-                    <Dropdown placeholder='Select distance metric for visualization'
+                    <label for="viz_dist_metric">Distance Metric for Visualization</label>
+                    <Dropdown placeholder='Select distance metric'
                         fluid
                         clearable
                         selection
@@ -728,7 +730,7 @@ class LeftSidebar extends Component {
             <div className="leftSidebarContainer scriptArgsTab">
                 <div className='file-input'>
                     <div className='spacing'>
-                        <label for="reclusterThreshold">Height or K (needs to be less than ...)</label>
+                        <label for="reclusterThreshold">Height or K</label>
                         <Input
                             type='number'
                             placeholder='height or k'
@@ -893,12 +895,6 @@ class LeftSidebar extends Component {
     }
 
     async submitRecluster(event) {
-        
-        console.log("Event:" + event);
-        console.log("Data:" + this.state.graphData.data);
-        console.log("Length:" + this.state.graphData.data.length);
-        console.log("Max Thresh:" + this.state.graphData.max_thresh);
-        console.log(document.getElementById('reclusterThreshold').value);
 
         if (this.state.graphData.data.length > 0  && document.getElementById('reclusterThreshold').value < this.state.graphData.max_thresh) {
             document.getElementById('submitReclusterButton').disabled = true;
