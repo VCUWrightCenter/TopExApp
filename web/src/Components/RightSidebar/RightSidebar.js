@@ -31,10 +31,10 @@ class RightSidebar extends Component {
                             <div><span>Label</span> <h3>{pointInfo.label}</h3></div>
                             <div><span>Cluster</span> <h3>{pointInfo.cluster}</h3></div>
                         </div>
-                        <div className="card"><h4>Phrase</h4> {phrase}</div>
-                        <div className="card"><h4>Raw Sentence</h4> {pointInfo.raw_sent}</div>
-                        <div className="card"><h4>Cluster Info</h4> {cluster_info}</div>
-                        <div id='exportButtons' className='exportButtons'>
+                        <div class="card"><h4>Phrase</h4> {phrase}</div>
+                        <div class="card"><h4>Raw Sentence</h4> {pointInfo.raw_sent}</div>
+                        <div class="card"><h4>Cluster Info</h4> {cluster_info}</div>
+                        {/* <div id='exportButtons' className='exportButtons'>
                             <Button
                                 onClick={(e) => util.exportSVGAsPNG("scatterplotSVG")}
                                 content="Export Scatterplot"
@@ -46,7 +46,7 @@ class RightSidebar extends Component {
                                 content="Export Word Cloud"
                                 className="ui black button"
                             />
-                        </div>
+                        </div> */}
                     </div>
                     )
                 })
