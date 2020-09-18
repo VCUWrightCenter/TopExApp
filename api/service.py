@@ -59,9 +59,7 @@ def process(request: request):
 
     clustering_method = params['clusteringMethod']
     visualization_method = params['visualizationMethod'] if str_valid(params['visualizationMethod']) else 'umap'
-    #TODO: tfidfCorpus
     vectorization_method = params['wordVectorType'] if str_valid(params['wordVectorType']) else 'svd'
-    #TODO: w2vBinFile
     window_size = cast_int(params['windowSize'])
     height = cast_int(params['threshold']) if clustering_method == "hac" else None
     k = cast_int(params['threshold']) if clustering_method == "kmeans" else None
