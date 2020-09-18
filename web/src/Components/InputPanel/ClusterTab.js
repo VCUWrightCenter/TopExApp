@@ -22,16 +22,9 @@ class ClusterTab extends Component {
         };
     }
 
-    //This method takes in the form data, sends it to the api,
-    //and then sends it to the parent element (App) so that
-    //it can be passed to the Main component.
-    //It must be async so that it does not pass data to App before
-    //the data is returned
-    async handleChange(event) {
-
+    // Submits parameters and documents for clustering
+    async submitCluster(event) {
         document.getElementById('submitButton').disabled = true;
-
-
         event.preventDefault()
 
         let formChildren = event.target.children
@@ -77,40 +70,11 @@ class ClusterTab extends Component {
     }
 
     render() {
-        // let visualizationMethods = getVisualizationMethods(dropdownid);
-
         return (
             <div className='InputPanelContainer scriptArgsTab'>
-
-                <div className='spacing'>
-                    <Button
-                        color='yellow'
-                        content='*TFIDF Corpus File Input'
-                        icon='file'
-                        onClick={() => document.getElementById('tfidfcorpus').click()}
-                        className='buttonText'
-                        labelPosition="left" />
-                    {/* <label htmlFor='tfidfcorpuslabel'>tfidfcorpus</label> */}
-                    {this.state.tfidfcorpusFiles.map((fileName) => {
-                        return (
-                            <div className='fileListEntry' key={fileName}>
-                                <label key={fileName} htmlFor={fileName} className='file-list-label' >{fileName}</label>
-                            </div>
-                        )
-                    })
-                    }
-                    <input hidden type='file' webkitdirectory="" mozdirectory="" multiple id='tfidfcorpus' onChange={(e) => {
-                        let files = document.getElementById('tfidfcorpus').files
-                        let fileNames = []
-                        Object.values(files).forEach((elem) => {
-                            fileNames.push(elem.name)
-                        })
-                        this.setState({ tfidfcorpusFiles: fileNames })
-                    }} />
-                    &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Upload files for seeding tfidf, but not included in clustering."></i>
-                </div>
-
+                Corpus[0]: {this.props.corpusDocs[0]}
+                <br/>
+                Seed[0]: {this.props.seedDocs[0]}
                 <Header as='h3'>Sentence Embedding Parameters</Header>
 
                 <div className='spacing'>
@@ -274,6 +238,18 @@ class ClusterTab extends Component {
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Checking this box means that part of speech and sentiment will be used to weight the importance of tokens."></i>
                 </div>
+
+                <Button
+                    color='black'
+                    loading={this.state.runningScript}
+                    onClick={(e) => { document.getElementById('submitButton').click() }}
+                    content='Run'
+                    className='action'
+                />
+
+                <form encType="multipart/form-data" onSubmit={(e) => this.submitCluster(e)}>
+                    <button hidden id="submitButton" className="submitButton"> Run </button>
+                </form>
             </div >
         )
     }

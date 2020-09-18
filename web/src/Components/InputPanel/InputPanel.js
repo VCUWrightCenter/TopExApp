@@ -21,7 +21,8 @@ class InputPanel extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileList: [],
+            corpusDocs: [],
+            seedDocs: [],
             leftTabs: null,
             graphData: null,
             ProcessingRunButtonDisabled: true,
@@ -35,9 +36,14 @@ class InputPanel extends Component {
         this.props.graphDataCallback(graphData)
     }
 
-    // Callback for passing fileList from FileManagerTab components back up to InputPanel
-    fileListCallback = (fileList) => {
-        this.setState({ fileList: fileList })
+    // Callback for passing seedDocs from FileManagerTab components back up to InputPanel
+    corpusDocsCallback = (files) => {
+        this.setState({ corpusDocs: files })
+    }
+
+    // Callback for passing seedDocs from FileManagerTab components back up to InputPanel
+    seedDocsCallback = (files) => {
+        this.setState({ seedDocs: files })
     }
 
     componentDidMount() {
@@ -46,8 +52,8 @@ class InputPanel extends Component {
 
     render() {
         let panes = [
-            { menuItem: 'File Manager', pane: { key: 'pane1', content: <FileManagerTab fileListCallback={this.fileListCallback}/>, className: "pane" } },
-            { menuItem: 'Cluster', pane: { key: 'pane3', content: <ClusterTab />, className: "pane" } },
+            { menuItem: 'File Manager', pane: { key: 'pane1', content: <FileManagerTab corpusDocsCallback={this.corpusDocsCallback}  seedDocsCallback={this.seedDocsCallback}/>, className: "pane" } },
+            { menuItem: 'Cluster', pane: { key: 'pane3', content: <ClusterTab corpusDocs={this.state.corpusDocs} seedDocs={this.state.seedDocs} />, className: "pane" } },
             { menuItem: 'Re-Cluster', pane: { key: 'pane0', content: this.generateReclusterTab(), className: "pane" } },
             { menuItem: 'Import/Export', pane: { key: 'pane2', content: <ImportExportTab graphData={this.state.graphData} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
             { menuItem: 'Acknowledgements', pane: { key: 'pane4', content: <AcknowledgementsTab />, className: "pane" } }
