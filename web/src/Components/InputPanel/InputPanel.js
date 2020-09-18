@@ -51,7 +51,7 @@ class InputPanel extends Component {
     render() {
         let panes = [
             { menuItem: 'File Manager', pane: { key: 'pane1', content: <FileManagerTab corpusDocsCallback={this.corpusDocsCallback}  seedDocsCallback={this.seedDocsCallback}/>, className: "pane" } },
-            { menuItem: 'Cluster', pane: { key: 'pane3', content: <ClusterTab corpusDocs={this.state.corpusDocs} seedDocs={this.state.seedDocs} />, className: "pane" } },
+            { menuItem: 'Cluster', pane: { key: 'pane3', content: <ClusterTab corpusDocs={this.state.corpusDocs} seedDocs={this.state.seedDocs} graphDataCallback={this.graphDataCallback}/>, className: "pane" } },
             { menuItem: 'Re-Cluster', pane: { key: 'pane0', content: this.generateReclusterTab(), className: "pane" } },
             { menuItem: 'Import/Export', pane: { key: 'pane2', content: <ImportExportTab graphData={this.state.graphData} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
             { menuItem: 'Acknowledgements', pane: { key: 'pane4', content: <AcknowledgementsTab />, className: "pane" } }
@@ -64,22 +64,6 @@ class InputPanel extends Component {
                 </div>
             </div>
         );
-    }
-
-    //This function gets the data from the Semantic UI dropdowns in the options tab
-    getDropdownValue = (event, data) => {
-        let dataName = data.options[0].dropdownid
-
-        if (data.value === '') { //Weird cancelling bug
-            this.setState({
-                [dataName]: null
-            })
-        }
-        else {
-            this.setState({
-                [dataName]: data.value
-            });
-        }
     }
 
     //Responsible for generating the jsx in the re-cluster tab

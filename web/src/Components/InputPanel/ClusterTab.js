@@ -24,21 +24,21 @@ class ClusterTab extends Component {
 
     // Submits parameters and documents for clustering
     async submitCluster(event) {
-        document.getElementById('submitButton').disabled = true;
         event.preventDefault()
 
         let formData = new FormData()
 
         // Append corpusDocs to form data
-        // for (var i = 0; i < this.props.corpusDocs.length; i++) {
-        //     let doc = await getFileContents(this.props.corpusDocs[i])
-        //     formData.append("File" + i, doc);
-        // }
+        for (var i = 0; i < this.props.corpusDocs.length; i++) {
+            // let doc = await getFileContents(this.props.corpusDocs[i])
+            let file = this.props.corpusDocs[i];
+            formData.append("File" + i, file);
+        }
 
         // Concatenate seedDocs into a single string
         let tfidfcorpus = '';
         for (let i = 0; i < this.props.seedDocs.length; i++) {
-            tfidfcorpus += await getFileContents(tfidfcorpus[i])
+            tfidfcorpus += await getFileContents(this.props.seedDocs[i])
             tfidfcorpus += '<newdoc>' //add this so we can split on it in the create_tfidf funtion in script
         }
 
@@ -46,17 +46,17 @@ class ClusterTab extends Component {
             'tfidfcorpus': tfidfcorpus,
             // Sentence embedding parameters
             'windowSize': document.getElementById('windowSize').value === '' ? 6 : document.getElementById('windowSize').value,
-            'wordVectorType': (this.state.wordVectorType == null) ? null : this.state.wordVectorType,
+            'wordVectorType': (this.state.vectorizationMethod == null) ? null : this.state.vectorizationMethod,
             // TODO: w2vBinFile file upload not currently available
             'w2vBinFile': document.getElementById('w2vBinFile')?.files[0] != null ? getFileContents(document.getElementById('w2vBinFile').files[0]) : null,
             'dimensions': document.getElementById('dimensions').value === '' ? null : document.getElementById('dimensions').value,
             // Sentence clustering parameters
             'clusteringMethod': (this.state.clusteringMethod == null) ? "hac" : this.state.clusteringMethod,
-            'cluster_dist_metric': (this.state.ClusterDistanceMetric == null) ? null : this.state.ClusterDistanceMetric,
+            'cluster_dist_metric': (this.state.cluster_dist_metric == null) ? null : this.state.cluster_dist_metric,
             'threshold': document.getElementById('threshold').value === '' ? null : document.getElementById('threshold').value,
             // Visualization parameters
             'visualizationMethod': (this.state.visualizationMethod == null) ? "umap" : this.state.visualizationMethod,
-            'viz_dist_metric': (this.state.VisualizationDistanceMetric == null) ? null : this.state.VisualizationDistanceMetric,
+            'viz_dist_metric': (this.state.viz_dist_metric == null) ? null : this.state.viz_dist_metric,
             'umap_neighbors': document.getElementById('umap_neighbors').value === '' ? null : document.getElementById('umap_neighbors').value,
             // Checkboxes            
             'include_input_in_tfidf': document.getElementById('include_input_in_tfidf').checked,
@@ -103,19 +103,33 @@ class ClusterTab extends Component {
             })
             console.error(err.message)
             alert(err);
-            document.getElementById('submitButton').disabled = false;
         })
 
         return response == null ? null : response
+    }
 
+    //This function gets the data from the Semantic UI dropdowns in the options tab
+    getDropdownValue = (event, data) => {
+        let dataName = data.options[0].dropdownid
+
+        if (data.value === '') { //Weird cancelling bug
+            this.setState({
+                [dataName]: null
+            })
+        }
+        else {
+            this.setState({
+                [dataName]: data.value
+            });
+        }
     }
 
     render() {
         return (
             <div className='InputPanelContainer scriptArgsTab'>
-                Corpus[0]: {this.props.corpusDocs[0]}
+                Corpus[0]: {this.props.corpusDocs[0]?.name}
                 <br />
-                Seed[0]: {this.props.seedDocs[0]}
+                Seed[0]: {this.props.seedDocs[0]?.name}
                 <Header as='h3'>Sentence Embedding Parameters</Header>
 
                 <div className='spacing'>
@@ -282,6 +296,7 @@ class ClusterTab extends Component {
 
                 <Button
                     color='black'
+                    disabled={this.state.runningScript}
                     loading={this.state.runningScript}
                     onClick={(e) => { document.getElementById('submitButton').click() }}
                     content='Run'

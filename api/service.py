@@ -68,8 +68,8 @@ def cluster(request: request):
     umap_neighbors = cast_int(params['umap_neighbors'])
     cluster_dist_metric = params['cluster_dist_metric'] if str_valid(params['cluster_dist_metric']) else 'euclidean'
     viz_dist_metric = params['viz_dist_metric'] if str_valid(params['viz_dist_metric']) else 'cosine'
-    include_input_in_tfidf = bool(params['include_input_in_tfidf'])
-    include_sentiment = bool(params['include_sentiment'])
+    include_input_in_tfidf = params['include_input_in_tfidf'] != 'false'
+    include_sentiment = params['include_sentiment'] != 'false'
 
     # Cluster the sentences in a dataframe
     data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_file=None)

@@ -15,15 +15,10 @@ class FileManagerTab extends Component {
 
     // Gets file names from uploads adn filters
     mapFiles(uploads) {
-        return Array.from(uploads)
-            .map(f => {
-                return {
-                    name: f.name,
-                    checked: true,
-                    file: f
-                }
-            })
+        let files = Array.from(uploads)
             .filter(f => f !== undefined && f.name.includes('.txt'));
+        files.forEach(f => f.checked = true);
+        return files;
     }
 
     //This method saves uploads into corpusDocs and shares with InputPanel
@@ -33,12 +28,12 @@ class FileManagerTab extends Component {
         this.updateCorpusDocsProps(files);
     }
     toggleCorpusCheck(filename) {
-        let doc = this.state.corpusDocs.find(d => d.name == filename);
+        let doc = this.state.corpusDocs.find(d => d.name === filename);
         doc.checked = !doc.checked;
         this.updateCorpusDocsProps(this.state.corpusDocs);
     }
     updateCorpusDocsProps(files) {
-        let filtered = files.filter(f => f.checked).map(f => { return f.file });
+        let filtered = files.filter(f => f.checked).map(f => { return f });
         this.props.corpusDocsCallback(filtered);
     }
 
@@ -49,12 +44,12 @@ class FileManagerTab extends Component {
         this.updateSeedDocsProps(files);
     }
     toggleSeedCheck(filename) {
-        let doc = this.state.seedDocs.find(d => d.name == filename);
+        let doc = this.state.seedDocs.find(d => d.name === filename);
         doc.checked = !doc.checked;
         this.updateSeedDocsProps(this.state.seedDocs);
     }
     updateSeedDocsProps(files) {
-        let filtered = files.filter(f => f.checked).map(f => { return f.file });
+        let filtered = files.filter(f => f.checked).map(f => { return f });
         this.props.seedDocsCallback(filtered);
     }
 
