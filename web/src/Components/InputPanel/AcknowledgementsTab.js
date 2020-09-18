@@ -1,8 +1,3 @@
-//This is the left sidebar component. It is EXTREMELY important to this web app.
-//This is where communication with the API happens. It is the gateway for data to enter and leave the web app. 
-//This is where files are uploaded to the web app, eitehr for import or processing. 
-//This is where the graph data is exported. NOTE: Data cannot be exported unless the user "processes" data. That is, unless you send and receive data from the API, you will not be able to export.
-
 import React, { Component } from "react";
 import './InputPanel.css';
 import COElogo from '../../Pictures/2 Horizontal (hz)/Color (4c)/bm_CollEng_CompSci_RF_hz_4c.png'

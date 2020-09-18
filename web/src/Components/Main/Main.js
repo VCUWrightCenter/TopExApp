@@ -17,16 +17,16 @@ export default class Main extends Component {
         }
     }
 
-    getPointData = (pointData) => {
-        this.props.pointData(pointData)
+    pointDataCallback = (pointData) => {
+        this.props.pointDataCallback(pointData)
     }
 
     
 
     componentDidUpdate() {
         let panes = [
-            { menuItem: 'Scatterplot',  pane: { key: 'pane1', content: <Scatterplot data={this.props.graphData} pointData={this.getPointData.bind(this)}/> }, className:'fullWindow'},
-            { menuItem: 'Word Cloud', pane: { key: 'pane2', content: <WordCloud data={this.props.graphData} pointData={this.getPointData.bind(this)}/>}, className:'fullWindow' },
+            { menuItem: 'Scatterplot',  pane: { key: 'pane1', content: <Scatterplot data={this.props.graphData} pointData={this.pointDataCallback}/> }, className:'fullWindow'},
+            { menuItem: 'Word Cloud', pane: { key: 'pane2', content: <WordCloud data={this.props.graphData} pointData={this.pointDataCallback}/>}, className:'fullWindow' },
         ]
 
         if (this.props.graphData !== this.state.graphData)

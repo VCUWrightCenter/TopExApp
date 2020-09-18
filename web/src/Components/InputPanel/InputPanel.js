@@ -8,7 +8,8 @@ import Axios from "axios";
 import './InputPanel.css';
 import { Input, Button, Header, Tab, Dropdown, Checkbox } from 'semantic-ui-react';
 import AcknowledgementsTab from "./AcknowledgementsTab";
-
+import ImportExportTab from "./ImportExportTab";
+import { getFileContents } from './Shared'
 
 class InputPanel extends Component {
 
@@ -21,11 +22,16 @@ class InputPanel extends Component {
             tfidfcorpusFiles: [],
             leftTabs: null,
             graphData: null,
-            ImportButtonDisabled: true,
             ProcessingRunButtonDisabled: true,
             w2vBinFileFileName: [],
         };
 
+    }
+
+    // Callback for passing graphData from child components back up to App
+    graphDataCallback = (graphData) => {
+        this.setState({graphData: graphData})
+        this.props.graphDataCallback(graphData)
     }
 
     componentDidMount() {
@@ -36,7 +42,7 @@ class InputPanel extends Component {
         let panes = [
             { menuItem: 'File Manager', pane: { key: 'pane1', content: this.generateFileInput(), className: "pane" } },
             { menuItem: 'Re-Cluster', pane: { key: 'pane0', content: this.generateReclusterTab(), className: "pane" } },
-            { menuItem: 'Import/Export', pane: { key: 'pane2', content: this.generateFileImportExport(), className: "pane" } },
+            { menuItem: 'Import/Export', pane: { key: 'pane2', content: <ImportExportTab graphData={this.state.graphData} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
             { menuItem: 'Parameters', pane: { key: 'pane3', content: this.generateScriptArgsTab(), className: "pane" } },
             { menuItem: 'Acknowledgements', pane: { key: 'pane4', content: <AcknowledgementsTab />, className: "pane" } }
         ]
@@ -49,14 +55,6 @@ class InputPanel extends Component {
             </div>
         );
     }
-
-
-    //This sends data to the APP component so that it can be sent to Main/Scatterplot
-    // and create the graph
-    sendGraphData = (graphData) => {
-        this.props.graphData(graphData)
-    }
-
 
     //Responsible for generating the jsx in the script args tab
     generateScriptArgsTab() {
@@ -521,29 +519,13 @@ class InputPanel extends Component {
         )
     }
 
-    //This is a utility function that is used to read in file contents
-    getFileContents(file) {
-        return new Promise((resolve, reject) => {
-            let contents = ""
-            const reader = new FileReader()
-            reader.onloadend = function (e) {
-                contents = e.target.result
-                resolve(contents)
-            }
-            reader.onerror = function (e) {
-                reject(e)
-            }
-            reader.readAsText(file)
-        })
-    }
-
     //This function gets all values that are going to be passed to the API. 
     async getScriptArgs() {
 
         let temp = '';
         let tfidfcorpus = document.getElementById('tfidfcorpus').files
         for (let i = 0; i < tfidfcorpus.length; i++) {
-            temp += await this.getFileContents(tfidfcorpus[i])
+            temp += await getFileContents(tfidfcorpus[i])
             temp += '<newdoc>' //add this so we can split on it in the create_tfidf funtion in script
         }
         tfidfcorpus = temp;
@@ -553,7 +535,7 @@ class InputPanel extends Component {
         let visualizationMethod = (this.state.visualizationMethod == null) ? "umap" : this.state.visualizationMethod;
         let threshold = document.getElementById('threshold').value === '' ? null : document.getElementById('threshold').value;
         let wordVectorType = (this.state.wordVectorType == null) ? null : this.state.wordVectorType;
-        let w2vBinFile = document.getElementById('w2vBinFile')?.files[0] != null ? this.getFileContents(document.getElementById('w2vBinFile').files[0]) : null; //This needs to be changed to a file input
+        let w2vBinFile = document.getElementById('w2vBinFile')?.files[0] != null ? getFileContents(document.getElementById('w2vBinFile').files[0]) : null; //This needs to be changed to a file input
         let windowSize = document.getElementById('windowSize').value === '' ? 6 : document.getElementById('windowSize').value;
         let dimensions = document.getElementById('dimensions').value === '' ? null : document.getElementById('dimensions').value;
         let umap_neighbors = document.getElementById('umap_neighbors').value === '' ? null : document.getElementById('umap_neighbors').value;
@@ -600,82 +582,6 @@ class InputPanel extends Component {
         }
     }
 
-
-    //This is the function that exports ALL of the graph data that is generated from the last call to the API
-    exportData() {
-        if (this.state.graphData == null) {
-            alert('No data to export')
-        }
-        else {
-            let name = null
-            while (true) {
-                name = prompt("Enter name for export file", "export")
-                if (name == null) { //cancel
-                    return;
-                }
-                else if (name === "") { //blank name
-                    alert("Name cannot be empty!")
-                }
-                else { // Valid name
-                    break;
-                }
-            }
-            const element = document.createElement("a");
-            const file = new Blob([JSON.stringify(this.state.graphData)], { type: 'text/plain' });
-            element.href = URL.createObjectURL(file);
-            element.download = name + ".txt";
-            document.body.appendChild(element); // Required for this to work in FireFox
-            element.click();
-            name = null;
-        }
-    }
-
-    // This is the function that is called when someone imports data. 
-    async importData(e) {
-        e.preventDefault()
-
-        let input = document.getElementById("importFileInput")
-
-        let file = input.files[0]
-        let fileContent = await this.getFileContents(file);
-
-
-        if (fileContent != null && file.type === "text/plain") {
-            try {
-                this.sendGraphData(JSON.parse(fileContent))
-            }
-            catch (err) {
-                console.error(err)
-                alert(err);
-            }
-
-        }
-        else {
-            alert("Error parsing file. Must be a .txt file exported from previous run.")
-        }
-    }
-
-    //This is used to ensure the import file is not null
-    checkImportFile(e) {
-        e.preventDefault()
-
-        let input = document.getElementById("importFileInput")
-
-        let file = input.files[0]
-
-        if (file != null) {
-            this.setState({
-                ImportButtonDisabled: false
-            })
-        }
-        else {
-            this.setState({
-                ImportButtonDisabled: true
-            })
-        }
-    }
-
-
     //Responsible for generating the jsx in the file input tab (at least 3 files need to be uploaded)
     generateFileInput() {
         return (
@@ -699,7 +605,7 @@ class InputPanel extends Component {
                             content='Run'
                             className='action'
                         />
-                        
+
                         <div id="fileList" className='fileList'>
                             {this.state.fileList.map((fileName) => {
                                 return (
@@ -710,7 +616,7 @@ class InputPanel extends Component {
                                 )
                             })
                             }
-                        </div>                 
+                        </div>
                     </Button.Group>
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="At least 3 files are required in order for application to run."></i>
@@ -737,7 +643,7 @@ class InputPanel extends Component {
                         />
                             &nbsp;
                             <i aria-hidden="true" className="question circle fitted icon" title="New height or k."></i>
-                    </div>                    
+                    </div>
                     <div className='spacing'>
                         <label htmlFor="reclusterTopicsPerCluster">Topics Per Cluster</label>
                         <Input
@@ -773,49 +679,6 @@ class InputPanel extends Component {
                     </form>
                 </div>
             </div>)
-    }
-
-    //Responsible for generating the jsx in the file input tab
-    generateFileImportExport() {
-        return (
-            <div className="InputPanelContainer">
-                <div className='file-input'>
-                    <Button.Group vertical>
-                        <Button
-                            color='yellow'
-                            onClick={() => document.getElementById('importFileInput').click()}
-                            icon="file"
-                            labelPosition="left"
-                            content='Upload file for import'
-                            className='buttonText'
-                        />
-                        <Button
-                            color='black'
-                            disabled={this.state.ImportButtonDisabled}
-                            content="Import"
-                            onClick={(e) => this.importData(e)}
-                            className='action'
-                        />
-                        <Button.Or />
-                        <Button
-                            color='yellow'
-                            content="Export"
-                            onClick={(e) => this.exportData()}
-                            className='buttonText'
-                        />
-                    </Button.Group>
-                    <form>
-                        <input id='importFileInput' type="file" hidden onChange={(e) => this.checkImportFile(e)} />
-                        <button id='importFileButton' type='submit' hidden onClick={(e) => this.importData(e)}>Import</button>
-                    </form>
-                </div>
-            </div>)
-    }
-
-    acknowledgementsTab() {
-        return (
-            <AcknowledgementsTab /> 
-        )
     }
 
     //This method takes in the form data, sends it to the api,
@@ -866,7 +729,8 @@ class InputPanel extends Component {
 
         this.setState({ graphData: response })
 
-        this.sendGraphData(response)
+        // Propogate graphData back up to parent
+        this.props.graphDataCallback(response)
 
         document.getElementById('submitButton').disabled = false;
         this.setState({
@@ -877,18 +741,18 @@ class InputPanel extends Component {
 
     async submitRecluster(event) {
 
-        if (this.state.graphData.data.length > 0  && document.getElementById('reclusterThreshold').value < this.state.graphData.max_thresh) {
+        if (this.state.graphData.data.length > 0 && document.getElementById('reclusterThreshold').value < this.state.graphData.max_thresh) {
             document.getElementById('submitReclusterButton').disabled = true;
             event.preventDefault();
-        
+
             // Recluster parameters
-            let params = {            
+            let params = {
                 'minClusterSize': document.getElementById('reclusterMinClusterSize').value === '' ? 1 : document.getElementById('reclusterMinClusterSize').value,
                 'threshold': document.getElementById('reclusterThreshold').value === '' ? 5 : document.getElementById('reclusterThreshold').value,
                 'topicsPerCluster': document.getElementById('reclusterTopicsPerCluster').value === '' ? 8 : document.getElementById('reclusterTopicsPerCluster').value,
                 'clusteringMethod': this.state.clusteringMethod
             };
-        
+
 
             this.setState({
                 runningScript: true
@@ -901,17 +765,18 @@ class InputPanel extends Component {
             if (response == null) {
                 return;
             }
-            
+
             this.setState({ graphData: response })
 
-            this.sendGraphData(response)
+            // Propogate graphData back up to parent
+            this.props.graphDataCallback(response)
 
             document.getElementById('submitReclusterButton').disabled = false;
             this.setState({
                 runningScript: false
             })
         } else {
-            alert ("Please make sure there is data and that the reclustering height is greater than the max threshold.");
+            alert("Please make sure there is data and that the reclustering height is greater than the max threshold.");
             event.preventDefault();
         }
     }
