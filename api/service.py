@@ -32,8 +32,9 @@ def str_valid(param: str):
     "Casts valid str parameter"
     return param if param != 'null' or param == '' else None
 
-def process(request: request):
+def cluster(request: request):
     "Processes input files into clusters."
+    # Process input from request
     params = request.form
     files = request.files
     names = []
@@ -59,9 +60,7 @@ def process(request: request):
 
     clustering_method = params['clusteringMethod']
     visualization_method = params['visualizationMethod'] if str_valid(params['visualizationMethod']) else 'umap'
-    #TODO: tfidfCorpus
     vectorization_method = params['wordVectorType'] if str_valid(params['wordVectorType']) else 'svd'
-    #TODO: w2vBinFile
     window_size = cast_int(params['windowSize'])
     height = cast_int(params['threshold']) if clustering_method == "hac" else None
     k = cast_int(params['threshold']) if clustering_method == "kmeans" else None
@@ -69,20 +68,16 @@ def process(request: request):
     umap_neighbors = cast_int(params['umap_neighbors'])
     cluster_dist_metric = params['cluster_dist_metric'] if str_valid(params['cluster_dist_metric']) else 'euclidean'
     viz_dist_metric = params['viz_dist_metric'] if str_valid(params['viz_dist_metric']) else 'cosine'
-    include_input_in_tfidf = bool(params['include_input_in_tfidf'])
-    include_sentiment = bool(params['include_sentiment'])
+    include_input_in_tfidf = params['include_input_in_tfidf'] != 'false'
+    include_sentiment = params['include_sentiment'] != 'false'
 
-    if dimensions is None:
-        dimensions = 2 if vectorization_method == 'umap' else min(200,len(df)-1)
-
-    return cluster(df, seed_topics_df, clustering_method, height, k, vectorization_method, window_size, dimensions, umap_neighbors, cluster_dist_metric, 
-                    viz_dist_metric, include_input_in_tfidf, include_sentiment, visualization_method)
-
-def cluster(df:pd.DataFrame, seed_topics_df:pd.DataFrame, clustering_method:str, height:int, k:int, vectorization_method:str, window_size:int, 
-            dimensions:int, umap_neighbors:int, cluster_dist_metric:str, viz_dist_metric:str, include_input_in_tfidf:bool, include_sentiment:bool, visualization_method:str):
-    "Clusters the sentences in a dataframe"
+    # Cluster the sentences in a dataframe
     data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_file=None)
     tfidf, dictionary = topex.create_tfidf(doc_df, seed_topics_df=seed_topics_df)
+
+    if dimensions is None or dimensions >= tfidf.shape[1]:
+        dimensions = 2 if vectorization_method == 'umap' else min(200,tfidf.shape[1]-1)
+
     data = topex.get_phrases(data, dictionary.token2id, tfidf, window_size, include_input_in_tfidf, include_sentiment)
     data = topex.get_vectors(vectorization_method, data, dictionary = dictionary, tfidf = tfidf, dimensions=dimensions, umap_neighbors=umap_neighbors)
     data, linkage_matrix, max_thresh, thresh = topex.assign_clusters(data, method=clustering_method, k=k, height=height, dist_metric=cluster_dist_metric)

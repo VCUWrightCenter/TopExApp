@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import './App.css';
-import LeftSidebar from '../LeftSidebar/LeftSidebar'
+import InputPanel from '../InputPanel/InputPanel'
 import RightSidebar from '../RightSidebar/RightSidebar.js'
 import Header from '../Header/Header'
 import Main from '../Main/Main'
@@ -14,23 +14,14 @@ class App extends Component {
     this.state = {}
   }
 
-  //Used to create graphs. 
-  getGraphData = (graphData) => {
-    let newState = this.state;
-    newState = {
-      graphData: graphData
-    }
-    this.setState(newState)
+  // Callback for passing graphData from child components back up to App
+  graphDataCallback = (graphData) => {
+    this.setState({graphData: graphData})
   }
 
   //Used for passing data to right sidebar for display
-  getPointData = (pointData) => {
-    let newState = this.state;
-    newState = {
-      pointData: pointData
-    }
-
-    this.setState(newState)
+  pointDataCallback = (pointData) => {
+    this.setState({pointData: pointData});
   }
 
   render() {
@@ -38,8 +29,8 @@ class App extends Component {
       <div className='main-content'>
         <Header />
         <RightSidebar pointData={this.state.pointData} />
-        <Main graphData={JSON.stringify(this.state.graphData)} pointData={this.getPointData.bind(this)} />
-        <LeftSidebar graphData={this.getGraphData.bind(this)} />
+        <Main graphData={JSON.stringify(this.state.graphData)} pointDataCallback={this.pointDataCallback} />
+        <InputPanel graphDataCallback={this.graphDataCallback} />
       </div>
     );
   }
