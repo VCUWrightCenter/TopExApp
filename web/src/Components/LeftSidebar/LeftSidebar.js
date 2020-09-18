@@ -378,7 +378,7 @@ class LeftSidebar extends Component {
                 </div>
 
                 <div className='spacing'>
-                    <label for="windowSize">Window Size</label>
+                    <label htmlFor="windowSize">Window Size</label>
                     <Input
                         type='number'
                         placeholder='Window Size'
@@ -391,7 +391,7 @@ class LeftSidebar extends Component {
                 </div>
 
                 <div className='spacing'>
-                    <label for="vectorizationMethod">Vectorization Method</label>
+                    <label htmlFor="vectorizationMethod">Vectorization Method</label>
                     <Dropdown placeholder='Select a method'
                         clearable
                         fluid
@@ -432,7 +432,7 @@ class LeftSidebar extends Component {
                     </div> : null}
 
                 <div className='spacing'>
-                    <label for="dimensions">Dimensions</label>
+                    <label htmlFor="dimensions">Dimensions</label>
                     <Input
                         type='number'
                         placeholder='Dimensions'
@@ -445,7 +445,7 @@ class LeftSidebar extends Component {
                 </div>
 
                 <div className='spacing'>
-                    <label for="clusteringMethod">Clustering Method</label>
+                    <label htmlFor="clusteringMethod">Clustering Method</label>
                     <Dropdown placeholder='Select a method'
                         fluid
                         clearable
@@ -457,7 +457,7 @@ class LeftSidebar extends Component {
                 </div>
 
                 <div className='spacing'>
-                    <label for="cluster_dist_metric">Distance Metric for Clustering</label>
+                    <label htmlFor="cluster_dist_metric">Distance Metric for Clustering</label>
                     <Dropdown placeholder='Select distance metric'
                         fluid
                         clearable
@@ -470,7 +470,7 @@ class LeftSidebar extends Component {
                 </div>
 
                 <div className='spacing'>
-                    <label for="viz_dist_metric">Distance Metric for Visualization</label>
+                    <label htmlFor="viz_dist_metric">Distance Metric for Visualization</label>
                     <Dropdown placeholder='Select distance metric'
                         fluid
                         clearable
@@ -483,7 +483,7 @@ class LeftSidebar extends Component {
                 </div>
 
                 <div className='spacing'>
-                    <label for="threshold">Threshold</label>
+                    <label htmlFor="threshold">Threshold</label>
                     <Input
                         type='number'
                         placeholder='Threshold'
@@ -496,7 +496,7 @@ class LeftSidebar extends Component {
                 </div>
 
                 <div className='spacing'>
-                    <label for="umap_neighbors">Umap Neighbors</label>
+                    <label htmlFor="umap_neighbors">Umap Neighbors</label>
                     <Input
                         type='number'
                         placeholder='Umap Neighbors'
@@ -730,7 +730,7 @@ class LeftSidebar extends Component {
             <div className="leftSidebarContainer scriptArgsTab">
                 <div className='file-input'>
                     <div className='spacing'>
-                        <label for="reclusterThreshold">Height or K</label>
+                        <label htmlFor="reclusterThreshold">Height or K</label>
                         <Input
                             type='number'
                             placeholder='height or k'
@@ -741,7 +741,7 @@ class LeftSidebar extends Component {
                             <i aria-hidden="true" className="question circle fitted icon" title="New height or k."></i>
                     </div>                    
                     <div className='spacing'>
-                        <label for="reclusterTopicsPerCluster">Topics Per Cluster</label>
+                        <label htmlFor="reclusterTopicsPerCluster">Topics Per Cluster</label>
                         <Input
                             type='number'
                             placeholder='topics per cluster'
@@ -752,7 +752,7 @@ class LeftSidebar extends Component {
                             <i aria-hidden="true" className="question circle fitted icon" title="Topics per cluster."></i>
                     </div>
                     <div className='spacing'>
-                        <label for="reclusterMinClusterSize">Minimum Cluster Size</label>
+                        <label htmlFor="reclusterMinClusterSize">Minimum Cluster Size</label>
                         <Input
                             type='number'
                             placeholder='min cluster size'
@@ -770,7 +770,7 @@ class LeftSidebar extends Component {
                         className='action'
                     />
                     <form encType="multipart/form-data" onSubmit={(e) => this.submitRecluster(e)}>
-                        <input hidden id='threshold' type="number" />
+                        <input hidden id='reclusterThreshold' type="number" />
                         <button hidden id="submitReclusterButton" className="submitButton"> Re-Cluster </button>
                     </form>
                 </div>

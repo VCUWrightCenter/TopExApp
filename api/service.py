@@ -70,9 +70,6 @@ def process(request: request):
     include_input_in_tfidf = bool(params['include_input_in_tfidf'])
     include_sentiment = bool(params['include_sentiment'])
 
-    if dimensions is None:
-        dimensions = 2 if vectorization_method == 'umap' else min(200,len(df)-1)
-
     return cluster(df, seed_topics_df, clustering_method, height, k, vectorization_method, window_size, dimensions, umap_neighbors, cluster_dist_metric, 
                     viz_dist_metric, include_input_in_tfidf, include_sentiment, visualization_method)
 
@@ -81,6 +78,10 @@ def cluster(df:pd.DataFrame, seed_topics_df:pd.DataFrame, clustering_method:str,
     "Clusters the sentences in a dataframe"
     data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_file=None)
     tfidf, dictionary = topex.create_tfidf(doc_df, seed_topics_df=seed_topics_df)
+
+    if dimensions is None or dimensions >= tfidf.shape[1]:
+        dimensions = 2 if vectorization_method == 'umap' else min(200,tfidf.shape[1]-1)
+
     data = topex.get_phrases(data, dictionary.token2id, tfidf, window_size, include_input_in_tfidf, include_sentiment)
     data = topex.get_vectors(vectorization_method, data, dictionary = dictionary, tfidf = tfidf, dimensions=dimensions, umap_neighbors=umap_neighbors)
     data, linkage_matrix, max_thresh, thresh = topex.assign_clusters(data, method=clustering_method, k=k, height=height, dist_metric=cluster_dist_metric)
