@@ -5,14 +5,12 @@
 
 import React, { Component } from "react";
 import Axios from "axios";
-import './LeftSidebar.css';
-import COElogo from '../../Pictures/2 Horizontal (hz)/Color (4c)/bm_CollEng_CompSci_RF_hz_4c.png'
-import CSLogo from '../../Pictures/CS/CS_main.png'
-import NLPLogo from '../../Pictures/dataminingfemale_final-01.png'
+import './InputPanel.css';
 import { Input, Button, Header, Tab, Dropdown, Checkbox } from 'semantic-ui-react';
+import AcknowledgementsTab from "./AcknowledgementsTab";
 
 
-class LeftSidebar extends Component {
+class InputPanel extends Component {
 
     filesToSend = [];
 
@@ -40,7 +38,7 @@ class LeftSidebar extends Component {
             { menuItem: 'Re-Cluster', pane: { key: 'pane0', content: this.generateReclusterTab(), className: "pane" } },
             { menuItem: 'Import/Export', pane: { key: 'pane2', content: this.generateFileImportExport(), className: "pane" } },
             { menuItem: 'Parameters', pane: { key: 'pane3', content: this.generateScriptArgsTab(), className: "pane" } },
-            { menuItem: 'Acknowledgements', pane: { key: 'pane4', content: this.acknowledgementsTab(), className: "pane" } }
+            { menuItem: 'Acknowledgements', pane: { key: 'pane4', content: <AcknowledgementsTab />, className: "pane" } }
         ]
 
         return (
@@ -344,7 +342,7 @@ class LeftSidebar extends Component {
         ];
 
         return (
-            <div className='leftSidebarContainer scriptArgsTab'>
+            <div className='InputPanelContainer scriptArgsTab'>
 
                 <Header as='h3'> Parameters </Header>
 
@@ -681,7 +679,7 @@ class LeftSidebar extends Component {
     //Responsible for generating the jsx in the file input tab (at least 3 files need to be uploaded)
     generateFileInput() {
         return (
-            <div className="leftSidebarContainer">
+            <div className="InputPanelContainer">
                 <div className='file-input'>
                     <Button.Group vertical>
                         <Button
@@ -727,7 +725,7 @@ class LeftSidebar extends Component {
     //Responsible for generating the jsx in the re-cluster tab
     generateReclusterTab() {
         return (
-            <div className="leftSidebarContainer scriptArgsTab">
+            <div className="InputPanelContainer scriptArgsTab">
                 <div className='file-input'>
                     <div className='spacing'>
                         <label htmlFor="reclusterThreshold">Height or K</label>
@@ -780,7 +778,7 @@ class LeftSidebar extends Component {
     //Responsible for generating the jsx in the file input tab
     generateFileImportExport() {
         return (
-            <div className="leftSidebarContainer">
+            <div className="InputPanelContainer">
                 <div className='file-input'>
                     <Button.Group vertical>
                         <Button
@@ -816,18 +814,7 @@ class LeftSidebar extends Component {
 
     acknowledgementsTab() {
         return (
-            <div className='leftSidebarContainer acknowledgements'>
-                <Header as='h3'> Acknowledgements </Header>
-                <p>TopExApp (previously MedTop) was initially developed as a web app through the 2019-2020 CapStone program by Seniors in VCU's Computer Science Department under the supervision of Dr. Bridget McInnes and Amy Olex. We wish to thank Sean Kotrola, Aidan Myers, and Suzanne Prince for their excellent work in getting this application up and running! Here are links to the team's CapStone <a href="https://drive.google.com/file/d/1TGCaM7oXPxFwEJ5B5_nrGZqNnUetWPFB/view" target="_blank" rel="noopener noreferrer">Poster</a> and <a href="https://drive.google.com/file/d/1xRYlLpiYnCnI9Pdi6vbE4eTDUu0e09qB/view" target="_blank" rel="noopener noreferrer">Application Demonstration.</a></p>
-
-                <Header as='h3'> References </Header>
-                <p>Olex A, DiazGranados D, McInnes BT, and Goldberg S. Local Topic Mining for Reflective Medical Writing. Full Length Paper. AMIA Jt Summits Transl Sci Proc 2020;2020:459–68. PMCID: <a href="https://www-ncbi-nlm-nih-gov.proxy.library.vcu.edu/pmc/articles/PMC7233034/" target="_blank" rel="noopener noreferrer">PMC7233034</a></p>
-                
-                <Header as='h3'> Affiliates </Header>
-                <img src={COElogo} className='COElogo' alt="VCU College of Engineering logo"/>
-                <img src={CSLogo} className='CSlogo' alt="VCU Computer Science logo"/>
-                <img src={NLPLogo} className='NLPlogo' alt="VCU NLP lab logo"/>
-            </div>   
+            <AcknowledgementsTab /> 
         )
     }
 
@@ -865,32 +852,26 @@ class LeftSidebar extends Component {
 
         let scriptArgs = await this.getScriptArgs()
 
-        //Perform form validation here
-        if (this.validateArgs(scriptArgs, files)) {
-            this.setState({
-                runningScript: true
-            })
+        this.setState({
+            runningScript: true
+        })
 
-            scriptArgs = JSON.stringify(scriptArgs)
+        scriptArgs = JSON.stringify(scriptArgs)
 
-            var response = await this.runScript(formData, scriptArgs)
+        var response = await this.runScript(formData, scriptArgs)
 
-            if (response == null) {
-                return;
-            }
-
-            this.setState({ graphData: response })
-
-            this.sendGraphData(response)
-
-            document.getElementById('submitButton').disabled = false;
-            this.setState({
-                runningScript: false
-            })
+        if (response == null) {
+            return;
         }
-        else {
-            return
-        }
+
+        this.setState({ graphData: response })
+
+        this.sendGraphData(response)
+
+        document.getElementById('submitButton').disabled = false;
+        this.setState({
+            runningScript: false
+        })
 
     }
 
@@ -933,35 +914,6 @@ class LeftSidebar extends Component {
             alert ("Please make sure there is data and that the reclustering height is greater than the max threshold.");
             event.preventDefault();
         }
-    }
-
-
-    //Used to validate data being passed to the API
-    validateArgs(scriptArgs, files) {
-        //TODO: Uncomment this
-        // if (files.length < 1) {
-        //     alert('Must provide at least one input file')
-        //     document.getElementById('submitButton').disabled = false;
-        //     return false;
-        // }
-
-
-        // if (scriptArgs.threshold == '') {
-        //     alert('Threshhold must be specified.');
-        //     document.getElementById('submitButton').disabled = false;
-        //     document.getElementById('threshold').focus()
-        //     return false;
-        // }
-
-
-        // if (document.getElementById('tfidfcorpus').files.length < 1) {
-        //     alert('Must provide at least one tfidfcorpus')
-        //     document.getElementById('submitButton').disabled = false;
-        //     return false;
-        // }
-
-
-        return true;
     }
 
     //Responsible for sending the POST request which runs the script
@@ -1097,11 +1049,7 @@ class LeftSidebar extends Component {
         } catch (error) {
             console.log(error)
         }
-
     }
-
-
 }
 
-
-export default LeftSidebar
+export default InputPanel
