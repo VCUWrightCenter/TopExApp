@@ -8,7 +8,7 @@ import Axios from "axios";
 import './InputPanel.css';
 import { Input, Button, Header, Dropdown, Checkbox } from 'semantic-ui-react';
 import { getVisualizationMethods, getClusteringMethods, getDistanceMetric, getVectorizationMethod } from './Shared';
-
+import { getFileContents } from './Shared'
 
 class ClusterTab extends Component {
     constructor(props) {
@@ -27,33 +27,46 @@ class ClusterTab extends Component {
         document.getElementById('submitButton').disabled = true;
         event.preventDefault()
 
-        let formChildren = event.target.children
-        let input;
-
-        for (let i in formChildren) {
-            if (formChildren[i].nodeName === "INPUT") {
-                input = formChildren[i]
-            }
-        }
-
-        let files = input.files
-
-        let checkedFiles = this.getCheckedFiles()
-
         let formData = new FormData()
-        for (var i = 0; i < files.length; i++) {
-            if (checkedFiles.includes(files[i].name)) {
-                formData.append("File" + i, files[i])
-            }
+
+        // Append corpusDocs to form data
+        // for (var i = 0; i < this.props.corpusDocs.length; i++) {
+        //     let doc = await getFileContents(this.props.corpusDocs[i])
+        //     formData.append("File" + i, doc);
+        // }
+
+        // Concatenate seedDocs into a single string
+        let tfidfcorpus = '';
+        for (let i = 0; i < this.props.seedDocs.length; i++) {
+            tfidfcorpus += await getFileContents(tfidfcorpus[i])
+            tfidfcorpus += '<newdoc>' //add this so we can split on it in the create_tfidf funtion in script
         }
 
-        let scriptArgs = await this.getScriptArgs()
+        let params = {
+            'tfidfcorpus': tfidfcorpus,
+            // Sentence embedding parameters
+            'windowSize': document.getElementById('windowSize').value === '' ? 6 : document.getElementById('windowSize').value,
+            'wordVectorType': (this.state.wordVectorType == null) ? null : this.state.wordVectorType,
+            // TODO: w2vBinFile file upload not currently available
+            'w2vBinFile': document.getElementById('w2vBinFile')?.files[0] != null ? getFileContents(document.getElementById('w2vBinFile').files[0]) : null,
+            'dimensions': document.getElementById('dimensions').value === '' ? null : document.getElementById('dimensions').value,
+            // Sentence clustering parameters
+            'clusteringMethod': (this.state.clusteringMethod == null) ? "hac" : this.state.clusteringMethod,
+            'cluster_dist_metric': (this.state.ClusterDistanceMetric == null) ? null : this.state.ClusterDistanceMetric,
+            'threshold': document.getElementById('threshold').value === '' ? null : document.getElementById('threshold').value,
+            // Visualization parameters
+            'visualizationMethod': (this.state.visualizationMethod == null) ? "umap" : this.state.visualizationMethod,
+            'viz_dist_metric': (this.state.VisualizationDistanceMetric == null) ? null : this.state.VisualizationDistanceMetric,
+            'umap_neighbors': document.getElementById('umap_neighbors').value === '' ? null : document.getElementById('umap_neighbors').value,
+            // Checkboxes            
+            'include_input_in_tfidf': document.getElementById('include_input_in_tfidf').checked,
+            'include_sentiment': document.getElementById('include_sentiment').checked,
+            outputdir: "./"
+        };
 
         this.setState({ runningScript: true })
 
-        scriptArgs = JSON.stringify(scriptArgs)
-
-        var response = await this.runScript(formData, scriptArgs)
+        var response = await this.cluster(formData, params)//JSON.stringify(params)
 
         if (response == null) {
             return;
@@ -64,8 +77,36 @@ class ClusterTab extends Component {
         // Propogate graphData back up to parent
         this.props.graphDataCallback(response)
 
-        document.getElementById('submitButton').disabled = false;
         this.setState({ runningScript: false })
+
+    }
+
+    //Responsible for sending the POST request which runs the script
+    async cluster(formData, params) {
+        let dict = params;
+        Object.keys(dict).forEach(function (key) {
+            console.log(key, dict[key]);
+            formData.append(key, dict[key]);
+        });
+
+        const response = await Axios.post("http://localhost:5000/cluster", formData, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then((response) => {
+            const data = response.data
+            return data
+        }).catch((err) => {
+            this.setState({
+                runningScript: false
+            })
+            console.error(err.message)
+            alert(err);
+            document.getElementById('submitButton').disabled = false;
+        })
+
+        return response == null ? null : response
 
     }
 
@@ -73,7 +114,7 @@ class ClusterTab extends Component {
         return (
             <div className='InputPanelContainer scriptArgsTab'>
                 Corpus[0]: {this.props.corpusDocs[0]}
-                <br/>
+                <br />
                 Seed[0]: {this.props.seedDocs[0]}
                 <Header as='h3'>Sentence Embedding Parameters</Header>
 

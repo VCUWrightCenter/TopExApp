@@ -19,7 +19,8 @@ class FileManagerTab extends Component {
             .map(f => {
                 return {
                     name: f.name,
-                    checked: true
+                    checked: true,
+                    file: f
                 }
             })
             .filter(f => f !== undefined && f.name.includes('.txt'));
@@ -37,7 +38,7 @@ class FileManagerTab extends Component {
         this.updateCorpusDocsProps(this.state.corpusDocs);
     }
     updateCorpusDocsProps(files) {
-        let filtered = files.filter(f => f.checked).map(f => { return f.name });
+        let filtered = files.filter(f => f.checked).map(f => { return f.file });
         this.props.corpusDocsCallback(filtered);
     }
 
@@ -53,7 +54,7 @@ class FileManagerTab extends Component {
         this.updateSeedDocsProps(this.state.seedDocs);
     }
     updateSeedDocsProps(files) {
-        let filtered = files.filter(f => f.checked).map(f => { return f.name });
+        let filtered = files.filter(f => f.checked).map(f => { return f.file });
         this.props.seedDocsCallback(filtered);
     }
 

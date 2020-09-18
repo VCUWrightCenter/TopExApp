@@ -8,10 +8,10 @@ app = Flask(__name__)
 def home():
     return "This is the api working"
 
-@app.route('/process', methods=["POST"])
-def process():
+@app.route('/cluster', methods=["POST"])
+def cluster():
     try:
-        result = service.process(request)
+        result = service.cluster(request)
     except:
         response = make_response(jsonify("Unexpected error: ", sys.exc_info()[0]))
     else:

@@ -1,5 +1,6 @@
 //This is a utility function that is used to read in file contents
 export function getFileContents(file) {
+    console.log('FILE', file);
     return new Promise((resolve, reject) => {
         let contents = ""
         const reader = new FileReader()

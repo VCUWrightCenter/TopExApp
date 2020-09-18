@@ -32,8 +32,9 @@ def str_valid(param: str):
     "Casts valid str parameter"
     return param if param != 'null' or param == '' else None
 
-def process(request: request):
+def cluster(request: request):
     "Processes input files into clusters."
+    # Process input from request
     params = request.form
     files = request.files
     names = []
@@ -70,12 +71,7 @@ def process(request: request):
     include_input_in_tfidf = bool(params['include_input_in_tfidf'])
     include_sentiment = bool(params['include_sentiment'])
 
-    return cluster(df, seed_topics_df, clustering_method, height, k, vectorization_method, window_size, dimensions, umap_neighbors, cluster_dist_metric, 
-                    viz_dist_metric, include_input_in_tfidf, include_sentiment, visualization_method)
-
-def cluster(df:pd.DataFrame, seed_topics_df:pd.DataFrame, clustering_method:str, height:int, k:int, vectorization_method:str, window_size:int, 
-            dimensions:int, umap_neighbors:int, cluster_dist_metric:str, viz_dist_metric:str, include_input_in_tfidf:bool, include_sentiment:bool, visualization_method:str):
-    "Clusters the sentences in a dataframe"
+    # Cluster the sentences in a dataframe
     data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_file=None)
     tfidf, dictionary = topex.create_tfidf(doc_df, seed_topics_df=seed_topics_df)
 
