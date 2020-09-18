@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import Axios from "axios";
 import './InputPanel.css';
-import { Button } from 'semantic-ui-react';
+import { Button, Header } from 'semantic-ui-react';
 
 
 class FileManagerTab extends Component {
@@ -23,63 +22,12 @@ class FileManagerTab extends Component {
         this.props.fileListCallback(files);
     }
 
-    //This method takes in the form data, sends it to the api,
-    //and then sends it to the parent element (App) so that
-    //it can be passed to the Main component.
-    //It must be async so that it does not pass data to App before
-    //the data is returned
-    async handleChange(event) {
-
-        document.getElementById('submitButton').disabled = true;
-
-
-        event.preventDefault()
-
-        let formChildren = event.target.children
-        let input;
-
-        for (let i in formChildren) {
-            if (formChildren[i].nodeName === "INPUT") {
-                input = formChildren[i]
-            }
-        }
-
-        let files = input.files
-
-        let checkedFiles = this.getCheckedFiles()
-
-        let formData = new FormData()
-        for (var i = 0; i < files.length; i++) {
-            if (checkedFiles.includes(files[i].name)) {
-                formData.append("File" + i, files[i])
-            }
-        }
-
-        let scriptArgs = await this.getScriptArgs()
-
-        this.setState({ runningScript: true })
-
-        scriptArgs = JSON.stringify(scriptArgs)
-
-        var response = await this.runScript(formData, scriptArgs)
-
-        if (response == null) {
-            return;
-        }
-
-        this.setState({ graphData: response })
-
-        // Propogate graphData back up to parent
-        this.props.graphDataCallback(response)
-
-        document.getElementById('submitButton').disabled = false;
-        this.setState({ runningScript: false })
-
-    }
-
     render() {
         return (
-            <div className="InputPanelContainer">
+            <div className="InputPanelContainer acknowledgements">
+                <Header as='h3'>File Manager</Header>
+                <p>Upload documents to cluster here. Only .txt are accepted. Must provide a minimum of three documents.</p>
+
                 <div className='file-input'>
                     <Button.Group vertical>
                         <Button
@@ -113,7 +61,6 @@ class FileManagerTab extends Component {
                         </div>
                     </Button.Group>
                     &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="At least 3 files are required in order for application to run."></i>
                     <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
                         <input hidden id='fileProcessingInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
                         <button hidden id="submitButton" className="submitButton"> Run </button>

@@ -29,4 +29,36 @@ export function promptForFileName() {
         }
     }
     return name;
-} 
+}
+
+export function getVisualizationMethods(dropdownid) { 
+    const options = ['umap', 'svd', 'tsne', 'mds'];
+    return getDropdownList(options, dropdownid); 
+}
+
+export function getClusteringMethods(dropdownid) { 
+    const options = ['hac', 'kmeans'];
+    return getDropdownList(options, dropdownid); 
+}
+
+export function getDistanceMetric(dropdownid) { 
+    const options = ['braycurtis', 'canberra','chebyshev','cityblock','correlation','cosine','dice','euclidean','hamming','jaccard','kulsinski',
+                     'mahalanobis','matching','minkowski','rogerstanimoto','russellrao','seuclidean','sokalmichener','sokalsneath','sqeuclidean','yule'];
+    return getDropdownList(options, dropdownid); 
+}
+
+export function getVectorizationMethod(dropdownid) { 
+    const options = ['svd', 'tfidf','umap','pretrained','local'];
+    return getDropdownList(options, dropdownid); 
+}
+
+function getDropdownList(array, dropdownid) {
+    return array.map((m, ix) => {
+        return {
+            key: m,
+            text: m,
+            value: m,
+            dropdownid: ix === 0 ? dropdownid : null
+        }
+    })
+}

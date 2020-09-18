@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import './InputPanel.css';
-import { Button } from 'semantic-ui-react';
+import { Button, Header } from 'semantic-ui-react';
 import { getFileContents, promptForFileName } from './Shared'
 
 class ImportExportTab extends Component {
@@ -70,7 +70,9 @@ class ImportExportTab extends Component {
 
     render() {
         return (
-            <div className="InputPanelContainer">
+            <div className="InputPanelContainer acknowledgements">
+                <Header as='h3'>Import/Export</Header>
+                <p>Import the output from a previous clustering or export clustering data.</p>
                 <div className='file-input'>
                     <Button.Group vertical>
                         <Button
