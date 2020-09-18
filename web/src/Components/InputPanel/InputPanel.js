@@ -10,6 +10,7 @@ import { Input, Button, Header, Tab, Dropdown, Checkbox } from 'semantic-ui-reac
 import AcknowledgementsTab from "./AcknowledgementsTab";
 import ImportExportTab from "./ImportExportTab";
 import { getFileContents } from './Shared'
+import FileManagerTab from "./FileManagerTab";
 
 class InputPanel extends Component {
 
@@ -25,13 +26,17 @@ class InputPanel extends Component {
             ProcessingRunButtonDisabled: true,
             w2vBinFileFileName: [],
         };
-
     }
 
     // Callback for passing graphData from child components back up to App
     graphDataCallback = (graphData) => {
-        this.setState({graphData: graphData})
+        this.setState({ graphData: graphData })
         this.props.graphDataCallback(graphData)
+    }
+
+    // Callback for passing fileList from FileManagerTab components back up to InputPanel
+    fileListCallback = (fileList) => {
+        this.setState({ fileList: fileList })
     }
 
     componentDidMount() {
@@ -40,7 +45,7 @@ class InputPanel extends Component {
 
     render() {
         let panes = [
-            { menuItem: 'File Manager', pane: { key: 'pane1', content: this.generateFileInput(), className: "pane" } },
+            { menuItem: 'File Manager', pane: { key: 'pane1', content: <FileManagerTab fileListCallback={this.fileListCallback}/>, className: "pane" } },
             { menuItem: 'Re-Cluster', pane: { key: 'pane0', content: this.generateReclusterTab(), className: "pane" } },
             { menuItem: 'Import/Export', pane: { key: 'pane2', content: <ImportExportTab graphData={this.state.graphData} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
             { menuItem: 'Parameters', pane: { key: 'pane3', content: this.generateScriptArgsTab(), className: "pane" } },
@@ -343,6 +348,7 @@ class InputPanel extends Component {
             <div className='InputPanelContainer scriptArgsTab'>
 
                 <Header as='h3'> Parameters </Header>
+                {this.state.fileList[0]}
 
                 <div className='spacing'>
                     <Button
@@ -582,52 +588,6 @@ class InputPanel extends Component {
         }
     }
 
-    //Responsible for generating the jsx in the file input tab (at least 3 files need to be uploaded)
-    generateFileInput() {
-        return (
-            <div className="InputPanelContainer">
-                <div className='file-input'>
-                    <Button.Group vertical>
-                        <Button
-                            color='yellow'
-                            loading={this.state.runningScript}
-                            onClick={() => { document.getElementById('fileProcessingInput').click(); }}
-                            icon="file"
-                            labelPosition="left"
-                            content='Upload files for processing'
-                            className='buttonText'
-                        />
-
-                        <Button
-                            color='black'
-                            loading={this.state.runningScript}
-                            onClick={(e) => { document.getElementById('submitButton').click() }}
-                            content='Run'
-                            className='action'
-                        />
-
-                        <div id="fileList" className='fileList'>
-                            {this.state.fileList.map((fileName) => {
-                                return (
-                                    <div className='fileListEntry' key={fileName}>
-                                        <label htmlFor={fileName} className='file-list-label' >{fileName}</label>
-                                        <input id={fileName} type='checkBox' className='file-list-checkbox' defaultChecked />
-                                    </div>
-                                )
-                            })
-                            }
-                        </div>
-                    </Button.Group>
-                    &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="At least 3 files are required in order for application to run."></i>
-                    <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
-                        <input hidden id='fileProcessingInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.updateFileList(e.target.files)} />
-                        <button hidden id="submitButton" className="submitButton"> Run </button>
-                    </form>
-                </div>
-            </div>)
-    }
-
     //Responsible for generating the jsx in the re-cluster tab
     generateReclusterTab() {
         return (
@@ -679,64 +639,6 @@ class InputPanel extends Component {
                     </form>
                 </div>
             </div>)
-    }
-
-    //This method takes in the form data, sends it to the api,
-    //and then sends it to the parent element (App) so that
-    //it can be passed to the Main component.
-    //It must be async so that it does not pass data to App before
-    //the data is returned
-    async handleChange(event) {
-
-        document.getElementById('submitButton').disabled = true;
-
-
-        event.preventDefault()
-
-        let formChildren = event.target.children
-        let input;
-
-        for (let i in formChildren) {
-            if (formChildren[i].nodeName === "INPUT") {
-                input = formChildren[i]
-            }
-        }
-
-        let files = input.files
-
-        let checkedFiles = this.getCheckedFiles()
-
-        let formData = new FormData()
-        for (var i = 0; i < files.length; i++) {
-            if (checkedFiles.includes(files[i].name)) {
-                formData.append("File" + i, files[i])
-            }
-        }
-
-        let scriptArgs = await this.getScriptArgs()
-
-        this.setState({
-            runningScript: true
-        })
-
-        scriptArgs = JSON.stringify(scriptArgs)
-
-        var response = await this.runScript(formData, scriptArgs)
-
-        if (response == null) {
-            return;
-        }
-
-        this.setState({ graphData: response })
-
-        // Propogate graphData back up to parent
-        this.props.graphDataCallback(response)
-
-        document.getElementById('submitButton').disabled = false;
-        this.setState({
-            runningScript: false
-        })
-
     }
 
     async submitRecluster(event) {
@@ -847,26 +749,6 @@ class InputPanel extends Component {
 
         return response == null ? null : response
 
-    }
-
-
-
-    //This method updates the file list in the left sidebar with the uploaded file names
-    updateFileList(files) {
-
-        let fileData = []
-
-        for (var file in files) {
-            fileData.push(files[file].name)
-        }
-
-        let modifiedFilelist = fileData.filter((value, index, arr) => {
-            return value !== undefined && value.includes(".txt");
-        })
-
-        this.setState({
-            fileList: modifiedFilelist
-        })
     }
 
     //Returns the names of the files that have been checked, and returns them. 
