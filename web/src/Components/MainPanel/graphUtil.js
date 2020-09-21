@@ -1,3 +1,5 @@
+import { promptForFileName } from '../Shared'
+
 //This file holds all of the utility functions for all of the graphs
 //This allows for much easier creation of graphs since we do not have to worry about changing code in mulitple places
 const saveSvgAsPng = require('save-svg-as-png')
@@ -64,19 +66,7 @@ export const reformatJSON = (apiResultRaw) => {
 
 //This is what is called when you click the 'export as png' button under the graphs
 export const exportSVGAsPNG = (id) => {
-    let name = null
-    while (true) {
-        name = prompt("Enter name for export file", "export")
-        if (name == null) {
-            return;
-        }
-        else if (name === "") {
-            alert("Name cannot be empty!")
-        }
-        else {
-            break;
-        }
-    }
+    let name = promptForFileName();
     saveSvgAsPng.saveSvgAsPng(document.getElementById(id), name + ".png")
 }
 
@@ -107,19 +97,7 @@ export const createObjectFromItem = (item) => {
 //This does not work for Wordcloud graphs at the moment. 
 export const exportDataForGraph = (getThis) => {
     //Get the data we need to export
-    let name = null
-    while (true) {
-        name = prompt("Enter name for export file", "export")
-        if (name == null) {
-            return;
-        }
-        else if (name === "") {
-            alert("Name cannot be empty!")
-        }
-        else {
-            break;
-        }
-    }
+    let name = promptForFileName();
 
     let data;
     let exportDataStr = ''
