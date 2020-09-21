@@ -18,8 +18,8 @@ class ReclusterTab extends Component {
     }
 
     async submitRecluster(event) {
-        event.preventDefault();
         if (this.props.graphData.data.length > 0 && document.getElementById('reclusterThreshold').value < this.props.graphData.max_thresh) {
+            event.preventDefault();
             // Recluster parameters
             let params = {
                 'minClusterSize': document.getElementById('reclusterMinClusterSize').value === '' ? 1 : document.getElementById('reclusterMinClusterSize').value,
@@ -65,7 +65,7 @@ class ReclusterTab extends Component {
 
             this.setState({ runningScript: false })
         } else {
-            alert("Please make sure there is data and that the reclustering height is greater than the max threshold.");
+            alert("Please make sure there is data and that the reclustering height is less than the max threshold.");
         }
     }
 
@@ -82,18 +82,18 @@ class ReclusterTab extends Component {
                             min='1'
                         />
                             &nbsp;
-                            <i aria-hidden="true" className="question circle fitted icon" title="New height or k."></i>
+                            <i aria-hidden="true" className="question circle fitted icon" title="The number of clusters, k, for k-means clustering or the height at which the dendrogram should be cut for HAC to obtain disjointed clusters."></i>
                     </div>
                     <div className='spacing'>
-                        <label htmlFor="reclusterTopicsPerCluster">Topics Per Cluster</label>
+                        <label htmlFor="reclusterTopicsPerCluster"># of Topic Words Per Cluster</label>
                         <Input
                             type='number'
-                            placeholder='topics per cluster'
+                            placeholder='# of topic words per cluster'
                             id='reclusterTopicsPerCluster'
                             min='1'
                         />
                             &nbsp;
-                            <i aria-hidden="true" className="question circle fitted icon" title="Topics per cluster."></i>
+                            <i aria-hidden="true" className="question circle fitted icon" title="This returns the top n-ranked words for the cluster topic."></i>
                     </div>
                     <div className='spacing'>
                         <label htmlFor="reclusterMinClusterSize">Minimum Cluster Size</label>

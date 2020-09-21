@@ -195,6 +195,12 @@ class ClusterTab extends Component {
                     <i aria-hidden="true" className="question circle fitted icon" title="Only relevant for UMAP and SVD clustering. Dimensions to which the tfidf matrix is reduced."></i>
                 </div>
 
+                <div className='spacing'>
+                    <Checkbox id='include_sentiment' label="Include sentiment?" title="" defaultChecked />
+                    &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="Checking this box means that part of speech and sentiment will be used to weight the importance of tokens."></i>
+                </div>
+
                 <Header as='h3'>Sentence Clustering Parameters</Header>
 
                 <div className='spacing'>
@@ -282,12 +288,6 @@ class ClusterTab extends Component {
                     <Checkbox id='include_input_in_tfidf' label="Include input in tfidf?" defaultChecked />
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Checking this box means that token scores are calculated using the tfidf, otherwise average token scores are used."></i>
-                </div>
-
-                <div className='spacing'>
-                    <Checkbox id='include_sentiment' label="Include sentiment?" title="" defaultChecked />
-                    &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Checking this box means that part of speech and sentiment will be used to weight the importance of tokens."></i>
                 </div>
 
                 <Button
