@@ -40,14 +40,10 @@ class ImportExportTab extends Component {
         let file = input.files[0]
 
         if (file != null) {
-            this.setState({
-                ImportButtonDisabled: false
-            })
+            this.setState({ ImportButtonDisabled: false })
         }
         else {
-            this.setState({
-                ImportButtonDisabled: true
-            })
+            this.setState({ ImportButtonDisabled: true })
         }
     }
 
@@ -57,7 +53,7 @@ class ImportExportTab extends Component {
             alert('No data to export')
         }
         else {
-            let name = promptForFileName();            
+            let name = promptForFileName();
             const element = document.createElement("a");
             const file = new Blob([JSON.stringify(this.props.graphData)], { type: 'text/plain' });
             element.href = URL.createObjectURL(file);
