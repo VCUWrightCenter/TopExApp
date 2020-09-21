@@ -7,8 +7,7 @@ import React, { Component } from "react";
 import Axios from "axios";
 import './InputPanel.css';
 import { Input, Button, Header, Dropdown, Checkbox } from 'semantic-ui-react';
-import { getVisualizationMethods, getClusteringMethods, getDistanceMetric, getVectorizationMethod } from './Shared';
-import { getFileContents } from './Shared'
+import { getVisualizationMethods, getClusteringMethods, getDistanceMetric, getVectorizationMethod, getFileContents } from '../Shared';
 
 class ClusterTab extends Component {
     constructor(props) {
@@ -127,9 +126,6 @@ class ClusterTab extends Component {
     render() {
         return (
             <div className='InputPanelContainer scriptArgsTab'>
-                Corpus[0]: {this.props.corpusDocs[0]?.name}
-                <br />
-                Seed[0]: {this.props.seedDocs[0]?.name}
                 <Header as='h3'>Sentence Embedding Parameters</Header>
 
                 <div className='spacing'>

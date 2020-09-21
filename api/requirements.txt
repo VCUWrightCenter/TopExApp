@@ -38,7 +38,7 @@ sklearn==0.0
 smart-open==2.1.1
 textblob==0.15.3
 threadpoolctl==2.1.0
-topex==0.0.2
+topex==0.0.3
 tqdm==4.48.2
 umap-learn==0.4.6
 urllib3==1.25.10
