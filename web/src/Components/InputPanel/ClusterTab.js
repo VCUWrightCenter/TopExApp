@@ -126,9 +126,6 @@ class ClusterTab extends Component {
     render() {
         return (
             <div className='InputPanelContainer scriptArgsTab'>
-                Corpus[0]: {this.props.corpusDocs[0]?.name}
-                <br />
-                Seed[0]: {this.props.seedDocs[0]?.name}
                 <Header as='h3'>Sentence Embedding Parameters</Header>
 
                 <div className='spacing'>
