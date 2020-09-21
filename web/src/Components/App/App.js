@@ -3,9 +3,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import InputPanel from '../InputPanel/InputPanel'
-import RightSidebar from '../RightSidebar/RightSidebar.js'
+import DetailPanel from '../DetailPanel/DetailPanel'
 import Header from '../Header/Header'
-import Main from '../Main/Main'
+import MainPanel from '../MainPanel/MainPanel'
 
 class App extends Component {
 
@@ -28,8 +28,8 @@ class App extends Component {
     return (
       <div className='main-content'>
         <Header />
-        <RightSidebar pointData={this.state.pointData} />
-        <Main graphData={JSON.stringify(this.state.graphData)} pointDataCallback={this.pointDataCallback} />
+        <DetailPanel pointData={this.state.pointData} />
+        <MainPanel graphData={JSON.stringify(this.state.graphData)} pointDataCallback={this.pointDataCallback} />
         <InputPanel graphDataCallback={this.graphDataCallback} />
       </div>
     );

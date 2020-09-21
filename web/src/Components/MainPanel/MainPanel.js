@@ -1,12 +1,12 @@
 //This is the main component. It is a container for the graph components. 
 
 import React, { Component } from "react";
-import './Main.css'
+import './MainPanel.css'
 import Scatterplot from "./Scatterplot/Scatterplot.js"
 import WordCloud from "./WordCloud/WordCloud.js"
 import { Tab } from 'semantic-ui-react'
 
-export default class Main extends Component {
+export default class MainPanel extends Component {
 
     constructor(props) {
         super(props)
