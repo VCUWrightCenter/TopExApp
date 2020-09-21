@@ -18,8 +18,8 @@ class ReclusterTab extends Component {
     }
 
     async submitRecluster(event) {
-        event.preventDefault();
         if (this.props.graphData.data.length > 0 && document.getElementById('reclusterThreshold').value < this.props.graphData.max_thresh) {
+            event.preventDefault();
             // Recluster parameters
             let params = {
                 'minClusterSize': document.getElementById('reclusterMinClusterSize').value === '' ? 1 : document.getElementById('reclusterMinClusterSize').value,
@@ -65,7 +65,7 @@ class ReclusterTab extends Component {
 
             this.setState({ runningScript: false })
         } else {
-            alert("Please make sure there is data and that the reclustering height is greater than the max threshold.");
+            alert("Please make sure there is data and that the reclustering height is less than the max threshold.");
         }
     }
 
