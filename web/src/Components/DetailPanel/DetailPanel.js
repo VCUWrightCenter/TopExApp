@@ -1,9 +1,9 @@
 //This is where the data is diplayed when you click on a data point. 
 
 import React, { Component } from "react";
-import './RightSidebar.css'
+import './DetailPanel.css'
 
-class RightSidebar extends Component {
+class DetailPanel extends Component {
 
     constructor(props) {
         super(props);
@@ -62,4 +62,4 @@ class RightSidebar extends Component {
     }
 }
 
-export default RightSidebar
+export default DetailPanel
