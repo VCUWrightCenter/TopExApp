@@ -7,8 +7,7 @@ import React, { Component } from "react";
 import Axios from "axios";
 import './InputPanel.css';
 import { Input, Button, Header, Dropdown, Checkbox } from 'semantic-ui-react';
-import { getVisualizationMethods, getClusteringMethods, getDistanceMetric, getVectorizationMethod } from './Shared';
-import { getFileContents } from './Shared'
+import { getVisualizationMethods, getClusteringMethods, getDistanceMetric, getVectorizationMethod, getFileContents } from '../Shared';
 
 class ClusterTab extends Component {
     constructor(props) {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import './InputPanel.css';
 import { Button, Header } from 'semantic-ui-react';
-import { getFileContents, promptForFileName } from './Shared'
+import { getFileContents, promptForFileName } from '../Shared'
 
 class ImportExportTab extends Component {
     constructor(props) {
@@ -16,9 +16,10 @@ class ImportExportTab extends Component {
         e.preventDefault()
         let input = document.getElementById("importFileInput")
         let file = input.files[0]
+        
         let fileContent = await getFileContents(file);
 
-        if (fileContent != null && file.type === "text/plain") {
+        if (fileContent != null && file.name.endsWith('.topex')) {
             try {
                 let data = JSON.parse(fileContent)
                 this.props.graphDataCallback(data);
@@ -29,7 +30,7 @@ class ImportExportTab extends Component {
             }
         }
         else {
-            alert("Error parsing file. Must be a .txt file exported from previous run.")
+            alert("Error parsing file. Must be a .topex file exported from previous run.")
         }
     }
 
@@ -57,7 +58,7 @@ class ImportExportTab extends Component {
             const element = document.createElement("a");
             const file = new Blob([JSON.stringify(this.props.graphData)], { type: 'text/plain' });
             element.href = URL.createObjectURL(file);
-            element.download = name + ".txt";
+            element.download = name + ".topex";
             document.body.appendChild(element); // Required for this to work in FireFox
             element.click();
             name = null;
