@@ -36,9 +36,14 @@ class ClusterTab extends Component {
 
         // Concatenate seedDocs into a single string
         let tfidfcorpus = '';
-        for (let i = 0; i < this.props.seedDocs.length; i++) {
-            tfidfcorpus += await getFileContents(this.props.seedDocs[i])
-            tfidfcorpus += '<newdoc>' //add this so we can split on it in the create_tfidf funtion in script
+        // runs check to see if 'include_input_in_tfidf checkbox is checked
+        if (document.getElementById('include_input_in_tfidf').checked) {
+            for (let i = 0; i < this.props.seedDocs.length; i++) {
+                tfidfcorpus += await getFileContents(this.props.seedDocs[i])
+                tfidfcorpus += '<newdoc>' //add this so we can split on it in the create_tfidf funtion in script
+            }
+        } else {
+            return;
         }
 
         let params = {
