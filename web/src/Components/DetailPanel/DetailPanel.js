@@ -18,7 +18,7 @@ class DetailPanel extends Component {
             let pointInfo = JSON.parse(this.props.pointData)
 
             if (JSON.stringify(this.state.pointData) !== JSON.stringify(pointInfo)) {
-                let cluster_info = pointInfo.cluster_info.join(", ")
+                let cluster_topic = pointInfo.cluster_topic.join(", ")
                 let phrase = pointInfo.phrase.join(", ");
                 
                 this.setState({
@@ -31,7 +31,7 @@ class DetailPanel extends Component {
                         </div>
                         <div className="card"><h4>Phrase</h4> {phrase}</div>
                         <div className="card"><h4>Raw Sentence</h4> {pointInfo.raw_sent}</div>
-                        <div className="card"><h4>Cluster Info</h4> {cluster_info}</div>
+                        <div className="card"><h4>Cluster Topic</h4> {cluster_topic}</div>
                         {/* <div id='exportButtons' className='exportButtons'>
                             <Button
                                 onClick={(e) => util.exportSVGAsPNG("scatterplotSVG")}
