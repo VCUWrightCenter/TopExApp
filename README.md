@@ -34,7 +34,7 @@ TopExApp runs as a web app within a Docker container and can be run as an end-us
 
 ## End-Users <a name="enduser">
 
-### Requierments
+### Requirements
 
     - Docker Desktop [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
     - Internet Browser
