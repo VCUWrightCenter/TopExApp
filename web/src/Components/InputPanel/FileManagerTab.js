@@ -93,9 +93,8 @@ class FileManagerTab extends Component {
                     </form>
                 </div>
 
-                <Header as='h3'>Documents to seed TF-IDF (optional)</Header>
-                <p>Seed documents may be uploaded to weight the relative importance of words in the clustering, but documents uploaded Header
-                    will not be included in the clustering. Only .txt are accepted.</p>
+                <Header as='h3'>Background Corpus Expansion (Optional)</Header>
+                <p>Select additional documents to be included in the background corpus (Clustering Corpus is automatically included). The Background Corpus determines which words are highly informative for clustering. Note, sentences in these documents will not be clustered. **Recommended if clustering a small set of documents.</p>
 
                 <div className='file-input spacing'>
                     <Button.Group vertical>

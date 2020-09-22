@@ -21,7 +21,7 @@ export const convertToJson = (jsonString) => {
 export const createPointObject = (data, cluster_topics, i) => {
     return {
         cluster: data.cluster[i],
-        cluster_info: cluster_topics[data.cluster[i]],
+        cluster_topic: cluster_topics[data.cluster[i]],
         label: data.label[i],
         phrase: data.phrase[i],
         raw_sent: data.text[i],
@@ -87,7 +87,7 @@ export const createObjectFromItem = (item) => {
         x: item.x,
         y: item.y,
         [cluster]: clusterData,
-        cluster_info: item.cluster_info
+        cluster_topic: item.cluster_topic
     }
     return obj
 }
