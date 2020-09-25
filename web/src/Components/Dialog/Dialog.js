@@ -23,7 +23,7 @@ export default function AlertDialog() {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>Acknowledgments</Button>
+      <Button id="acknowledgements-button" variant="contained" color="primary" onClick={handleClickOpen}>Acknowledgments</Button>
       <Dialog
         open={open}
         onClose={handleClose}

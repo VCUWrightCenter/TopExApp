@@ -6,7 +6,6 @@
 import React, { Component } from "react";
 import './InputPanel.css';
 import { Tab } from 'semantic-ui-react';
-import AcknowledgementsTab from "./AcknowledgementsTab";
 import ClusterTab from "./ClusterTab";
 import FileManagerTab from "./FileManagerTab";
 import ImportExportTab from "./ImportExportTab";
@@ -53,8 +52,7 @@ class InputPanel extends Component {
             { menuItem: 'File Manager', pane: { key: 'pane1', content: <FileManagerTab corpusDocsCallback={this.corpusDocsCallback} seedDocsCallback={this.seedDocsCallback} />, className: "pane" } },
             { menuItem: 'Cluster', pane: { key: 'pane3', content: <ClusterTab corpusDocs={this.state.corpusDocs} seedDocs={this.state.seedDocs} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
             { menuItem: 'Re-Cluster', pane: { key: 'pane0', content: <ReclusterTab graphData={this.state.graphData} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
-            { menuItem: 'Import/Export', pane: { key: 'pane2', content: <ImportExportTab graphData={this.state.graphData} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
-            { menuItem: 'Acknowledgements', pane: { key: 'pane4', content: <AcknowledgementsTab />, className: "pane" } }
+            { menuItem: 'Import/Export', pane: { key: 'pane2', content: <ImportExportTab graphData={this.state.graphData} graphDataCallback={this.graphDataCallback} />, className: "pane" } }
         ]
 
         return (
