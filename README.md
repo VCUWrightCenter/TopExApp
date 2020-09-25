@@ -36,7 +36,9 @@ TopExApp runs as a web app within a Docker container and can be run as an end-us
 
 ### Requirements
 
-    - Docker Desktop [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
+    - [Docker Desktop](https://www.docker.com/products/docker-desktop) or [Docker Toolbox/Docker Machine](https://docs.docker.com/toolbox/toolbox_install_mac/) for advanced Docker users.
+    -- Mac OSX 10.13 or higher with 2010 hardware or newer required. See specifications [here](https://docs.docker.com/docker-for-mac/install/).
+    -- Widnows 10 or higher required. See specifications [here](https://docs.docker.com/docker-for-windows/install/).
     - Internet Browser
 
 ### Install Instructions
@@ -49,10 +51,21 @@ TopExApp runs as a web app within a Docker container and can be run as an end-us
 
 3) Navigate into the Git Repo using the terminal/command line.
 
-4) Build the TopExApp Docker container:
+4) Build the TopExApp Docker container (Note: this can take several minutes to complete):
     
     > docker-compose up --build
 
+5) In an internet browser go to the follwoing to start TopEx:
+
+    > http://localhost:3000
+
+### Update Instructions
+
+When an updated version of TopExApp is released, navigate to the TopExApp GitHub repository using your terminal and download the updated application using:
+
+ > git pull
+
+Then open the Docker Desktop Dashboard and restart the TopEx container.
 
 ## Developers <a name="developers">
 
@@ -81,7 +94,7 @@ From the command line, run the following:
 
 # TopEx Overview <a name="overview">
 
-The TopExApp was built as a graphical user interface for the TopEx python package (link to GitHub).  This application allows users to explore the topics present in a set of documents without having to program or be an NLP expert.  The algorithms behind TopEx are described in detail in [(Olex et al 2020)](#paper).  The 20,000 foot view is that TopEx assumes each sentence in a document discusses a different topic.  Sentences are then embedded into a numerical representation and clustered.  Sentences discussing similar topics should have numerically similar representations and be grouped in the same cluster.  A topic analysis is them run on each cluster to identify the key words associated with that group of sentences.  Clustering results are visualized as a scatter plot where each dot represents one sentence, or as a word cloud to aid in identifying which word are the most frequent in a given group a sentences.
+The TopExApp was built as a graphical user interface for the TopEx python package (link to GitHub).  This application allows users to explore the topics present in a set of documents without having to program or be an NLP expert.  The algorithms behind TopEx are described in detail in [(Olex et al 2020)](#paper).  The 20,000 foot view is that TopEx assumes each sentence in a document discusses a different topic.  Sentences are summarized by extracting the most informative phrase for each sentence. These phrases are then embedded into a numerical representation and clustered into groups of similar phrases.  Sentences discussing similar topics should have numerically similar representations and be grouped in the same cluster.  A topic analysis is then run on each cluster to identify the key words associated with that group of sentences.  Clustering results are visualized as a scatter plot where each dot represents one sentence, or as a word cloud to aid in identifying which word are the most frequent in a given group a sentences.
 
 # Usage Instructions <a name="usage">
 
@@ -95,13 +108,34 @@ The general workflow for TopEx is as follows:
 ## 1: Importing Document Corpus or Previous Analysis File <a name="usage1">
 
 ### Import Document Corpus <a name="usage11">
+ 
+#### Clustering Corpus (Required)
+ 
+Document corpora are required to be saved in a single directory as text (.txt) files for import into TopEx.  During import you will point to the directory where these files are and not to the individual files.  
 
-To import documents into TopEx, each document must be saved as a text file and all text files should be saved in a single directory with no other files.  
+In TopEx, you are required to submit a Clustering Corpus.  This is the set of documents containing the sentences you want analyzed and clustered.  To do this follow these steps:     
 
  1) Select the "File Manager" tab in TopEx.
- 2) Click the "Upload files for processing" button.
+ 2) Click the "Upload docs to cluster" button.
  3) Navigate to the directory with the corpus.
  4) Select the directory and the click "Upload".
+ 
+A Clustering Corpus is required, and must contain a minimum of 3 documents, however, a larger set is recommended.  By default, the imported Clustering Corpus is automatically used as the Background Corpus as well.  The Background Corpus is the set of documents used to create the TF-IDF matrix that contains the distribution of each word across a set of documents.  This matrix is used in two ways by TopEx: 1) Identification of the most informative phrase for each sentence to be used for sentence representation. 2) Creation of word embeddings, which generate the final sentence embeddings (i.e. numerical sentence representations) for clustering.  Thus, the source corpus of the TF-IDF is very important as it is the backdrop for TopEx.
+
+#### Expansion Corpus (Optional)
+
+In TopEx you have the option of expanding the set of documents used to create the background TF-IDF matrix, which we call the Expansion Corpus.  Users are given a choice as to what documents create the TF-IDF matrix: 1) Use only the Clustering Corpus. 2) Use the Clustering Corpus plus additional documents (i.e. the Expansion Corpus). 3) Use a completely different corpus.  TopEx was designed to explore niche corpora that may have different focal points or properties than general domain text collections like Wikipedia.  For this usage, users will want to either use only the Clustering Corpus for the TF-IDF, or use the Clustering Corpus plus Expansion Corpus.  If users want to compare their corpus to a larger more general domain, then they may wish to import a separate corpus for TF-IDF creation. 
+
+To include an Expansion Corpus in your analysis, make sure all of the documents are again saved in a single directory as text files.  Then do the following: 
+
+ 1) Select the "File Manager" tab in TopEx.
+ 2) Click the "Background Corpus Expansion" button.
+ 3) Navigate to the directory with the expansion corpus.
+ 4) Select the directory and the click "Upload".
+ 
+These documents will now be appended to the list of docuemnts in the Clustering Corpus to create the Background Corpus for TF-IDF creation.  Note: Any documents uploaded as the Expansion Corpus are NOT clustered.  They are only used for creating the TF-IDF matrix.
+
+Finally, you have the option of using one corpus for clustering and a completely differnt corpus as the Background Corpus.  To do this, follow the directions for uploading the Clustering and Expansion Corpora above, then uncheck the "include input in tfidf" checkbox.  This will ensure only the Expansion Corpus is used as the background.
     
 ### Import Previous Analysis <a name="usage12">
 
@@ -113,22 +147,7 @@ Analyses can be saved into a TopEx formatted file.  If you need to import an ana
 
 ## 2: Setting Analysis and Visualization Parameters <a name="usage2">
 
-TopEx has a variety of parameters that can be set to customize your analysis.  There parameters are associated with how sentences are represented, how clustering is performed, and how the scatter plot is visualized.  To change the default parameters go to the "Parameters" tab in TopEx.  The list below explains what each parameter's function is.
-
-### TF-IDF Corpus File Input <a name="usage11">
-
-The TF-IDF matrix is used in two ways by TopEx: 1) Identification of most informative phrase for each sentence to be used for sentence representation. 2) Creation of word embeddings, which generate the final sentence embeddings (i.e. numerical sentence representations) for clustering.  Thus, the source corpus of the TF-IDF is very important as it is the backdrop for TopEx.  
-
-Users are given a choice as to what documents create the TF-IDF matrix: 1) Use only the input corpus. 2) Use a completely different corpus. 3) Use the input corpus PLUS additional text documents (like the seed topics from [(Olex et al 2020)](#paper)).  TopEx was designed to explore niche corpora that may have different focal points or properties than general domain text collections like Wikipedia.  For this usage, users will want to either 1) use only the input documents for the TF-IDF, or 2) use the input documents PLUS some additional documents.  If users want to compare their corpus to a larger more general domain, then they may wish to import a separate corpus for TF-IDF creation.  Below are the step to follow for each of these 3 methods.
-
-#### 1) Only use input corpus
-No parameters need to be change to use the input corpus for TF-IDF creation as this is the default behavior.  Note that this is ok if you have a good sized corpus of over 50 or more documents; however, you may see odd behavior with fewer documents, such as all sentences in a document cluster together.  It is recommended that small corpora be supplemented with a larger set of documents for TF-IDF creation (see # 2 below).
-
-#### 2) Use input corpus plus additional documents
-To import additional documents for TF-IDF creation, select the "TFIDF Corpus File Input" button at the top of the Parameters tab.  Navigate to and select the directory with these text files.  Then hit "Upload".  Note that you must have all documents in separate text files and located in a single folder.  Additionally, once a TF-IDF corpus has been uploaded it cannot be removed and the page must be re-set.  This functionality is being improved upon for future releases.
-
-#### 3) Use a different corpus for TF-IDF
-To only use a different corpus for TF-IDF creation and NOT include the input corpus in the calculations, follow the directions for #2 above, then scroll to the bottom of the Parameters tab and UNCHECK the box for "Include input in tfidf?"
+TopEx has a variety of parameters that can be set to customize your analysis.  There parameters are associated with how sentences are represented, how clustering is performed, and how the scatter plot is visualized.  To change the default parameters go to the "Cluster" tab in TopEx.  The list below explains what each parameter's function is.
 
 ### Sentence Embedding Parameters <a name="usage12">
 
@@ -166,7 +185,6 @@ Specifies the method used for determining sentence similarity. Options include:
 * **euclidean:** Uses Euclidean distance, which primarily considered similar magnitude of vector elements. Is required for K-Means clustering method. (Default)
 * **correlation:** Calculates the absolute value of Pearson's correlation coefficient, which primary looks at similar patterns of vector elements and ignores magnitude.
 * **cosine:** Treats embeddings as vectors and calculated the angle between the two vectors. This metric is frequently used in NLP.
-* **others:** There are many other otions listed in the interface for distance metrics.
 
 #### Threshold
 The threshold is either 1) the number of clusters, k, for K-Means clustering, or 2) the height of the dendrogram to cut in HAC.  Note that if using k-means you will get exactly k clusters; however, using HAC may take sone trial and error as the max height of the tree changes with each data set.  Default is set to 20, which is reasonable for both methods, but it is recommended all users should play with this parameter to identify the optimal value for their corpus.
@@ -188,8 +206,7 @@ Users have the option to re-calculate the distance matrix using a different dist
 * **euclidean:** Uses Euclidean distance, which primarily considered similar magnitude of vector elements. Is required for K-Means clustering method. 
 * **correlation:** Calculates the absolute value of Pearson's correlation coefficient, which primary looks at similar patterns of vector elements and ignores magnitude.
 * **cosine:** Treats embeddings as vectors and calculated the angle between the two vectors. This metric is frequently used in NLP. (Default)
-* **others:** There are many other otions listed in the interface for distance metrics.
-    
+
 #### UMAP Neighbors
 If choosing UMAP for visualization, you have the option of selecting the number of neighbors UMAP uses for its dimension reduction algorithm.  Defulat is set to 15, which is generally a good choice.  Lower values will create more tightly packed clusters, and larger numbers will create larger more spread out clusters on the scatter plot.
 
@@ -205,7 +222,13 @@ In the scatter plot, each sentence that was clustered is represented by a dot.  
 ### Word Cloud <a name="usage42">
 The word cloud tab shows the frequency of the top words in each cluster if sentences.  Larger words are more frequent.  This allows on to get a quick view of the terms used most frequently in the cluster.  Similar download options are avaliabel for the word cloud as for the scatter plot.
 
-
+### Reclustering <a name="usage43">
+Generally, finding the best number of clusters is a manual processes or trial and error.  For large data sets that take some time to run it is not feasible to re-run the analysis with different clustering parameters.  The "Re-Cluster" tab offers a quick way to look at different numbers of clusters without re-running the entire NLP pipeline.  When using HAC, this tab will not re-calulate anything, it will simply move the threshold to identify a new set of clusters based on the current cluster information.  For Kmeans clustering, the data will be re-clustered, but the NLP pipeline will not be re-run.  Options for re-clustering are as follows:
+ 
+ * **Height or K:** If HAC clustering, then this is the height at which to cut the dendrogram to obtain dicrete clusters. If using K-Means, then this is the number of clusters to group the data into.
+ * **# of Topic Words Per Cluster:** After clustering is done, the topic analysis of the sentences in each cluster are re-calculated.  A single topic is returned for each cluster that contains N words describing the topic.  This setting tells TopEx how many summary words you want to describe the cluster topic.
+ * **Minimum Cluster Size:** This setting is for visualization only.  To clean up the scatter plot you can choose to have only clusters larger than a specific size shown in the graphic.  The smaller clusters that are removed from teh scatter plot are still present in the data export of the results.
+ 
 
 # Acknowledgements <a name="thanks">
 
