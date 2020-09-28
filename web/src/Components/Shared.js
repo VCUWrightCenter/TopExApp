@@ -42,8 +42,7 @@ export function getClusteringMethods(dropdownid) {
 }
 
 export function getDistanceMetric(dropdownid) { 
-    const options = ['braycurtis', 'canberra','chebyshev','cityblock','correlation','cosine','dice','euclidean','hamming','jaccard','kulsinski',
-                     'mahalanobis','matching','minkowski','rogerstanimoto','russellrao','seuclidean','sokalmichener','sokalsneath','sqeuclidean','yule'];
+    const options = ['correlation','cosine','euclidean'];
     return getDropdownList(options, dropdownid); 
 }
 
