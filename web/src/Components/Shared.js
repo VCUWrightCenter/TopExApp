@@ -52,6 +52,11 @@ export function getVectorizationMethod(dropdownid) {
     return getDropdownList(options, dropdownid); 
 }
 
+export function getTfidfCorpus(dropdownid) { 
+    const options = ['both', 'clustering','expansion'];
+    return getDropdownList(options, dropdownid); 
+}
+
 function getDropdownList(array, dropdownid) {
     return array.map((m, ix) => {
         return {

@@ -19,7 +19,8 @@ class InputPanel extends Component {
         super(props);
         this.state = {
             corpusDocs: [],
-            seedDocs: [],
+            expansionDocs: [],
+            stopwordsFile: null,
             leftTabs: null,
             graphData: null,
             ProcessingRunButtonDisabled: true,
@@ -33,14 +34,19 @@ class InputPanel extends Component {
         this.props.graphDataCallback(graphData)
     }
 
-    // Callback for passing seedDocs from FileManagerTab components back up to InputPanel
+    // Callback for passing expansionDocs from FileManagerTab components back up to InputPanel
     corpusDocsCallback = (files) => {
         this.setState({ corpusDocs: files })
     }
 
-    // Callback for passing seedDocs from FileManagerTab components back up to InputPanel
-    seedDocsCallback = (files) => {
-        this.setState({ seedDocs: files })
+    // Callback for passing expansionDocs from FileManagerTab components back up to InputPanel
+    expansionDocsCallback = (files) => {
+        this.setState({ expansionDocs: files })
+    }
+
+    // Callback for passing stopwords file from FileManagerTab components back up to InputPanel
+    stopwordsFileCallback = (file) => {
+        this.setState({ stopwordsFile: file })
     }
 
     componentDidMount() {
@@ -49,8 +55,8 @@ class InputPanel extends Component {
 
     render() {
         let panes = [
-            { menuItem: 'File Manager', pane: { key: 'pane1', content: <FileManagerTab corpusDocsCallback={this.corpusDocsCallback} seedDocsCallback={this.seedDocsCallback} />, className: "pane" } },
-            { menuItem: 'Cluster', pane: { key: 'pane3', content: <ClusterTab corpusDocs={this.state.corpusDocs} seedDocs={this.state.seedDocs} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
+            { menuItem: 'File Manager', pane: { key: 'pane1', content: <FileManagerTab corpusDocsCallback={this.corpusDocsCallback} expansionDocsCallback={this.expansionDocsCallback} stopwordsFileCallback={this.stopwordsFileCallback} />, className: "pane" } },
+            { menuItem: 'Cluster', pane: { key: 'pane3', content: <ClusterTab corpusDocs={this.state.corpusDocs} expansionDocs={this.state.expansionDocs} stopwordsFile={this.state.stopwordsFile} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
             { menuItem: 'Re-Cluster', pane: { key: 'pane0', content: <ReclusterTab graphData={this.state.graphData} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
             { menuItem: 'Import/Export', pane: { key: 'pane2', content: <ImportExportTab graphData={this.state.graphData} graphDataCallback={this.graphDataCallback} />, className: "pane" } }
         ]
