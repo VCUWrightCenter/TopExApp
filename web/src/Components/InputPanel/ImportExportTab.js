@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import './InputPanel.css';
 import { Button, Header } from 'semantic-ui-react';
 import { getFileContents, promptForFileName } from '../Shared'
+import * as util from '../MainPanel/graphUtil'
 
 class ImportExportTab extends Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class ImportExportTab extends Component {
         e.preventDefault()
         let input = document.getElementById("importFileInput")
         let file = input.files[0]
-        
+
         let fileContent = await getFileContents(file);
 
         if (fileContent != null && file.name.endsWith('.topex')) {
@@ -68,8 +69,8 @@ class ImportExportTab extends Component {
     render() {
         return (
             <div className="InputPanelContainer acknowledgements">
-                <Header as='h3'>Import/Export</Header>
-                <p>Import the output from a previous clustering or export clustering data.</p>
+                <Header as='h3'>Import</Header>
+                <p>Import the output from a previous clustering.</p>
                 <div className='file-input'>
                     <Button.Group vertical>
                         <Button
@@ -83,16 +84,37 @@ class ImportExportTab extends Component {
                         <Button
                             color='black'
                             disabled={this.state.ImportButtonDisabled}
-                            content="Import"
+                            content="Import clustering (.topex)"
                             onClick={(e) => this.importData(e)}
                             className='action'
                         />
-                        <Button.Or />
+                    </Button.Group>
+                    <form>
+                        <input id='importFileInput' type="file" hidden onChange={(e) => this.checkImportFile(e)} />
+                        <button id='importFileButton' type='submit' hidden onClick={(e) => this.importData(e)}>Import</button>
+                    </form>
+                </div>
+                <Header as='h3'>Export</Header>
+                <p>Import the output from a previous clustering or export clustering data.</p>
+                <div className='file-input'>
+                    <Button.Group vertical>
                         <Button
-                            color='yellow'
-                            content="Export"
+                            color='black'
+                            content="Export clustering (.topex)"
                             onClick={(e) => this.exportData()}
-                            className='buttonText'
+                            className='action'
+                        />
+                        <Button
+                            color='black'
+                            content="Export row-level results (.txt)"
+                            onClick={(e) => util.exportResults(this.props.graphData)}
+                            className='action'
+                        />
+                        <Button
+                            color='black'
+                            content="Export scatterplot data (.txt)"
+                            onClick={(e) => util.exportScatterplotData(this.props.graphData)}
+                            className='action'
                         />
                     </Button.Group>
                     <form>

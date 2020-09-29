@@ -7,7 +7,7 @@ import React, { Component } from "react";
 import Axios from "axios";
 import './InputPanel.css';
 import { Input, Button, Header, Dropdown, Checkbox } from 'semantic-ui-react';
-import { getVisualizationMethods, getClusteringMethods, getDistanceMetric, getVectorizationMethod, getFileContents, getTfidfCorpus } from '../Shared';
+import * as shared from '../Shared';
 
 class ClusterTab extends Component {
     constructor(props) {
@@ -37,19 +37,19 @@ class ClusterTab extends Component {
         // Concatenate expansionDocs into a single string
         let expansionCorpus = '';
         for (let i = 0; i < this.props.expansionDocs.length; i++) {
-            expansionCorpus += await getFileContents(this.props.expansionDocs[i])
+            expansionCorpus += await shared.getFileContents(this.props.expansionDocs[i])
             expansionCorpus += '<newdoc>' //add this so we can split on it in the create_tfidf funtion in script
         }
 
         let params = {
             'expansionCorpus': expansionCorpus,
-            'stopwords': await getFileContents(this.props.stopwordsFile),
+            'stopwords': await shared.getFileContents(this.props.stopwordsFile),
             // Sentence embedding parameters
             'windowSize': document.getElementById('windowSize').value === '' ? 6 : document.getElementById('windowSize').value,
             'wordVectorType': (this.state.vectorizationMethod == null) ? null : this.state.vectorizationMethod,
             'tfidfCorpus': (this.state.tfidfCorpus == null) ? 'both' : this.state.tfidfCorpus,
             // TODO: w2vBinFile file upload not currently available
-            'w2vBinFile': document.getElementById('w2vBinFile')?.files[0] != null ? getFileContents(document.getElementById('w2vBinFile').files[0]) : null,
+            'w2vBinFile': document.getElementById('w2vBinFile')?.files[0] != null ? shared.getFileContents(document.getElementById('w2vBinFile').files[0]) : null,
             'dimensions': document.getElementById('dimensions').value === '' ? null : document.getElementById('dimensions').value,
             'include_sentiment': document.getElementById('include_sentiment').checked,
             // Sentence clustering parameters
@@ -148,7 +148,7 @@ class ClusterTab extends Component {
                         fluid
                         selection
                         id="vectorizationMethod"
-                        options={getVectorizationMethod("vectorizationMethod")}
+                        options={shared.getVectorizationMethod("vectorizationMethod")}
                         onChange={this.getDropdownValue} />
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Method used for generating phrase vectors"></i>
@@ -161,7 +161,7 @@ class ClusterTab extends Component {
                         fluid
                         selection
                         id="tfidfCorpus"
-                        options={getTfidfCorpus("tfidfCorpus")}
+                        options={shared.getTfidfCorpus("tfidfCorpus")}
                         onChange={this.getDropdownValue} />
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Set(s) of documents used to generate the TF-IDF."></i>
@@ -223,7 +223,7 @@ class ClusterTab extends Component {
                         clearable
                         selection
                         id="clusteringMethod"
-                        options={getClusteringMethods("clusteringMethod")}
+                        options={shared.getClusteringMethods("clusteringMethod")}
                         onChange={this.getDropdownValue}>
                     </Dropdown>
                     &nbsp;
@@ -237,7 +237,7 @@ class ClusterTab extends Component {
                         clearable
                         selection
                         id="cluster_dist_metric"
-                        options={getDistanceMetric("cluster_dist_metric")}
+                        options={shared.getDistanceMetric("cluster_dist_metric")}
                         onChange={this.getDropdownValue} />
                         &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="This distance metric is used to compare points for clustering"></i>
@@ -265,7 +265,7 @@ class ClusterTab extends Component {
                         clearable
                         selection
                         id="visualizationMethod"
-                        options={getVisualizationMethods("visualizationMethod")}
+                        options={shared.getVisualizationMethods("visualizationMethod")}
                         onChange={this.getDropdownValue} />
                         &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Method used for projecting points into two dimensions for visualization."></i>
@@ -278,7 +278,7 @@ class ClusterTab extends Component {
                         clearable
                         selection
                         id="viz_dist_metric"
-                        options={getDistanceMetric("viz_dist_metric")}
+                        options={shared.getDistanceMetric("viz_dist_metric")}
                         onChange={this.getDropdownValue} />
                         &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="This distance metric is used to compare points for visualization"></i>
