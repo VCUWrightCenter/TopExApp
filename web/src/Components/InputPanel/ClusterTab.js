@@ -7,13 +7,13 @@ import React, { Component } from "react";
 import Axios from "axios";
 import './InputPanel.css';
 import { Input, Button, Header, Dropdown, Checkbox } from 'semantic-ui-react';
-import { getVisualizationMethods, getClusteringMethods, getDistanceMetric, getVectorizationMethod, getFileContents } from '../Shared';
+import * as shared from '../Shared';
 
 class ClusterTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tfidfcorpusFiles: [],
+            expansioncorpusFiles: [],
             leftTabs: null,
             graphData: null,
             ProcessingRunButtonDisabled: true,
@@ -34,21 +34,24 @@ class ClusterTab extends Component {
             formData.append("File" + i, file);
         }
 
-        // Concatenate seedDocs into a single string
-        let tfidfcorpus = '';
-        for (let i = 0; i < this.props.seedDocs.length; i++) {
-            tfidfcorpus += await getFileContents(this.props.seedDocs[i])
-            tfidfcorpus += '<newdoc>' //add this so we can split on it in the create_tfidf funtion in script
+        // Concatenate expansionDocs into a single string
+        let expansionCorpus = '';
+        for (let i = 0; i < this.props.expansionDocs.length; i++) {
+            expansionCorpus += await shared.getFileContents(this.props.expansionDocs[i])
+            expansionCorpus += '<newdoc>' //add this so we can split on it in the create_tfidf funtion in script
         }
 
         let params = {
-            'tfidfcorpus': tfidfcorpus,
+            'expansionCorpus': expansionCorpus,
+            'stopwords': await shared.getFileContents(this.props.stopwordsFile),
             // Sentence embedding parameters
             'windowSize': document.getElementById('windowSize').value === '' ? 6 : document.getElementById('windowSize').value,
             'wordVectorType': (this.state.vectorizationMethod == null) ? null : this.state.vectorizationMethod,
+            'tfidfCorpus': (this.state.tfidfCorpus == null) ? 'both' : this.state.tfidfCorpus,
             // TODO: w2vBinFile file upload not currently available
-            'w2vBinFile': document.getElementById('w2vBinFile')?.files[0] != null ? getFileContents(document.getElementById('w2vBinFile').files[0]) : null,
+            'w2vBinFile': document.getElementById('w2vBinFile')?.files[0] != null ? shared.getFileContents(document.getElementById('w2vBinFile').files[0]) : null,
             'dimensions': document.getElementById('dimensions').value === '' ? null : document.getElementById('dimensions').value,
+            'include_sentiment': document.getElementById('include_sentiment').checked,
             // Sentence clustering parameters
             'clusteringMethod': (this.state.clusteringMethod == null) ? "hac" : this.state.clusteringMethod,
             'cluster_dist_metric': (this.state.cluster_dist_metric == null) ? null : this.state.cluster_dist_metric,
@@ -57,9 +60,6 @@ class ClusterTab extends Component {
             'visualizationMethod': (this.state.visualizationMethod == null) ? "umap" : this.state.visualizationMethod,
             'viz_dist_metric': (this.state.viz_dist_metric == null) ? null : this.state.viz_dist_metric,
             'umap_neighbors': document.getElementById('umap_neighbors').value === '' ? null : document.getElementById('umap_neighbors').value,
-            // Checkboxes            
-            'include_input_in_tfidf': document.getElementById('include_input_in_tfidf').checked,
-            'include_sentiment': document.getElementById('include_sentiment').checked,
             outputdir: "./"
         };
 
@@ -84,9 +84,9 @@ class ClusterTab extends Component {
     async cluster(formData, params) {
         let dict = params;
         Object.keys(dict).forEach(function (key) {
-            console.log(key, dict[key]);
             formData.append(key, dict[key]);
         });
+        console.log('params', params);
 
         const response = await Axios.post("http://localhost:5000/cluster", formData, {
             headers: {
@@ -148,10 +148,23 @@ class ClusterTab extends Component {
                         fluid
                         selection
                         id="vectorizationMethod"
-                        options={getVectorizationMethod("vectorizationMethod")}
+                        options={shared.getVectorizationMethod("vectorizationMethod")}
                         onChange={this.getDropdownValue} />
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Method used for generating phrase vectors"></i>
+                </div>
+
+                <div className='spacing'>
+                    <label htmlFor="tfidfCorpus">Background Corpus</label>
+                    <Dropdown placeholder='Select set of background corpus docs'
+                        clearable
+                        fluid
+                        selection
+                        id="tfidfCorpus"
+                        options={shared.getTfidfCorpus("tfidfCorpus")}
+                        onChange={this.getDropdownValue} />
+                    &nbsp;
+                    <i aria-hidden="true" className="question circle fitted icon" title="Set(s) of documents used to generate the TF-IDF."></i>
                 </div>
 
                 {this.state.wordVectorType === "pretrained" ?
@@ -210,7 +223,7 @@ class ClusterTab extends Component {
                         clearable
                         selection
                         id="clusteringMethod"
-                        options={getClusteringMethods("clusteringMethod")}
+                        options={shared.getClusteringMethods("clusteringMethod")}
                         onChange={this.getDropdownValue}>
                     </Dropdown>
                     &nbsp;
@@ -224,7 +237,7 @@ class ClusterTab extends Component {
                         clearable
                         selection
                         id="cluster_dist_metric"
-                        options={getDistanceMetric("cluster_dist_metric")}
+                        options={shared.getDistanceMetric("cluster_dist_metric")}
                         onChange={this.getDropdownValue} />
                         &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="This distance metric is used to compare points for clustering"></i>
@@ -252,7 +265,7 @@ class ClusterTab extends Component {
                         clearable
                         selection
                         id="visualizationMethod"
-                        options={getVisualizationMethods("visualizationMethod")}
+                        options={shared.getVisualizationMethods("visualizationMethod")}
                         onChange={this.getDropdownValue} />
                         &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Method used for projecting points into two dimensions for visualization."></i>
@@ -265,7 +278,7 @@ class ClusterTab extends Component {
                         clearable
                         selection
                         id="viz_dist_metric"
-                        options={getDistanceMetric("viz_dist_metric")}
+                        options={shared.getDistanceMetric("viz_dist_metric")}
                         onChange={this.getDropdownValue} />
                         &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="This distance metric is used to compare points for visualization"></i>

@@ -47,8 +47,8 @@ export const reformatJSON = (apiResultRaw) => {
         let viz_df = convertToJson(apiResult.viz_df);
         let cluster_topics = apiResult.main_cluster_topics;
         let dataPoints = [];
-        
-        for (var i=0; i<apiResult.count; i++){
+
+        for (var i = 0; i < apiResult.count; i++) {
             dataPoints.push(createPointObject(viz_df, cluster_topics, i));
         }
 
@@ -95,36 +95,47 @@ export const createObjectFromItem = (item) => {
 //This is what is called when you click on the 'export graph data' button under each graph.
 //It essentially just exports a text file containing the data used to create the graph. 
 //This does not work for Wordcloud graphs at the moment. 
-export const exportDataForGraph = (getThis) => {
-    //Get the data we need to export
-    let name = promptForFileName();
+export const exportScatterplotData = (data) => {
+    // Name the export file
+    let filename = promptForFileName();
 
-    let data;
-    let exportDataStr = ''
-    let exportData;
+    // Create .csv body from scatterplot data
+    let scatterplotData = JSON.parse(data.viz_df);
+    let body = "x|y|cluster\n"
+    for (let i = 0; i < data.count; i++) {
+        body += `${scatterplotData.x[i]}|${scatterplotData.y[i]}|${scatterplotData.cluster[i]}\n`;
+    }
+    exportPipeDelimited(body, filename);    
+}
+
+export const exportResults = (data) => {
+    // Name the export file
+    let filename = promptForFileName();
     
-    if (getThis.state.graphType === 'scatterplot') {
-        data = getThis.state.dataPoints
-        exportData = data.map((obj) => createObjectFromItem(obj));
+    // Create .csv body from scatterplot data
+    let results = JSON.parse(data.data);
+    let body = "id|cluster|phrase|tokens|text|cluster_topics\n"
+    for (let i = 0; i < data.count; i++) {
+        body += `${results.id[i]}|${results.cluster[i]}|${results.phrase[i]}|${results.tokens[i]}|${results.text[i]}|${data.main_cluster_topics[results.cluster[i]]}\n`;
     }
-    else if (getThis.state.graphType === 'wordcloud') {
-        exportData = getThis.state.graphData
-    }
+    exportPipeDelimited(body, filename);    
+}
 
-    for (let x in exportData) {
-        exportDataStr += JSON.stringify(exportData[x]) + '\n'
-    }
-    const element = document.createElement("a");
-    const file = new Blob([exportDataStr], { type: 'text/plain' });
-    element.href = URL.createObjectURL(file);
-    element.download = name + ".txt";
-    document.body.appendChild(element); // Required for this to work in FireFox
-    element.click();
+function exportPipeDelimited(body, filename) {
+    let blob = new Blob([body], { type: 'text/csv;charset=utf-8;' });
+    let link = document.createElement("a");
+    var url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `${filename}.txt`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 
 // Deterministically generate color for each cluster
 export const getClusterColor = (d, max) => {
-    return '#' + ('00000'+(Math.abs(Math.cos(d.cluster))*(1<<24)|0).toString(16)).slice(-6);
+    return '#' + ('00000' + (Math.abs(Math.cos(d.cluster)) * (1 << 24) | 0).toString(16)).slice(-6);
 }
 
 //This is used to format the data for the wordcloud graph. 
@@ -145,7 +156,7 @@ export const reformatJSONWordcloud = (data, getThis) => {
                 tokenCounter[cluster][token] = 1;
             } else {
                 tokenCounter[cluster][token] += 1;
-            }           
+            }
         });
     });
 
