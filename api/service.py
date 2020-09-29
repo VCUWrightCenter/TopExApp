@@ -50,14 +50,6 @@ def cluster(request: request):
             names.append(fileob.filename)
     df = pd.DataFrame(dict(doc_name=names, text=docs))
 
-    if str_valid(params['expansionCorpus']):
-        expansionCorpus = params['expansionCorpus'].rstrip("<newdoc>")
-        expansion_docs = expansionCorpus.split("<newdoc>") if len(expansionCorpus) > 0 else []
-        expansion_names = [f"expansion_{i}" for i in range(len(expansion_docs))]
-        expansion_df = pd.DataFrame(dict(doc_name=expansion_names, text=expansion_docs))
-    else:
-        expansion_df = None
-
     stopwords = params['stopwords'].split('\r\n') if str_valid(params['stopwords']) else None
 
     window_size = cast_int(params['windowSize'])
@@ -74,6 +66,15 @@ def cluster(request: request):
     visualization_method = params['visualizationMethod'] if str_valid(params['visualizationMethod']) else 'umap'
     viz_dist_metric = params['viz_dist_metric'] if str_valid(params['viz_dist_metric']) else 'cosine'
     umap_neighbors = cast_int(params['umap_neighbors'])
+
+    if str_valid(params['expansionCorpus']):
+        expansionCorpus = params['expansionCorpus'].rstrip("<newdoc>")
+        expansion_docs = expansionCorpus.split("<newdoc>") if len(expansionCorpus) > 0 else []
+        expansion_names = [f"expansion_{i}" for i in range(len(expansion_docs))]
+        expansion_df = pd.DataFrame(dict(doc_name=expansion_names, text=expansion_docs))
+    else:
+        expansion_df = None
+        tfidf_corpus = 'clustering'
 
     # Cluster the sentences in a dataframe
     data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_list=stopwords)

@@ -43,7 +43,7 @@ class ClusterTab extends Component {
 
         let params = {
             'expansionCorpus': expansionCorpus,
-            'stopwords': await shared.getFileContents(this.props.stopwordsFile),
+            'stopwords': this.props.stopwordsFile ? await shared.getFileContents(this.props.stopwordsFile) : null,
             // Sentence embedding parameters
             'windowSize': document.getElementById('windowSize').value === '' ? 6 : document.getElementById('windowSize').value,
             'wordVectorType': (this.state.vectorizationMethod == null) ? null : this.state.vectorizationMethod,
@@ -295,12 +295,6 @@ class ClusterTab extends Component {
                     />
                     &nbsp;
                     <i aria-hidden="true" className="question circle fitted icon" title="Only relevant for UMAP clustering"></i>
-                </div>
-
-                <div className='spacing'>
-                    <Checkbox id='include_input_in_tfidf' label="Include input in tfidf?" defaultChecked />
-                    &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Checking this box means that token scores are calculated using the tfidf, otherwise average token scores are used."></i>
                 </div>
 
                 <Button
