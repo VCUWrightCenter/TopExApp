@@ -55,7 +55,7 @@ TopExApp runs as a web app within a Docker container and can be run as an end-us
     
     > docker-compose up --build
 
-5) In an internet browser go to the follwoing to start TopEx:
+5) Once built, TopEx should show up as a container in your Docker Desktop Dashboard.  From here it can be turned on and off without returning to the command line.  Once running, go to the following URL in your browser to start TopEx:
 
     > http://localhost:3000
 
@@ -66,6 +66,37 @@ When an updated version of TopExApp is released, navigate to the TopExApp GitHub
  > git pull
 
 Then open the Docker Desktop Dashboard and restart the TopEx container.
+
+#### Troubleshooting Updates
+
+If after an update TopEx fails to compile and run, you may need to re-generate your Docker image, volume, and container.  This can happen if a new feature was added requireing new modules that are not already installed in the current Docker volume.  For detailed instructions, please see this [Docker Tutorial](https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes#removing-docker-images).  All of the following should be run in the command line.  Before starting you must stop and delete the TopEx container from the Docker Desktop Dashboard (press Stop and Trash Can buttons).
+
+1) List all Docker images:
+ 
+    > docker images
+ 
+2) Identify the TopEx image name, then delete it:
+
+    > docker rmi <IMAGENAME>
+ 
+3) List all Docker containers (this list may be empty):
+
+    > docker ps
+
+4) If a TopEx container exists, delete it:
+
+    > docker rm <CONTAINERNAME>
+ 
+5) List all Docker volumes:
+
+    > docker volume ls
+    
+6) Identify the TopEx volume name, then delete it:
+
+    > docker volume rm VOLUMENAME
+    
+7) Change directory to the TopEx GitHub repository if you are not already there, and follow the install instructions listed above to rebuild the TopEx Docker volume, container, and image.
+
 
 ## Developers <a name="developers">
 
