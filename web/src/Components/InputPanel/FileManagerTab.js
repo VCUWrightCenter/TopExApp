@@ -131,7 +131,7 @@ class FileManagerTab extends Component {
                     </form>
                 </div>
 
-                <Header as='h3'>Custom stopwords file (Optional)</Header>
+                {/* <Header as='h3'>Custom stopwords file (Optional)</Header>
                 <p>Stopwords are removed from documents prior to clustering. Stopwords file should be one word per line.</p>
 
                 <div className='file-input spacing'>
@@ -150,8 +150,6 @@ class FileManagerTab extends Component {
                                 return (
                                     <div className='fileListEntry' key={file.name}>
                                         <label htmlFor={file.name} className='file-list-label' >{file.name}</label>
-                                        {/* <input id={file.name} type='checkBox' className='file-list-checkbox' defaultChecked
-                                            onChange={(e) => this.toggleExpansionCheck(file.name)} /> */}
                                     </div>
                                 )
                             })
@@ -164,7 +162,7 @@ class FileManagerTab extends Component {
                     <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
                         <input hidden id='uploadStopwordsInput' type="file" name="file" onChange={(e) => this.uploadStopwords(e.target.files)} />
                     </form>
-                </div>
+                </div> */}
             </div>)
     }
 }
