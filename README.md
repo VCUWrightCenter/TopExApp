@@ -6,6 +6,7 @@
   * [Developers](#developers)
 - [TopEx Overview](#overview)
 - [Usage Instructions](#usage)
+  * [0: Pre-process and Format Input](usage0)
   * [1: Importing Document Corpus or Previous Analysis File](usage1)
     + [Import Document Corpus](#usage11)
     + [Import Previous Analysis](#usage12)
