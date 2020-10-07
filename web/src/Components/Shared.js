@@ -42,13 +42,17 @@ export function getClusteringMethods(dropdownid) {
 }
 
 export function getDistanceMetric(dropdownid) { 
-    const options = ['braycurtis', 'canberra','chebyshev','cityblock','correlation','cosine','dice','euclidean','hamming','jaccard','kulsinski',
-                     'mahalanobis','matching','minkowski','rogerstanimoto','russellrao','seuclidean','sokalmichener','sokalsneath','sqeuclidean','yule'];
+    const options = ['correlation','cosine','euclidean'];
     return getDropdownList(options, dropdownid); 
 }
 
 export function getVectorizationMethod(dropdownid) { 
     const options = ['svd', 'tfidf','umap','pretrained','local'];
+    return getDropdownList(options, dropdownid); 
+}
+
+export function getTfidfCorpus(dropdownid) { 
+    const options = ['both', 'clustering','expansion'];
     return getDropdownList(options, dropdownid); 
 }
 

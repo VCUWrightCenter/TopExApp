@@ -75,7 +75,7 @@ class WordCloud extends Component {
             - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingLeft)
 
         let height = document.getElementById('mainWrapper').offsetHeight -
-        250
+            250
 
         if (this.state.dimensions == null) {
             await this.setState({
@@ -176,8 +176,8 @@ class WordCloud extends Component {
                 <div className='graph' id="WordCloudNode"></div>
                 <div id='exportButtons' className='exportButtons'>
                     <Button
-                        onClick={() => util.exportDataForGraph(this)}
-                        content="Export graph data"
+                        onClick={(e) => util.exportSVGAsPNG("WordCloudSVG")}
+                        content="Export Word Cloud (.png)"
                         className="ui black button"
                     />
                 </div>

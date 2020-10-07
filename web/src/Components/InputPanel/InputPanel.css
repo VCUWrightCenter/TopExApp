@@ -73,7 +73,6 @@
 
 .action {
     margin-top: 20px !important;
-    width: 50% !important;
 }
 
 .InputPanelContainer {
@@ -97,21 +96,4 @@
 
 .ui.input>input[type="text"], .ui.input>input[type="number"] {
     width: 210px;
-}
-
-.COElogo{
-    padding: 10px;
-    width: 100%;
-    height: auto;
-}
-
-.CSlogo{
-    width: 50%;
-    height: auto;
-}
-
-.NLPlogo{
-    padding: 10px;
-    width: 50%;
-    height: auto;
 }
