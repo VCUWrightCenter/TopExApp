@@ -86,7 +86,7 @@ def cluster(request: request):
     data = topex.get_phrases(data, dictionary.token2id, tfidf, tfidf_corpus=tfidf_corpus, window_size=window_size, include_sentiment=include_sentiment)
     data = topex.get_vectors(vectorization_method, data, dictionary = dictionary, tfidf = tfidf, dimensions=dimensions, umap_neighbors=umap_neighbors)
     data, linkage_matrix, max_thresh, thresh = topex.assign_clusters(data, method=clustering_method, k=k, height=height, dist_metric=cluster_dist_metric)
-    viz_df = topex.visualize_clustering(data, method = visualization_method, dist_metric=viz_dist_metric, show_chart = False, return_data = True)
+    viz_df = topex.visualize_clustering(data, method = visualization_method, dist_metric=viz_dist_metric, show_chart = False, return_data = True, umap_neighbors=umap_neighbors)
     viz_df['valid'] = True
     data['valid'] = True # Show all points on the first run
     cluster_df = topex.get_cluster_topics(data, doc_df)
