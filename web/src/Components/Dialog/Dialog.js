@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import './Dialog.css'
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -34,6 +34,9 @@ export default function AlertDialog() {
         <DialogContent>
             <DialogContentText id="alert-dialog-description">
                 TopExApp (previously MedTop) was initially developed as a web app through the 2019-2020 CapStone program by Seniors in VCU's Computer Science Department under the supervision of Dr. Bridget McInnes and Amy Olex. We wish to thank Sean Kotrola, Aidan Myers, and Suzanne Prince for their excellent work in getting this application up and running! Here are links to the team's CapStone <a href="https://drive.google.com/file/d/1TGCaM7oXPxFwEJ5B5_nrGZqNnUetWPFB/view" target="_blank" rel="noopener noreferrer">Poster</a> and <a href="https://drive.google.com/file/d/1xRYlLpiYnCnI9Pdi6vbE4eTDUu0e09qB/view" target="_blank" rel="noopener noreferrer">Application Demonstration.</a>
+            </DialogContentText>
+            <DialogContentText id="alert-dialog-description">
+                In addition, Evan French and Peter Burdette from VCU’s Wright Center for Clinical and Translational Research Informatics Core have been working tirelessly with Amy Olex to get TopEx ready for public release.  Thanks to both of you for your amazing work!
             </DialogContentText>
             <h4>References:</h4>
             <DialogContentText id="alert-dialog-description">

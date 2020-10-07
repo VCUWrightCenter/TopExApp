@@ -156,22 +156,10 @@ class Scatterplot extends Component {
                         </div>
                     </div>
                 </div>
-                
-                <Button
-                    onClick={() => util.exportDataForGraph(this)}
-                    content="Export graph data"
-                    className="ui black button"
-                />
 
                 <Button
                     onClick={(e) => util.exportSVGAsPNG("scatterplotSVG")}
-                    content="Export Scatterplot"
-                    className="ui black button"
-                />
-
-                <Button
-                    onClick={(e) => util.exportSVGAsPNG("WordCloudSVG")}
-                    content="Export Word Cloud"
+                    content="Export Scatterplot (.png)"
                     className="ui black button"
                 />
             </div>

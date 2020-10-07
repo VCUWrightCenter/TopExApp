@@ -18,14 +18,14 @@ class ReclusterTab extends Component {
     }
 
     async submitRecluster(event) {
+        event.preventDefault();
         if (this.props.graphData.data.length > 0 && document.getElementById('reclusterThreshold').value < this.props.graphData.max_thresh) {
-            event.preventDefault();
             // Recluster parameters
             let params = {
                 'minClusterSize': document.getElementById('reclusterMinClusterSize').value === '' ? 1 : document.getElementById('reclusterMinClusterSize').value,
                 'threshold': document.getElementById('reclusterThreshold').value === '' ? 5 : document.getElementById('reclusterThreshold').value,
                 'topicsPerCluster': document.getElementById('reclusterTopicsPerCluster').value === '' ? 8 : document.getElementById('reclusterTopicsPerCluster').value,
-                'clusteringMethod': this.props.graphData.linkage_matrix ? 'hac' : 'kmeans'
+                'clusteringMethod': this.props.graphData.linkage_matrix?.length > 0 ? 'hac' : 'kmeans'
             };
 
             this.setState({ runningScript: true })
