@@ -267,7 +267,7 @@ Users have the option to re-calculate the distance matrix using a different dist
 * **cosine:** Treats embeddings as vectors and calculates the angle between the two vectors. This metric is frequently used in NLP. (Default)
 
 #### UMAP Neighbors
-If choosing UMAP for visualization, you have the option of selecting the number of neighbors UMAP uses for its dimension reduction algorithm.  Default is set to 15, which is generally a good choice.  Lower values will create more tightly packed clusters, and larger numbers will create larger more spread out clusters on the scatter plot.
+If choosing UMAP for visualization, you have the option of selecting the number of neighbors UMAP uses for its dimension reduction algorithm.  Default is set to 15, which is generally a good choice.  Lower values will create larger more spread out clusters, and larger numbers will create more tightly packed clusters on the scatter plot.
 
 ## 3: Run Analysis <a name="usage3">
 Once all of the parameters have been set you are ready to run your analysis.  Scroll to the bottom of the Cluster tab and hit "Run".  If you decide you want to exclude some files from a particular run, you can uncheck them in the File Manager tab before hitting "run" and they will be excluded.
