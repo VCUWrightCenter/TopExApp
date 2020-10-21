@@ -138,7 +138,7 @@ class ClusterTab extends Component {
                         min='0'
                     />
                     &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Length of phrase extracted from each sentence."></i>
+                    <span class="tooltip-right" data-tooltip="Length of phrase extracted from each sentence."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <div className='spacing'>
@@ -151,7 +151,7 @@ class ClusterTab extends Component {
                         options={shared.getVectorizationMethod("vectorizationMethod")}
                         onChange={this.getDropdownValue} />
                     &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Method used for generating phrase vectors"></i>
+                    <span class="tooltip-right" data-tooltip="Method used for generating phrase vectors."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <div className='spacing'>
@@ -164,7 +164,7 @@ class ClusterTab extends Component {
                         options={shared.getTfidfCorpus("tfidfCorpus")}
                         onChange={this.getDropdownValue} />
                     &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Set(s) of documents used to generate the TF-IDF."></i>
+                    <span class="tooltip-right" data-tooltip="Set(s) of documents used to generate the TF-IDF."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 {this.state.wordVectorType === "pretrained" ?
@@ -205,13 +205,13 @@ class ClusterTab extends Component {
                         min='0'
                     />
                     &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Only relevant for UMAP and SVD clustering. Dimensions to which the tfidf matrix is reduced."></i>
+                    <span class="tooltip-right" data-tooltip="Only relevant for UMAP and SVD clustering. Dimensions to which the tfidf matrix is reduced."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <div className='spacing'>
                     <Checkbox id='include_sentiment' label="Include sentiment?" title="" defaultChecked />
                     &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Checking this box means that part of speech and sentiment will be used to weight the importance of tokens."></i>
+                    <span class="tooltip-right" data-tooltip="Checking this box means that part of speech and sentiment will be used to weight the importance of tokens."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <Header as='h3'>Sentence Clustering Parameters</Header>
@@ -227,7 +227,7 @@ class ClusterTab extends Component {
                         onChange={this.getDropdownValue}>
                     </Dropdown>
                     &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Method used to cluster word vectors."></i>
+                    <span class="tooltip-right" data-tooltip="Method used to cluster word vectors."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <div className='spacing'>
@@ -240,7 +240,7 @@ class ClusterTab extends Component {
                         options={shared.getDistanceMetric("cluster_dist_metric")}
                         onChange={this.getDropdownValue} />
                         &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="This distance metric is used to compare points for clustering"></i>
+                        <span class="tooltip-right" data-tooltip="This distance metric is used to compare points for clustering."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <div className='spacing'>
@@ -253,7 +253,7 @@ class ClusterTab extends Component {
                         min='0'
                     />
                     &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Corresponds to the cut height of the dendrogram for HAC clustering and K for k-means clustering."></i>
+                    <span class="tooltip-right" data-tooltip="Corresponds to the cut height of the dendrogram for HAC clustering and K for k-means clustering."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <Header as='h3'>Visualization Parameters</Header>
@@ -268,7 +268,7 @@ class ClusterTab extends Component {
                         options={shared.getVisualizationMethods("visualizationMethod")}
                         onChange={this.getDropdownValue} />
                         &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Method used for projecting points into two dimensions for visualization."></i>
+                        <span class="tooltip-right" data-tooltip="Method used for projecting points into two dimensions for visualization."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <div className='spacing'>
@@ -281,7 +281,7 @@ class ClusterTab extends Component {
                         options={shared.getDistanceMetric("viz_dist_metric")}
                         onChange={this.getDropdownValue} />
                         &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="This distance metric is used to compare points for visualization"></i>
+                        <span class="tooltip-right" data-tooltip="This distance metric is used to compare points for visualization"><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <div className='spacing'>
@@ -294,7 +294,7 @@ class ClusterTab extends Component {
                         min='0'
                     />
                     &nbsp;
-                    <i aria-hidden="true" className="question circle fitted icon" title="Only relevant for UMAP clustering"></i>
+                    <span class="tooltip-right" data-tooltip="Only relevant for UMAP clustering."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <Button
