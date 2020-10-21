@@ -83,7 +83,7 @@ class ReclusterTab extends Component {
                             min='1'
                         />
                             &nbsp;
-                            <span class="tooltip-right" data-tooltip="The number of clusters, k, for k-means clustering or the height at which the dendrogram should be cut for HAC to obtain disjointed clusters."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                            <span class="tooltip" data-tooltip="The number of clusters, k, for k-means clustering or the height at which the dendrogram should be cut for HAC to obtain disjointed clusters."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                     </div>
                     <div className='spacing'>
                         <label htmlFor="reclusterTopicsPerCluster"># of Topic Words Per Cluster</label>
@@ -94,7 +94,7 @@ class ReclusterTab extends Component {
                             min='1'
                         />
                             &nbsp;
-                            <span class="tooltip-right" data-tooltip="This returns the top n-ranked words for the cluster topic."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                            <span class="tooltip" data-tooltip="This returns the top n-ranked words for the cluster topic."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                     </div>
                     <div className='spacing'>
                         <label htmlFor="reclusterMinClusterSize">Minimum Cluster Size</label>
@@ -105,7 +105,7 @@ class ReclusterTab extends Component {
                             min='1'
                         />
                             &nbsp;
-                            <span class="tooltip-right" data-tooltip="Minimum cluster size."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                            <span class="tooltip" data-tooltip="Minimum cluster size."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                     </div>
                     <Button
                         color='black'
