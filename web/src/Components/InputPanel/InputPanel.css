@@ -1,6 +1,8 @@
-.sidebar{
+.left-sidebar {
     border-top: 1px solid #dcdcdc;
-    border-right: 1px solid #dcdcdc;
+}
+
+.sidebar{
     height: 100%;
     grid-area: left;
     position: relative;
@@ -8,7 +10,6 @@
     overflow-wrap: normal;
 
 }
-
 
 .fileListEntry{
     width: 100%;
@@ -181,4 +182,73 @@
   font-size: 14px;
   line-height: 1.2;
   white-space: pre-wrap !important;
+}
+
+
+
+
+
+
+#drawer-toggle { 
+    position: absolute; 
+    opacity: 0; 
+}
+
+#drawer-toggle-label { 
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+    -khtml-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none; 
+    left: 0px; 
+    height:50px; 
+    width: 50px; 
+    display: block; 
+    position: fixed; 
+    background: rgba(255,255,255,.0); 
+    z-index: 1; 
+} 
+
+/* adds our "hamburger" menu icon */ 
+
+#drawer-toggle-label:before { 
+    content: ''; 
+    display: block; 
+    position: absolute; 
+    height: 2px; 
+    width: 24px; 
+    background: #8d8d8d; 
+    left: 13px; 
+    top: 18px; 
+    box-shadow: 0 6px 0 #8d8d8d, 0 12px 0 #8d8d8d; 
+} 
+
+#drawer { 
+    position: fixed; 
+    top: 0; 
+    left: -590px; 
+    height: 100%; 
+    width: 590px;
+    background: #FFF;
+    overflow-x: hidden; 
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch; 
+    z-index: 1;
+} 
+
+/* checked styles (menu open state) */ 
+
+#drawer-toggle:checked ~ #drawer-toggle-label { 
+    height: 100%; 
+    width: calc(100% - 590px);
+} 
+
+#drawer-toggle:checked ~ #drawer-toggle-label, 
+#drawer-toggle:checked ~ header { 
+    left: 590px; 
+} 
+
+#drawer-toggle:checked ~ #drawer { 
+    left: 0px; 
 }

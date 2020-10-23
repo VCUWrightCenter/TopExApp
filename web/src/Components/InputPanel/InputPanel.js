@@ -62,11 +62,18 @@ class InputPanel extends Component {
         ]
 
         return (
-            <div className='left-wrapper'>
-                <div id='tabs' className='sidebar'>
-                    <Tab className='pane' menu={{ borderless: true, attached: true, tabular: true, fluid: true, widths: 2, }} panes={panes} renderActiveOnly={false} />
+            <>
+            <div className="left-sidebar">
+                <input type="checkbox" id="drawer-toggle" name="drawer-toggle" />
+                <label for="drawer-toggle" id="drawer-toggle-label"></label>
+
+                <div id="drawer" className='left-wrapper'>
+                    <div id='tabs' className='sidebar'>
+                        <Tab className='pane' menu={{ borderless: true, attached: true, tabular: true, fluid: true, widths: 2, }} panes={panes} renderActiveOnly={false} />
+                    </div>
                 </div>
             </div>
+            </>
         );
     }
 }
