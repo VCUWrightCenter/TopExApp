@@ -244,8 +244,7 @@
     width: calc(100% - 590px);
 } 
 
-#drawer-toggle:checked ~ #drawer-toggle-label, 
-#drawer-toggle:checked ~ header { 
+#drawer-toggle:checked ~ #drawer-toggle-label { 
     left: 590px; 
 } 
 

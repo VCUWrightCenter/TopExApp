@@ -55,4 +55,5 @@ a.item:first-child {
 
 .ui.segment {
     border-bottom: none !important;
+    border-left: none !important;
 }
