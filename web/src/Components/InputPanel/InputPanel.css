@@ -1,10 +1,10 @@
 .left-sidebar {
     border-top: 1px solid #dcdcdc;
+    grid-area: left;
 }
 
 .sidebar{
     height: 100%;
-    grid-area: left;
     position: relative;
     overflow-x: hidden;
     overflow-wrap: normal;
