@@ -119,7 +119,7 @@ From the command line, run the following:
 
     ~/api> pip install -r requirements.txt
 
-    ~/api> python -m nltk.downloader all
+    ~/api> python -m spacy download en_core_web_sm
 
     ~/api> flask run 
 
