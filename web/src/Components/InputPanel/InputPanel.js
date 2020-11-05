@@ -65,7 +65,7 @@ class InputPanel extends Component {
             <>
             <div className="left-sidebar">
                 <input type="checkbox" id="drawer-toggle" name="drawer-toggle" />
-                <label for="drawer-toggle" id="drawer-toggle-label"></label>
+                <label htmlFor="drawer-toggle" id="drawer-toggle-label"></label>
 
                 <div id="drawer" className='left-wrapper'>
                     <div id='tabs' className='sidebar'>
