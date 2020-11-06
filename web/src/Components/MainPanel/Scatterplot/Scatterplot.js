@@ -117,19 +117,19 @@ class Scatterplot extends Component {
             .attr("color", (d, i) => {
                 return util.getClusterColor(d, max)
             })
-            .on('mouseover', function (d, i) {
-                d3.select(this)
-                    .transition()
-                    .duration(100)
-                    .attr('fill', 'red');
-            })
+            // .on('mouseover', function (d, i) {
+            //     d3.select(this)
+            //         .transition()
+            //         .duration(100)
+            //         .attr('fill', 'red');
+            // })
             .on('mouseout', function (d, i) {
                 d3.select(this)
                     .transition()
                     .duration(100)
                     .attr('fill', this.getAttribute("color"));
             })
-            .on('click', (d, i) => {
+            .on('mouseover', (d, i) => {
                 util.sendPointData(JSON.stringify(d), this)
             })
         //source:
