@@ -24,6 +24,7 @@ class FileManagerTab extends Component {
 
     //This method saves uploads into corpusDocs and shares with InputPanel
     uploadCorpusDocs(uploads) {
+        console.log(uploads);
         let files = this.mapFiles(uploads);
         this.setState({ corpusDocs: files });
         this.updateCorpusDocsProps(files);
@@ -59,6 +60,14 @@ class FileManagerTab extends Component {
         this.props.stopwordsFileCallback(file[0]);
     }
 
+    clearForm() {
+        let files = [];
+        document.getElementById('CorpusDocsForm').reset();
+        console.log("files cleared");
+
+        this.uploadCorpusDocs(files);
+    }
+
     render() {
         return (
             <div className="InputPanelContainer acknowledgements">
@@ -77,6 +86,13 @@ class FileManagerTab extends Component {
                             className='buttonText'
                         />
 
+                        <Button
+                            color='black'
+                            onClick={() => { document.getElementById('resetButton').click(); }}
+                            content='Reset'
+                            className='action'
+                        />
+
                         <div id="fileList" className='fileList'>
                             {this.state.corpusDocs.map((file) => {
                                 return (
@@ -92,8 +108,10 @@ class FileManagerTab extends Component {
                     </Button.Group>
                     &nbsp;
 
-                    <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
-                        <input hidden id='uploadCorpusDocsInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.uploadCorpusDocs(e.target.files)} />
+                    <form encType="multipart/form-data" id="CorpusDocsForm" onSubmit={(e) => this.handleChange(e)}>
+                        <input id='uploadCorpusDocsInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" hidden onChange={(e) => this.uploadCorpusDocs(e.target.files) } />
+
+                        <input type="button" id='resetButton' hidden onClick={() => this.clearForm() } />
                     </form>
                 </div>
 
