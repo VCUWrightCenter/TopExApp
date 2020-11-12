@@ -184,7 +184,9 @@
   white-space: pre-wrap !important;
 }
 
-
+.file-input button.ui.black.button.action {
+    width: 80px;
+}
 
 
 

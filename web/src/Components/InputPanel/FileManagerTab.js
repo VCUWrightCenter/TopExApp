@@ -60,12 +60,17 @@ class FileManagerTab extends Component {
         this.props.stopwordsFileCallback(file[0]);
     }
 
-    clearForm() {
+    clearForm(id) {
         let files = [];
-        document.getElementById('CorpusDocsForm').reset();
-        console.log("files cleared");
-
-        this.uploadCorpusDocs(files);
+        var idVal = id.target.getAttribute('id');
+        
+        if (idVal === 'resetButton1') {
+            document.getElementById('CorpusDocsForm').reset();
+            this.uploadCorpusDocs(files);
+        } else {
+            document.getElementById('ExpansionDocsForm').reset();
+            this.uploadExpansionDocs(files);
+        }
     }
 
     render() {
@@ -88,7 +93,7 @@ class FileManagerTab extends Component {
 
                         <Button
                             color='black'
-                            onClick={() => { document.getElementById('resetButton').click(); }}
+                            onClick={() => { document.getElementById('resetButton1').click(); }}
                             content='Reset'
                             className='action'
                         />
@@ -111,7 +116,7 @@ class FileManagerTab extends Component {
                     <form encType="multipart/form-data" id="CorpusDocsForm" onSubmit={(e) => this.handleChange(e)}>
                         <input id='uploadCorpusDocsInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" hidden onChange={(e) => this.uploadCorpusDocs(e.target.files) } />
 
-                        <input type="button" id='resetButton' hidden onClick={() => this.clearForm() } />
+                        <input type="button" id="resetButton1" class="reset_button" hidden onClick={(e) => this.clearForm(e) } />
                     </form>
                 </div>
 
@@ -129,6 +134,14 @@ class FileManagerTab extends Component {
                             content='Upload expansion docs'
                             className='buttonText'
                         />
+
+                        <Button
+                            color='black'
+                            onClick={() => { document.getElementById('resetButton2').click(); }}
+                            content='Reset'
+                            className='action'
+                        />
+
                         <div id="expanionFileList" className='fileList'>
                             {this.state.expansionDocs.map((file) => {
                                 return (
@@ -144,8 +157,10 @@ class FileManagerTab extends Component {
                     </Button.Group>
                     &nbsp;
 
-                    <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
+                    <form encType="multipart/form-data" id="ExpansionDocsForm" onSubmit={(e) => this.handleChange(e)}>
                         <input hidden id='uploadExpansionDocsInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.uploadExpansionDocs(e.target.files)} />
+
+                        <input type="button" id="resetButton2" hidden onClick={(e) => this.clearForm(e) } />
                     </form>
                 </div>
 
