@@ -116,7 +116,7 @@ class FileManagerTab extends Component {
                     <form encType="multipart/form-data" id="CorpusDocsForm" onSubmit={(e) => this.handleChange(e)}>
                         <input id='uploadCorpusDocsInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" hidden onChange={(e) => this.uploadCorpusDocs(e.target.files) } />
 
-                        <input type="button" id="resetButton1" class="reset_button" hidden onClick={(e) => this.clearForm(e) } />
+                        <input type="button" id="resetButton1" hidden onClick={(e) => this.clearForm(e) } />
                     </form>
                 </div>
 
