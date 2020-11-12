@@ -123,7 +123,7 @@ class FileManagerTab extends Component {
                 <Header as='h3'>Expansion corpus (Optional)</Header>
                 <p>Select additional documents to be included in the background corpus (Clustering Corpus is automatically included). The Background Corpus determines which words are highly informative for clustering. Note, sentences in these documents will not be clustered. **Recommended if clustering a small set of documents.</p>
 
-                <div className='file-input spacing'>
+                <div className='file-input spacing file-manager'>
                     <Button.Group vertical>
                         <Button
                             color='yellow'
