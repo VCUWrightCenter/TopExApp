@@ -79,7 +79,7 @@ class FileManagerTab extends Component {
                 <Header as='h3'>Documents to cluster</Header>
                 <p>Only .txt are accepted. Must provide a minimum of three documents.</p>
 
-                <div className='file-input spacing'>
+                <div className='file-input spacing file-manager'>
                     <Button.Group vertical>
                         <Button
                             color='yellow'
