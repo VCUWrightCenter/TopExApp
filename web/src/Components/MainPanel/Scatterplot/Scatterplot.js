@@ -78,8 +78,8 @@ class Scatterplot extends Component {
         // append the svg object to the body of the page
         var svg = d3.select("#node")
             .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom + 60)
+            .attr("width", width + margin.left + margin.right + 100)
+            .attr("height", height + margin.top + margin.bottom + 100)
             .attr("id", "scatterplotSVG")
             // .call(d3.zoom().on("zoom", function () {
             //     svg.attr("transform", d3.event.transform)
@@ -92,7 +92,7 @@ class Scatterplot extends Component {
             .domain([xMin, xMax])
             .range([0, width]);
         svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
+            .attr("transform", "translate(80," + height + ")")
             .call(d3.axisBottom(x));
 
         // Add Y axis
@@ -100,13 +100,14 @@ class Scatterplot extends Component {
             .domain([yMin, yMax])
             .range([height, 0]);
         svg.append("g")
+            .attr("transform", "translate(80, 0)")
             .call(d3.axisLeft(y));
 
         // Add X axis label:
         svg.append("text")
             .attr("text-anchor", "end")
             .attr("x", width/2 + margin.left)
-            .attr("y", height + margin.top + 40)
+            .attr("y", height + margin.top + 60)
             .text("X Axis Label");
 
         // Y axis label:
