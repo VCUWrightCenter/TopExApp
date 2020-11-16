@@ -13,27 +13,29 @@ class Scatterplot extends Component {
             dataframe_identifier: 0,
             dataPoints: null,
             pre_process_data: null,
-            dimensions: null
+            dimensions: null,
+            visualizationMethod: null
         }
     }
 
     //This is for the radio buttons
     componentDidUpdate() {
-        this.drawChart(this.state.dataframe_identifier)
+        this.drawChart(this.props.data);
     }
 
     //This is to get the graph to show upp in the tab
     componentDidMount() {
         if (this.props.data) {
-            this.drawChart(this.state.dataframe_identifier);
+            this.drawChart(this.props.data);
         }
     }
 
 
     //Reponsible for drawing the graph. This is the only place where D3 should live. 
-    async drawChart(dataFrameNumber) {
+    async drawChart(chartData) {
         let data = util.reformatJSON(this)
-        
+        // console.log(data, this.state.visualizationMethod);
+
         // Filter out points for clusters with < min_cluster_size
         data = data.filter(p => p.valid);
         
@@ -108,7 +110,7 @@ class Scatterplot extends Component {
             .attr("text-anchor", "end")
             .attr("x", width/2 + margin.left)
             .attr("y", height + margin.top + 60)
-            .text("X Axis Label");
+            .text(this.state.visualizationMethod + "_1");
 
         // Y axis label:
         svg.append("text")
@@ -116,7 +118,7 @@ class Scatterplot extends Component {
             .attr("transform", "rotate(-90)")
             .attr("y", -margin.left + 20)
             .attr("x", -margin.top - height/2 + 20)
-            .text("Y Axis Label")
+            .text(this.state.visualizationMethod + "_2")
       
         //Add dots
         svg.append('g')

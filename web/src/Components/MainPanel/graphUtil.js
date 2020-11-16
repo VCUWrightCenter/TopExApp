@@ -1,4 +1,4 @@
-import { promptForFileName } from '../Shared'
+import { getVisualizationMethods, promptForFileName } from '../Shared'
 
 //This file holds all of the utility functions for all of the graphs
 //This allows for much easier creation of graphs since we do not have to worry about changing code in mulitple places
@@ -42,7 +42,7 @@ export const reformatJSON = (apiResultRaw) => {
     if (apiResultRaw.state.pre_process_data !== apiResultRaw.props.data) {
         //Begin data reformatting
         var apiResult = convertToJson(apiResultRaw.props.data)
-        console.log('API result', apiResult);
+        var visualizationMethod = apiResult["visualizationMethod"];
 
         let viz_df = convertToJson(apiResult.viz_df);
         let cluster_topics = apiResult.main_cluster_topics;
@@ -55,7 +55,8 @@ export const reformatJSON = (apiResultRaw) => {
         apiResultRaw.setState({
             dataframe_identifier: apiResultRaw.state.dataframe_identifier,
             dataPoints: dataPoints,
-            pre_process_data: apiResultRaw.props.data
+            pre_process_data: apiResultRaw.props.data,
+            visualizationMethod: visualizationMethod
         })
         return dataPoints;
     }

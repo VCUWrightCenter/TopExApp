@@ -94,7 +94,8 @@ class ClusterTab extends Component {
                 'Content-Type': 'multipart/form-data'
             }
         }).then((response) => {
-            const data = response.data
+            let data = response.data
+            data["visualizationMethod"] = params["visualizationMethod"]
             return data
         }).catch((err) => {
             this.setState({
