@@ -1,4 +1,4 @@
-import { getVisualizationMethods, promptForFileName } from '../Shared'
+import { promptForFileName } from '../Shared'
 
 //This file holds all of the utility functions for all of the graphs
 //This allows for much easier creation of graphs since we do not have to worry about changing code in mulitple places
