@@ -13,27 +13,29 @@ class Scatterplot extends Component {
             dataframe_identifier: 0,
             dataPoints: null,
             pre_process_data: null,
-            dimensions: null
+            dimensions: null,
+            visualizationMethod: null
         }
     }
 
     //This is for the radio buttons
     componentDidUpdate() {
-        this.drawChart(this.state.dataframe_identifier)
+        this.drawChart(this.props.data);
     }
 
     //This is to get the graph to show upp in the tab
     componentDidMount() {
         if (this.props.data) {
-            this.drawChart(this.state.dataframe_identifier);
+            this.drawChart(this.props.data);
         }
     }
 
 
     //Reponsible for drawing the graph. This is the only place where D3 should live. 
-    async drawChart(dataFrameNumber) {
+    async drawChart(chartData) {
         let data = util.reformatJSON(this)
-        
+        // console.log(data, this.state.visualizationMethod);
+
         // Filter out points for clusters with < min_cluster_size
         data = data.filter(p => p.valid);
         
@@ -78,8 +80,8 @@ class Scatterplot extends Component {
         // append the svg object to the body of the page
         var svg = d3.select("#node")
             .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+            .attr("width", width + margin.left + margin.right + 100)
+            .attr("height", height + margin.top + margin.bottom + 100)
             .attr("id", "scatterplotSVG")
             // .call(d3.zoom().on("zoom", function () {
             //     svg.attr("transform", d3.event.transform)
@@ -92,7 +94,7 @@ class Scatterplot extends Component {
             .domain([xMin, xMax])
             .range([0, width]);
         svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
+            .attr("transform", "translate(80," + height + ")")
             .call(d3.axisBottom(x));
 
         // Add Y axis
@@ -100,8 +102,24 @@ class Scatterplot extends Component {
             .domain([yMin, yMax])
             .range([height, 0]);
         svg.append("g")
+            .attr("transform", "translate(80, 0)")
             .call(d3.axisLeft(y));
 
+        // Add X axis label:
+        svg.append("text")
+            .attr("text-anchor", "end")
+            .attr("x", width/2 + margin.left)
+            .attr("y", height + margin.top + 60)
+            .text(this.state.visualizationMethod + "_1");
+
+        // Y axis label:
+        svg.append("text")
+            .attr("text-anchor", "end")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -margin.left + 20)
+            .attr("x", -margin.top - height/2 + 20)
+            .text(this.state.visualizationMethod + "_2")
+      
         //Add dots
         svg.append('g')
             .selectAll("dot")
@@ -117,19 +135,19 @@ class Scatterplot extends Component {
             .attr("color", (d, i) => {
                 return util.getClusterColor(d, max)
             })
-            .on('mouseover', function (d, i) {
-                d3.select(this)
-                    .transition()
-                    .duration(100)
-                    .attr('fill', 'red');
-            })
+            // .on('mouseover', function (d, i) {
+            //     d3.select(this)
+            //         .transition()
+            //         .duration(100)
+            //         .attr('fill', 'red');
+            // })
             .on('mouseout', function (d, i) {
                 d3.select(this)
                     .transition()
                     .duration(100)
                     .attr('fill', this.getAttribute("color"));
             })
-            .on('click', (d, i) => {
+            .on('mouseover', (d, i) => {
                 util.sendPointData(JSON.stringify(d), this)
             })
         //source:

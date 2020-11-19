@@ -1,14 +1,15 @@
-.sidebar{
+.left-sidebar {
     border-top: 1px solid #dcdcdc;
-    border-right: 1px solid #dcdcdc;
-    height: 100%;
     grid-area: left;
+}
+
+.sidebar{
+    height: 100%;
     position: relative;
     overflow-x: hidden;
     overflow-wrap: normal;
 
 }
-
 
 .fileListEntry{
     width: 100%;
@@ -20,6 +21,10 @@
 
 .header3{
     margin-top:10px !important
+}
+
+.ui.header:first-child {
+    margin-top: 20px !important;
 }
 
 
@@ -96,4 +101,157 @@
 
 .ui.input>input[type="text"], .ui.input>input[type="number"] {
     width: 210px;
+}
+
+
+
+
+
+
+
+
+/* Base styles for the element that has a tooltip */
+[data-tooltip],
+.tooltip {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Base styles for the entire tooltip */
+[data-tooltip]:before,
+[data-tooltip]:after,
+.tooltip:before,
+.tooltip:after {
+  position: absolute;
+  visibility: hidden;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  -webkit-transition: 
+	  opacity 0.2s ease-in-out,
+		visibility 0.2s ease-in-out,
+		-webkit-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+	-moz-transition:    
+		opacity 0.2s ease-in-out,
+		visibility 0.2s ease-in-out,
+		-moz-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+	transition:         
+		opacity 0.2s ease-in-out,
+		visibility 0.2s ease-in-out,
+		transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform:    translate3d(0, 0, 0);
+  transform:         translate3d(0, 0, 0);
+  pointer-events: none;
+}
+
+/* Show the entire tooltip on hover and focus */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after,
+[data-tooltip]:focus:before,
+[data-tooltip]:focus:after,
+.tooltip:hover:before,
+.tooltip:hover:after,
+.tooltip:focus:before,
+.tooltip:focus:after {
+  visibility: visible;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+/* Base styles for the tooltip's directional arrow */
+.tooltip:before,
+[data-tooltip]:before {
+  z-index: 1001;
+  border: 6px solid transparent;
+  background: transparent;
+  content: "";
+}
+
+/* Base styles for the tooltip's content area */
+.tooltip:after,
+[data-tooltip]:after {
+  z-index: 1000;
+  padding: 8px;
+  width: 200px;
+  background-color: #000;
+  background-color: hsla(0, 0%, 20%, 0.9);
+  color: #fff;
+  content: attr(data-tooltip);
+  font-size: 14px;
+  line-height: 1.2;
+  white-space: pre-wrap !important;
+}
+
+.file-manager button.ui.black.button.action {
+    width: 80px;
+}
+
+
+
+
+#drawer-toggle { 
+    position: absolute; 
+    opacity: 0; 
+}
+
+#drawer-toggle-label { 
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+    -khtml-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none; 
+    left: 0px; 
+    height:50px; 
+    width: 50px; 
+    display: block; 
+    position: fixed; 
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(5px);
+    z-index: 1; 
+    cursor: pointer;
+} 
+
+/* adds our "hamburger" menu icon */ 
+
+#drawer-toggle-label:before { 
+    content: ''; 
+    display: block; 
+    position: absolute; 
+    height: 2px; 
+    width: 24px; 
+    background: #FFF; 
+    left: 13px; 
+    top: 18px; 
+    box-shadow: 0 6px 0 #FFF, 0 12px 0 #FFF;
+} 
+
+#drawer { 
+    position: fixed; 
+    top: 0; 
+    left: -590px; 
+    height: 100%; 
+    width: 590px;
+    background: #FFF;
+    overflow-x: hidden; 
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch; 
+    z-index: 1;
+} 
+
+/* checked styles (menu open state) */ 
+
+#drawer-toggle:checked ~ #drawer-toggle-label { 
+    height: 100%; 
+    width: calc(100% - 590px);
+} 
+
+#drawer-toggle:checked ~ #drawer-toggle-label { 
+    left: 590px; 
+} 
+
+#drawer-toggle:checked ~ #drawer { 
+    left: 0px; 
 }

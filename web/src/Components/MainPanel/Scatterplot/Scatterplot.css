@@ -1,5 +1,3 @@
-
-
 .gridContainer{
     display: grid;
 }
@@ -10,7 +8,11 @@
     height: 100%;
     width: 100%;
 }
-
+circle:hover {
+    color: red;
+    fill: red;
+    cursor: crosshair;
+}
 .exportButtons{
     display: flex;
     flex-direction: row;
