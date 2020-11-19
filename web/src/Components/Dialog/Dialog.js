@@ -38,7 +38,10 @@ export default function AlertDialog() {
             <DialogContentText id="alert-dialog-description">
                 In addition, Evan French and Peter Burdette from VCU’s Wright Center for Clinical and Translational Research Informatics Core have been working tirelessly with Amy Olex to get TopEx ready for public release.  Thanks to both of you for your amazing work!
             </DialogContentText>
-            <h4>References:</h4>
+            <h4>Citation:</h4>
+            <DialogContentText id="alert-dialog-description">
+                If you use TopEx in your research, please cite:
+            </DialogContentText>
             <DialogContentText id="alert-dialog-description">
                 Olex A, DiazGranados D, McInnes BT, and Goldberg S. Local Topic Mining for Reflective Medical Writing. Full Length Paper. AMIA Jt Summits Transl Sci Proc 2020;2020:459–68. PMCID: <a href="https://www-ncbi-nlm-nih-gov.proxy.library.vcu.edu/pmc/articles/PMC7233034/" target="_blank" rel="noopener noreferrer">PMC7233034</a>
             </DialogContentText>
