@@ -20,6 +20,7 @@
     + [Scatter Plot](#usage41)
     + [Word Cloud](#usage42)
 - [Acknowledgements](#thanks)
+- [Citation](#cite)
 - [References](#paper)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents partially generated with markdown-toc</a></i></small>
@@ -295,7 +296,7 @@ TopExApp (previously MedTop) was initially developed as a web app through the 20
 
 In addition, Evan French and Peter Burdette from VCU's Wright Center for Clinical and Translational Research Informatics Core have been working tirelessly with Amy Olex to get TopEx ready for public release.  Thanks to both of you for your amazing work!
 
-# Citation <a name="paper">
+# Citation <a name="cite">
 
 If you use TopExApp in your research, please cite:
 
