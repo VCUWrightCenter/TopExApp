@@ -47,3 +47,11 @@
 #exportButtons .ui.black.button {
     width: 156px;
 }
+
+.circle {
+    padding: 0 !important;
+    width: 10px;
+    height: 10px;
+    border-radius: 50px;
+    border: none;
+}
