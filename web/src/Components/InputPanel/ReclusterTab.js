@@ -13,19 +13,22 @@ class ReclusterTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            runningScript: false
+            runningScript: false,
+            visualizationMethod: null
         };
     }
 
     async submitRecluster(event) {
         event.preventDefault();
+        
         if (this.props.graphData.data.length > 0 && document.getElementById('reclusterThreshold').value < this.props.graphData.max_thresh) {
             // Recluster parameters
             let params = {
                 'minClusterSize': document.getElementById('reclusterMinClusterSize').value === '' ? 1 : document.getElementById('reclusterMinClusterSize').value,
                 'threshold': document.getElementById('reclusterThreshold').value === '' ? 5 : document.getElementById('reclusterThreshold').value,
                 'topicsPerCluster': document.getElementById('reclusterTopicsPerCluster').value === '' ? 8 : document.getElementById('reclusterTopicsPerCluster').value,
-                'clusteringMethod': this.props.graphData.linkage_matrix?.length > 0 ? 'hac' : 'kmeans'
+                'clusteringMethod': this.props.graphData.linkage_matrix?.length > 0 ? 'hac' : 'kmeans',
+                'visualizationMethod': this.state.visualizationMethod
             };
 
             this.setState({ runningScript: true })
@@ -49,6 +52,7 @@ class ReclusterTab extends Component {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((response) => {
+                response.data.visualizationMethod = this.props.graphData.visualizationMethod;
                 return response.data;
             }).catch((err) => {
                 this.setState({ runningScript: false })
