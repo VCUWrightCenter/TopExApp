@@ -116,6 +116,12 @@ class ImportExportTab extends Component {
                             onClick={(e) => util.exportScatterplotData(this.props.graphData)}
                             className='action'
                         />
+                        <Button
+                            color='black'
+                            content="Export word cloud data (.txt)"
+                            onClick={(e) => util.exportWordcloudData(this.props.graphData)}
+                            className='action'
+                        />
                     </Button.Group>
                     <form>
                         <input id='importFileInput' type="file" hidden onChange={(e) => this.checkImportFile(e)} />

@@ -87,15 +87,12 @@ def cluster(request: request):
     if dimensions is None or dimensions >= tfidf.shape[1]:
         new_dim = min(200,tfidf.shape[1]-1)
         result.msg += f"Dimensions changed from {dimensions} to {new_dim}.\n"
-        dimensions = 2 if vectorization_method == 'umap' else new_dim
-
-    
+        dimensions = 2 if vectorization_method == 'umap' else new_dim    
 
     data = topex.get_phrases(data, dictionary.token2id, tfidf, tfidf_corpus=tfidf_corpus, window_size=window_size, include_sentiment=include_sentiment)
     data = topex.get_vectors(vectorization_method, data, dictionary = dictionary, tfidf = tfidf, dimensions=dimensions, umap_neighbors=umap_neighbors)
 
-    data_len = len(data)
-    if k > len(data):
+    if clustering_method == 'kmeans' and k > len(data):
         result.msg += f"k exceeds number of sentences. Changed from {k} to {len(data)}.\n"
         k = len(data)
 
