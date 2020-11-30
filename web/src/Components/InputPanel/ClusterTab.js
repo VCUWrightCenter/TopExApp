@@ -96,6 +96,9 @@ class ClusterTab extends Component {
         }).then((response) => {
             let data = response.data
             data["visualizationMethod"] = params["visualizationMethod"]
+
+            if(data.msg) alert(data.msg);
+            
             return data
         }).catch((err) => {
             this.setState({
