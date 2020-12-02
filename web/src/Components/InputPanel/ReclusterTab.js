@@ -14,7 +14,8 @@ class ReclusterTab extends Component {
         super(props);
         this.state = {
             runningScript: false,
-            visualizationMethod: null
+            visualizationMethod: null,
+            status: 'Idle'
         };
     }
 
@@ -46,25 +47,41 @@ class ReclusterTab extends Component {
             formData.append('viz_df', this.props.graphData.viz_df);
             formData.append('linkage_matrix', this.props.graphData.linkage_matrix);
 
-            const response = await Axios.post("http://localhost:5000/recluster", formData, {
+            let pending = true
+            const promise = Axios.post("http://localhost:5000/recluster", formData, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'multipart/form-data'
                 }
-            }).then((response) => {
-                response.data.visualizationMethod = this.props.graphData.visualizationMethod;
-                return response.data;
+            }).then(res => {
+                res.data.visualizationMethod = this.props.graphData.visualizationMethod;
+                pending = false;
+                return res.data;
             }).catch((err) => {
+                pending = false;
                 this.setState({ runningScript: false })
                 console.error(err.message)
                 alert(err);
             })
 
-            if (response == null) {
-                return;
+            // Ping clustering function status from another thread
+            while(pending) {
+                await new Promise(r => setTimeout(r, 100));
+                await Axios.get("http://localhost:5000/status/2", {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data'
+                }
+                }).then(res => {
+                    this.setState({status: res.data})
+                }).catch((err) => {
+                    console.error(err.message)
+                })
             }
+            this.setState({status: 'Complete'})
 
             // Propogate graphData back up to parent
+            let response = await promise
             this.props.graphDataCallback(response)
 
             this.setState({ runningScript: false })
@@ -111,6 +128,8 @@ class ReclusterTab extends Component {
                             &nbsp;
                             <span className="tooltip" data-tooltip="Minimum cluster size."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                     </div>
+
+                    <p>Run status = {this.state.status}</p>
                     <Button
                         color='black'
                         loading={this.state.runningScript}

@@ -20,7 +20,7 @@ class InputPanel extends Component {
         this.state = {
             corpusDocs: [],
             expansionDocs: [],
-            stopwordsFile: null,
+            stopwordsFile: [],
             leftTabs: null,
             graphData: null,
             ProcessingRunButtonDisabled: true,

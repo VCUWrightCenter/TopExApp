@@ -56,20 +56,24 @@ class FileManagerTab extends Component {
     }
 
     uploadStopwords(file) {
-        this.setState({ stopwordsFile: [file[0]] });
-        this.props.stopwordsFileCallback(file[0]);
+        file = Array.from(file);
+        this.setState({ stopwordsFile: file });
+        this.props.stopwordsFileCallback(file);
     }
 
     clearForm(id) {
         let files = [];
         var idVal = id.target.getAttribute('id');
-        
+
         if (idVal === 'resetButton1') {
             document.getElementById('CorpusDocsForm').reset();
             this.uploadCorpusDocs(files);
-        } else {
+        } else if (idVal === 'resetButton2') {
             document.getElementById('ExpansionDocsForm').reset();
             this.uploadExpansionDocs(files);
+        } else if (idVal === 'stopwordsResetBtn') {
+            document.getElementById('StopWordsForm').reset();
+            this.uploadStopwords(files);
         }
     }
 
@@ -114,9 +118,9 @@ class FileManagerTab extends Component {
                     &nbsp;
 
                     <form encType="multipart/form-data" id="CorpusDocsForm" onSubmit={(e) => this.handleChange(e)}>
-                        <input id='uploadCorpusDocsInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" hidden onChange={(e) => this.uploadCorpusDocs(e.target.files) } />
+                        <input id='uploadCorpusDocsInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" hidden onChange={(e) => this.uploadCorpusDocs(e.target.files)} />
 
-                        <input type="button" id="resetButton1" hidden onClick={(e) => this.clearForm(e) } />
+                        <input type="button" id="resetButton1" hidden onClick={(e) => this.clearForm(e)} />
                     </form>
                 </div>
 
@@ -160,11 +164,11 @@ class FileManagerTab extends Component {
                     <form encType="multipart/form-data" id="ExpansionDocsForm" onSubmit={(e) => this.handleChange(e)}>
                         <input hidden id='uploadExpansionDocsInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.uploadExpansionDocs(e.target.files)} />
 
-                        <input type="button" id="resetButton2" hidden onClick={(e) => this.clearForm(e) } />
+                        <input type="button" id="resetButton2" hidden onClick={(e) => this.clearForm(e)} />
                     </form>
                 </div>
 
-                {/* <Header as='h3'>Custom stopwords file (Optional)</Header>
+                <Header as='h3'>Custom stopwords file (Optional)</Header>
                 <p>Stopwords are removed from documents prior to clustering. Stopwords file should be one word per line.</p>
 
                 <div className='file-input spacing'>
@@ -178,7 +182,15 @@ class FileManagerTab extends Component {
                             content='Upload stopwords file'
                             className='buttonText'
                         />
-                        <div id="expanionFileList" className='fileList'>
+
+                        <Button
+                            color='black'
+                            onClick={() => { document.getElementById('stopwordsResetBtn').click(); }}
+                            content='Reset'
+                            className='action'
+                        />
+
+                        <div id="stopwordsFileList" className='fileList'>
                             {this.state.stopwordsFile.map((file) => {
                                 return (
                                     <div className='fileListEntry' key={file.name}>
@@ -188,14 +200,15 @@ class FileManagerTab extends Component {
                             })
                             }
                         </div>
-
                     </Button.Group>
                     &nbsp;
 
-                    <form encType="multipart/form-data" onSubmit={(e) => this.handleChange(e)}>
+                    <form encType="multipart/form-data" id="StopWordsForm" onSubmit={(e) => this.handleChange(e)}>
                         <input hidden id='uploadStopwordsInput' type="file" name="file" onChange={(e) => this.uploadStopwords(e.target.files)} />
+
+                        <input type="button" id="stopwordsResetBtn" hidden onClick={(e) => this.clearForm(e)} />
                     </form>
-                </div> */}
+                </div>
             </div>)
     }
 }

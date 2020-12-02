@@ -106,20 +106,20 @@ export const exportScatterplotData = (data) => {
     for (let i = 0; i < data.count; i++) {
         body += `${scatterplotData.x[i]}|${scatterplotData.y[i]}|${scatterplotData.cluster[i]}\n`;
     }
-    exportPipeDelimited(body, filename);    
+    exportPipeDelimited(body, filename);
 }
 
 export const exportResults = (data) => {
     // Name the export file
     let filename = promptForFileName();
-    
+
     // Create .csv body from scatterplot data
     let results = JSON.parse(data.data);
     let body = "id|cluster|phrase|tokens|text|cluster_topics\n"
     for (let i = 0; i < data.count; i++) {
         body += `${results.id[i]}|${results.cluster[i]}|${results.phrase[i]}|${results.tokens[i]}|${results.text[i]}|${data.main_cluster_topics[results.cluster[i]]}\n`;
     }
-    exportPipeDelimited(body, filename);    
+    exportPipeDelimited(body, filename);
 }
 
 function exportPipeDelimited(body, filename) {
@@ -137,6 +137,31 @@ function exportPipeDelimited(body, filename) {
 // Deterministically generate color for each cluster
 export const getClusterColor = (d, max) => {
     return '#' + ('00000' + (Math.abs(Math.cos(d.cluster)) * (1 << 24) | 0).toString(16)).slice(-6);
+}
+
+export const exportWordcloudData = (data) => {
+    // Name the export file
+    let filename = promptForFileName();
+
+    // Format data
+    let rawData = JSON.parse(data.data);
+    let sents = []
+    for (var i = 0; i < Object.keys(rawData.cluster).length; i++) {
+        sents.push({ 'cluster': rawData.cluster[i], 'phrase': rawData.phrase[i] });
+    }
+    let wordcloud = reformatJSONWordcloud(sents);
+    
+    let results = []
+    for (var i = 0; i < Object.keys(wordcloud).length; i++) {
+        results = results.concat(wordcloud[i]);
+    }
+
+    // Create .csv body from scatterplot data
+    let body = "cluster|phrase|count\n"
+    for (var i = 0; i < results.length; i++) {
+        body += `${results[i].cluster}|${results[i].phrase}|${results[i].value}\n`;
+    }
+    exportPipeDelimited(body, filename);
 }
 
 //This is used to format the data for the wordcloud graph. 
@@ -172,7 +197,7 @@ export const reformatJSONWordcloud = (data, getThis) => {
         clusterTokenDict[cluster] = tokenCounts
     }
     // Ret from reformat json Word cloud
-    if (JSON.stringify(getThis.state.graphData) !== JSON.stringify(clusterTokenDict)) {
+    if (getThis && JSON.stringify(getThis.state.graphData) !== JSON.stringify(clusterTokenDict)) {
         getThis.setState({
             "graphData": clusterTokenDict
         })

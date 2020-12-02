@@ -18,6 +18,7 @@ class ClusterTab extends Component {
             graphData: null,
             ProcessingRunButtonDisabled: true,
             w2vBinFileFileName: [],
+            status: 'Idle'
         };
     }
 
@@ -43,7 +44,7 @@ class ClusterTab extends Component {
 
         let params = {
             'expansionCorpus': expansionCorpus,
-            'stopwords': this.props.stopwordsFile ? await shared.getFileContents(this.props.stopwordsFile) : null,
+            'stopwords': this.props.stopwordsFile.length > 0 ? await shared.getFileContents(this.props.stopwordsFile[0]) : null,
             // Sentence embedding parameters
             'windowSize': document.getElementById('windowSize').value === '' ? 6 : document.getElementById('windowSize').value,
             'wordVectorType': (this.state.vectorizationMethod == null) ? null : this.state.vectorizationMethod,
@@ -52,6 +53,7 @@ class ClusterTab extends Component {
             'w2vBinFile': document.getElementById('w2vBinFile')?.files[0] != null ? shared.getFileContents(document.getElementById('w2vBinFile').files[0]) : null,
             'dimensions': document.getElementById('dimensions').value === '' ? null : document.getElementById('dimensions').value,
             'include_sentiment': document.getElementById('include_sentiment').checked,
+            'custom_stopwords_only': document.getElementById('custom_stopwords_only').checked,
             // Sentence clustering parameters
             'clusteringMethod': (this.state.clusteringMethod == null) ? "hac" : this.state.clusteringMethod,
             'cluster_dist_metric': (this.state.cluster_dist_metric == null) ? null : this.state.cluster_dist_metric,
@@ -66,7 +68,7 @@ class ClusterTab extends Component {
         this.setState({ runningScript: true })
 
         var response = await this.cluster(formData, params)//JSON.stringify(params)
-
+        
         if (response == null) {
             return;
         }
@@ -88,23 +90,43 @@ class ClusterTab extends Component {
         });
         console.log('params', params);
 
-        const response = await Axios.post("http://localhost:5000/cluster", formData, {
+        let pending = true
+        const promise = Axios.post("http://localhost:5000/cluster", formData, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'multipart/form-data'
             }
-        }).then((response) => {
-            let data = response.data
+        }).then((promise) => {
+            let data = promise.data
             data["visualizationMethod"] = params["visualizationMethod"]
+
+            if(data.msg) alert(data.msg);
+            pending = false;
             return data
         }).catch((err) => {
-            this.setState({
-                runningScript: false
-            })
+            pending = false;
+            this.setState({runningScript: false})
             console.error(err.message)
             alert(err);
         })
 
+        // Ping clustering function status from another thread
+        while(pending) {
+            await new Promise(r => setTimeout(r, 100));
+            await Axios.get("http://localhost:5000/status/1", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+            }
+            }).then(res => {
+                this.setState({status: res.data})
+            }).catch((err) => {
+                console.error(err.message)
+            })
+        }
+        this.setState({status: 'Complete'})
+
+        let response = await promise
         return response == null ? null : response
     }
 
@@ -215,6 +237,12 @@ class ClusterTab extends Component {
                     <span className="tooltip" data-tooltip="Checking this box means that part of speech and sentiment will be used to weight the importance of tokens."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
+                <div className='spacing'>
+                    <Checkbox id='custom_stopwords_only' label="Custom stopwords only?" title="" />
+                    &nbsp;
+                    <span className="tooltip" data-tooltip="Checking this box means that only stopwords explicitly listed in the custom stopwords file will be removed during preprocessing."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                </div>
+
                 <Header as='h3'>Sentence Clustering Parameters</Header>
 
                 <div className='spacing'>
@@ -298,6 +326,7 @@ class ClusterTab extends Component {
                     <span className="tooltip" data-tooltip="Only relevant for UMAP clustering."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
+                <p>Run status = {this.state.status}</p>
                 <Button
                     color='black'
                     disabled={this.state.runningScript}
