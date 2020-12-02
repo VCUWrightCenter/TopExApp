@@ -54,13 +54,14 @@ def cluster(request: request):
             names.append(fileob.filename)
     df = pd.DataFrame(dict(doc_name=names, text=docs))
 
-    stopwords = params['stopwords'].split('\r\n') if str_valid(params['stopwords']) else None
+    stopwords = params['stopwords'].split('\n') if str_valid(params['stopwords']) else None
 
     window_size = cast_int(params['windowSize'])
     vectorization_method = params['wordVectorType'] if str_valid(params['wordVectorType']) else 'svd'
     dimensions = cast_int(params['dimensions'])
     tfidf_corpus = params['tfidfCorpus'] if str_valid(params['tfidfCorpus']) else 'both'
     include_sentiment = params['include_sentiment'] != 'false'
+    custom_stopwords_only = params['custom_stopwords_only'] != 'false'
 
     clustering_method = params['clusteringMethod']
     cluster_dist_metric = params['cluster_dist_metric'] if str_valid(params['cluster_dist_metric']) else 'euclidean'
@@ -81,7 +82,7 @@ def cluster(request: request):
         tfidf_corpus = 'clustering'
 
     # Cluster the sentences in a dataframe
-    data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_list=stopwords)
+    data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_list=stopwords, custom_stopwords_only=custom_stopwords_only)
     tfidf, dictionary = topex.create_tfidf(tfidf_corpus, doc_df, expansion_df=expansion_df)
 
     if dimensions is None or dimensions >= tfidf.shape[1]:

@@ -43,7 +43,7 @@ class ClusterTab extends Component {
 
         let params = {
             'expansionCorpus': expansionCorpus,
-            'stopwords': this.props.stopwordsFile ? await shared.getFileContents(this.props.stopwordsFile) : null,
+            'stopwords': this.props.stopwordsFile.length > 0 ? await shared.getFileContents(this.props.stopwordsFile[0]) : null,
             // Sentence embedding parameters
             'windowSize': document.getElementById('windowSize').value === '' ? 6 : document.getElementById('windowSize').value,
             'wordVectorType': (this.state.vectorizationMethod == null) ? null : this.state.vectorizationMethod,
@@ -52,6 +52,7 @@ class ClusterTab extends Component {
             'w2vBinFile': document.getElementById('w2vBinFile')?.files[0] != null ? shared.getFileContents(document.getElementById('w2vBinFile').files[0]) : null,
             'dimensions': document.getElementById('dimensions').value === '' ? null : document.getElementById('dimensions').value,
             'include_sentiment': document.getElementById('include_sentiment').checked,
+            'custom_stopwords_only': document.getElementById('custom_stopwords_only').checked,
             // Sentence clustering parameters
             'clusteringMethod': (this.state.clusteringMethod == null) ? "hac" : this.state.clusteringMethod,
             'cluster_dist_metric': (this.state.cluster_dist_metric == null) ? null : this.state.cluster_dist_metric,
@@ -216,6 +217,12 @@ class ClusterTab extends Component {
                     <Checkbox id='include_sentiment' label="Include sentiment?" title="" defaultChecked />
                     &nbsp;
                     <span className="tooltip" data-tooltip="Checking this box means that part of speech and sentiment will be used to weight the importance of tokens."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                </div>
+
+                <div className='spacing'>
+                    <Checkbox id='custom_stopwords_only' label="Custom stopwords only?" title="" />
+                    &nbsp;
+                    <span className="tooltip" data-tooltip="Checking this box means that only stopwords explicitly listed in the custom stopwords file will be removed during preprocessing."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <Header as='h3'>Sentence Clustering Parameters</Header>
