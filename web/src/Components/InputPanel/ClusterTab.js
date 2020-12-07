@@ -326,7 +326,19 @@ class ClusterTab extends Component {
                     <span className="tooltip" data-tooltip="Only relevant for UMAP clustering."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
-                <p>Run status = {this.state.status}</p>
+                {this.state.status !== "Idle" && this.state.status !== "Complete" &&
+                    <div id="status-popup-wrapper">
+                        <div class="status-popup">
+                            <div class="loader">
+                                <div class="spinner one"></div>
+                                <div class="spinner two"></div>
+                                <div class="spinner three"></div>
+                            </div>
+                            <p>{this.state.status}</p>
+                        </div>
+                    </div>
+                }
+
                 <Button
                     color='black'
                     disabled={this.state.runningScript}
