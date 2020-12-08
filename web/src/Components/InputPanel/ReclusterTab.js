@@ -21,6 +21,8 @@ class ReclusterTab extends Component {
 
     async submitRecluster(event) {
         event.preventDefault();
+
+        document.getElementById("drawer-toggle").checked = false;
         
         if (this.props.graphData.data.length > 0 && document.getElementById('reclusterThreshold').value < this.props.graphData.max_thresh) {
             // Recluster parameters

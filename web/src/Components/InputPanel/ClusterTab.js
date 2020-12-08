@@ -28,6 +28,8 @@ class ClusterTab extends Component {
 
         let formData = new FormData()
 
+        document.getElementById("drawer-toggle").checked = false;
+
         // Append corpusDocs to form data
         for (var i = 0; i < this.props.corpusDocs.length; i++) {
             // let doc = await getFileContents(this.props.corpusDocs[i])
