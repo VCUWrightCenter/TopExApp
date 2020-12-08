@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import './InputPanel.css';
 import { Button, Header } from 'semantic-ui-react';
-import { getFileContents, promptForFileName } from '../Shared'
-import * as util from '../MainPanel/graphUtil'
+import * as util from '../Shared'
 
 class ImportExportTab extends Component {
     constructor(props) {
@@ -18,7 +17,7 @@ class ImportExportTab extends Component {
         let input = document.getElementById("importFileInput")
         let file = input.files[0]
 
-        let fileContent = await getFileContents(file);
+        let fileContent = await util.getFileContents(file);
 
         if (fileContent != null && file.name.endsWith('.topex')) {
             try {
@@ -55,7 +54,7 @@ class ImportExportTab extends Component {
             alert('No data to export')
         }
         else {
-            let name = promptForFileName();
+            let name = util.promptForFileName();
             const element = document.createElement("a");
             const file = new Blob([JSON.stringify(this.props.graphData)], { type: 'text/plain' });
             element.href = URL.createObjectURL(file);
@@ -64,6 +63,60 @@ class ImportExportTab extends Component {
             element.click();
             name = null;
         }
+    }
+
+    
+    exportResults(data) {
+        // Name the export file
+        let filename = util.promptForFileName();
+
+        // Create .csv body from scatterplot data
+        let results = JSON.parse(data.data);
+        let body = "id|cluster|phrase|tokens|text|cluster_topics\n"
+        for (let i = 0; i < data.count; i++) {
+            body += `${results.id[i]}|${results.cluster[i]}|${results.phrase[i]}|${results.tokens[i]}|${results.text[i]}|${data.main_cluster_topics[results.cluster[i]]}\n`;
+        }
+        util.exportPipeDelimited(body, filename);
+    }
+
+    //This is what is called when you click on the 'export graph data' button under each graph.
+    //It essentially just exports a text file containing the data used to create the graph. 
+    exportScatterplotData (data) {
+        // Name the export file
+        let filename = util.promptForFileName();
+
+        // Create .csv body from scatterplot data
+        let scatterplotData = JSON.parse(data.viz_df);
+        let body = "x|y|cluster\n"
+        for (let i = 0; i < data.count; i++) {
+            body += `${scatterplotData.x[i]}|${scatterplotData.y[i]}|${scatterplotData.cluster[i]}\n`;
+        }
+        util.exportPipeDelimited(body, filename);
+    }
+
+    exportWordcloudData(data)  {
+        // Name the export file
+        let filename = util.promptForFileName();
+    
+        // Format data
+        let rawData = JSON.parse(data.data);
+        let sents = []
+        for (var i = 0; i < Object.keys(rawData.cluster).length; i++) {
+            sents.push({ 'cluster': rawData.cluster[i], 'phrase': rawData.phrase[i] });
+        }
+        let wordcloud = util.reformatJSONWordcloud(sents);
+        
+        let results = []
+        for (var i = 0; i < Object.keys(wordcloud).length; i++) {
+            results = results.concat(wordcloud[i]);
+        }
+    
+        // Create .csv body from scatterplot data
+        let body = "cluster|phrase|count\n"
+        for (var i = 0; i < results.length; i++) {
+            body += `${results[i].cluster}|${results[i].phrase}|${results[i].value}\n`;
+        }
+        util.exportPipeDelimited(body, filename);
     }
 
     render() {
@@ -107,19 +160,19 @@ class ImportExportTab extends Component {
                         <Button
                             color='black'
                             content="Export row-level results (.txt)"
-                            onClick={(e) => util.exportResults(this.props.graphData)}
+                            onClick={(e) => this.exportResults(this.props.graphData)}
                             className='action'
                         />
                         <Button
                             color='black'
                             content="Export scatterplot data (.txt)"
-                            onClick={(e) => util.exportScatterplotData(this.props.graphData)}
+                            onClick={(e) => this.exportScatterplotData(this.props.graphData)}
                             className='action'
                         />
                         <Button
                             color='black'
                             content="Export word cloud data (.txt)"
-                            onClick={(e) => util.exportWordcloudData(this.props.graphData)}
+                            onClick={(e) => this.exportWordcloudData(this.props.graphData)}
                             className='action'
                         />
                     </Button.Group>

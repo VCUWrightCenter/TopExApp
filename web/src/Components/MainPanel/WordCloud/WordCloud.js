@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from "d3";
 import './WordCloud.css'
-import * as util from '../graphUtil.js'
+import * as util from '../../Shared'
 import { Button, Dropdown } from 'semantic-ui-react'
 
 class WordCloud extends Component {
@@ -42,7 +42,6 @@ class WordCloud extends Component {
             dropDownOptions: arr
         })
     }
-
 
     //Reponsible for drawing the graph. This is the only place where D3 should live. 
     async drawChart(clusterNumber) {

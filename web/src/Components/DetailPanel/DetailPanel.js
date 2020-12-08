@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import Dialog from '../Dialog/Dialog';
 import './DetailPanel.css';
-import * as util from '../MainPanel/graphUtil.js';
+import * as util from '../Shared';
 
 class DetailPanel extends Component {
 

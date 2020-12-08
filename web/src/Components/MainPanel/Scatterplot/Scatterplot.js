@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from "d3";
 import './Scatterplot.css'
-import * as util from '../graphUtil.js'
+import * as util from '../../Shared'
 import { Button } from 'semantic-ui-react'
 
 class Scatterplot extends Component {
@@ -134,19 +134,13 @@ class Scatterplot extends Component {
             .attr("color", (d, i) => {
                 return util.getClusterColor(d, max)
             })
-            // .on('mouseover', function (d, i) {
-            //     d3.select(this)
-            //         .transition()
-            //         .duration(100)
-            //         .attr('fill', 'red');
-            // })
             .on('mouseout', function (d, i) {
                 d3.select(this)
                     .transition()
                     .duration(100)
                     .attr('fill', this.getAttribute("color"));
             })
-            .on('mouseover', (d, i) => {
+            .on('mouseover', (d) => {
                 util.sendPointData(JSON.stringify(d), this)
             })
         //source:
