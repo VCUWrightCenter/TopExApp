@@ -5,6 +5,7 @@ import './MainPanel.css'
 import Scatterplot from "./Scatterplot/Scatterplot.js"
 import WordCloud from "./WordCloud/WordCloud.js"
 import { Tab } from 'semantic-ui-react'
+import {createPointObject} from '../Shared'
 
 export default class MainPanel extends Component {
 
@@ -12,28 +13,38 @@ export default class MainPanel extends Component {
         super(props)
         this.state = {
             panes: null,
-            graphData: null,
+            apiResult: null,
             pointData: null
         }
     }
 
     pointDataCallback = (pointData) => {
         this.props.pointDataCallback(pointData)
-    }
-
-    
+    }    
 
     componentDidUpdate() {
-        let panes = [
-            { menuItem: 'Scatterplot',  pane: { key: 'pane1', content: <Scatterplot data={this.props.graphData} pointData={this.pointDataCallback}/> }, className:'fullWindow'},
-            { menuItem: 'Word Cloud', pane: { key: 'pane2', content: <WordCloud data={this.props.graphData} pointData={this.pointDataCallback}/>}, className:'fullWindow' },
-        ]
+        // TODO: Add some unique RUN_ID to the result object
+        if (this.props.apiResult !== this.state.apiResult) {
+            // let apiResult = JSON.parse(this.props.jsonApiResult);
+            let apiResult = this.props.apiResult;
+            let viz_df = JSON.parse(apiResult.viz_df);
+            let cluster_topics = apiResult.main_cluster_topics;
+            let dataPoints = [];
 
-        if (this.props.graphData !== this.state.graphData)
+            for (var i = 0; i < apiResult.count; i++) {
+                dataPoints.push(createPointObject(viz_df, cluster_topics, i));
+            }
+
+            let panes = [
+                { menuItem: 'Scatterplot',  pane: { key: 'pane1', content: <Scatterplot data={dataPoints} runtime={this.props.apiResult.runtime} pointData={this.pointDataCallback} visualizationMethod={apiResult["visualizationMethod"]}/> }, className:'fullWindow'},
+                { menuItem: 'Word Cloud', pane: { key: 'pane2', content: <WordCloud data={dataPoints} runtime={this.props.apiResult.runtime}/>}, className:'fullWindow' },
+            ]
+            
             this.setState({
                 panes: panes,
-                graphData: this.props.graphData
+                apiResult: this.props.apiResult
             })
+        }
 
         document.getElementById('graphTabs').hidden = false;
     }

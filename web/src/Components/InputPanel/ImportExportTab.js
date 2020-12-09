@@ -104,17 +104,17 @@ class ImportExportTab extends Component {
         for (var i = 0; i < Object.keys(rawData.cluster).length; i++) {
             sents.push({ 'cluster': rawData.cluster[i], 'phrase': rawData.phrase[i] });
         }
-        let wordcloud = util.reformatJSONWordcloud(sents);
+        let wordcloud = util.getWordClouds(sents);
         
         let results = []
-        for (var i = 0; i < Object.keys(wordcloud).length; i++) {
-            results = results.concat(wordcloud[i]);
+        for (var j = 0; j < Object.keys(wordcloud).length; j++) {
+            results = results.concat(wordcloud[j]);
         }
     
         // Create .csv body from scatterplot data
         let body = "cluster|phrase|count\n"
-        for (var i = 0; i < results.length; i++) {
-            body += `${results[i].cluster}|${results[i].phrase}|${results[i].value}\n`;
+        for (var k = 0; k < results.length; k++) {
+            body += `${results[k].cluster}|${results[k].phrase}|${results[k].value}\n`;
         }
         util.exportPipeDelimited(body, filename);
     }
@@ -148,7 +148,7 @@ class ImportExportTab extends Component {
                     </form>
                 </div>
                 <Header as='h3'>Export</Header>
-                <p>Import the output from a previous clustering or export clustering data.</p>
+                <p>Export results.</p>
                 <div className='file-input'>
                     <Button.Group vertical>
                         <Button
@@ -176,10 +176,6 @@ class ImportExportTab extends Component {
                             className='action'
                         />
                     </Button.Group>
-                    <form>
-                        <input id='importFileInput' type="file" hidden onChange={(e) => this.checkImportFile(e)} />
-                        <button id='importFileButton' type='submit' hidden onClick={(e) => this.importData(e)}>Import</button>
-                    </form>
                 </div>
             </div>)
     }

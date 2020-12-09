@@ -9,81 +9,65 @@ class WordCloud extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            graphType: 'wordcloud',
-            cluster_identifier: 0,
-            dataPoints: null,
-            pre_process_data: null,
-            dimensions: null,
             dropDownOptions: null,
-            graphData: null,
-            max: 0,
+            wordClouds: null,
+            runtime: null,
+            dimensions: null
         }
     }
 
-    //This is so we can update the garph based on either radio buttons or dropdowns etc...
-    componentDidUpdate() {
-        this.drawChart(this.state.cluster_identifier)
+    async componentDidUpdate() {
+        if (this.props.runtime !== this.state.runtime) {
+            this.setState({runtime: this.props.runtime});
+            await this.reload()
+        }
     }
 
-    // This is to get the graph to show upp in the tab
-    componentDidMount() {
+    async componentDidMount() {
+        this.setState({runtime: this.props.runtime});
+        await this.reload()
+    }
+
+    async reload() {
         if (this.props.data) {
-            this.drawChart(this.state.cluster_identifier);
-        }
-    }
+            // Generate word cloud data
+            let wordClouds = util.getWordClouds(this.props.data)
 
-    async setDropDownOptions() {
-
-        let arr = []
-        for (let i = 0; i <= this.state.max; i++) {
-            arr.push({ key: i, text: "Cluster " + i, value: i })
-        }
-        await this.setState({
-            dropDownOptions: arr
-        })
-    }
-
-    //Reponsible for drawing the graph. This is the only place where D3 should live. 
-    async drawChart(clusterNumber) {
-
-        let data = util.reformatJSON(this)
-
-        let clusterArray = util.reformatJSONWordcloud(data, this)
-
-        let clusterData = { "children": clusterArray[clusterNumber] }
-
-        let max = util.getMax(data)
-
-        if (this.state.max !== max) {
+            // Set drop down options
+            let max = util.getMax(this.props.data);
+            let options = Array.from({length: max}, (x,i) => {return { 'key':i, 'text':`Cluster ${i}`, 'value': i }})
             await this.setState({
-                max: max
-            })
-            this.setDropDownOptions()
-        }
+                dropDownOptions: options,
+                wordClouds: wordClouds
+            });
 
-        if (this.state.dropDownOptions == null) {
-            this.setDropDownOptions();
+            // Draw initial word cloud
+            this.drawChart(0);
         }
+    }
 
+    //Reponsible for drawing the Word Cloud
+    drawChart(cluster_id) {
+        let clusterData = { "children": this.state.wordClouds[cluster_id] }
 
         var margin = { top: 10, right: 30, bottom: 30, left: 60 }
-        let width = document.getElementById('mainWrapper').offsetWidth
+        let height, width = 0;
+        if (this.state.dimensions == null) {
+            width = document.getElementById('mainWrapper').offsetWidth
             - margin.left
             - margin.right
             - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingRight)
-            - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingLeft)
+            - parseInt(getComputedStyle(document.getElementsByClassName('ui segment')[0]).paddingLeft);
 
-        let height = document.getElementById('mainWrapper').offsetHeight -
-            250
+            height = document.getElementById('mainWrapper').offsetHeight - 250;
 
-        if (this.state.dimensions == null) {
-            await this.setState({
+            this.setState({
                 dimensions: { width, height }
             })
-        }
-
-        width = this.state.dimensions.width
-        height = this.state.dimensions.height
+        } else {
+            width = this.state.dimensions.width
+            height = this.state.dimensions.height
+        }        
 
         d3.select("#WordCloudSVG").remove();
         // append the svg object to the body of the page
@@ -97,11 +81,9 @@ class WordCloud extends Component {
             }))
             .append("g")
             .attr('class', 'bubble')
-        // .attr("transform", "translate(" + margin.left + "," + margin.top + ")"
 
-        var diameter = height;
         var bubble = d3.pack({ "children": clusterData })
-            .size([diameter, diameter])
+            .size([height, height])
             .padding(1.5);
 
         var nodes = d3.hierarchy(clusterData)
@@ -128,8 +110,8 @@ class WordCloud extends Component {
             .attr("r", function (d) {
                 return d.r;
             })
-            .style("fill", function (d, i) {
-                return util.getClusterColor(d.data, max);
+            .style("fill", function (d) {
+                return util.getClusterColor(d.data);
             });
 
         node.append("text")
@@ -164,13 +146,9 @@ class WordCloud extends Component {
                     selection
                     placeholder='Cluster Number'
                     options={this.state.dropDownOptions}
-                    onChange={(e, data) => {
-                        this.setDropDownOptions()
-                        this.setState({ cluster_identifier: data.value });
-                    }}
-                    defaultValue={this.state.dropDownOptions == null ? "" : this.state.dropDownOptions[0].value}
+                    onChange={(e, data) => this.drawChart(data.value)}
+                    defaultValue={this.state.dropDownOptions == null ? "" : this.state.dropDownOptions[0]?.value}
                     className='dropDown'
-
                 />
                 <div className='graph' id="WordCloudNode"></div>
                 <div id='exportButtons' className='exportButtons'>
@@ -180,7 +158,6 @@ class WordCloud extends Component {
                         className="ui black button"
                     />
                 </div>
-
             </div>
         )
     }
