@@ -69,15 +69,12 @@ class ClusterTab extends Component {
 
         this.setState({ runningScript: true })
 
-        var response = await this.cluster(formData, params)//JSON.stringify(params)
+        var response = await this.cluster(formData, params)
         
-        if (response == null) {
-            return;
-        }
-
         this.setState({ graphData: response })
 
         // Propogate graphData back up to parent
+        response['runtime'] = new Date().getTime();
         this.props.graphDataCallback(response)
 
         this.setState({ runningScript: false })
@@ -330,11 +327,11 @@ class ClusterTab extends Component {
 
                 {this.state.status !== "Idle" && this.state.status !== "Complete" &&
                     <div id="status-popup-wrapper">
-                        <div class="status-popup">
-                            <div class="loader">
-                                <div class="spinner one"></div>
-                                <div class="spinner two"></div>
-                                <div class="spinner three"></div>
+                        <div className="status-popup">
+                            <div className="loader">
+                                <div className="spinner one"></div>
+                                <div className="spinner two"></div>
+                                <div className="spinner three"></div>
                             </div>
                             <p>{this.state.status}</p>
                         </div>

@@ -39,7 +39,6 @@ class ReclusterTab extends Component {
             let formData = new FormData();
 
             Object.keys(params).forEach(function (key) {
-                // console.log(key, dict[key]);
                 formData.append(key, params[key]);
             });
 
@@ -84,6 +83,7 @@ class ReclusterTab extends Component {
 
             // Propogate graphData back up to parent
             let response = await promise
+            response['runtime'] = new Date().getTime();
             this.props.graphDataCallback(response)
 
             this.setState({ runningScript: false })
@@ -133,11 +133,11 @@ class ReclusterTab extends Component {
 
                     {this.state.status !== "Idle" && this.state.status !== "Complete" &&
                         <div id="status-popup-wrapper">
-                            <div class="status-popup">
-                                <div class="loader">
-                                    <div class="spinner one"></div>
-                                    <div class="spinner two"></div>
-                                    <div class="spinner three"></div>
+                            <div className="status-popup">
+                                <div className="loader">
+                                    <div className="spinner one"></div>
+                                    <div className="spinner two"></div>
+                                    <div className="spinner three"></div>
                                 </div>
                                 <p>{this.state.status}</p>
                             </div>

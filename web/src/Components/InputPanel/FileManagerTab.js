@@ -24,7 +24,6 @@ class FileManagerTab extends Component {
 
     //This method saves uploads into corpusDocs and shares with InputPanel
     uploadCorpusDocs(uploads) {
-        console.log(uploads);
         let files = this.mapFiles(uploads);
         this.setState({ corpusDocs: files });
         this.updateCorpusDocsProps(files);

@@ -14,9 +14,9 @@ class App extends Component {
     this.state = {}
   }
 
-  // Callback for passing graphData from child components back up to App
-  graphDataCallback = (graphData) => {
-    this.setState({graphData: graphData})
+  // Callback for passing jsonApiResult from child components back up to App
+  graphDataCallback = (apiResult) => {
+    this.setState({apiResult: apiResult})
   }
 
   //Used for passing data to right sidebar for display
@@ -29,7 +29,7 @@ class App extends Component {
       <div className='main-content'>
         <Header />
         <DetailPanel pointData={this.state.pointData} />
-        <MainPanel graphData={JSON.stringify(this.state.graphData)} pointDataCallback={this.pointDataCallback} />
+        <MainPanel apiResult={this.state.apiResult} pointDataCallback={this.pointDataCallback} />
         <InputPanel graphDataCallback={this.graphDataCallback} />
       </div>
     );
