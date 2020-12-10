@@ -340,7 +340,7 @@ class ClusterTab extends Component {
 
                 <Button
                     color='black'
-                    disabled={this.state.runningScript || this.props.corpusDocs.length==0}
+                    disabled={this.state.runningScript || this.props.corpusDocs.length===0}
                     loading={this.state.runningScript}
                     onClick={(e) => { document.getElementById('submitButton').click() }}
                     content='Run'
