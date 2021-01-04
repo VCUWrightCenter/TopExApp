@@ -6,6 +6,7 @@ import InputPanel from '../InputPanel/InputPanel'
 import DetailPanel from '../DetailPanel/DetailPanel'
 import Header from '../Header/Header'
 import MainPanel from '../MainPanel/MainPanel'
+import Dialog from '../Welcome/Dialog';
 
 class App extends Component {
 
@@ -27,6 +28,7 @@ class App extends Component {
   render() {
     return (
       <div className='main-content'>
+        <Dialog />
         <Header />
         <DetailPanel pointData={this.state.pointData} />
         <MainPanel apiResult={this.state.apiResult} pointDataCallback={this.pointDataCallback} />
