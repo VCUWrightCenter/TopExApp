@@ -42,7 +42,7 @@ class ClusterThread(threading.Thread):
         df = pd.DataFrame(dict(doc_name=names, text=docs))
 
         self.status = 'Parsing params'
-        stopwords = params['stopwords'].split('\n') if str_valid(params['stopwords']) else None
+        stopwords = [s.strip() for s in params['stopwords'].split('\n')] if str_valid(params['stopwords']) else None
         window_size = cast_int(params['windowSize'])
         vectorization_method = params['wordVectorType'] if str_valid(params['wordVectorType']) else 'svd'
         dimensions = cast_int(params['dimensions'])
