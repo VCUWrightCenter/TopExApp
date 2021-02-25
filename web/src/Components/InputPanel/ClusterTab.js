@@ -143,6 +143,13 @@ class ClusterTab extends Component {
                 [dataName]: data.value
             });
         }
+
+        // Displays a message if 'kmeans is selected as the Clustering Method
+        if (data.value === 'kmeans') {
+            document.getElementById('note').style.display = 'block';
+        } else {
+            document.getElementById('note').style.display = 'none';
+        }
     }
 
     render() {
@@ -256,6 +263,10 @@ class ClusterTab extends Component {
                     </Dropdown>
                     &nbsp;
                     <span className="tooltip" data-tooltip="Method used to cluster word vectors."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                </div>
+
+                <div id="note">
+                    <p><i aria-hidden="true" className="exclamation circle fitted icon"></i> Please note that the K-Means clustering algorithm only uses Euclidean distance.</p>
                 </div>
 
                 <div className='spacing'>

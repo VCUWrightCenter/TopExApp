@@ -103,6 +103,11 @@
     width: 210px;
 }
 
+#note {
+  padding: 6px;
+  border: 1px solid #d4d4d4;
+  display: none;
+}
 
 
 
