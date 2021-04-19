@@ -39,6 +39,7 @@ class ClusterThread(threading.Thread):
                 fileText = fileob.read().decode()
                 docs.append(fileText)
                 names.append(fileob.filename)
+        docs = [doc.replace('\n',' ').replace('\r',' ') for doc in docs]
         df = pd.DataFrame(dict(doc_name=names, text=docs))
 
         self.status = 'Parsing params'
