@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "aws-sdk": "^2.905.0",
     "axios": "^0.21.1",
     "cors-anywhere": "^0.4.3",
     "d3": "^5.16.0",

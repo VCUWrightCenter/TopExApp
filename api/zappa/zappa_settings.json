@@ -1,0 +1,11 @@
+{
+    "dev": {
+        "app_function": "app.app",
+        "aws_region": "us-east-1",
+        "profile_name": "topex",
+        "project_name": "zappa",
+        "runtime": "python3.6",
+        "s3_bucket": "zappa-topex",
+        "slim_handler": true
+    }
+}

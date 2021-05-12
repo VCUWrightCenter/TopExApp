@@ -6,6 +6,8 @@ import Scatterplot from "./Scatterplot/Scatterplot.js"
 import WordCloud from "./WordCloud/WordCloud.js"
 import { Tab } from 'semantic-ui-react'
 import {createPointObject} from '../Shared'
+import Auth from '@aws-amplify/auth';
+import Lambda from 'aws-sdk/clients/lambda';
 
 export default class MainPanel extends Component {
 
@@ -51,6 +53,17 @@ export default class MainPanel extends Component {
 
 
     render() {
+        Auth.currentCredentials()
+            .then(credentials => {
+                const lambda = new Lambda({
+                credentials: Auth.essentialCredentials(credentials)
+                });
+                res = lambda.invoke({FunctionName: 'topex'});
+                console.log('LAMBDA',res);
+                return res;
+            })
+
+
         return (
             <div className='main-wrapper' id='mainWrapper'>
                 <div id='graphTabs' className='main' hidden={true}>
