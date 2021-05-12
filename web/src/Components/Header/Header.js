@@ -10,7 +10,6 @@ class Header extends Component {
     render() {
         return (
             <div className='Header'>
-                
                 <img src={topExLogo} className='headerlogo' alt="TopEx Logo"/>
                 <img src={wrightCtrLogo} className='headerlogo' alt="VCU Wright Center logo"/>
             </div>

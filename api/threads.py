@@ -30,15 +30,11 @@ class ClusterThread(threading.Thread):
         self.status = 'Loading files'
         names = []
         docs = []
-        for file in files:
-            fileob = files[file]
-            print(f"File: {fileob}")
-            if fileob.content_type == 'application/json':
-                scriptArgs = json.loads(fileob.stream.read())
-            else:
-                fileText = fileob.read().decode()
-                docs.append(fileText)
-                names.append(fileob.filename)
+        for name in files:
+            text = files[name]
+            print(f"File: {name}")
+            docs.append(text)
+            names.append(name)
         docs = [doc.replace('\n',' ').replace('\r',' ') for doc in docs]
         df = pd.DataFrame(dict(doc_name=names, text=docs))
 
