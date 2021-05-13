@@ -3,14 +3,13 @@ version: '3'
 services:
   api:
     build: api
-    command: ["flask", "run", "--host=0.0.0.0"]
     volumes:
       - ./api:/backend
     environment:
       - FLASK_ENV=development
       - FLASK_APP=app.py
     ports:
-      - "5000:5000"
+      - "8080:8080"
 
   client:
     build: web
