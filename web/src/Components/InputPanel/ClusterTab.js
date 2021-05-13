@@ -90,7 +90,7 @@ class ClusterTab extends Component {
         console.log('params', params);
 
         let pending = true
-        const promise = Axios.post("http://localhost:8080/cluster", formData, {
+        const promise = Axios.post(`${process.env.REACT_APP_API}/cluster`, formData, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'multipart/form-data'
@@ -112,7 +112,7 @@ class ClusterTab extends Component {
         // Ping clustering function status from another thread
         while(pending) {
             await new Promise(r => setTimeout(r, 2000));
-            await Axios.get("http://localhost:8080/status/1", {
+            await Axios.get(`${process.env.REACT_APP_API}/status/1`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'multipart/form-data'

@@ -49,7 +49,7 @@ class ReclusterTab extends Component {
             formData.append('linkage_matrix', this.props.graphData.linkage_matrix);
 
             let pending = true
-            const promise = Axios.post("http://localhost:8080/recluster", formData, {
+            const promise = Axios.post(`${process.env.REACT_APP_API}/recluster`, formData, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'multipart/form-data'
@@ -68,7 +68,7 @@ class ReclusterTab extends Component {
             // Ping clustering function status from another thread
             while(pending) {
                 await new Promise(r => setTimeout(r, 100));
-                await Axios.get("http://localhost:8080/status/2", {
+                await Axios.get(`${process.env.REACT_APP_API}/status/2`, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'multipart/form-data'
