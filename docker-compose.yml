@@ -12,7 +12,9 @@ services:
       - "8080:8080"
 
   client:
-    build: web
+    build: 
+      context: web
+      dockerfile: Dockerfile.dev
     command: ["npm", "start"]
     tty: true
     volumes:
