@@ -30,7 +30,7 @@ export default function AlertDialog() {
         <DialogTitle id="alert-dialog-title">{"Getting Started"}</DialogTitle>
         <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Welcome to TopEx! Please click on the hamburger menu to start.
+              <p>Welcome to TopEx! Please click on the hamburger menu to start.</p>
             </DialogContentText>
         </DialogContent>
         <DialogActions>
