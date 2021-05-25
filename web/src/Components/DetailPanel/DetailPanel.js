@@ -1,7 +1,8 @@
 //This is where the data is diplayed when you click on a data point. 
 
 import React, { Component } from "react";
-import Dialog from '../Dialog/Dialog';
+import AcknowledgementsDialog from '../Dialog/AcknowledgementsDialog';
+import InformationDialog from '../Dialog/InformationDialog';
 import './DetailPanel.css';
 import * as util from '../Shared';
 
@@ -48,7 +49,8 @@ class DetailPanel extends Component {
         return (
             <div className='right-sidebar'>
                 {this.state.pointDisplay}
-                <Dialog />
+                <InformationDialog />
+                <AcknowledgementsDialog />
             </div>
         );
     }
