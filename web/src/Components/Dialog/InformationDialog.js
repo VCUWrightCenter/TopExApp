@@ -33,7 +33,7 @@ export default function AlertDialog() {
             <DialogContentText id="alert-dialog-description">
               <p>Supported Browsers: Chrome, Firefox, Edge.</p>
               
-              <h4>Hep Pages:</h4>
+              <h4>Help Pages:</h4>
               <ul>
                   <li><a href="https://github.com/VCUWrightCenter/TopExApp#readme" target="_blank">TopEx README Documentation</a></li>
                   <li><a href="https://github.com/VCUWrightCenter/TopExApp#update-instructions" target="_blank">Application Update Instructions</a></li>
