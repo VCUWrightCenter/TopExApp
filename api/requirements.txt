@@ -51,6 +51,6 @@ threadpoolctl==2.1.0
 topex==0.0.9
 tqdm==4.48.2
 umap-learn==0.4.6
-urllib3==1.25.10
+urllib3==1.26.5
 wasabi==0.8.0
 Werkzeug==1.0.1
