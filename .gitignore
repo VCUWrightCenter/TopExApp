@@ -29,3 +29,5 @@ env
 /web/yarn-debug.log*
 /web/yarn-error.log*
 **/__pycache__/*
+
+/api/.chalice

@@ -35,7 +35,7 @@ class WordCloud extends Component {
 
             // Set drop down options
             let max = util.getMax(this.props.data);
-            let options = Array.from({length: max}, (x,i) => {return { 'key':i, 'text':`Cluster ${i}`, 'value': i }})
+            let options = Array.from({length: max+1}, (x,i) => {return { 'key':i, 'text':`Cluster ${i}`, 'value': i }})
             await this.setState({
                 dropDownOptions: options,
                 wordClouds: wordClouds

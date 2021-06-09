@@ -1,9 +1,11 @@
 from flask import request, Flask, jsonify, make_response
+from flask_cors import CORS
 import sys
 from threads import ClusterThread, ReclusterThread
 
 threads = {}    
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/', methods=['GET'])
 def home():
@@ -20,8 +22,6 @@ def status(thread_id):
     except:
         response = make_response(jsonify("Unexpected error: ", sys.exc_info()[0]))        
 
-    # Add Access-Control-Allow-Origin header to allow cross-site request
-    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
     return response
 
 
@@ -38,9 +38,6 @@ def cluster():
         response = make_response(jsonify("Unexpected error: ", sys.exc_info()[0]))
     else:
         response = make_response(dict(threads[tid].result))
-
-    # Add Access-Control-Allow-Origin header to allow cross-site request
-    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
 
     # Set thread status to idle
     threads[tid].status = 'Idle'
@@ -59,9 +56,6 @@ def recluster():
         response = make_response(jsonify("Unexpected error: ", sys.exc_info()[0]))
     else:
         response = make_response(dict(threads[tid].result))
-
-    # Add Access-Control-Allow-Origin header to allow cross-site request
-    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
 
     # Set thread status to idle
     threads[tid].status = 'Idle'
