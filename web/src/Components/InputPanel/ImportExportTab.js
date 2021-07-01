@@ -178,7 +178,7 @@ class ImportExportTab extends Component {
                         />
                         <Button
                             color='black'
-                            content="Export CSV (.csv)"
+                            content="Export sentences (.csv)"
                             onClick={(e) => this.exportCSV(this.props.graphData)}
                             className='action'
                         />

@@ -30,19 +30,24 @@ class ClusterThread(threading.Thread):
         self.status = 'Loading files'
         names = []
         docs = []
+        df = None
         
-        for file in files:
-            fileob = files[file]
-            print(f"File: {fileob}")
-            if fileob.content_type == 'application/json':
-                scriptArgs = json.loads(fileob.stream.read())
-            elif fileob.content_type == 'application/vnd.ms-excel':
-                # Skip the header row and overwrite columns names
-                df = pd.read_csv(fileob,sep='|',names=['doc_name','text'],skiprows=1)
-            else:
-                fileText = fileob.read().decode()
-                docs.append(fileText)
-                names.append(fileob.filename)
+        if len(files)==0:
+            # Use demo data if user passes no files
+            df = pd.read_csv('demo.csv',sep='|')
+        else:
+            for file in files:
+                fileob = files[file]
+                print(f"File: {fileob}")
+                if fileob.content_type == 'application/json':
+                    scriptArgs = json.loads(fileob.stream.read())
+                elif fileob.content_type == 'application/vnd.ms-excel':
+                    # Skip the header row and overwrite columns names
+                    df = pd.read_csv(fileob,sep='|',names=['doc_name','text'],skiprows=1)
+                else:
+                    fileText = fileob.read().decode()
+                    docs.append(fileText)
+                    names.append(fileob.filename)
         
         # Skip if user directly loaded a .csv file
         if df is None:

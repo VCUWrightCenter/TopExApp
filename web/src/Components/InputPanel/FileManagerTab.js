@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import './InputPanel.css';
 import { Button, Header } from 'semantic-ui-react';
 
-
 class FileManagerTab extends Component {
     constructor(props) {
         super(props);
@@ -28,10 +27,7 @@ class FileManagerTab extends Component {
         this.setState({ corpusDocs: files });
         this.updateCorpusDocsProps(files);
     }
-    uploadCsv(e) {
-        e.preventDefault()
-        let input = document.getElementById("importCsvInput")
-        let file = input.files[0]
+    uploadCsv(file) {
         file.checked = true
         this.setState({ corpusDocs: [file] });
         this.updateCorpusDocsProps([file]);
@@ -136,7 +132,7 @@ class FileManagerTab extends Component {
 
                     <form encType="multipart/form-data" id="CorpusDocsForm" onSubmit={(e) => this.handleChange(e)}>
                         <input id='uploadCorpusDocsInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" hidden onChange={(e) => this.uploadCorpusDocs(e.target.files)} />
-                        <input id='importCsvInput' type="file" hidden onChange={(e) => this.uploadCsv(e)} />
+                        <input id='importCsvInput' type="file" hidden onChange={(e) => this.uploadCsv(document.getElementById("importCsvInput")?.files[0])} />
                         <input type="button" id="resetButton1" hidden onClick={(e) => this.clearForm(e)} />
                     </form>
                 </div>
