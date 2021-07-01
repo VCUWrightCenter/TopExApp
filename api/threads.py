@@ -30,17 +30,24 @@ class ClusterThread(threading.Thread):
         self.status = 'Loading files'
         names = []
         docs = []
+        
         for file in files:
             fileob = files[file]
             print(f"File: {fileob}")
             if fileob.content_type == 'application/json':
                 scriptArgs = json.loads(fileob.stream.read())
+            elif fileob.content_type == 'application/vnd.ms-excel':
+                # Skip the header row and overwrite columns names
+                df = pd.read_csv(fileob,sep='|',names=['doc_name','text'],skiprows=1)
             else:
                 fileText = fileob.read().decode()
                 docs.append(fileText)
                 names.append(fileob.filename)
-        docs = [doc.replace('\n',' ').replace('\r',' ') for doc in docs]
-        df = pd.DataFrame(dict(doc_name=names, text=docs))
+        
+        # Skip if user directly loaded a .csv file
+        if df is None:
+            docs = [doc.replace('\n',' ').replace('\r',' ') for doc in docs]
+            df = pd.DataFrame(dict(doc_name=names, text=docs))
 
         self.status = 'Parsing params'
         stopwords = [s.strip() for s in params['stopwords'].split('\n')] if str_valid(params['stopwords']) else None

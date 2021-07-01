@@ -28,6 +28,14 @@ class FileManagerTab extends Component {
         this.setState({ corpusDocs: files });
         this.updateCorpusDocsProps(files);
     }
+    uploadCsv(e) {
+        e.preventDefault()
+        let input = document.getElementById("importCsvInput")
+        let file = input.files[0]
+        file.checked = true
+        this.setState({ corpusDocs: [file] });
+        this.updateCorpusDocsProps([file]);
+    }
     toggleCorpusCheck(filename) {
         let doc = this.state.corpusDocs.find(d => d.name === filename);
         doc.checked = !doc.checked;
@@ -95,6 +103,16 @@ class FileManagerTab extends Component {
                         />
 
                         <Button
+                            color='yellow'
+                            loading={this.state.runningScript}
+                            onClick={() => { document.getElementById('importCsvInput').click(); }}
+                            icon="file"
+                            labelPosition="left"
+                            content='Upload .csv to cluster'
+                            className='buttonText'
+                        />
+
+                        <Button
                             color='black'
                             onClick={() => { document.getElementById('resetButton1').click(); }}
                             content='Reset'
@@ -118,7 +136,7 @@ class FileManagerTab extends Component {
 
                     <form encType="multipart/form-data" id="CorpusDocsForm" onSubmit={(e) => this.handleChange(e)}>
                         <input id='uploadCorpusDocsInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" hidden onChange={(e) => this.uploadCorpusDocs(e.target.files)} />
-
+                        <input id='importCsvInput' type="file" hidden onChange={(e) => this.uploadCsv(e)} />
                         <input type="button" id="resetButton1" hidden onClick={(e) => this.clearForm(e)} />
                     </form>
                 </div>
