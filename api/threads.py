@@ -2,6 +2,7 @@ import json
 import numpy as np
 import pandas as pd
 from response import Response
+from pymed import PubMed
 import threading
 import topex.core as topex
 
@@ -32,10 +33,13 @@ class ClusterThread(threading.Thread):
         docs = []
         df = None
         
-        if len(files)==0:
-            # Use demo data if user passes no files
-            df = pd.read_csv('demo.csv',sep='|')
-        else:
+        if len(files)==0 and len(params['query'])>0:
+            # Query PubMed
+            results = PubMed().query(params['query'], max_results=int(params['maxResults']))
+            data = [(p.pubmed_id,p.abstract) for p in results if len(p.abstract or "")>0]
+            df = pd.DataFrame(data, columns=["doc_name","text"])
+        elif len(files)>0:
+            # User loads input corpus
             for file in files:
                 fileob = files[file]
                 print(f"File: {fileob}")
@@ -48,6 +52,9 @@ class ClusterThread(threading.Thread):
                     fileText = fileob.read().decode()
                     docs.append(fileText)
                     names.append(fileob.filename)
+        else:
+            # Use demo data if user passes no files or query
+            df = pd.read_csv('demo.csv',sep='|')
         
         # Skip if user directly loaded a .csv file
         if df is None:

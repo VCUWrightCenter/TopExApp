@@ -25,6 +25,8 @@ class InputPanel extends Component {
             graphData: null,
             ProcessingRunButtonDisabled: true,
             w2vBinFileFileName: [],
+            maxResults: 50,
+            query: ''
         };
     }
 
@@ -44,6 +46,14 @@ class InputPanel extends Component {
         this.setState({ expansionDocs: files })
     }
 
+    // Callback for passing expansionDocs from FileManagerTab components back up to InputPanel
+    queryCallback = (maxResults,query) => {
+        this.setState({ 
+            maxResults: maxResults,
+            query: query
+        })
+    }
+
     // Callback for passing stopwords file from FileManagerTab components back up to InputPanel
     stopwordsFileCallback = (file) => {
         this.setState({ stopwordsFile: file })
@@ -55,9 +65,9 @@ class InputPanel extends Component {
 
     render() {
         let panes = [
-            { menuItem: 'File Manager', pane: { key: 'pane1', content: <FileManagerTab corpusDocsCallback={this.corpusDocsCallback} expansionDocsCallback={this.expansionDocsCallback} stopwordsFileCallback={this.stopwordsFileCallback} />, className: "pane" } },
-            { menuItem: 'Cluster', pane: { key: 'pane3', content: <ClusterTab corpusDocs={this.state.corpusDocs} expansionDocs={this.state.expansionDocs} stopwordsFile={this.state.stopwordsFile} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
-            { menuItem: 'Re-Cluster', pane: { key: 'pane0', content: <ReclusterTab graphData={this.state.graphData} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
+            { menuItem: 'File Manager', pane: { key: 'pane1', content: <FileManagerTab corpusDocsCallback={this.corpusDocsCallback} expansionDocsCallback={this.expansionDocsCallback} stopwordsFileCallback={this.stopwordsFileCallback} queryCallback={this.queryCallback} />, className: "pane" } },
+            { menuItem: 'Cluster', pane: { key: 'pane3', content: <ClusterTab maxResults={this.state.maxResults} query={this.state.query} corpusDocs={this.state.corpusDocs} expansionDocs={this.state.expansionDocs} stopwordsFile={this.state.stopwordsFile} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
+            { menuItem: 'Re-Cluster', pane: { key: 'pane0', content: <ReclusterTab graphData={this.state.graphData} query={this.state.query} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
             { menuItem: 'Import/Export', pane: { key: 'pane2', content: <ImportExportTab graphData={this.state.graphData} graphDataCallback={this.graphDataCallback} />, className: "pane" } }
         ]
 

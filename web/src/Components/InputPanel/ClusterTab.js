@@ -18,7 +18,9 @@ class ClusterTab extends Component {
             graphData: null,
             ProcessingRunButtonDisabled: true,
             w2vBinFileFileName: [],
-            status: 'Idle'
+            status: 'Idle',
+            maxResults: 50,
+            query: ''
         };
     }
 
@@ -26,8 +28,9 @@ class ClusterTab extends Component {
     async submitCluster(event) {
         event.preventDefault()
 
-        let formData = new FormData()
+        console.log(this.props) //DEBUGGING
 
+        let formData = new FormData()
         document.getElementById("drawer-toggle").checked = false;
 
         // Append corpusDocs to form data
@@ -45,6 +48,8 @@ class ClusterTab extends Component {
         }
 
         let params = {
+            'query': this.props.query,
+            'maxResults': this.props.maxResults,
             'expansionCorpus': expansionCorpus,
             'stopwords': this.props.stopwordsFile.length > 0 ? await shared.getFileContents(this.props.stopwordsFile[0]) : null,
             // Sentence embedding parameters
@@ -78,7 +83,6 @@ class ClusterTab extends Component {
         this.props.graphDataCallback(response)
 
         this.setState({ runningScript: false })
-
     }
 
     //Responsible for sending the POST request which runs the script
