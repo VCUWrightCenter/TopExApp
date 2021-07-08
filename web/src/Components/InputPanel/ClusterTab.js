@@ -115,7 +115,7 @@ class ClusterTab extends Component {
 
         // Ping clustering function status from another thread
         while(pending) {
-            await new Promise(r => setTimeout(r, 2000));
+            await new Promise(r => setTimeout(r, 3000));
             await Axios.get(`${process.env.REACT_APP_API}/status/1`, {
             headers: {
                 'Accept': 'application/json',
