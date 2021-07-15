@@ -65,6 +65,25 @@ class ImportExportTab extends Component {
         }
     }
 
+    // This is the function that exports ALL of the graph data that is generated from the last call to the API
+    exportCSV(data) {
+        if (this.props.graphData == null) {
+            alert('No data to export')
+        }
+        else {
+            // Name the export file
+            let filename = util.promptForFileName();
+
+            // Create .csv body from scatterplot data
+            let results = JSON.parse(data.data);
+            let body = "doc_name|text\n"
+            for (let i = 0; i < data.count; i++) {
+                body += `${results.id[i]}|${results.text[i]}\n`;
+            }
+            util.exportPipeDelimited(body, filename);
+        }
+    }
+
     
     exportResults(data) {
         // Name the export file
@@ -155,6 +174,12 @@ class ImportExportTab extends Component {
                             color='black'
                             content="Export clustering (.topex)"
                             onClick={(e) => this.exportData()}
+                            className='action'
+                        />
+                        <Button
+                            color='black'
+                            content="Export sentences (.csv)"
+                            onClick={(e) => this.exportCSV(this.props.graphData)}
                             className='action'
                         />
                         <Button

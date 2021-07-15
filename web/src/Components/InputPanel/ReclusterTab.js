@@ -67,7 +67,7 @@ class ReclusterTab extends Component {
 
             // Ping clustering function status from another thread
             while(pending) {
-                await new Promise(r => setTimeout(r, 100));
+                await new Promise(r => setTimeout(r, 2000));
                 await Axios.get(`${process.env.REACT_APP_API}/status/2`, {
                 headers: {
                     'Accept': 'application/json',

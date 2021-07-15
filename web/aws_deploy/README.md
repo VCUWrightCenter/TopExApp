@@ -10,5 +10,5 @@
     *~/> pip install awsebcli*
 9) Deploy to elastic beanstalk
     *~/> cd aws_deploy*
-    *~/> eb init*
-    *~/> eb deploy*
+    *~/aws_deploy> eb init*
+    *~/aws_deploy> eb deploy*

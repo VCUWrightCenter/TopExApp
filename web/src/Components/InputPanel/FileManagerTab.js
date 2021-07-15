@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import './InputPanel.css';
-import { Button, Header } from 'semantic-ui-react';
-
+import { Input, Button, Header } from 'semantic-ui-react';
 
 class FileManagerTab extends Component {
     constructor(props) {
@@ -10,6 +9,8 @@ class FileManagerTab extends Component {
             corpusDocs: [],
             expansionDocs: [],
             stopwordsFile: [],
+            query: '',
+            maxResults: 50,
             runningScript: false,
         };
     }
@@ -28,6 +29,11 @@ class FileManagerTab extends Component {
         this.setState({ corpusDocs: files });
         this.updateCorpusDocsProps(files);
     }
+    uploadCsv(file) {
+        file.checked = true
+        this.setState({ corpusDocs: [file] });
+        this.updateCorpusDocsProps([file]);
+    }
     toggleCorpusCheck(filename) {
         let doc = this.state.corpusDocs.find(d => d.name === filename);
         doc.checked = !doc.checked;
@@ -36,6 +42,16 @@ class FileManagerTab extends Component {
     updateCorpusDocsProps(files) {
         let filtered = files.filter(f => f.checked).map(f => { return f });
         this.props.corpusDocsCallback(filtered);
+    }
+    updateQuery() {
+        let m = document.getElementById("maxResults").value
+        let q = document.getElementById("query").value
+        this.setState({ 
+            maxResults: m,
+            query: q
+        });
+
+        this.props.queryCallback(m, q);
     }
 
     //This method saves uploads into expansionDocs and shares with InputPanel
@@ -79,6 +95,37 @@ class FileManagerTab extends Component {
     render() {
         return (
             <div className="InputPanelContainer acknowledgements">
+
+                <Header as='h3'>Search PubMed</Header>
+                <p>Search PubMed for abstracts related to keywords.</p>
+                <div className='InputPanelContainer scriptArgsTab'>
+                    <div className='spacing'>
+                        <label htmlFor="MaxResults">Max Results</label>
+                        <Input
+                            type='number'
+                            placeholder='Max Results'
+                            defaultValue='50'
+                            id='maxResults'
+                            min='0'
+                            onChange={()=>{this.updateQuery()}}
+                        />
+                        &nbsp;
+                        <span className="tooltip" data-tooltip="Max number of abstracts returned from PubMed search."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                    </div>
+                    <div className='spacing'>
+                        <label htmlFor="Query">Query</label>
+                        <Input
+                            type='text'
+                            placeholder='Query'
+                            defaultValue=''
+                            id='query'
+                            onChange={()=>{this.updateQuery()}}
+                        />
+                        &nbsp;
+                        <span className="tooltip" data-tooltip="Keywords for PubMed search."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                    </div>
+                </div>
+
                 <Header as='h3'>Documents to cluster</Header>
                 <p>Only .txt are accepted. Must provide a minimum of three documents.</p>
 
@@ -91,6 +138,16 @@ class FileManagerTab extends Component {
                             icon="file"
                             labelPosition="left"
                             content='Upload docs to cluster'
+                            className='buttonText'
+                        />
+
+                        <Button
+                            color='yellow'
+                            loading={this.state.runningScript}
+                            onClick={() => { document.getElementById('importCsvInput').click(); }}
+                            icon="file"
+                            labelPosition="left"
+                            content='Upload .csv to cluster'
                             className='buttonText'
                         />
 
@@ -118,7 +175,7 @@ class FileManagerTab extends Component {
 
                     <form encType="multipart/form-data" id="CorpusDocsForm" onSubmit={(e) => this.handleChange(e)}>
                         <input id='uploadCorpusDocsInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" hidden onChange={(e) => this.uploadCorpusDocs(e.target.files)} />
-
+                        <input id='importCsvInput' type="file" hidden onChange={(e) => this.uploadCsv(document.getElementById("importCsvInput")?.files[0])} />
                         <input type="button" id="resetButton1" hidden onClick={(e) => this.clearForm(e)} />
                     </form>
                 </div>
