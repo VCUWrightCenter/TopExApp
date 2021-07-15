@@ -52,9 +52,6 @@ class ClusterThread(threading.Thread):
                     fileText = fileob.read().decode()
                     docs.append(fileText)
                     names.append(fileob.filename)
-        else:
-            # Use demo data if user passes no files or query
-            df = pd.read_csv('demo.csv',sep='|')
         
         # Skip if user directly loaded a .csv file
         if df is None:
