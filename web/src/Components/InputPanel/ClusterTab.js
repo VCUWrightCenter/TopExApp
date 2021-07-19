@@ -353,14 +353,16 @@ class ClusterTab extends Component {
                     </div>
                 }
 
-                <Button
-                    color='black'
-                    disabled={this.state.runningScript}
-                    loading={this.state.runningScript}
-                    onClick={(e) => { document.getElementById('submitButton').click() }}
-                    content='Run'
-                    className='action'
-                />
+                <div className='spacing'>
+                    <Button
+                        color='black'
+                        disabled={this.state.runningScript}
+                        loading={this.state.runningScript}
+                        onClick={(e) => { document.getElementById('submitButton').click() }}
+                        content='Run'
+                        className='ui black button vspace'
+                    />
+                </div>
 
                 <form encType="multipart/form-data" onSubmit={(e) => this.submitCluster(e)}>
                     <button hidden id="submitButton" className="submitButton"> Run </button>
