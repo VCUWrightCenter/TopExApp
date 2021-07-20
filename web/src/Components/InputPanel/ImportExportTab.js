@@ -158,7 +158,7 @@ class ImportExportTab extends Component {
                             disabled={this.state.ImportButtonDisabled}
                             content="Import clustering (.topex)"
                             onClick={(e) => this.importData(e)}
-                            className='action'
+                            className='vspace'
                         />
                     </Button.Group>
                     <form>
@@ -174,31 +174,30 @@ class ImportExportTab extends Component {
                             color='black'
                             content="Export clustering (.topex)"
                             onClick={(e) => this.exportData()}
-                            className='action'
                         />
                         <Button
                             color='black'
                             content="Export sentences (.csv)"
                             onClick={(e) => this.exportCSV(this.props.graphData)}
-                            className='action'
+                            className='vspace'
                         />
                         <Button
                             color='black'
                             content="Export row-level results (.txt)"
                             onClick={(e) => this.exportResults(this.props.graphData)}
-                            className='action'
+                            className='vspace'
                         />
                         <Button
                             color='black'
                             content="Export scatterplot data (.txt)"
                             onClick={(e) => this.exportScatterplotData(this.props.graphData)}
-                            className='action'
+                            className='vspace'
                         />
                         <Button
                             color='black'
                             content="Export word cloud data (.txt)"
                             onClick={(e) => this.exportWordcloudData(this.props.graphData)}
-                            className='action'
+                            className='vspace'
                         />
                     </Button.Group>
                 </div>

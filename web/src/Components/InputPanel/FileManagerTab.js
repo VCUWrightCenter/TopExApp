@@ -94,7 +94,7 @@ class FileManagerTab extends Component {
 
     render() {
         return (
-            <div className="InputPanelContainer acknowledgements">
+            <div className="InputPanelContainer">
 
                 <Header as='h3'>Search PubMed</Header>
                 <p>Search PubMed for abstracts related to keywords.</p>
@@ -138,7 +138,7 @@ class FileManagerTab extends Component {
                             icon="file"
                             labelPosition="left"
                             content='Upload docs to cluster'
-                            className='buttonText'
+                            className='vspace buttonText'
                         />
 
                         <Button
@@ -148,14 +148,14 @@ class FileManagerTab extends Component {
                             icon="file"
                             labelPosition="left"
                             content='Upload .csv to cluster'
-                            className='buttonText'
+                            className='vspace buttonText'
                         />
 
                         <Button
                             color='black'
                             onClick={() => { document.getElementById('resetButton1').click(); }}
                             content='Reset'
-                            className='action'
+                            className='vspace'
                         />
 
                         <div id="fileList" className='fileList'>
@@ -199,7 +199,7 @@ class FileManagerTab extends Component {
                             color='black'
                             onClick={() => { document.getElementById('resetButton2').click(); }}
                             content='Reset'
-                            className='action'
+                            className='vspace'
                         />
 
                         <div id="expanionFileList" className='fileList'>
@@ -243,7 +243,7 @@ class FileManagerTab extends Component {
                             color='black'
                             onClick={() => { document.getElementById('stopwordsResetBtn').click(); }}
                             content='Reset'
-                            className='action'
+                            className='vspace'
                         />
 
                         <div id="stopwordsFileList" className='fileList'>

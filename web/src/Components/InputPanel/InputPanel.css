@@ -19,6 +19,10 @@
     justify-content: space-between;
 }
 
+.tab label {
+  display: block;
+}
+
 .header3{
     margin-top:10px !important
 }
@@ -76,13 +80,13 @@
     border-radius: 8px !important;
 }
 
-.action {
+.vspace {
     margin-top: 20px !important;
 }
 
 .InputPanelContainer {
     margin: 0 auto;
-    width: 260px;
+    width: 450px;
 }
 
 .acknowledgements {
