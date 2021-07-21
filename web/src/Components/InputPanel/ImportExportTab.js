@@ -73,12 +73,12 @@ class ImportExportTab extends Component {
         else {
             // Name the export file
             let filename = util.promptForFileName();
-            console.log('RESULTS',data.data)
+            
             // Create .csv body from scatterplot data
             let results = JSON.parse(data.data);
             let body = "id|text|doc_name\n"
             for (let i = 0; i < data.count; i++) {
-                body += `${results.id[i]}|${results.text[i]}|${results.doc_name[i]}\n`;
+                body += `${results.id[i]}|${results.text[i].replace(/(\r\n|\n|\r)/gm, "")}|${results.doc_name[i]}\n`;
             }
             util.exportPipeDelimited(body, filename);
         }

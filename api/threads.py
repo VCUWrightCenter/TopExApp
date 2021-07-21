@@ -1,3 +1,4 @@
+import csv
 import json
 import numpy as np
 import pandas as pd
@@ -47,7 +48,7 @@ class ClusterThread(threading.Thread):
                     scriptArgs = json.loads(fileob.stream.read())
                 elif fileob.content_type == 'application/vnd.ms-excel':
                     # Skip the header row and overwrite columns names
-                    df = pd.read_csv(fileob,sep='|',names=['doc_name','text'],skiprows=1)
+                    df = pd.read_csv(fileob,sep='|',names=['doc_name','text'],skiprows=1,usecols=[0,1],quoting=csv.QUOTE_NONE)
                 else:
                     fileText = fileob.read().decode()
                     docs.append(fileText)
