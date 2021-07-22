@@ -94,7 +94,7 @@ class ClusterTab extends Component {
         console.log('params', params);
 
         let pending = true
-        const promise = Axios.post(`${process.env.REACT_APP_API}/cluster`, formData, {
+        const promise = Axios.post(`${process.env.REACT_APP_API}/cluster`, formData, {timeout: 60 * 3 * 1000}, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'multipart/form-data'
