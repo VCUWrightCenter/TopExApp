@@ -62,7 +62,7 @@ class ClusterTab extends Component {
             'include_sentiment': document.getElementById('include_sentiment').checked,
             'custom_stopwords_only': document.getElementById('custom_stopwords_only').checked,
             // Sentence clustering parameters
-            'clusteringMethod': (this.state.clusteringMethod == null) ? "hac" : this.state.clusteringMethod,
+            'clusteringMethod': (this.state.clusteringMethod == null) ? "kmeans" : this.state.clusteringMethod,
             'cluster_dist_metric': (this.state.cluster_dist_metric == null) ? null : this.state.cluster_dist_metric,
             'threshold': document.getElementById('threshold').value === '' ? null : document.getElementById('threshold').value,
             // Visualization parameters
