@@ -9,10 +9,17 @@ class LoadDataTab extends Component {
             corpusDocs: [],
             expansionDocs: [],
             stopwordsFile: [],
+            inputType: null,
             query: '',
             maxResults: 50,
             runningScript: false,
         };
+    }
+
+    // Propogate corpusDocs list up to parent component
+    updateCorpusDocsProps(files) {
+        let filtered = files.filter(f => f.checked).map(f => { return f });
+        this.props.corpusDocsCallback(filtered);
     }
 
     // Gets file names from uploads and filters
@@ -23,34 +30,34 @@ class LoadDataTab extends Component {
         return files;
     }
 
-    //This method saves uploads into corpusDocs and shares with InputPanel
-    uploadCorpusDocs(uploads) {
+    // Upload input document(s) from user input
+    uploadInput(uploads, inputType) {
+        console.log('uploads', uploads)
+
         let files = this.mapFiles(uploads);
-        this.setState({ corpusDocs: files });
+        this.setState({
+            corpusDocs: files,
+            inputType: inputType
+        });
         this.updateCorpusDocsProps(files);
     }
-    uploadCsv(file) {
-        file.checked = true
-        this.setState({ corpusDocs: [file] });
-        this.updateCorpusDocsProps([file]);
-    }
+
+    // Toggle whether an uploaded file is included in the input corpus
     toggleCorpusCheck(filename) {
         let doc = this.state.corpusDocs.find(d => d.name === filename);
         doc.checked = !doc.checked;
         this.updateCorpusDocsProps(this.state.corpusDocs);
     }
-    updateCorpusDocsProps(files) {
-        let filtered = files.filter(f => f.checked).map(f => { return f });
-        this.props.corpusDocsCallback(filtered);
-    }
+
+    // Propogate PubMed query text to parent state
     updateQuery() {
         let m = document.getElementById("maxResults").value
         let q = document.getElementById("query").value
-        this.setState({ 
+        this.setState({
             maxResults: m,
-            query: q
+            query: q,
+            inputType: 'pubmed'
         });
-
         this.props.queryCallback(m, q);
     }
 
@@ -70,26 +77,27 @@ class LoadDataTab extends Component {
         this.props.expansionDocsCallback(filtered);
     }
 
-    clearForm(id) {
-        let files = [];
-        var idVal = id.target.getAttribute('id');
+    // Resets all inputs for clustering corpus
+    resetClusteringCorpus(wipeQuery = true) {
+        console.log('resetClusteringCorpus')
+        document.getElementById('multiDocInput').value = ''
+        document.getElementById('singleDocInput').value = ''
+        this.setState({
+            corpusDocs: [],
+            inputType: null
+        });
+        this.updateCorpusDocsProps([]);
 
-        if (idVal === 'resetButton1') {
-            document.getElementById('CorpusDocsForm').reset();
-            this.uploadCorpusDocs(files);
-        } else if (idVal === 'resetButton2') {
-            document.getElementById('CorpusDocsForm').reset();
-            this.uploadExpansionDocs(files);
-        } else if (idVal === 'resetButton3') {
-            document.getElementById('MedlineFileForm').reset();
-            this.uploadExpansionDocs(files);
-        } else if (idVal === 'resetButton4') {
-            document.getElementById('ExpansionDocsForm').reset();
-            this.uploadExpansionDocs(files);
-        } else if (idVal === 'stopwordsResetBtn') {
-            document.getElementById('StopWordsForm').reset();
-            this.uploadStopwords(files);
+        if (wipeQuery) {
+            document.getElementById("query").value = ''
+            this.props.queryCallback(0, '');
         }
+    }
+
+    // Resets all inputs for expansion corpus
+    resetExpansionCorpus() {
+        document.getElementById('uploadExpansionDocsInput').value = ''
+        this.uploadExpansionDocs([]);
     }
 
     render() {
@@ -98,104 +106,120 @@ class LoadDataTab extends Component {
 
                 <Header as='h3'>Clustering Corpus (Required)</Header>
                 <p>Choose the set of texts you want to analyze with TopEx. You must <strong><em>choose only one</em></strong> of the 4 options below. If you choose to run a PubMed search from within TopEx then your query will be run after pressing the Run button.</p>
+                <Button
+                    color='black'
+                    onClick={() => this.resetClusteringCorpus()}
+                    content='Reset Input Corpus'
+                    className='vspace'
+                />
+                <br />
 
                 <div className='file-input spacing file-manager'>
                     <Header as='h4'>1. From Text Files</Header>
                     <Button
                         color='yellow'
                         loading={this.state.runningScript}
-                        onClick={() => { document.getElementById('uploadCorpusDocsInput').click(); }}
+                        onClick={() => {
+                            this.resetClusteringCorpus()
+                            document.getElementById('multiDocInput').click();
+                        }}
                         icon="file"
                         labelPosition="left"
                         content='Upload docs to cluster'
                         className='vspace buttonText'
                     />
                     <br />
-                    <Button
-                        color='black'
-                        onClick={() => { document.getElementById('resetButton1').click(); }}
-                        content='Reset'
-                        className='vspace'
-                    />
-
-                    <div id="fileList" className='fileList'>
-                        <div>
-                            {this.state.corpusDocs.map((file) => {
-                                return (
-                                    <div className='fileListEntry' key={file.name}>
-                                        <label htmlFor={file.name} className='file-list-label' >{file.name}</label> &nbsp;
-                                        <input id={file.name} type='checkBox' className='file-list-checkbox' defaultChecked
-                                            onChange={(e) => this.toggleCorpusCheck(file.name)} />
-                                    </div>
-                                )
-                            })
-                            }
+                    {
+                        this.state.inputType == 'multi' &&
+                        <div id="fileList" className='fileList'>
+                            <div>
+                                {this.state.corpusDocs.map((file) => {
+                                    return (
+                                        <div className='fileListEntry' key={file.name}>
+                                            <label htmlFor={file.name} className='file-list-label' >{file.name}</label> &nbsp;
+                                            <input id={file.name} type='checkBox' className='file-list-checkbox' defaultChecked
+                                                onChange={(e) => this.toggleCorpusCheck(file.name)} />
+                                        </div>
+                                    )
+                                })
+                                }
+                            </div>
                         </div>
-                    </div>
+                    }
 
                     <form encType="multipart/form-data" id="CorpusDocsForm" onSubmit={(e) => this.handleChange(e)}>
-                        <input id='uploadCorpusDocsInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" hidden onChange={(e) => this.uploadCorpusDocs(e.target.files)} />
-                        <input id='importCsvInput' type="file" hidden onChange={(e) => this.uploadCsv(document.getElementById("importCsvInput")?.files[0])} />
-                        <input type="button" id="resetButton1" hidden onClick={(e) => this.clearForm(e)} />
+                        <input id='multiDocInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" hidden onChange={(e) => this.uploadInput(e.target.files, 'multi')} />
                     </form>
 
                     <Header as='h4'>2. From CSV File</Header>
                     <Button
                         color='yellow'
                         loading={this.state.runningScript}
-                        onClick={() => { document.getElementById('importCsvInput').click(); }}
+                        onClick={() => {
+                            this.resetClusteringCorpus()
+                            this.setState({ inputType: 'csv' });
+                            document.getElementById('singleDocInput').click();
+                        }}
                         icon="file"
                         labelPosition="left"
                         content='Upload .csv to cluster'
                         className='vspace buttonText'
                     />
-                    <br />
-                    <Button
-                        color='black'
-                        onClick={() => { document.getElementById('resetButton1').click(); }}
-                        content='Reset'
-                        className='vspace'
-                    />
 
-                    <div id="fileList" className='fileList'>
-                        <div>
-                            {this.state.corpusDocs.map((file) => {
-                                return (
-                                    <div className='fileListEntry' key={file.name}>
-                                        <label htmlFor={file.name} className='file-list-label' >{file.name}</label> &nbsp;
-                                        <input id={file.name} type='checkBox' className='file-list-checkbox' defaultChecked
-                                            onChange={(e) => this.toggleCorpusCheck(file.name)} />
-                                    </div>
-                                )
-                            })
-                            }
+                    {
+                        this.state.inputType == 'csv' &&
+                        <div id="csvFileList" className='fileList'>
+                            <div>
+                                {this.state.corpusDocs.map((file) => {
+                                    return (
+                                        <div className='fileListEntry' key={file.name}>
+                                            <label htmlFor={file.name} className='file-list-label' >{file.name}</label> &nbsp;
+                                            <input id={file.name} type='checkBox' disabled className='file-list-checkbox' defaultChecked
+                                                onChange={(e) => this.toggleCorpusCheck(file.name)} />
+                                        </div>
+                                    )
+                                })
+                                }
+                            </div>
                         </div>
-                    </div>
-
-                    <form encType="multipart/form-data" id="CorpusDocsForm" onSubmit={(e) => this.handleChange(e)}>
-                        <input id='uploadCorpusDocsInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" hidden onChange={(e) => this.uploadCorpusDocs(e.target.files)} />
-                        <input id='importCsvInput' type="file" hidden onChange={(e) => this.uploadCsv(document.getElementById("importCsvInput")?.files[0])} />
-                        <input type="button" id="resetButton1" hidden onClick={(e) => this.clearForm(e)} />
-                    </form>
+                    }
 
                     <Header as="h4">3. From MEDLINE Formatted File</Header>
-                    {/* Evan, lines 155-170 will need to be hooked up to incorporate the new MEDLINE upload feature */}
                     <Button
                         color='yellow'
                         loading={this.state.runningScript}
-                        onClick={() => { document.getElementById('importCsvInput').click(); }}
+                        onClick={() => {
+                            this.resetClusteringCorpus()
+                            this.setState({ inputType: 'medline' });
+                            document.getElementById('singleDocInput').click();
+                        }}
                         icon="file"
                         labelPosition="left"
                         content='Upload MEDLINE file to cluster'
                         className='vspace buttonText'
                     />
-                    <br />
-                    <Button
-                        color='black'
-                        onClick={() => { document.getElementById('resetButton3').click(); }}
-                        content='Reset'
-                        className='vspace'
-                    />
+
+                    {
+                        this.state.inputType == 'medline' &&
+                        <div id="medlineFileList" className='fileList'>
+                            <div>
+                                {this.state.corpusDocs.map((file) => {
+                                    return (
+                                        <div className='fileListEntry' key={file.name}>
+                                            <label htmlFor={file.name} className='file-list-label' >{file.name}</label> &nbsp;
+                                            <input id={file.name} type='checkBox' disabled className='file-list-checkbox' defaultChecked
+                                                onChange={(e) => this.toggleCorpusCheck(file.name)} />
+                                        </div>
+                                    )
+                                })
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <form encType="multipart/form-data" id="CorpusDocForm" onSubmit={(e) => this.handleChange(e)}>
+                        <input id='singleDocInput' type="file" hidden onChange={(e) => this.uploadInput(e.target.files, this.state.inputType)} />
+                    </form>
 
                     <Header as='h4'>4. From PubMed Search</Header>
                     <p>Search PubMed for abstracts related to keywords.</p>
@@ -208,7 +232,7 @@ class LoadDataTab extends Component {
                                 defaultValue='100'
                                 id='maxResults'
                                 min='0'
-                                onChange={()=>{this.updateQuery()}}
+                                onChange={() => { this.updateQuery() }}
                             />
                             &nbsp;
                             <span className="tooltip" data-tooltip="Max number of abstracts returned from PubMed search."><i aria-hidden="true" className="question circle fitted icon"></i></span>
@@ -220,7 +244,10 @@ class LoadDataTab extends Component {
                                 placeholder='Query'
                                 defaultValue=''
                                 id='query'
-                                onChange={()=>{this.updateQuery()}}
+                                onChange={() => {
+                                    this.resetClusteringCorpus(false)
+                                    this.updateQuery()
+                                }}
                             />
                             &nbsp;
                             <span className="tooltip" data-tooltip="Keywords for PubMed search."><i aria-hidden="true" className="question circle fitted icon"></i></span>
@@ -244,7 +271,7 @@ class LoadDataTab extends Component {
                     <br />
                     <Button
                         color='black'
-                        onClick={() => { document.getElementById('resetButton4').click(); }}
+                        onClick={() => { this.resetExpansionCorpus() }}
                         content='Reset'
                         className='vspace'
                     />
@@ -265,8 +292,6 @@ class LoadDataTab extends Component {
 
                     <form encType="multipart/form-data" id="ExpansionDocsForm" onSubmit={(e) => this.handleChange(e)}>
                         <input hidden id='uploadExpansionDocsInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" onChange={(e) => this.uploadExpansionDocs(e.target.files)} />
-
-                        <input type="button" id="resetButton2" hidden onClick={(e) => this.clearForm(e)} />
                     </form>
                 </div>
             </div>
