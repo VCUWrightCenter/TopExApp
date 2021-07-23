@@ -2,6 +2,7 @@ import csv
 import json
 import numpy as np
 import pandas as pd
+import re
 from response import Response
 from pymed import PubMed
 import threading
@@ -14,6 +15,23 @@ def cast_int(param: str):
 def str_valid(param: str):
     "Casts valid str parameter"
     return param if param != 'null' or param == '' else None
+
+def read_medline(text):
+    "Extracts a formatted dataframe of abstracts from a MEDLINE formatted file"
+    abstracts = []
+    for pub in text.split('PMID- ')[1:]:
+        pmcid = re.search('\d+',pub).group(0)
+        abstract_split = pub.split('AB  - ')
+        if len(abstract_split) == 2:
+            abstract = re.split('[A-Z ]{4}- ',abstract_split[1])[0]
+            abstracts.append((pmcid,abstract))
+    return pd.DataFrame(abstracts, columns=['doc_name','text'])
+
+def query_pubmed(query, max_results):
+    "Queries PubMed for abstracts containing query keywords"
+    results = PubMed().query(query, max_results=max_results)
+    data = [(p.pubmed_id,p.abstract) for p in results if len(p.abstract or "")>0 and p.pubmed_id.isnumeric()]
+    return pd.DataFrame(data, columns=["doc_name","text"])
 
 class ClusterThread(threading.Thread):
     def __init__(self, params, files):
@@ -33,31 +51,27 @@ class ClusterThread(threading.Thread):
         names = []
         docs = []
         df = None
-        
-        if len(files)==0 and len(params['query'])>0:
-            # Query PubMed
-            results = PubMed().query(params['query'], max_results=int(params['maxResults']))
-            data = [(p.pubmed_id,p.abstract) for p in results if len(p.abstract or "")>0]
-            df = pd.DataFrame(data, columns=["doc_name","text"])
-        elif len(files)>0:
-            # User loads input corpus
+        inputType = params['inputType']
+
+        if inputType == 'multi':
+            # Load each file input by user
             for file in files:
                 fileob = files[file]
                 print(f"File: {fileob}")
-                if fileob.content_type == 'application/json':
-                    scriptArgs = json.loads(fileob.stream.read())
-                elif fileob.content_type == 'application/vnd.ms-excel':
-                    # Skip the header row and overwrite columns names
-                    df = pd.read_csv(fileob,sep='|',names=['doc_name','text'],skiprows=1,usecols=[0,1],quoting=csv.QUOTE_NONE)
-                else:
-                    fileText = fileob.read().decode()
-                    docs.append(fileText)
-                    names.append(fileob.filename)
-        
-        # Skip if user directly loaded a .csv file
-        if df is None:
+                fileText = fileob.read().decode()
+                docs.append(fileText)
+                names.append(fileob.filename)
             docs = [doc.replace('\n',' ').replace('\r',' ') for doc in docs]
             df = pd.DataFrame(dict(doc_name=names, text=docs))
+        elif inputType == 'csv':
+            df = pd.read_csv(list(files.values())[0],sep='|',names=['doc_name','text'],skiprows=1,usecols=[0,1],quoting=csv.QUOTE_NONE)
+        elif inputType == 'medline':
+            medline = list(files.values())[0].read().decode()
+            df = read_medline(medline)
+        elif inputType == 'pubmed':
+            df = query_pubmed(params['query'],int(params['maxResults']))
+        else:
+            raise ValueError(f'Invalid inputType: {inputType}')
 
         self.status = 'Parsing params'
         stopwords = [s.strip() for s in params['stopwords'].split('\n')] if str_valid(params['stopwords']) else None
