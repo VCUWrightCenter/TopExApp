@@ -1,3 +1,4 @@
+import csv
 import json
 import numpy as np
 import pandas as pd
@@ -47,7 +48,7 @@ class ClusterThread(threading.Thread):
                     scriptArgs = json.loads(fileob.stream.read())
                 elif fileob.content_type == 'application/vnd.ms-excel':
                     # Skip the header row and overwrite columns names
-                    df = pd.read_csv(fileob,sep='|',names=['doc_name','text'],skiprows=1)
+                    df = pd.read_csv(fileob,sep='|',names=['doc_name','text'],skiprows=1,usecols=[0,1],quoting=csv.QUOTE_NONE)
                 else:
                     fileText = fileob.read().decode()
                     docs.append(fileText)
@@ -112,9 +113,14 @@ class ClusterThread(threading.Thread):
         viz_df['valid'] = True
         data['valid'] = True # Show all points on the first run
         cluster_df = topex.get_cluster_topics(data, doc_df)
-
         res.viz_df = viz_df.to_json()
-        res.data = data[['id','text','tokens','phrase','vec','cluster', 'valid']].to_json() #only return the needed subset of data columns
+
+        # Append doc names
+        doc_names = doc_df[['id','doc_name']]
+        doc_names.columns = ['doc_id','doc_name']
+        data = data.merge(doc_names,on='doc_id')
+
+        res.data = data[['id','text','tokens','phrase','vec','cluster', 'valid','doc_name']].to_json() #only return the needed subset of data columns
         res.linkage_matrix = [list(row) for row in list(linkage_matrix)] if linkage_matrix is not None else []
         res.main_cluster_topics = list(cluster_df.topics)
         res.count = len(data)

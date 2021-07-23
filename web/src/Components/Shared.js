@@ -81,7 +81,7 @@ export function getDistanceMetric(dropdownid) {
 }
 
 export function getVectorizationMethod(dropdownid) { 
-    const options = ['svd', 'tfidf','umap','pretrained','local'];
+    const options = ['svd', 'tfidf','umap'];
     return getDropdownList(options, dropdownid); 
 }
 

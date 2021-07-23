@@ -17,7 +17,7 @@ def status(thread_id):
     global threads
 
     try:
-        status = threads[thread_id].status if thread_id in threads else 'Initializing...'
+        status = threads[thread_id].status if thread_id in threads else 'Initializing'
         response = make_response(status)
     except:
         response = make_response(jsonify("Unexpected error: ", sys.exc_info()[0]))        
@@ -40,7 +40,7 @@ def cluster():
         response = make_response(dict(threads[tid].result))
 
     # Set thread status to idle
-    threads[tid].status = 'Idle'
+    threads[tid].status = 'Initializing'
 
     return response
 
@@ -58,7 +58,7 @@ def recluster():
         response = make_response(dict(threads[tid].result))
 
     # Set thread status to idle
-    threads[tid].status = 'Idle'
+    threads[tid].status = 'Initializing'
 
     return response
 

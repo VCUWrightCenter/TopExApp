@@ -18,15 +18,7 @@ class InputPanel extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            corpusDocs: [],
-            expansionDocs: [],
-            stopwordsFile: [],
-            leftTabs: null,
-            graphData: null,
-            ProcessingRunButtonDisabled: true,
-            w2vBinFileFileName: [],
-            maxResults: 50,
-            query: ''
+            graphData: null
         };
     }
 
@@ -34,24 +26,6 @@ class InputPanel extends Component {
     graphDataCallback = (graphData) => {
         this.setState({ graphData: graphData })
         this.props.graphDataCallback(graphData)
-    }
-
-    // Callback for passing expansionDocs from FileManagerTab components back up to InputPanel
-    corpusDocsCallback = (files) => {
-        this.setState({ corpusDocs: files })
-    }
-
-    // Callback for passing expansionDocs from FileManagerTab components back up to InputPanel
-    expansionDocsCallback = (files) => {
-        this.setState({ expansionDocs: files })
-    }
-
-    // Callback for passing expansionDocs from FileManagerTab components back up to InputPanel
-    queryCallback = (maxResults,query) => {
-        this.setState({ 
-            maxResults: maxResults,
-            query: query
-        })
     }
 
     // Callback for passing stopwords file from FileManagerTab components back up to InputPanel
@@ -65,8 +39,8 @@ class InputPanel extends Component {
 
     render() {
         let panes = [
-            { menuItem: 'Load Data', pane: { key: 'pane1', content: <LoadDataTab corpusDocsCallback={this.corpusDocsCallback} expansionDocsCallback={this.expansionDocsCallback} stopwordsFileCallback={this.stopwordsFileCallback} queryCallback={this.queryCallback} />, className: "pane" } },
-            { menuItem: 'Parameters', pane: { key: 'pane3', content: <ParametersTab maxResults={this.state.maxResults} query={this.state.query} corpusDocs={this.state.corpusDocs} expansionDocs={this.state.expansionDocs} stopwordsFile={this.state.stopwordsFile} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
+            { menuItem: 'Load Data', pane: { key: 'pane1', content: <LoadDataTab extractParams={()=>this.content.extractParams() } graphDataCallback={this.graphDataCallback} />, className: "pane" } },
+            { menuItem: 'Parameters', pane: { key: 'pane3', content: <ParametersTab ref={instance => {this.content = instance}} />, className: "pane" } },
             { menuItem: 'Re-Cluster', pane: { key: 'pane0', content: <ReclusterTab graphData={this.state.graphData} query={this.state.query} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
             { menuItem: 'Import/Export', pane: { key: 'pane2', content: <ImportExportTab graphData={this.state.graphData} graphDataCallback={this.graphDataCallback} />, className: "pane" } }
         ]
