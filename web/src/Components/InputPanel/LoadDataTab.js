@@ -8,7 +8,6 @@ class LoadDataTab extends Component {
         this.state = {
             corpusDocs: [],
             expansionDocs: [],
-            stopwordsFile: [],
             inputType: null,
             query: '',
             maxResults: 50,
@@ -33,6 +32,8 @@ class LoadDataTab extends Component {
     // Upload input document(s) from user input
     uploadInput(uploads, inputType) {
         console.log('uploads', uploads)
+        let params = this.props.extractParams()
+        console.log('params', params)
 
         let files = this.mapFiles(uploads);
         this.setState({

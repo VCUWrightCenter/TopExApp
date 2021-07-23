@@ -25,28 +25,44 @@ class ParametersTab extends Component {
         };
     }
 
-    // Gets file names from uploads and filters
-    mapFiles(uploads) {
-        let files = Array.from(uploads)
-            .filter(f => f !== undefined && f.name.includes('.txt'));
-        files.forEach(f => f.checked = true);
-        return files;
-    }
-
     uploadStopwords(file) {
+        console.log('uploadStopwords', file)
         file = Array.from(file);
         this.setState({ stopwordsFile: file });
-        this.props.stopwordsFileCallback(file);
     }
 
-    clearForm(id) {
-        let files = [];
-        var idVal = id.target.getAttribute('id');
+    resetStopwords() {
+        this.setState({ stopwordsFile: [] });
+        document.getElementById("uploadStopwordsInput").value = ''
+    }
 
-        if (idVal === 'stopwordsResetBtn') {
-            document.getElementById('StopWordsForm').reset();
-            this.uploadStopwords(files);
-        }
+    extractParams() {
+        console.log("extractParams: HELLO")
+        let params = {
+            // 'query': this.props.query,
+            // 'maxResults': this.props.maxResults,
+            // 'expansionCorpus': expansionCorpus,
+            // 'stopwords': this.props.stopwordsFile.length > 0 ? await shared.getFileContents(this.props.stopwordsFile[0]) : null,
+            // Sentence embedding parameters
+            'windowSize': document.getElementById('windowSize').value === '' ? 6 : document.getElementById('windowSize').value,
+            'wordVectorType': (this.state.vectorizationMethod == null) ? null : this.state.vectorizationMethod,
+            'tfidfCorpus': (this.state.tfidfCorpus == null) ? 'both' : this.state.tfidfCorpus,
+            // TODO: w2vBinFile file upload not currently available
+            'w2vBinFile': document.getElementById('w2vBinFile')?.files[0] != null ? shared.getFileContents(document.getElementById('w2vBinFile').files[0]) : null,
+            'dimensions': document.getElementById('dimensions').value === '' ? null : document.getElementById('dimensions').value,
+            'include_sentiment': document.getElementById('include_sentiment').checked,
+            'custom_stopwords_only': document.getElementById('custom_stopwords_only').checked,
+            // Sentence clustering parameters
+            'clusteringMethod': (this.state.clusteringMethod == null) ? "kmeans" : this.state.clusteringMethod,
+            'cluster_dist_metric': (this.state.cluster_dist_metric == null) ? null : this.state.cluster_dist_metric,
+            'threshold': document.getElementById('threshold').value === '' ? null : document.getElementById('threshold').value,
+            // Visualization parameters
+            'visualizationMethod': (this.state.visualizationMethod == null) ? "umap" : this.state.visualizationMethod,
+            'viz_dist_metric': (this.state.viz_dist_metric == null) ? null : this.state.viz_dist_metric,
+            'umap_neighbors': document.getElementById('umap_neighbors').value === '' ? null : document.getElementById('umap_neighbors').value,
+            outputdir: "./"
+        };
+        return params
     }
 
     // Submits parameters and documents for clustering
@@ -72,35 +88,12 @@ class ParametersTab extends Component {
             expansionCorpus += '<newdoc>' //add this so we can split on it in the create_tfidf funtion in script
         }
 
-        let params = {
-            'query': this.props.query,
-            'maxResults': this.props.maxResults,
-            'expansionCorpus': expansionCorpus,
-            'stopwords': this.props.stopwordsFile.length > 0 ? await shared.getFileContents(this.props.stopwordsFile[0]) : null,
-            // Sentence embedding parameters
-            'windowSize': document.getElementById('windowSize').value === '' ? 6 : document.getElementById('windowSize').value,
-            'wordVectorType': (this.state.vectorizationMethod == null) ? null : this.state.vectorizationMethod,
-            'tfidfCorpus': (this.state.tfidfCorpus == null) ? 'both' : this.state.tfidfCorpus,
-            // TODO: w2vBinFile file upload not currently available
-            'w2vBinFile': document.getElementById('w2vBinFile')?.files[0] != null ? shared.getFileContents(document.getElementById('w2vBinFile').files[0]) : null,
-            'dimensions': document.getElementById('dimensions').value === '' ? null : document.getElementById('dimensions').value,
-            'include_sentiment': document.getElementById('include_sentiment').checked,
-            'custom_stopwords_only': document.getElementById('custom_stopwords_only').checked,
-            // Sentence clustering parameters
-            'clusteringMethod': (this.state.clusteringMethod == null) ? "hac" : this.state.clusteringMethod,
-            'cluster_dist_metric': (this.state.cluster_dist_metric == null) ? null : this.state.cluster_dist_metric,
-            'threshold': document.getElementById('threshold').value === '' ? null : document.getElementById('threshold').value,
-            // Visualization parameters
-            'visualizationMethod': (this.state.visualizationMethod == null) ? "umap" : this.state.visualizationMethod,
-            'viz_dist_metric': (this.state.viz_dist_metric == null) ? null : this.state.viz_dist_metric,
-            'umap_neighbors': document.getElementById('umap_neighbors').value === '' ? null : document.getElementById('umap_neighbors').value,
-            outputdir: "./"
-        };
+        let params = {}//extractParams()
 
         this.setState({ runningScript: true })
 
         var response = await this.cluster(formData, params)
-        
+
         this.setState({ graphData: response })
 
         // Propogate graphData back up to parent
@@ -128,31 +121,31 @@ class ParametersTab extends Component {
             let data = promise.data
             data["visualizationMethod"] = params["visualizationMethod"]
 
-            if(data.msg) alert(data.msg);
+            if (data.msg) alert(data.msg);
             pending = false;
             return data
         }).catch((err) => {
             pending = false;
-            this.setState({runningScript: false})
+            this.setState({ runningScript: false })
             console.error(err.message)
             alert(err);
         })
 
         // Ping clustering function status from another thread
-        while(pending) {
+        while (pending) {
             await new Promise(r => setTimeout(r, 3000));
             await Axios.get(`${process.env.REACT_APP_API}/status/1`, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'multipart/form-data'
-            }
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data'
+                }
             }).then(res => {
-                this.setState({status: res.data})
+                this.setState({ status: res.data })
             }).catch((err) => {
                 console.error(err.message)
             })
         }
-        this.setState({status: 'Complete'})
+        this.setState({ status: 'Complete' })
 
         let response = await promise
         return response == null ? null : response
@@ -200,7 +193,7 @@ class ParametersTab extends Component {
                     <br />
                     <Button
                         color='black'
-                        onClick={() => { document.getElementById('stopwordsResetBtn').click(); }}
+                        onClick={() => { this.resetStopwords() }}
                         content='Reset'
                         className='vspace'
                     />
@@ -219,8 +212,6 @@ class ParametersTab extends Component {
 
                     <form encType="multipart/form-data" id="StopWordsForm" onSubmit={(e) => this.handleChange(e)}>
                         <input hidden id='uploadStopwordsInput' type="file" name="file" onChange={(e) => this.uploadStopwords(e.target.files)} />
-
-                        <input type="button" id="stopwordsResetBtn" hidden onClick={(e) => this.clearForm(e)} />
                     </form>
                 </div>
 
@@ -347,8 +338,8 @@ class ParametersTab extends Component {
                         id="cluster_dist_metric"
                         options={shared.getDistanceMetric("cluster_dist_metric")}
                         onChange={this.getDropdownValue} />
-                        &nbsp;
-                        <span className="tooltip" data-tooltip="This distance metric is used to compare points for clustering."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                    &nbsp;
+                    <span className="tooltip" data-tooltip="This distance metric is used to compare points for clustering."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <div className='spacing'>
@@ -375,8 +366,8 @@ class ParametersTab extends Component {
                         id="visualizationMethod"
                         options={shared.getVisualizationMethods("visualizationMethod")}
                         onChange={this.getDropdownValue} />
-                        &nbsp;
-                        <span className="tooltip" data-tooltip="Method used for projecting points into two dimensions for visualization."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                    &nbsp;
+                    <span className="tooltip" data-tooltip="Method used for projecting points into two dimensions for visualization."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <div className='spacing'>
@@ -388,8 +379,8 @@ class ParametersTab extends Component {
                         id="viz_dist_metric"
                         options={shared.getDistanceMetric("viz_dist_metric")}
                         onChange={this.getDropdownValue} />
-                        &nbsp;
-                        <span className="tooltip" data-tooltip="This distance metric is used to compare points for visualization"><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                    &nbsp;
+                    <span className="tooltip" data-tooltip="This distance metric is used to compare points for visualization"><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <div className='spacing'>
