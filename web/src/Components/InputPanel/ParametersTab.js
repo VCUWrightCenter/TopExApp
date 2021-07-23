@@ -9,11 +9,12 @@ import './InputPanel.css';
 import { Input, Button, Header, Dropdown, Checkbox } from 'semantic-ui-react';
 import * as shared from '../Shared';
 
-class ClusterTab extends Component {
+class ParametersTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
             expansioncorpusFiles: [],
+            stopwordsFile: [],
             leftTabs: null,
             graphData: null,
             ProcessingRunButtonDisabled: true,
@@ -22,6 +23,30 @@ class ClusterTab extends Component {
             maxResults: 50,
             query: ''
         };
+    }
+
+    // Gets file names from uploads and filters
+    mapFiles(uploads) {
+        let files = Array.from(uploads)
+            .filter(f => f !== undefined && f.name.includes('.txt'));
+        files.forEach(f => f.checked = true);
+        return files;
+    }
+
+    uploadStopwords(file) {
+        file = Array.from(file);
+        this.setState({ stopwordsFile: file });
+        this.props.stopwordsFileCallback(file);
+    }
+
+    clearForm(id) {
+        let files = [];
+        var idVal = id.target.getAttribute('id');
+
+        if (idVal === 'stopwordsResetBtn') {
+            document.getElementById('StopWordsForm').reset();
+            this.uploadStopwords(files);
+        }
     }
 
     // Submits parameters and documents for clustering
@@ -159,6 +184,46 @@ class ClusterTab extends Component {
     render() {
         return (
             <div className='InputPanelContainer scriptArgsTab'>
+                <Header as='h3'>Custom stopwords file (Optional)</Header>
+                <p>Stopwords are removed from documents prior to clustering. Stopwords file should be one word per line.</p>
+
+                <div className='file-input spacing'>
+                    <Button
+                        color='yellow'
+                        loading={this.state.runningScript}
+                        onClick={() => { document.getElementById('uploadStopwordsInput').click(); }}
+                        icon="file"
+                        labelPosition="left"
+                        content='Upload stopwords file'
+                        className='buttonText'
+                    />
+                    <br />
+                    <Button
+                        color='black'
+                        onClick={() => { document.getElementById('stopwordsResetBtn').click(); }}
+                        content='Reset'
+                        className='vspace'
+                    />
+
+                    <div id="stopwordsFileList" className='fileList'>
+                        {this.state.stopwordsFile.map((file) => {
+                            return (
+                                <div className='fileListEntry' key={file.name}>
+                                    <label htmlFor={file.name} className='file-list-label' >{file.name}</label>
+                                </div>
+                            )
+                        })
+                        }
+                    </div>
+                    &nbsp;
+
+                    <form encType="multipart/form-data" id="StopWordsForm" onSubmit={(e) => this.handleChange(e)}>
+                        <input hidden id='uploadStopwordsInput' type="file" name="file" onChange={(e) => this.uploadStopwords(e.target.files)} />
+
+                        <input type="button" id="stopwordsResetBtn" hidden onClick={(e) => this.clearForm(e)} />
+                    </form>
+                </div>
+
                 <Header as='h3'>Sentence Embedding Parameters</Header>
 
                 <div className='spacing'>
@@ -372,4 +437,4 @@ class ClusterTab extends Component {
     }
 }
 
-export default ClusterTab
+export default ParametersTab
