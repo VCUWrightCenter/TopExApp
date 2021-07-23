@@ -21,7 +21,7 @@ class LoadDataTab extends Component {
     // Gets file names from uploads and filters
     mapFiles(uploads) {
         let files = Array.from(uploads)
-            .filter(f => f !== undefined && f.name.includes('.txt'));
+            .filter(f => f !== undefined && f.name.includes(this.state.inputType==='csv' ? '.csv' : '.txt'));
         files.forEach(f => f.checked = true);
         return files;
     }
@@ -86,6 +86,7 @@ class LoadDataTab extends Component {
     async cluster() {
         this.state.status = 'Initializing'
         let params = await this.props.extractParams()
+        params['inputType'] = this.state.inputType
         params['query'] = this.state.query
         params['maxResults'] = this.state.maxResults
 
@@ -139,7 +140,6 @@ class LoadDataTab extends Component {
 
             if (data.msg) alert(data.msg);
             pending = false;
-            this.setState({ status: 'Idle' })
             return data
         }).catch((err) => {
             pending = false;
@@ -157,12 +157,13 @@ class LoadDataTab extends Component {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then(res => {
-                if (pending) this.setState({ status: res.data })
+                this.setState({ status: res.data })
             }).catch((err) => {
                 console.error(err.message)
             })
         }
 
+        this.setState({ status: 'Idle' })
         let response = await promise
         return response == null ? null : response
     }
