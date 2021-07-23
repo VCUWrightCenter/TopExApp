@@ -71,7 +71,7 @@ class ClusterThread(threading.Thread):
         clustering_method = params['clusteringMethod']
         cluster_dist_metric = params['cluster_dist_metric'] if str_valid(params['cluster_dist_metric']) else 'euclidean'
         height = cast_int(params['threshold']) if clustering_method == "hac" else None
-        k = cast_int(params['threshold']) if clustering_method == "kmeans" else 20
+        k = cast_int(params['threshold']) if clustering_method == "kmeans" else None
 
         visualization_method = params['visualizationMethod'] if str_valid(params['visualizationMethod']) else 'umap'
         viz_dist_metric = params['viz_dist_metric'] if str_valid(params['viz_dist_metric']) else 'cosine'
