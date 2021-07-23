@@ -149,7 +149,7 @@ class ReclusterTab extends Component {
                         loading={this.state.runningScript}
                         onClick={(e) => { document.getElementById('submitReclusterButton').click() }}
                         content='Recluster'
-                        className='action'
+                        className='vspace'
                     />
                     <form encType="multipart/form-data" onSubmit={(e) => this.submitRecluster(e)}>
                         <input hidden id='reclusterThreshold' type="number" />
