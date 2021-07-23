@@ -170,19 +170,20 @@ class LoadDataTab extends Component {
 
     render() {
         return (
-            <div className="InputPanelContainer">
-
+            <div className="InputPanelContainer">                
+                <Header as='h3'>Clustering Corpus (Required)</Header>
+                <p>Choose the set of texts you want to analyze with TopEx. You must <strong><em>choose only one</em></strong> of the 4 options below. If you choose to run a PubMed search from within TopEx then your query will be run after pressing the Run button.</p>
+                
+                
                 <Button
                     color='green'
                     disabled={this.state.runningScript}
                     loading={this.state.runningScript}
                     onClick={() => this.cluster()}
-                    content='CLUSTER!'
+                    content='Run Cluster'
                     className='vspace'
                 />
-
-                <Header as='h3'>Clustering Corpus (Required)</Header>
-                <p>Choose the set of texts you want to analyze with TopEx. You must <strong><em>choose only one</em></strong> of the 4 options below. If you choose to run a PubMed search from within TopEx then your query will be run after pressing the Run button.</p>
+                
                 <Button
                     color='black'
                     onClick={() => this.resetClusteringCorpus()}

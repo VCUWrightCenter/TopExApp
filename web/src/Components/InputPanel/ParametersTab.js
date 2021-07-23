@@ -75,44 +75,6 @@ class ParametersTab extends Component {
     render() {
         return (
             <div className='InputPanelContainer scriptArgsTab'>
-                <Header as='h3'>Custom stopwords file (Optional)</Header>
-                <p>Stopwords are removed from documents prior to clustering. Stopwords file should be one word per line.</p>
-
-                <div className='file-input spacing'>
-                    <Button
-                        color='yellow'
-                        loading={this.state.runningScript}
-                        onClick={() => { document.getElementById('uploadStopwordsInput').click(); }}
-                        icon="file"
-                        labelPosition="left"
-                        content='Upload stopwords file'
-                        className='buttonText'
-                    />
-                    <br />
-                    <Button
-                        color='black'
-                        onClick={() => { this.resetStopwords() }}
-                        content='Reset'
-                        className='vspace'
-                    />
-
-                    <div id="stopwordsFileList" className='fileList'>
-                        {this.state.stopwordsFile.map((file) => {
-                            return (
-                                <div className='fileListEntry' key={file.name}>
-                                    <label htmlFor={file.name} className='file-list-label' >{file.name}</label>
-                                </div>
-                            )
-                        })
-                        }
-                    </div>
-                    &nbsp;
-
-                    <form encType="multipart/form-data" id="StopWordsForm" onSubmit={(e) => this.handleChange(e)}>
-                        <input hidden id='uploadStopwordsInput' type="file" name="file" onChange={(e) => this.uploadStopwords(e.target.files)} />
-                    </form>
-                </div>
-
                 <Header as='h3'>Sentence Embedding Parameters</Header>
 
                 <div className='spacing'>
@@ -264,6 +226,44 @@ class ParametersTab extends Component {
                     />
                     &nbsp;
                     <span className="tooltip" data-tooltip="Only relevant for UMAP clustering."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                </div>
+
+                <Header as='h3'>Custom stopwords file (Optional)</Header>
+                <p>Stopwords are removed from documents prior to clustering. Stopwords file should be one word per line.</p>
+
+                <div className='file-input spacing'>
+                    <Button
+                        color='yellow'
+                        loading={this.state.runningScript}
+                        onClick={() => { document.getElementById('uploadStopwordsInput').click(); }}
+                        icon="file"
+                        labelPosition="left"
+                        content='Upload stopwords file'
+                        className='buttonText'
+                    />
+                    <br />
+                    <Button
+                        color='black'
+                        onClick={() => { this.resetStopwords() }}
+                        content='Reset'
+                        className='vspace'
+                    />
+
+                    <div id="stopwordsFileList" className='fileList'>
+                        {this.state.stopwordsFile.map((file) => {
+                            return (
+                                <div className='fileListEntry' key={file.name}>
+                                    <label htmlFor={file.name} className='file-list-label' >{file.name}</label>
+                                </div>
+                            )
+                        })
+                        }
+                    </div>
+                    &nbsp;
+
+                    <form encType="multipart/form-data" id="StopWordsForm" onSubmit={(e) => this.handleChange(e)}>
+                        <input hidden id='uploadStopwordsInput' type="file" name="file" onChange={(e) => this.uploadStopwords(e.target.files)} />
+                    </form>
                 </div>
             </div >
         )
