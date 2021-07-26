@@ -28,7 +28,7 @@ idna==2.10
 importlib-metadata==4.0.1
 inquirer==2.7.0
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 jinxed==1.1.0
 jmespath==0.10.0
 joblib==0.16.0
