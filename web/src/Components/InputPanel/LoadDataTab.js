@@ -23,7 +23,7 @@ class LoadDataTab extends Component {
     // Gets file names from uploads and filters
     mapFiles(uploads) {
         let files = Array.from(uploads)
-            .filter(f => f !== undefined && f.name.includes(this.state.inputType==='csv' ? '.csv' : '.txt'));
+            .filter(f => f !== undefined && f.name.includes(this.state.inputType === 'csv' ? '.csv' : '.txt'));
         files.forEach(f => f.checked = true);
         return files;
     }
@@ -47,11 +47,15 @@ class LoadDataTab extends Component {
     updateQuery() {
         let m = document.getElementById("maxResults").value
         let q = document.getElementById("query").value
-        this.setState({
-            maxResults: m,
-            query: q,
-            inputType: 'pubmed'
-        });
+        if (q.trim().length > 0) {
+            this.setState({
+                maxResults: m,
+                query: q,
+                inputType: 'pubmed'
+            });
+        } else {
+            this.setState({ inputType: null })
+        }
     }
 
     //This method saves uploads into expansionDocs and shares with InputPanel
@@ -172,22 +176,22 @@ class LoadDataTab extends Component {
 
     render() {
         return (
-            <div className="InputPanelContainer">                
+            <div className="InputPanelContainer">
                 <Header as='h3'>Clustering Corpus (Required)</Header>
                 <p>Choose the set of texts you want to analyze with TopEx. You must <strong><em>choose only one</em></strong> of the 4 options below. If you choose to run a PubMed search from within TopEx then your query will be run after pressing the Run button.</p>
-                
-                
+
+
                 <Button
                     variant="contained"
                     color="primary"
-                    disabled={this.state.runningScript}
+                    disabled={this.state.runningScript || this.state.inputType==null}
                     loading={this.state.runningScript}
                     onClick={() => this.cluster()}
                     className='vspace'
                 >Run TopEx!</Button>
                 &nbsp;&nbsp;&nbsp;
                 <Button
-                    style={{backgroundColor: '#6b6b6b', color: '#FFF'}}
+                    style={{ backgroundColor: '#6b6b6b', color: '#FFF' }}
                     variant="contained"
                     onClick={() => this.resetClusteringCorpus()}
                     className='vspace'
@@ -208,7 +212,7 @@ class LoadDataTab extends Component {
                     >Upload docs to cluster</Button>
                     <br />
                     {
-                        this.state.inputType==='multi' &&
+                        this.state.inputType === 'multi' &&
                         <div id="fileList" className='fileList'>
                             <div>
                                 {this.state.corpusDocs.map((file) => {
@@ -243,7 +247,7 @@ class LoadDataTab extends Component {
                     >Upload .csv to cluster</Button>
 
                     {
-                        this.state.inputType==='csv' &&
+                        this.state.inputType === 'csv' &&
                         <div id="csvFileList" className='fileList'>
                             <div>
                                 {this.state.corpusDocs.map((file) => {
@@ -274,7 +278,7 @@ class LoadDataTab extends Component {
                     >Upload MEDLINE file to cluster</Button>
 
                     {
-                        this.state.inputType==='medline' &&
+                        this.state.inputType === 'medline' &&
                         <div id="medlineFileList" className='fileList'>
                             <div>
                                 {this.state.corpusDocs.map((file) => {
@@ -342,7 +346,7 @@ class LoadDataTab extends Component {
                     >Upload expansion docs</Button>
                     <br />
                     <Button
-                        style={{backgroundColor: '#6b6b6b', color: '#FFF'}}
+                        style={{ backgroundColor: '#6b6b6b', color: '#FFF' }}
                         variant="contained"
                         onClick={() => { this.resetExpansionCorpus() }}
                         className='vspace'
@@ -367,17 +371,17 @@ class LoadDataTab extends Component {
                     </form>
 
                     {this.state.status !== "Idle" &&
-                    <div id="status-popup-wrapper">
-                        <div className="status-popup">
-                            <div className="loader">
-                                <div className="spinner one"></div>
-                                <div className="spinner two"></div>
-                                <div className="spinner three"></div>
+                        <div id="status-popup-wrapper">
+                            <div className="status-popup">
+                                <div className="loader">
+                                    <div className="spinner one"></div>
+                                    <div className="spinner two"></div>
+                                    <div className="spinner three"></div>
+                                </div>
+                                <p>{this.state.status}</p>
                             </div>
-                            <p>{this.state.status}</p>
                         </div>
-                    </div>
-                }
+                    }
                 </div>
             </div>
         )
