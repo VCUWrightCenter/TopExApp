@@ -7,6 +7,22 @@ import DetailPanel from '../DetailPanel/DetailPanel'
 import Header from '../Header/Header'
 import MainPanel from '../MainPanel/MainPanel'
 import WelcomeDialog from '../Dialog/WelcomeDialog';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { green, amber } from '@material-ui/core/colors/';
+
+const customTheme = createMuiTheme({
+  // theme settings
+  palette: {
+    primary: {
+      main: green[500],
+      contrastText: '#fff',
+    },
+      secondary: {
+        main: amber[500],
+        contrastText: '#000',
+      }
+  },
+});
 
 class App extends Component {
 
@@ -27,13 +43,15 @@ class App extends Component {
 
   render() {
     return (
-      <div className='main-content'>
-        <WelcomeDialog />
-        <Header />
-        <DetailPanel pointData={this.state.pointData} />
-        <MainPanel apiResult={this.state.apiResult} pointDataCallback={this.pointDataCallback} />
-        <InputPanel graphDataCallback={this.graphDataCallback} />
-      </div>
+      <ThemeProvider theme={customTheme}>
+        <div className='main-content'>
+          <WelcomeDialog />
+          <Header />
+          <DetailPanel pointData={this.state.pointData} />
+          <MainPanel apiResult={this.state.apiResult} pointDataCallback={this.pointDataCallback} />
+          <InputPanel graphDataCallback={this.graphDataCallback} />
+        </div>
+      </ThemeProvider>
     );
   }
 }

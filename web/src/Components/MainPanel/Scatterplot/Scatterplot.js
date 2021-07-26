@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from "d3";
 import './Scatterplot.css'
 import * as util from '../../Shared'
-import { Button } from 'semantic-ui-react'
+import Button from '@material-ui/core/Button';
 
 class Scatterplot extends Component {
 
@@ -144,10 +144,10 @@ class Scatterplot extends Component {
                 </div>
 
                 <Button
+                    variant="contained"
+                    style={{backgroundColor: '#000', color: '#FFF'}}
                     onClick={(e) => util.exportSVGAsPNG("scatterplotSVG")}
-                    content="Export Scatterplot (.png)"
-                    className="ui black button"
-                />
+                >Export Scatterplot (.png)</Button>
             </div>
         )
     }

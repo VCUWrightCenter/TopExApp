@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import * as d3 from "d3";
 import './WordCloud.css'
 import * as util from '../../Shared'
-import { Button, Dropdown } from 'semantic-ui-react'
+import { Dropdown } from 'semantic-ui-react'
+import Button from '@material-ui/core/Button';
 
 class WordCloud extends Component {
 
@@ -153,10 +154,10 @@ class WordCloud extends Component {
                 <div className='graph' id="WordCloudNode"></div>
                 <div id='exportButtons' className='exportButtons'>
                     <Button
+                        variant="contained"
+                        style={{backgroundColor: '#000', color: '#FFF'}}
                         onClick={(e) => util.exportSVGAsPNG("WordCloudSVG")}
-                        content="Export Word Cloud (.png)"
-                        className="ui black button"
-                    />
+                    >Export Word Cloud (.png)</Button>
                 </div>
             </div>
         )

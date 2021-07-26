@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import './InputPanel.css';
-import { Button, Header } from 'semantic-ui-react';
+import { Header } from 'semantic-ui-react';
+import Button from '@material-ui/core/Button';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import * as util from '../Shared'
 
 class ImportExportTab extends Component {
@@ -144,23 +146,20 @@ class ImportExportTab extends Component {
                 <Header as='h3'>Import</Header>
                 <p>Import the output from a previous clustering.</p>
                 <div className='file-input'>
-                    <Button.Group vertical>
                         <Button
-                            color='yellow'
+                            variant="contained"
+                            color='secondary'
                             onClick={() => document.getElementById('importFileInput').click()}
-                            icon="file"
-                            labelPosition="left"
-                            content='Upload file for import'
-                            className='buttonText'
-                        />
-                        <Button
-                            color='black'
+                            startIcon={<CloudUploadIcon />}
+                        >Upload file for import</Button>
+                        <Button                            
+                            variant="contained"
+                            color='secondary'
                             disabled={this.state.ImportButtonDisabled}
-                            content="Import clustering (.topex)"
                             onClick={(e) => this.importData(e)}
+                            startIcon={<CloudUploadIcon />}
                             className='vspace'
-                        />
-                    </Button.Group>
+                        >Import clustering (.topex)</Button>
                     <form>
                         <input id='importFileInput' type="file" hidden onChange={(e) => this.checkImportFile(e)} />
                         <button id='importFileButton' type='submit' hidden onClick={(e) => this.importData(e)}>Import</button>
@@ -169,37 +168,35 @@ class ImportExportTab extends Component {
                 <Header as='h3'>Export</Header>
                 <p>Export results.</p>
                 <div className='file-input'>
-                    <Button.Group vertical>
                         <Button
-                            color='black'
-                            content="Export clustering (.topex)"
+                            variant="contained"
+                            style={{backgroundColor: '#000', color: '#FFF'}}
                             onClick={(e) => this.exportData()}
-                        />
+                        >Export clustering (.topex)</Button>
                         <Button
-                            color='black'
-                            content="Export sentences (.csv)"
+                            variant="contained"
+                            style={{backgroundColor: '#000', color: '#FFF'}}
                             onClick={(e) => this.exportCSV(this.props.graphData)}
                             className='vspace'
-                        />
+                        >Export sentences (.csv)</Button>
                         <Button
-                            color='black'
-                            content="Export row-level results (.txt)"
+                            variant="contained"
+                            style={{backgroundColor: '#000', color: '#FFF'}}
                             onClick={(e) => this.exportResults(this.props.graphData)}
                             className='vspace'
-                        />
+                        >Export row-level results (.txt)</Button>
                         <Button
-                            color='black'
-                            content="Export scatterplot data (.txt)"
+                            variant="contained"
+                            style={{backgroundColor: '#000', color: '#FFF'}}
                             onClick={(e) => this.exportScatterplotData(this.props.graphData)}
                             className='vspace'
-                        />
+                        >Export scatterplot data (.txt)</Button>
                         <Button
-                            color='black'
-                            content="Export word cloud data (.txt)"
+                            variant="contained"
+                            style={{backgroundColor: '#000', color: '#FFF'}}
                             onClick={(e) => this.exportWordcloudData(this.props.graphData)}
                             className='vspace'
-                        />
-                    </Button.Group>
+                        >Export word cloud data (.txt)</Button>
                 </div>
             </div>)
     }

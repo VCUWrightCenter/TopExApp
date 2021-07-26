@@ -6,8 +6,8 @@
 import React, { Component } from "react";
 import Axios from "axios";
 import './InputPanel.css';
-import { Input, Button, Header } from 'semantic-ui-react';
-
+import { Input, Header } from 'semantic-ui-react';
+import Button from '@material-ui/core/Button';
 
 class ReclusterTab extends Component {
     constructor(props) {
@@ -144,13 +144,13 @@ class ReclusterTab extends Component {
                         </div>
                     }
                     <Button
-                        color='black'
+                        variant="contained"
+                        color="primary"
                         disabled={this.state.runningScript || !this.props.graphData?.data}
                         loading={this.state.runningScript}
                         onClick={(e) => { document.getElementById('submitReclusterButton').click() }}
-                        content='Recluster'
                         className='vspace'
-                    />
+                    >Recluster</Button>
                     <form encType="multipart/form-data" onSubmit={(e) => this.submitRecluster(e)}>
                         <input hidden id='reclusterThreshold' type="number" />
                         <button hidden id="submitReclusterButton" className="submitButton"> Re-Cluster </button>

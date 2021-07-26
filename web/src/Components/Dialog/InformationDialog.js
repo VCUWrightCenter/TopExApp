@@ -20,7 +20,7 @@ export default function AlertDialog() {
 
   return (
     <div>
-      <Button id="information-button" variant="contained" color="primary" onClick={handleClickOpen}><i aria-hidden="true" className="info fitted icon"></i></Button>
+      <Button id="information-button" variant="contained" style={{backgroundColor: '#3f51b5', color: '#FFF'}} onClick={handleClickOpen}><i aria-hidden="true" className="info fitted icon"></i></Button>
       
       <Dialog
         open={open}
@@ -50,7 +50,7 @@ export default function AlertDialog() {
             </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="secondary" autoFocus>
+          <Button onClick={handleClose} style={{backgroundColor: '#3f51b5', color: '#FFF'}} autoFocus>
             Close
           </Button>
         </DialogActions>

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import './InputPanel.css';
-import { Input, Button, Header, Dropdown, Checkbox } from 'semantic-ui-react';
+import { Input, Header, Dropdown, Checkbox } from 'semantic-ui-react';
+import Button from '@material-ui/core/Button';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import * as shared from '../Shared';
 
 class ParametersTab extends Component {
@@ -75,44 +77,6 @@ class ParametersTab extends Component {
     render() {
         return (
             <div className='InputPanelContainer scriptArgsTab'>
-                <Header as='h3'>Custom stopwords file (Optional)</Header>
-                <p>Stopwords are removed from documents prior to clustering. Stopwords file should be one word per line.</p>
-
-                <div className='file-input spacing'>
-                    <Button
-                        color='yellow'
-                        loading={this.state.runningScript}
-                        onClick={() => { document.getElementById('uploadStopwordsInput').click(); }}
-                        icon="file"
-                        labelPosition="left"
-                        content='Upload stopwords file'
-                        className='buttonText'
-                    />
-                    <br />
-                    <Button
-                        color='black'
-                        onClick={() => { this.resetStopwords() }}
-                        content='Reset'
-                        className='vspace'
-                    />
-
-                    <div id="stopwordsFileList" className='fileList'>
-                        {this.state.stopwordsFile.map((file) => {
-                            return (
-                                <div className='fileListEntry' key={file.name}>
-                                    <label htmlFor={file.name} className='file-list-label' >{file.name}</label>
-                                </div>
-                            )
-                        })
-                        }
-                    </div>
-                    &nbsp;
-
-                    <form encType="multipart/form-data" id="StopWordsForm" onSubmit={(e) => this.handleChange(e)}>
-                        <input hidden id='uploadStopwordsInput' type="file" name="file" onChange={(e) => this.uploadStopwords(e.target.files)} />
-                    </form>
-                </div>
-
                 <Header as='h3'>Sentence Embedding Parameters</Header>
 
                 <div className='spacing'>
@@ -177,6 +141,42 @@ class ParametersTab extends Component {
                     <Checkbox id='custom_stopwords_only' label="Custom stopwords only?" title="" />
                     &nbsp;
                     <span className="tooltip" data-tooltip="Checking this box means that only stopwords explicitly listed in the custom stopwords file will be removed during preprocessing."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                </div>
+
+                <Header as='h4'>Custom stopwords file (Optional)</Header>
+                <p>Stopwords are removed from documents prior to clustering. Stopwords file should be one word per line.</p>
+
+                <div className='file-input spacing'>
+                    <Button
+                        color="secondary"
+                        variant="contained"
+                        loading={this.state.runningScript}
+                        onClick={() => { document.getElementById('uploadStopwordsInput').click(); }}
+                        startIcon={<CloudUploadIcon />}
+                    >Upload stopwords file</Button>
+                    <br />
+                    <Button
+                        style={{backgroundColor: '#6b6b6b', color: '#FFF'}}
+                        variant="contained"
+                        onClick={() => { this.resetStopwords() }}
+                        className='vspace'
+                    >Reset</Button>
+
+                    <div id="stopwordsFileList" className='fileList'>
+                        {this.state.stopwordsFile.map((file) => {
+                            return (
+                                <div className='fileListEntry' key={file.name}>
+                                    <label htmlFor={file.name} className='file-list-label' >{file.name}</label>
+                                </div>
+                            )
+                        })
+                        }
+                    </div>
+                    &nbsp;
+
+                    <form encType="multipart/form-data" id="StopWordsForm" onSubmit={(e) => this.handleChange(e)}>
+                        <input hidden id='uploadStopwordsInput' type="file" name="file" onChange={(e) => this.uploadStopwords(e.target.files)} />
+                    </form>
                 </div>
 
                 <Header as='h3'>Sentence Clustering Parameters</Header>
