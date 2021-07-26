@@ -145,7 +145,7 @@ class ReclusterTab extends Component {
                     }
                     <Button
                         variant="contained"
-                        color="secondary"
+                        color="primary"
                         disabled={this.state.runningScript || !this.props.graphData?.data}
                         loading={this.state.runningScript}
                         onClick={(e) => { document.getElementById('submitReclusterButton').click() }}
