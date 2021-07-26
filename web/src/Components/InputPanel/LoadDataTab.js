@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import Axios from "axios";
 import './InputPanel.css';
-import { Input, Button, Header } from 'semantic-ui-react';
+import { Input, Header } from 'semantic-ui-react';
+import Button from '@material-ui/core/Button';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import * as shared from '../Shared';
 
 class LoadDataTab extends Component {
@@ -176,36 +178,34 @@ class LoadDataTab extends Component {
                 
                 
                 <Button
-                    color='green'
+                    variant="contained"
+                    color="primary"
                     disabled={this.state.runningScript}
                     loading={this.state.runningScript}
                     onClick={() => this.cluster()}
-                    content='Run Cluster'
                     className='vspace'
-                />
-                
+                >Run TopEx!</Button>
+                &nbsp;&nbsp;&nbsp;
                 <Button
-                    color='black'
+                    style={{backgroundColor: '#6b6b6b', color: '#FFF'}}
+                    variant="contained"
                     onClick={() => this.resetClusteringCorpus()}
-                    content='Reset Input Corpus'
                     className='vspace'
-                />
+                >Reset Input Corpus</Button>
                 <br />
 
                 <div className='file-input spacing file-manager'>
                     <Header as='h4'>1. From Text Files</Header>
                     <Button
-                        color='yellow'
+                        variant="contained"
+                        color='secondary'
                         loading={this.state.runningScript}
                         onClick={() => {
                             this.resetClusteringCorpus()
                             document.getElementById('multiDocInput').click();
                         }}
-                        icon="file"
-                        labelPosition="left"
-                        content='Upload docs to cluster'
-                        className='vspace buttonText'
-                    />
+                        startIcon={<CloudUploadIcon />}
+                    >Upload docs to cluster</Button>
                     <br />
                     {
                         this.state.inputType==='multi' &&
@@ -231,18 +231,16 @@ class LoadDataTab extends Component {
 
                     <Header as='h4'>2. From CSV File</Header>
                     <Button
-                        color='yellow'
+                        variant="contained"
+                        color='secondary'
                         loading={this.state.runningScript}
                         onClick={() => {
                             this.resetClusteringCorpus()
                             this.setState({ inputType: 'csv' });
                             document.getElementById('singleDocInput').click();
                         }}
-                        icon="file"
-                        labelPosition="left"
-                        content='Upload .csv to cluster'
-                        className='vspace buttonText'
-                    />
+                        startIcon={<CloudUploadIcon />}
+                    >Upload .csv to cluster</Button>
 
                     {
                         this.state.inputType==='csv' &&
@@ -264,18 +262,16 @@ class LoadDataTab extends Component {
 
                     <Header as="h4">3. From MEDLINE Formatted File</Header>
                     <Button
-                        color='yellow'
+                        variant="contained"
+                        color='secondary'
                         loading={this.state.runningScript}
                         onClick={() => {
                             this.resetClusteringCorpus()
                             this.setState({ inputType: 'medline' });
                             document.getElementById('singleDocInput').click();
                         }}
-                        icon="file"
-                        labelPosition="left"
-                        content='Upload MEDLINE file to cluster'
-                        className='vspace buttonText'
-                    />
+                        startIcon={<CloudUploadIcon />}
+                    >Upload MEDLINE file to cluster</Button>
 
                     {
                         this.state.inputType==='medline' &&
@@ -334,25 +330,23 @@ class LoadDataTab extends Component {
                 </div>
 
                 <Header as='h3'>Expansion Corpus (Optional)</Header>
-                <p>Select additional documents to be included in the background corpus (Clustering Corpus is automatically included). The Background Corpus determines which words are highly informative for clustering. Note, sentences in these documents will not be clustered. **Recommended if clustering a small set of documents.</p>
+                <p>Select additional documents to be included in the background corpus (Clustering Corpus is automatically included). The Expansion Corpus determines which words are highly informative for clustering. Note, sentences in these documents will not be clustered. **Recommended if clustering a small set of documents.</p>
 
                 <div className='file-input spacing file-manager'>
                     <Button
-                        color='yellow'
+                        variant="contained"
+                        color='secondary'
                         loading={this.state.runningScript}
                         onClick={() => { document.getElementById('uploadExpansionDocsInput').click(); }}
-                        icon="file"
-                        labelPosition="left"
-                        content='Upload expansion docs'
-                        className='buttonText'
-                    />
+                        startIcon={<CloudUploadIcon />}
+                    >Upload expansion docs</Button>
                     <br />
                     <Button
-                        color='black'
+                        style={{backgroundColor: '#6b6b6b', color: '#FFF'}}
+                        variant="contained"
                         onClick={() => { this.resetExpansionCorpus() }}
-                        content='Reset'
                         className='vspace'
-                    />
+                    >Reset</Button>
 
                     <div id="expanionFileList" className='fileList'>
                         {this.state.expansionDocs.map((file) => {
