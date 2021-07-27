@@ -81,7 +81,7 @@ troposphere==2.7.1
 typing==3.6.4
 typing-extensions==3.10.0.0
 umap-learn==0.4.6
-urllib3==1.25.10
+urllib3==1.26.5
 wasabi==0.8.0
 wcwidth==0.2.5
 Werkzeug==0.16.1
