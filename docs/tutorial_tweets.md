@@ -56,7 +56,7 @@ Select the "March 2020" folder, then click "Upload".  It will ask you if you wan
 <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
 
 
-You can also upload a background corpus and a stopwords file from this tab.  We will use these features later in the tutorial.
+You can also upload an expansion corpus from this tab, but we will use this feature later in the tutorial.
 
 ### Clustering Sentences
 
@@ -69,21 +69,56 @@ This tab provides you many options for tuning the various stages of transforming
 
 <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
 
-Now navigate back to the "Load Data" tab and click the "Run Analysis!" button.  Wait a few seconds and the scatter plot should pop up and look similar to the following:
+Now navigate back to the "Load Data" tab and click the "Run Topex!" button.  Wait a few seconds and the scatter plot should pop up and look similar to the following:
 
 <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
 
 ### Navigating TopEx Results
 
-#### Exploring the UMAP plot
+TopEx displays results in two ways: an interactive scatter plot and word clouds.  The scatter plot is shown by default, however you can switch to the word cloud view using the toggle at the center top of the page.
+
+<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+
+#### Exploring the scatter plot
+
+In the scatter plot view, each dot represents one sentence from your input. The location of each dot is determined by reducing the distance matrix from the Sentence Clustering step down to 2 dimensions using one of the reduction methods listed under the "Vizualization Method" parameter in the Parameters tab (UMAP, tSNE, SVD, or MDS).  For this tutorial we chose to use UMAP, which is the default and recommended method.  In a UMAP plot, the closer in space two dots are, the more similar they should be.  In the scatter plot results for COVID-19 Tweets in March 2020 we can see one large cluster in the center with several smaller clusters farther out.
+
+Hovering your mouse over a dot displays the information about that sentence in a panel to the right of the plot.  This information includes:
+
+ - The document and sentence IDs.
+ - The cluster ID.
+ - The phrase used by TopEx to numerically represent this sentence.
+ - The full original sentence.
+ - This cluster's topic with the top N topic words present in the cluster (can be adjusted using the Re-Cluster Tab).
+
+<add more here on the specific results>
 
 #### Word Clouds
-
-
+ 
+ Another way to explore the topics present in a set of texts is thorugh the Word Cloud visualization.  Click on the "Word Cloud" toggle at the top of the scatter plot.  You should see a screen similar to the following:
+ 
+ <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+ 
+ Word Clouds show word frequencies in a set of texts with the largest words being those that are the most frequent.  You can toggle between the different clusters using the drop down at the top of the page.  Scanning through all the clusters you can get a general idea of what each is about just by looking at the most frequent words in each Word Cloud.
 
 ### Re-Clustering
 
-In the current results there are a lot of clusters to really make sense of, so lets go to the "Re-Cluster" tab and group sentences into fewer clusters.  
+In the current results there are a lot of clusters to really make sense of, and some of our breakout groups of sentences are assigned to different clusters.  Ideally we would like to see these breakout groups in the scatter plot all be laced in the same cluster, so lets go to the "Re-Cluster" tab and group sentences into fewer clusters. 
+ 
+  <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+ 
+ The Re-Cluster tab allows you to re-group sentences into a different number of clusters, and re-run the topic analysis for each cluster without having to re-run the costly NLP analysis. Once on the Re-Cluster tab, enter in the values as shown below.
+ 
+ <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+ 
+ The first option allows you to choose the number of clusters you want the data grouped into if using K-means, or the height of the dendrogram if using Hierarchical.  For Hierarchical clustering, smaller numbers will results in MORE clusters and larger numbers will results in FEWER clusters, while for K-means the number you enter is the number of clusters that will be returned.
+ 
+ Once the new parameters are set you can press the Re-Cluster button and your scatter plot and word clouds will be updated momentarily.
+ 
+ <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+ 
+ 
+ 
 
 
 
