@@ -5,18 +5,11 @@ Detailed usage instructions can be found in the [TopEx User's Manual](https://gi
 This tutorial uses a random sample of public Tweets about COVID-19 from March-December 2020 to identify shifts in topics over the course of the pandemic.  Upon completion of this tutorial you will be able to:
 
  * Import data via a set of text files.
-
- * Set clustering parameters and run an analysis.
-
- * Use the re-cluster functionality.
-
- * Be able to download results in a variety of formats.
-
- * Create and use a stopwords file to obtain more relevant results.
-
- * Use a background corpus for your analysis.
-
+ * Set clustering parameters, run an analysis, and re-cluster data as needed.
+ * Use a stopwords file.
+ * Use an expansion corpus.
  * Identify main topic shifts in COVID-19 Tweets between months.
+ * Download results.
  
 ### Input Files
 
@@ -69,7 +62,7 @@ This tab provides you many options for tuning the various stages of transforming
 
 <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
 
-Now navigate back to the "Load Data" tab and click the "Run Topex!" button.  Wait a few seconds and the scatter plot should pop up and look similar to the following:
+Now navigate back to the "Load Data" tab and click the "Run Topex!" button.  When the analysis is complete the scatter plot should pop up and look similar to the following:
 
 <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
 
@@ -81,7 +74,7 @@ TopEx displays results in two ways: an interactive scatter plot and word clouds.
 
 #### Exploring the scatter plot
 
-In the scatter plot view, each dot represents one sentence from your input. The location of each dot is determined by reducing the distance matrix from the Sentence Clustering step down to 2 dimensions using one of the reduction methods listed under the "Vizualization Method" parameter in the Parameters tab (UMAP, tSNE, SVD, or MDS).  For this tutorial we chose to use UMAP, which is the default and recommended method.  In a UMAP plot, the closer in space two dots are, the more similar they should be.  In the scatter plot results for COVID-19 Tweets in March 2020 we can see one large cluster in the center with several smaller clusters farther out.
+In the scatter plot view, each dot represents one sentence from your input. The location of each dot is determined by reducing the distance matrix from the Sentence Clustering step down to 2 dimensions using one of the reduction methods listed under the "Vizualization Method" parameter in the Parameters tab (UMAP, tSNE, SVD, or MDS).  For this tutorial we chose to use UMAP, which is the default and recommended method.  In a UMAP plot, the closer in space two dots are, the more similar they should be.  In the scatter plot results for COVID-19 Tweets in March 2020 we can see one large cluster in the center with several smaller clusters farther out.  The colors of each dot represent the cluster they are in, which is reflected in the information on the right side panel.
 
 Hovering your mouse over a dot displays the information about that sentence in a panel to the right of the plot.  This information includes:
 
@@ -91,7 +84,7 @@ Hovering your mouse over a dot displays the information about that sentence in a
  - The full original sentence.
  - This cluster's topic with the top N topic words present in the cluster (can be adjusted using the Re-Cluster Tab).
 
-<add more here on the specific results>
+For example, hovering over the orange Cluster 3 at the center top displays the Cluster Topic that includes key words "coronavirus" and "spread".  Looking around there are several distinct groupings of sentences; however, they are not all assiged to the same cluster (i.e. have the same color).  This is an indication that we may have too many clusters, or need to change our visualization parameters to reflect the clusters that are present (See Re-Clustering section below).  
 
 #### Word Clouds
  
@@ -103,22 +96,72 @@ Hovering your mouse over a dot displays the information about that sentence in a
 
 ### Re-Clustering
 
-In the current results there are a lot of clusters to really make sense of, and some of our breakout groups of sentences are assigned to different clusters.  Ideally we would like to see these breakout groups in the scatter plot all be laced in the same cluster, so lets go to the "Re-Cluster" tab and group sentences into fewer clusters. 
+In the current results there are too many clusters as some of our breakout groups of sentences are assigned to different clusters.  Ideally we would like to see these breakout groups in the scatter plot all be placed in the same cluster (like orange cluster 3), so lets go to the "Re-Cluster" tab and group sentences into fewer clusters. 
  
-  <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
- 
- The Re-Cluster tab allows you to re-group sentences into a different number of clusters, and re-run the topic analysis for each cluster without having to re-run the costly NLP analysis. Once on the Re-Cluster tab, enter in the values as shown below.
+The Re-Cluster tab allows you to re-group sentences into a different number of clusters, and re-run the topic analysis for each cluster without having to re-run the costly NLP analysis. Once on the Re-Cluster tab, enter in the values as shown below.
  
  <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
  
- The first option allows you to choose the number of clusters you want the data grouped into if using K-means, or the height of the dendrogram if using Hierarchical.  For Hierarchical clustering, smaller numbers will results in MORE clusters and larger numbers will results in FEWER clusters, while for K-means the number you enter is the number of clusters that will be returned.
+ The first option "Height or K" allows you to choose the number of clusters you want (K) the data grouped into if using K-means, or the height of the dendrogram if using Hierarchical clustering (Height).  For Hierarchical clustering, smaller numbers will results in MORE clusters and larger numbers will results in FEWER clusters, while for K-means the number you enter is the number of clusters that will be returned.
  
- Once the new parameters are set you can press the Re-Cluster button and your scatter plot and word clouds will be updated momentarily.
+ The second option determins the number of key words to display for the cluster topic.  The default is 10, so we will use that, however, if you want more or fewer that can be adjusted here.
+ 
+ The third option aids in cleaning up the scatter plot to remove clusters that only contain a few sentences.  For example, if set to 10 then only clusters with at least 10 sentences will be displayed.  For this tutorial we will set it at 1, which includes all clusters.
+ 
+ Once the new parameters are set you can press the Re-Cluster button and your scatter plot and word clouds will be updated momentarily.  You should get a scatter plot that looks something like the following:
  
  <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
  
+ Notice that now many of the sentence groupings that were assigned to multiple clusters are now assigned to a single cluster and the plot looks much cleaner!
  
  
+### Using Stopwords
+ 
+ While re-clustering helped a bit, there are still some issues with the current analysis.  Using the WOrd Cloud visualization, we can see that many of the clusters are dominated by uninformative words, including "coronavirus" in Cluster 7, "covid19" in Cluster 2, and "people" in Cluster 11.
+ 
+<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+
+These terms are uninformative because the Tweets were selected specifically because they were in response to the pandemic.  Thus, having clusters of sentences dominated by these terms is not helpful in this situation.  
+
+Stopwords are words that are uninfomrative for a particular analysis and are removed from an analysis.  TopEx by default removes a host of standard stopwords such as "the" or "and", however, there are generally domain-specific stopwords, such as "covid19", that also need to be removed.  Thus, we need to create and upload a custom stopwords file for this analysis so that TopEx will ignore terms like "coronavirus" during it's analysis.
+
+A Stopword file is simply a text file with one term per line.  As TopEx does not yet do any concept mapping, you will need to enter in all variations of a term in order for it to be removed.  For example, the file should contain both "COVID-19" and "COVID19".  For this tutorial we have already created a stopwords file named "CovidTweetCustomStopWords.txt".  Navigate back to the Parameters tab, and scroll down to the "Custom stopwords file" section.  Click on the "Upload stopwords file" button, then navigate to the file and select it.
+
+<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+
+A successful upload will results in the file name appearing below the "Reset" button.  If uploading a stopwords file, then the NLP algorithm has to be run again.  Navigate to the "Load Data" tab and run TopEx. You should get a scatter plot that looks like the following, which is different from the first one.  
+
+<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+
+Note that with the first scatter plot 30 clusters looked like too many, however, 30 clusters for this plot looks ok.  They are small, but reading through the Word Clouds finds a few that are informative.  For example, Cluster 7 is all about helping to stop the spread of the virus. Cluster 1 is about new case confirmations while the closly related Cluster 5 focuses more on the death toll and Cluster 21 is about testing positive. Continue to explore the other clusters to see what else you can identify.  Also, remember that there are no "correct" number of clusters here.  Feel free to play with the reclustering and the NLP parameters to see how that affects your results!  You can also upload different months to see how they change.
+
+<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+
+
+### Using an Expansion Corpus
+
+The results from the steps above utilize the same set of texts to generate numerical representations for each sentence (i.e. the background corpus); thus, it is hard to compare from one month to the next if the background word distributions used to represent each sentence are different.  Our main goal for this tutorial is to be able to compare each month to the others.  To do this we need to use the SAME background corpus, not each individual month.  This is where the Expansion corpus comes in.  For this tutorial, we are going to use all Tweets from the entire year (downsized for this tutorial of course!) as our Background Corpus so that the results from month to month are more comparable.
+
+To get started, navigate to the "Load Data" tab and clear all your previous files by clicking on the "Reset Input Corpus" button.
+
+<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+
+Scroll down to the "Expansion Corpus" section and click on the "Upload Expansion Docs" button.
+
+<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+
+Navigate to the folder that contains the data for this tutorial and select the "AllMonths" folder, then select "Upload" when it asks you to upload 3,539 files.
+
+<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+
+Your files should population below the Expansion Corpus section.
+
+Next, lets reload the Clustering Corpus (i.e. the Tweets from March we want to analyze) as we did in the first part of this tutorial.  All of the parameters are going to stay the same as in the first part of this tutorial, EXCEPT the Background Corpus, which needs to be changed to "Expansion". Now all we need to do is click the "Run TopEx!" button and be patient as there are a lot more files to process this time!
+
+Your scatter plot should produce something similar to the following:
+
+<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+
 
 
 
