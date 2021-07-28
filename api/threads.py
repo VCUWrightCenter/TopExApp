@@ -58,7 +58,7 @@ class ClusterThread(threading.Thread):
             for file in files:
                 fileob = files[file]
                 print(f"File: {fileob}")
-                fileText = fileob.read().decode()
+                fileText = fileob.read().decode(errors='ignore')
                 docs.append(fileText)
                 names.append(fileob.filename)
             docs = [doc.replace('\n',' ').replace('\r',' ') for doc in docs]
