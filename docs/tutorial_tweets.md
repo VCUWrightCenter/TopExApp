@@ -140,7 +140,7 @@ Note that with the first scatter plot 30 clusters looked like too many, however,
 
 ### Using an Expansion Corpus
 
-The results from the steps above utilize the same set of texts to generate numerical representations for each sentence (i.e. the background corpus); thus, it is hard to compare from one month to the next if the background word distributions used to represent each sentence are different.  Our main goal for this tutorial is to be able to compare each month to the others.  To do this we need to use the SAME background corpus, not each individual month.  This is where the Expansion corpus comes in.  For this tutorial, we are going to use all Tweets from the entire year (downsized for this tutorial of course!) as our Background Corpus so that the results from month to month are more comparable.
+The results from the steps above utilize the input texts as the background corpus to generate numerical representations for each sentence; however, sometimes your input corpus may at times be small and you need additional background context in order to get good sentence representations, or you want to use the same documents as your background for clustering multiple input corpora. This is where the Expansion corpus comes in.  For this tutorial, we are going to import the December Tweets as our expansion corpus and generate the sentences representations using both the Tweets from March and December.
 
 To get started, navigate to the "Load Data" tab and clear all your previous files by clicking on the "Reset Input Corpus" button.
 
@@ -150,17 +150,58 @@ Scroll down to the "Expansion Corpus" section and click on the "Upload Expansion
 
 <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
 
-Navigate to the folder that contains the data for this tutorial and select the "AllMonths" folder, then select "Upload" when it asks you to upload 3,539 files.
+Navigate to the folder that contains the data for this tutorial and select the "December2020" folder, then select "Upload" when it asks you to upload the files.
 
 <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
 
 Your files should population below the Expansion Corpus section.
 
-Next, lets reload the Clustering Corpus (i.e. the Tweets from March we want to analyze) as we did in the first part of this tutorial.  All of the parameters are going to stay the same as in the first part of this tutorial, EXCEPT the Background Corpus, which needs to be changed to "Expansion". Now all we need to do is click the "Run TopEx!" button and be patient as there are a lot more files to process this time!
+Next, lets reload the Clustering Corpus (i.e. the Tweets from March we want to analyze) as we did in the first part of this tutorial.  All of the parameters are going to stay the same EXCEPT the Background Corpus, which needs to be changed to "Both". Now all we need to do is click the "Run TopEx!" button!
 
 Your scatter plot should produce something similar to the following:
 
 <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+
+Having 30 clusters again looks like too many, so lets use the Re-Cluster tab to bring this down to 15 clusters.
+
+<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+
+Exploring this data reveals similar clusters to the original results using only the March data; however, we now have more compact clusters and a nicer figure.  Note that including additional data in an expansion corpus can be beneficial or detrimental to your analysis.  As this is an exploratory tool there is no right or wrong way, so try a few variations and pick which you think is the most helpful!
+
+### Topic Comparisons Between Months
+
+Now that we have our March Tweets analyzed we need to run the same analysis for December.  Open up a new TopEx instance in your browser, and run the same analysis with the similar settings on the December Tweets, using the March Tweets as our Expansion Corpus, and change the number of clusters to 8 this time.  Make sure you set the Background Corpus to use Both the Clustering and Expansion Corpus.  You should end up with a scatter plot similar to the following with 8 clusters:
+
+<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+
+Notice the number of clusters is reduced from 15 to 8.  This is because in December there were fewer main focal points of discussion.  Explore the data and try to identify which cluster of Tweets discuss the following:
+
+ - New cases/death toll
+ - Vaccinations
+ - New UK variant
+ - Covid-19 Stimulus Bill
+
+In comparing these topics to those from March it is easy to quickly identify how the main topics have shifted over the course of the pandemic.
+
+
+### Downloading Data
+
+Now that we have analyzed our Tweets we will want to save this data for future analysis.  TopEx has multiple ways to export data on the Import/Export tab that are described below:
+
+ 1) Export Clustering (.topex): The .topex file allows you to export the current TopEx settings and data view.  You can export then import this file back into TopEx at a later data and have re-clustering functionality and well as data export capabilities.
+ 2) Export Sentences (.csv): This option just exports a list of all the sentences that were analyzed.
+ 3) Export Row-Level Results (.txt): This is the most useful file for further analysis of TopEx results.  This option downloads a pipe-delimited text file that can be uploaded into programs like Excel.  Data includes the raw text, assigned cluster, chosen phrase, and topic key words for each sentence that was processed.  Sentence clusters can be analyzed in detail using this output option.
+ 4) Export Scatterplot Data (.txt): This option exports a delimited text file with the coordinates and cluster assignment for each sentence so you can re-create the scatterplot in external tools like R for publications.
+ 5) Export Word Cloud Data (.txt): This is similar to the scatterplot file where the raw word frequencies are saved in a delimied file so that word clouds can be generated in external tools for publication.
+
+Finally, on each of the visualization screens you can export a low resolution snapshot of the scatterplot or word clouds for documentation purposes.
+
+### Parameter Exploration
+
+This tutorial didn't explore all the parameters that you have the ability to change.  For example, the "Windoe Size" parameter affects the sentence representations by using more or fewer words to represent a sentence.  As Tweets are generally shorter that normal sentences you could try to adjust this parameter down to get more Tweets in your analysis (TopEx ignores sentences that are too short to meet the minimum phrase length).  Now that you have a general understanding of how TopEx works, play with some of these parameters to see if they are helpful in analyzing these Tweets.
+
+
+
 
 
 
