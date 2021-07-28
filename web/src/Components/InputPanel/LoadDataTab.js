@@ -90,7 +90,7 @@ class LoadDataTab extends Component {
     }
 
     async cluster() {
-        this.state.status = 'Initializing'
+        this.setState({ status: 'Processing, please wait…' })
         let params = await this.props.extractParams()
         params['inputType'] = this.state.inputType
         params['query'] = this.state.query
