@@ -13,64 +13,53 @@ This tutorial uses a random sample of public Tweets about COVID-19 from March-De
  
 ### Input Files
 
-A sample of Tweets from 2020 are provided in the TopExApp GitHub repository under the [tutorial_data](https://github.com/VCUWrightCenter/TopExApp/tutorial_data_tweets) folder.  Tweets are divided into individual months, along with a folder containing all Tweets.
-
-Before starting the tutorial, download the Tweets to a folder of your choice on your local machine.  Be sure you can navigate to this folder.
+A sample of Tweets from March and December 2020 are provided as a zip file in the TopExApp GitHub repository under the [tutorial_data](https://github.com/VCUWrightCenter/TopExApp/tutorial_data_tweets) folder.  Before starting the tutorial, download and unzip the Tweets to a folder of your choice on your local machine.  Be sure you can navigate to this folder.
 
 ### Starting TopEx
 
-Go to [topex.cctr.vcu.edu](topex.cctr.vcu.edu) to start TopEx.  You may open TopEx in multiple browser windows as well if you want to run and compare multiple text corpora, such as different months of Tweets.  For this tutorial, open TopEx in 2 browser windows so we can compare Tweets from March and December.
+Go to [topex.cctr.vcu.edu](topex.cctr.vcu.edu) to start TopEx.  You may open TopEx in multiple browser windows as well if you want to run and compare multiple text corpora, such as different months of Tweets.
 
 Once loaded, you should see a window similar to the following:
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_1.png" alt="TopEx welcome screen." width="200"/>
 
 ### Loading Data
 
 To start uploading data, click on "Get Started", then click on the hamburger menu in the upper left corner of the TopEx window.
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_2.png" alt="Hamburger Button" width="200"/>
 
 You should see a pop-out menu as shown below.
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_3.png" alt="Load Data Tab" width="200"/>
 
 Under the "Documents to Cluster" section click on the "upload docs to cluster" button.
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
-
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_4.png" alt="Upload Docs button" width="200"/>
 
 Navigate to the folder containing the March 2020 COVID-19 Tweets.
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_5.png" alt="Data upload screen." width="200"/>
 
 Select the "March 2020" folder, then click "Upload".  It will ask you if you want to upload 1,657 files - select "upload" again to import the data.  Once imported you will see the list of files appear in your menu bar.
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
-
-
-You can also upload an expansion corpus from this tab, but we will use this feature later in the tutorial.
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_6.png" alt="Load Data tab with input files listed." width="200"/>
 
 ### Clustering Sentences
 
-Once your files have been imported, click on the "Parameters" tab in the left side menu bar.
+Once your files have been imported, click on the "Parameters" tab in the left side menu bar. This tab provides you many options for tuning the various stages of transforming each sentence into a numerical vector.  For a detailed explanation of each option, please read the [TopEx User's Manual](https://github.com/VCUWrightCenter/TopExApp/docs/manual.md).  For this tutorial, set the options as shown below:
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
-
-
-This tab provides you many options for tuning the various stages of transforming each sentence into a numerical vector.  For a detailed explanation of each option, please read the [TopEx User's Manual](https://github.com/VCUWrightCenter/TopExApp/docs/manual.md).  For this tutorial, set the options as shown below:
-
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_7.png" alt/tutorial_7="Parameters Tab" width="200"/>
 
 Now navigate back to the "Load Data" tab and click the "Run Topex!" button.  When the analysis is complete the scatter plot should pop up and look similar to the following:
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_8.png" alt/tutorial_7="Parameters Tab" width="200"/>
 
 ### Navigating TopEx Results
 
 TopEx displays results in two ways: an interactive scatter plot and word clouds.  The scatter plot is shown by default, however you can switch to the word cloud view using the toggle at the center top of the page.
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_9.png" alt/tutorial_7="Parameters Tab" width="200"/>
 
 #### Exploring the scatter plot
 
