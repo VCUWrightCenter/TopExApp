@@ -113,17 +113,17 @@ These terms are uninformative because the Tweets were selected specifically beca
 
 Stopwords are words that are uninfomrative for a particular analysis and are removed from an analysis.  TopEx by default removes a host of standard stopwords such as "the" or "and", however, there are generally domain-specific stopwords, such as "covid19", that also need to be removed.  Thus, we need to create and upload a custom stopwords file for this analysis so that TopEx will ignore terms like "coronavirus" during it's analysis.
 
-A Stopword file is simply a text file with one term per line.  As TopEx does not yet do any concept mapping, you will need to enter in all variations of a term in order for it to be removed.  For example, the file should contain both "COVID-19" and "COVID19".  For this tutorial we have already created a stopwords file named "CovidTweetCustomStopWords.txt".  Navigate back to the Parameters tab, and scroll down to the "Custom stopwords file" section.  Click on the "Upload stopwords file" button, then navigate to the file and select it.
+A Stopword file is simply a text file with one term per line.  As TopEx does not yet have concept mapping, you will need to enter in all variations of a term in order for it to be removed.  For example, the file should contain both "COVID-19" and "COVID19".  For this tutorial we have already created a stopwords file named "CovidTweetCustomStopWords.txt".  Navigate back to the Parameters tab, and scroll down to the "Custom stopwords file" section.  Click on the "Upload stopwords file" button, then navigate to the file and select it. A successful upload will results in the file name appearing below the "Reset" button.
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_14.png" alt="Stopword loading screen." width="200"/>
 
-A successful upload will results in the file name appearing below the "Reset" button.  If uploading a stopwords file, then the NLP algorithm has to be run again.  Navigate to the "Load Data" tab and run TopEx. You should get a scatter plot that looks like the following, which is different from the first one.  
+If uploading a stopwords file, then the NLP algorithm has to be run again.  Navigate to the "Load Data" tab and click the "RunTopEx!" button. You should get a scatter plot that looks like the following, which is different from the first one.  
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_15.png" alt="Loading stopword file." width="200"/>
 
-Note that with the first scatter plot 30 clusters looked like too many, however, 30 clusters for this plot looks ok.  They are small, but reading through the Word Clouds finds a few that are informative.  For example, Cluster 7 is all about helping to stop the spread of the virus. Cluster 1 is about new case confirmations while the closly related Cluster 5 focuses more on the death toll and Cluster 21 is about testing positive. Continue to explore the other clusters to see what else you can identify.  Also, remember that there are no "correct" number of clusters here.  Feel free to play with the reclustering and the NLP parameters to see how that affects your results!  You can also upload different months to see how they change.
+Note that with the first scatter plot 30 clusters looked like too many, however, 30 clusters for this plot looks ok.  They are small, but reading through the Word Clouds finds a few that are informative.  For example, Cluster 7 is all about helping to stop the spread of the virus. Cluster 1 is about new case confirmations while the closly related Cluster 5 focuses more on the death toll and Cluster 21 is about testing positive. Continue to explore the other clusters to see what else you can identify.  Also, remember that there are no "correct" number of clusters here.  Feel free to play with the reclustering and the NLP parameters to see how that affects your results!
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_15.png" alt="Sample word clouds after using stopwords." width="200"/>
 
 
 ### Using an Expansion Corpus
