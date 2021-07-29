@@ -123,42 +123,36 @@ If uploading a stopwords file, then the NLP algorithm has to be run again.  Navi
 
 Note that with the first scatter plot 30 clusters looked like too many, however, 30 clusters for this plot looks ok.  They are small, but reading through the Word Clouds finds a few that are informative.  For example, Cluster 7 is all about helping to stop the spread of the virus. Cluster 1 is about new case confirmations while the closly related Cluster 5 focuses more on the death toll and Cluster 21 is about testing positive. Continue to explore the other clusters to see what else you can identify.  Also, remember that there are no "correct" number of clusters here.  Feel free to play with the reclustering and the NLP parameters to see how that affects your results!
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_15.png" alt="Sample word clouds after using stopwords." width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_16.png" alt="Sample word clouds after using stopwords." width="200"/>
 
 
 ### Using an Expansion Corpus
 
 The results from the steps above utilize the input texts as the background corpus to generate numerical representations for each sentence; however, sometimes your input corpus may at times be small and you need additional background context in order to get good sentence representations, or you want to use the same documents as your background for clustering multiple input corpora. This is where the Expansion corpus comes in.  For this tutorial, we are going to import the December Tweets as our expansion corpus and generate the sentences representations using both the Tweets from March and December.
 
-To get started, navigate to the "Load Data" tab and clear all your previous files by clicking on the "Reset Input Corpus" button.
+To get started, navigate to the "Load Data" tab and scroll down to the "Expansion Corpus" section at the bottom of the panel, then click on the "Upload Expansion Docs" button.
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_17.png" alt="Upload expansion corpus button." width="200"/>
 
-Scroll down to the "Expansion Corpus" section and click on the "Upload Expansion Docs" button.
+Navigate to the folder that contains the data for this tutorial and select the "December2020" folder, then select "Upload" when it asks you to upload the files. Your files should population below the Expansion Corpus section.
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+Next, let adjust the Background Corpus on the Parameters tab.  All of the parameters are going to stay the same EXCEPT the Background Corpus, which needs to be changed to "Both". Navigate back to the "Load Data" tab and click the "Run TopEx!" button.
 
-Navigate to the folder that contains the data for this tutorial and select the "December2020" folder, then select "Upload" when it asks you to upload the files.
-
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
-
-Your files should population below the Expansion Corpus section.
-
-Next, lets reload the Clustering Corpus (i.e. the Tweets from March we want to analyze) as we did in the first part of this tutorial.  All of the parameters are going to stay the same EXCEPT the Background Corpus, which needs to be changed to "Both". Now all we need to do is click the "Run TopEx!" button!
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_18.png" alt="Changing background corpus to Both." width="200"/>
 
 Your scatter plot should produce something similar to the following:
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_19.png" alt="Scatter plot with background corpus." width="200"/>
 
 Having 30 clusters again looks like too many, so lets use the Re-Cluster tab to bring this down to 15 clusters.
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_20.png" alt="reclustered scatter plot." width="200"/>
 
 Exploring this data reveals similar clusters to the original results using only the March data; however, we now have more compact clusters and a nicer figure.  Note that including additional data in an expansion corpus can be beneficial or detrimental to your analysis.  As this is an exploratory tool there is no right or wrong way, so try a few variations and pick which you think is the most helpful!
 
 ### Topic Comparisons Between Months
 
-Now that we have our March Tweets analyzed we need to run the same analysis for December.  Open up a new TopEx instance in your browser, and run the same analysis with the similar settings on the December Tweets, using the March Tweets as our Expansion Corpus, and change the number of clusters to 8 this time.  Make sure you set the Background Corpus to use Both the Clustering and Expansion Corpus.  You should end up with a scatter plot similar to the following with 8 clusters:
+Now that we have our March Tweets analyzed we need to run the same analysis for December.  Open up a new TopEx instance in your browser, and run the same analysis with the similar settings on the December Tweets, using the March Tweets as the Expansion Corpus, and change the number of clusters to 8 this time.  Make sure you set the Background Corpus to "Both".  You should end up with a scatter plot similar to the following with 8 clusters:
 
 <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
 
