@@ -79,7 +79,7 @@ For example, hovering over the orange Cluster 3 at the center top displays the C
  
  Another way to explore the topics present in a set of texts is thorugh the Word Cloud visualization.  Click on the "Word Cloud" toggle at the top of the scatter plot.  You should see a screen similar to the following:
  
- <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+ <img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_10.png" alt="Word Cloud view." width="200"/>
  
  Word Clouds show word frequencies in a set of texts with the largest words being those that are the most frequent.  You can toggle between the different clusters using the drop down at the top of the page.  Scanning through all the clusters you can get a general idea of what each is about just by looking at the most frequent words in each Word Cloud.
 
@@ -89,7 +89,7 @@ In the current results there are too many clusters as some of our breakout group
  
 The Re-Cluster tab allows you to re-group sentences into a different number of clusters, and re-run the topic analysis for each cluster without having to re-run the costly NLP analysis. Once on the Re-Cluster tab, enter in the values as shown below.
  
- <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+ <img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_11.png" alt="Recluster Tab" width="200"/>
  
  The first option "Height or K" allows you to choose the number of clusters you want (K) the data grouped into if using K-means, or the height of the dendrogram if using Hierarchical clustering (Height).  For Hierarchical clustering, smaller numbers will results in MORE clusters and larger numbers will results in FEWER clusters, while for K-means the number you enter is the number of clusters that will be returned.
  
@@ -99,16 +99,15 @@ The Re-Cluster tab allows you to re-group sentences into a different number of c
  
  Once the new parameters are set you can press the Re-Cluster button and your scatter plot and word clouds will be updated momentarily.  You should get a scatter plot that looks something like the following:
  
- <img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+ <img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_12.png" alt="Reclustered scatter plot." width="200"/>
  
  Notice that now many of the sentence groupings that were assigned to multiple clusters are now assigned to a single cluster and the plot looks much cleaner!
  
- 
 ### Using Stopwords
  
- While re-clustering helped a bit, there are still some issues with the current analysis.  Using the WOrd Cloud visualization, we can see that many of the clusters are dominated by uninformative words, including "coronavirus" in Cluster 7, "covid19" in Cluster 2, and "people" in Cluster 11.
+ While re-clustering helped a bit, there are still some issues with the current analysis.  Using the Word Cloud visualization, we can see that many of the clusters are dominated by uninformative words, including "coronavirus" in Cluster 7, "covid19" in Cluster 2, and "people" in Cluster 11.
  
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_13.png" alt="Example Word Clouds" width="200"/>
 
 These terms are uninformative because the Tweets were selected specifically because they were in response to the pandemic.  Thus, having clusters of sentences dominated by these terms is not helpful in this situation.  
 
