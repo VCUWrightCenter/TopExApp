@@ -154,7 +154,7 @@ Exploring this data reveals similar clusters to the original results using only 
 
 Now that we have our March Tweets analyzed we need to run the same analysis for December.  Open up a new TopEx instance in your browser, and run the same analysis with the similar settings on the December Tweets, using the March Tweets as the Expansion Corpus, and change the number of clusters to 8 this time.  Make sure you set the Background Corpus to "Both".  You should end up with a scatter plot similar to the following with 8 clusters:
 
-<img src="https://octodex.github.com/images/yaktocat.png" alt="Image of Yaktocat" width="200"/>
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_21.png" alt="December scatter plot." width="200"/>
 
 Notice the number of clusters is reduced from 15 to 8.  This is because in December there were fewer main focal points of discussion.  Explore the data and try to identify which cluster of Tweets discuss the following:
 
@@ -169,6 +169,9 @@ In comparing these topics to those from March it is easy to quickly identify how
 ### Downloading Data
 
 Now that we have analyzed our Tweets we will want to save this data for future analysis.  TopEx has multiple ways to export data on the Import/Export tab that are described below:
+                                                                                                                         
+<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_22.png" alt="Data download tab." width="200"/>
+                                                                                                                         
 
  1) Export Clustering (.topex): The .topex file allows you to export the current TopEx settings and data view.  You can export then import this file back into TopEx at a later data and have re-clustering functionality and well as data export capabilities.
  2) Export Sentences (.csv): This option just exports a list of all the sentences that were analyzed.
