@@ -20,3 +20,13 @@
     bottom: 25px;
     right: 25px;
 }
+
+#information-button {
+    position: absolute;
+    bottom: 25px;
+    right: 200px;
+}
+
+#information-button i.icon {
+    height: auto;
+}

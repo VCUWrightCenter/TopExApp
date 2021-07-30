@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import * as d3 from "d3";
 import './WordCloud.css'
 import * as util from '../../Shared'
-import { Button, Dropdown } from 'semantic-ui-react'
+import { Dropdown } from 'semantic-ui-react'
+import Button from '@material-ui/core/Button';
 
 class WordCloud extends Component {
 
@@ -35,7 +36,7 @@ class WordCloud extends Component {
 
             // Set drop down options
             let max = util.getMax(this.props.data);
-            let options = Array.from({length: max}, (x,i) => {return { 'key':i, 'text':`Cluster ${i}`, 'value': i }})
+            let options = Array.from({length: max+1}, (x,i) => {return { 'key':i, 'text':`Cluster ${i}`, 'value': i }})
             await this.setState({
                 dropDownOptions: options,
                 wordClouds: wordClouds
@@ -153,10 +154,10 @@ class WordCloud extends Component {
                 <div className='graph' id="WordCloudNode"></div>
                 <div id='exportButtons' className='exportButtons'>
                     <Button
+                        variant="contained"
+                        style={{backgroundColor: '#000', color: '#FFF'}}
                         onClick={(e) => util.exportSVGAsPNG("WordCloudSVG")}
-                        content="Export Word Cloud (.png)"
-                        className="ui black button"
-                    />
+                    >Export Word Cloud (.png)</Button>
                 </div>
             </div>
         )

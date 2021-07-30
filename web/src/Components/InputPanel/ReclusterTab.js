@@ -6,8 +6,8 @@
 import React, { Component } from "react";
 import Axios from "axios";
 import './InputPanel.css';
-import { Input, Button, Header } from 'semantic-ui-react';
-
+import { Input, Header } from 'semantic-ui-react';
+import Button from '@material-ui/core/Button';
 
 class ReclusterTab extends Component {
     constructor(props) {
@@ -49,7 +49,7 @@ class ReclusterTab extends Component {
             formData.append('linkage_matrix', this.props.graphData.linkage_matrix);
 
             let pending = true
-            const promise = Axios.post("http://localhost:5000/recluster", formData, {
+            const promise = Axios.post(`${process.env.REACT_APP_API}/recluster`, formData, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'multipart/form-data'
@@ -67,8 +67,8 @@ class ReclusterTab extends Component {
 
             // Ping clustering function status from another thread
             while(pending) {
-                await new Promise(r => setTimeout(r, 100));
-                await Axios.get("http://localhost:5000/status/2", {
+                await new Promise(r => setTimeout(r, 2000));
+                await Axios.get(`${process.env.REACT_APP_API}/status/2`, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'multipart/form-data'
@@ -144,13 +144,13 @@ class ReclusterTab extends Component {
                         </div>
                     }
                     <Button
-                        color='black'
+                        variant="contained"
+                        color="primary"
                         disabled={this.state.runningScript || !this.props.graphData?.data}
                         loading={this.state.runningScript}
                         onClick={(e) => { document.getElementById('submitReclusterButton').click() }}
-                        content='Recluster'
-                        className='action'
-                    />
+                        className='vspace'
+                    >Recluster</Button>
                     <form encType="multipart/form-data" onSubmit={(e) => this.submitRecluster(e)}>
                         <input hidden id='reclusterThreshold' type="number" />
                         <button hidden id="submitReclusterButton" className="submitButton"> Re-Cluster </button>

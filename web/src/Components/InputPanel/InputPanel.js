@@ -6,8 +6,8 @@
 import React, { Component } from "react";
 import './InputPanel.css';
 import { Tab } from 'semantic-ui-react';
-import ClusterTab from "./ClusterTab";
-import FileManagerTab from "./FileManagerTab";
+import ParametersTab from "./ParametersTab";
+import LoadDataTab from "./LoadDataTab";
 import ImportExportTab from "./ImportExportTab";
 import ReclusterTab from "./ReclusterTab";
 
@@ -18,13 +18,7 @@ class InputPanel extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            corpusDocs: [],
-            expansionDocs: [],
-            stopwordsFile: [],
-            leftTabs: null,
-            graphData: null,
-            ProcessingRunButtonDisabled: true,
-            w2vBinFileFileName: [],
+            graphData: null
         };
     }
 
@@ -32,16 +26,6 @@ class InputPanel extends Component {
     graphDataCallback = (graphData) => {
         this.setState({ graphData: graphData })
         this.props.graphDataCallback(graphData)
-    }
-
-    // Callback for passing expansionDocs from FileManagerTab components back up to InputPanel
-    corpusDocsCallback = (files) => {
-        this.setState({ corpusDocs: files })
-    }
-
-    // Callback for passing expansionDocs from FileManagerTab components back up to InputPanel
-    expansionDocsCallback = (files) => {
-        this.setState({ expansionDocs: files })
     }
 
     // Callback for passing stopwords file from FileManagerTab components back up to InputPanel
@@ -55,9 +39,9 @@ class InputPanel extends Component {
 
     render() {
         let panes = [
-            { menuItem: 'File Manager', pane: { key: 'pane1', content: <FileManagerTab corpusDocsCallback={this.corpusDocsCallback} expansionDocsCallback={this.expansionDocsCallback} stopwordsFileCallback={this.stopwordsFileCallback} />, className: "pane" } },
-            { menuItem: 'Cluster', pane: { key: 'pane3', content: <ClusterTab corpusDocs={this.state.corpusDocs} expansionDocs={this.state.expansionDocs} stopwordsFile={this.state.stopwordsFile} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
-            { menuItem: 'Re-Cluster', pane: { key: 'pane0', content: <ReclusterTab graphData={this.state.graphData} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
+            { menuItem: 'Load Data', pane: { key: 'pane1', content: <LoadDataTab extractParams={()=>this.content.extractParams() } graphDataCallback={this.graphDataCallback} />, className: "pane" } },
+            { menuItem: 'Parameters', pane: { key: 'pane3', content: <ParametersTab ref={instance => {this.content = instance}} />, className: "pane" } },
+            { menuItem: 'Re-Cluster', pane: { key: 'pane0', content: <ReclusterTab graphData={this.state.graphData} query={this.state.query} graphDataCallback={this.graphDataCallback} />, className: "pane" } },
             { menuItem: 'Import/Export', pane: { key: 'pane2', content: <ImportExportTab graphData={this.state.graphData} graphDataCallback={this.graphDataCallback} />, className: "pane" } }
         ]
 

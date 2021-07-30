@@ -1,9 +1,11 @@
 from flask import request, Flask, jsonify, make_response
+from flask_cors import CORS
 import sys
 from threads import ClusterThread, ReclusterThread
 
 threads = {}    
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/', methods=['GET'])
 def home():
@@ -15,13 +17,11 @@ def status(thread_id):
     global threads
 
     try:
-        status = threads[thread_id].status if thread_id in threads else 'Initializing...'
+        status = threads[thread_id].status if thread_id in threads else 'Initializing'
         response = make_response(status)
     except:
         response = make_response(jsonify("Unexpected error: ", sys.exc_info()[0]))        
 
-    # Add Access-Control-Allow-Origin header to allow cross-site request
-    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
     return response
 
 
@@ -39,11 +39,8 @@ def cluster():
     else:
         response = make_response(dict(threads[tid].result))
 
-    # Add Access-Control-Allow-Origin header to allow cross-site request
-    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
-
     # Set thread status to idle
-    threads[tid].status = 'Idle'
+    threads[tid].status = 'Initializing'
 
     return response
 
@@ -60,11 +57,8 @@ def recluster():
     else:
         response = make_response(dict(threads[tid].result))
 
-    # Add Access-Control-Allow-Origin header to allow cross-site request
-    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
-
     # Set thread status to idle
-    threads[tid].status = 'Idle'
+    threads[tid].status = 'Initializing'
 
     return response
 

@@ -2,6 +2,7 @@
 2019.03.12_SEED_TOPICS_AMY/*
 .DS_Store
 Api/env
+venv
 env
 venv
 **/.vscode
@@ -30,3 +31,5 @@ venv
 /web/yarn-debug.log*
 /web/yarn-error.log*
 **/__pycache__/*
+
+/api/.chalice
