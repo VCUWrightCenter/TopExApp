@@ -35,7 +35,7 @@ You should see a pop-out menu as shown below.
 
 Under the "Documents to Cluster" section click on the "upload docs to cluster" button.
 
-<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_4.png" alt="Upload Docs button" width="600"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_4.png" alt="Upload Docs button" width="300"/>
 
 Navigate to the folder containing the March 2020 COVID-19 Tweets.
 
@@ -43,13 +43,13 @@ Navigate to the folder containing the March 2020 COVID-19 Tweets.
 
 Select the "March 2020" folder, then click "Upload".  It will ask you if you want to upload 1,657 files - select "upload" again to import the data.  Once imported you will see the list of files appear in your menu bar.
 
-<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_6.png" alt="Load Data tab with input files listed." width="600"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_6.png" alt="Load Data tab with input files listed." width="300"/>
 
 ### Clustering Sentences
 
 Once your files have been imported, click on the "Parameters" tab in the left side menu bar. This tab provides you many options for tuning the various stages of transforming each sentence into a numerical vector.  For a detailed explanation of each option, please read the [TopEx User's Manual](https://github.com/VCUWrightCenter/TopExApp/docs/manual.md).  For this tutorial, set the options as shown below:
 
-<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_7.png" alt="Parameters Tab" width="600"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_7.png" alt="Parameters Tab" width="300"/>
 
 Now navigate back to the "Load Data" tab and click the "Run Topex!" button.  When the analysis is complete the scatter plot should pop up and look similar to the following:
 
@@ -89,7 +89,7 @@ In the current results there are too many clusters as some of our breakout group
  
 The Re-Cluster tab allows you to re-group sentences into a different number of clusters, and re-run the topic analysis for each cluster without having to re-run the costly NLP analysis. Once on the Re-Cluster tab, enter in the values as shown below.
  
- <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_11.png" alt="Recluster Tab" width="600"/>
+ <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_11.png" alt="Recluster Tab" width="300"/>
  
  The first option "Height or K" allows you to choose the number of clusters you want (K) the data grouped into if using K-means, or the height of the dendrogram if using Hierarchical clustering (Height).  For Hierarchical clustering, smaller numbers will results in MORE clusters and larger numbers will results in FEWER clusters, while for K-means the number you enter is the number of clusters that will be returned.
  
@@ -107,7 +107,7 @@ The Re-Cluster tab allows you to re-group sentences into a different number of c
  
  While re-clustering helped a bit, there are still some issues with the current analysis.  Using the Word Cloud visualization, we can see that many of the clusters are dominated by uninformative words, including "coronavirus" in Cluster 7, "covid19" in Cluster 2, and "people" in Cluster 11.
  
-<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_13.png" alt="Example Word Clouds" width="600"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_13.png" alt="Example Word Clouds" width="800"/>
 
 These terms are uninformative because the Tweets were selected specifically because they were in response to the pandemic.  Thus, having clusters of sentences dominated by these terms is not helpful in this situation.  
 
@@ -123,7 +123,7 @@ If uploading a stopwords file, then the NLP algorithm has to be run again.  Navi
 
 Note that with the first scatter plot 30 clusters looked like too many, however, 30 clusters for this plot looks ok.  They are small, but reading through the Word Clouds finds a few that are informative.  For example, Cluster 7 is all about helping to stop the spread of the virus. Cluster 1 is about new case confirmations while the closly related Cluster 5 focuses more on the death toll and Cluster 21 is about testing positive. Continue to explore the other clusters to see what else you can identify.  Also, remember that there are no "correct" number of clusters here.  Feel free to play with the reclustering and the NLP parameters to see how that affects your results!
 
-<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_16.png" alt="Sample word clouds after using stopwords." width="600"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_16.png" alt="Sample word clouds after using stopwords." width="800"/>
 
 
 ### Using an Expansion Corpus
@@ -132,13 +132,13 @@ The results from the steps above utilize the input texts as the background corpu
 
 To get started, navigate to the "Load Data" tab and scroll down to the "Expansion Corpus" section at the bottom of the panel, then click on the "Upload Expansion Docs" button.
 
-<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_17.png" alt="Upload expansion corpus button." width="600"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_17.png" alt="Upload expansion corpus button." width="300"/>
 
 Navigate to the folder that contains the data for this tutorial and select the "December2020" folder, then select "Upload" when it asks you to upload the files. Your files should population below the Expansion Corpus section.
 
 Next, let adjust the Background Corpus on the Parameters tab.  All of the parameters are going to stay the same EXCEPT the Background Corpus, which needs to be changed to "Both". Navigate back to the "Load Data" tab and click the "Run TopEx!" button.
 
-<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_18.png" alt="Changing background corpus to Both." width="600"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_18.png" alt="Changing background corpus to Both." width="300"/>
 
 Your scatter plot should produce something similar to the following:
 
