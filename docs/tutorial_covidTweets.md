@@ -173,11 +173,11 @@ Now that we have analyzed our Tweets we will want to save this data for future a
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_22.png" alt="Data download tab." width="600"/>
                                                                                                                          
 
- 1) Export Clustering (.topex): The .topex file allows you to export the current TopEx settings and data view.  You can export then import this file back into TopEx at a later data and have re-clustering functionality and well as data export capabilities.
- 2) Export Sentences (.csv): This option just exports a list of all the sentences that were analyzed.
- 3) Export Row-Level Results (.txt): This is the most useful file for further analysis of TopEx results.  This option downloads a pipe-delimited text file that can be uploaded into programs like Excel.  Data includes the raw text, assigned cluster, chosen phrase, and topic key words for each sentence that was processed.  Sentence clusters can be analyzed in detail using this output option.
- 4) Export Scatterplot Data (.txt): This option exports a delimited text file with the coordinates and cluster assignment for each sentence so you can re-create the scatterplot in external tools like R for publications.
- 5) Export Word Cloud Data (.txt): This is similar to the scatterplot file where the raw word frequencies are saved in a delimied file so that word clouds can be generated in external tools for publication.
+ - Export Clustering (.topex): The .topex file allows you to export the current TopEx settings and data view.  You can export then import this file back into TopEx at a later data and have re-clustering functionality and well as data export capabilities.
+ - Export Sentences (.csv): This option just exports a list of all the sentences that were analyzed.
+ - Export Row-Level Results (.txt): This is the most useful file for further analysis of TopEx results.  This option downloads a pipe-delimited text file that can be uploaded into programs like Excel.  Data includes the raw text, assigned cluster, chosen phrase, and topic key words for each sentence that was processed.  Sentence clusters can be analyzed in detail using this output option.
+ - Export Scatterplot Data (.txt): This option exports a delimited text file with the coordinates and cluster assignment for each sentence so you can re-create the scatterplot in external tools like R for publications.
+ - Export Word Cloud Data (.txt): This is similar to the scatterplot file where the raw word frequencies are saved in a delimied file so that word clouds can be generated in external tools for publication.
 
 Finally, on each of the visualization screens you can export a low resolution snapshot of the scatterplot or word clouds for documentation purposes.
 
