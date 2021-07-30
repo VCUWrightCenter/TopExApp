@@ -21,45 +21,45 @@ Go to [topex.cctr.vcu.edu](topex.cctr.vcu.edu) to start TopEx.  You may open Top
 
 Once loaded, you should see a window similar to the following:
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_1.png" alt="TopEx welcome screen." width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_1.png" alt="TopEx welcome screen." width="200"/>
 
 ### Loading Data
 
 To start uploading data, click on "Get Started", then click on the hamburger menu in the upper left corner of the TopEx window.
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_2.png" alt="Hamburger Button" width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_2.png" alt="Hamburger Button" width="200"/>
 
 You should see a pop-out menu as shown below.
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_3.png" alt="Load Data Tab" width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_3.png" alt="Load Data Tab" width="200"/>
 
 Under the "Documents to Cluster" section click on the "upload docs to cluster" button.
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_4.png" alt="Upload Docs button" width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_4.png" alt="Upload Docs button" width="200"/>
 
 Navigate to the folder containing the March 2020 COVID-19 Tweets.
 
-<img src="img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_5.png" alt="Data upload screen." width="200"/>
+<img src="img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_5.png" alt="Data upload screen." width="200"/>
 
 Select the "March 2020" folder, then click "Upload".  It will ask you if you want to upload 1,657 files - select "upload" again to import the data.  Once imported you will see the list of files appear in your menu bar.
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_6.png" alt="Load Data tab with input files listed." width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_6.png" alt="Load Data tab with input files listed." width="200"/>
 
 ### Clustering Sentences
 
 Once your files have been imported, click on the "Parameters" tab in the left side menu bar. This tab provides you many options for tuning the various stages of transforming each sentence into a numerical vector.  For a detailed explanation of each option, please read the [TopEx User's Manual](https://github.com/VCUWrightCenter/TopExApp/docs/manual.md).  For this tutorial, set the options as shown below:
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_7.png" alt/tutorial_7="Parameters Tab" width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_7.png" alt/tutorial_7="Parameters Tab" width="200"/>
 
 Now navigate back to the "Load Data" tab and click the "Run Topex!" button.  When the analysis is complete the scatter plot should pop up and look similar to the following:
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_8.png" alt/tutorial_7="Parameters Tab" width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_8.png" alt/tutorial_7="Parameters Tab" width="200"/>
 
 ### Navigating TopEx Results
 
 TopEx displays results in two ways: an interactive scatter plot and word clouds.  The scatter plot is shown by default, however you can switch to the word cloud view using the toggle at the center top of the page.
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_9.png" alt/tutorial_7="Parameters Tab" width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_9.png" alt/tutorial_7="Parameters Tab" width="200"/>
 
 #### Exploring the scatter plot
 
@@ -79,7 +79,7 @@ For example, hovering over the orange Cluster 3 at the center top displays the C
  
  Another way to explore the topics present in a set of texts is thorugh the Word Cloud visualization.  Click on the "Word Cloud" toggle at the top of the scatter plot.  You should see a screen similar to the following:
  
- <img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_10.png" alt="Word Cloud view." width="200"/>
+ <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_10.png" alt="Word Cloud view." width="200"/>
  
  Word Clouds show word frequencies in a set of texts with the largest words being those that are the most frequent.  You can toggle between the different clusters using the drop down at the top of the page.  Scanning through all the clusters you can get a general idea of what each is about just by looking at the most frequent words in each Word Cloud.
 
@@ -89,7 +89,7 @@ In the current results there are too many clusters as some of our breakout group
  
 The Re-Cluster tab allows you to re-group sentences into a different number of clusters, and re-run the topic analysis for each cluster without having to re-run the costly NLP analysis. Once on the Re-Cluster tab, enter in the values as shown below.
  
- <img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_11.png" alt="Recluster Tab" width="200"/>
+ <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_11.png" alt="Recluster Tab" width="200"/>
  
  The first option "Height or K" allows you to choose the number of clusters you want (K) the data grouped into if using K-means, or the height of the dendrogram if using Hierarchical clustering (Height).  For Hierarchical clustering, smaller numbers will results in MORE clusters and larger numbers will results in FEWER clusters, while for K-means the number you enter is the number of clusters that will be returned.
  
@@ -99,7 +99,7 @@ The Re-Cluster tab allows you to re-group sentences into a different number of c
  
  Once the new parameters are set you can press the Re-Cluster button and your scatter plot and word clouds will be updated momentarily.  You should get a scatter plot that looks something like the following:
  
- <img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_12.png" alt="Reclustered scatter plot." width="200"/>
+ <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_12.png" alt="Reclustered scatter plot." width="200"/>
  
  Notice that now many of the sentence groupings that were assigned to multiple clusters are now assigned to a single cluster and the plot looks much cleaner!
  
@@ -107,7 +107,7 @@ The Re-Cluster tab allows you to re-group sentences into a different number of c
  
  While re-clustering helped a bit, there are still some issues with the current analysis.  Using the Word Cloud visualization, we can see that many of the clusters are dominated by uninformative words, including "coronavirus" in Cluster 7, "covid19" in Cluster 2, and "people" in Cluster 11.
  
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_13.png" alt="Example Word Clouds" width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_13.png" alt="Example Word Clouds" width="200"/>
 
 These terms are uninformative because the Tweets were selected specifically because they were in response to the pandemic.  Thus, having clusters of sentences dominated by these terms is not helpful in this situation.  
 
@@ -115,15 +115,15 @@ Stopwords are words that are uninfomrative for a particular analysis and are rem
 
 A Stopword file is simply a text file with one term per line.  As TopEx does not yet have concept mapping, you will need to enter in all variations of a term in order for it to be removed.  For example, the file should contain both "COVID-19" and "COVID19".  For this tutorial we have already created a stopwords file named "CovidTweetCustomStopWords.txt".  Navigate back to the Parameters tab, and scroll down to the "Custom stopwords file" section.  Click on the "Upload stopwords file" button, then navigate to the file and select it. A successful upload will results in the file name appearing below the "Reset" button.
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_14.png" alt="Stopword loading screen." width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_14.png" alt="Stopword loading screen." width="200"/>
 
 If uploading a stopwords file, then the NLP algorithm has to be run again.  Navigate to the "Load Data" tab and click the "RunTopEx!" button. You should get a scatter plot that looks like the following, which is different from the first one.  
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_15.png" alt="Loading stopword file." width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_15.png" alt="Loading stopword file." width="200"/>
 
 Note that with the first scatter plot 30 clusters looked like too many, however, 30 clusters for this plot looks ok.  They are small, but reading through the Word Clouds finds a few that are informative.  For example, Cluster 7 is all about helping to stop the spread of the virus. Cluster 1 is about new case confirmations while the closly related Cluster 5 focuses more on the death toll and Cluster 21 is about testing positive. Continue to explore the other clusters to see what else you can identify.  Also, remember that there are no "correct" number of clusters here.  Feel free to play with the reclustering and the NLP parameters to see how that affects your results!
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_16.png" alt="Sample word clouds after using stopwords." width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_16.png" alt="Sample word clouds after using stopwords." width="200"/>
 
 
 ### Using an Expansion Corpus
@@ -132,21 +132,21 @@ The results from the steps above utilize the input texts as the background corpu
 
 To get started, navigate to the "Load Data" tab and scroll down to the "Expansion Corpus" section at the bottom of the panel, then click on the "Upload Expansion Docs" button.
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_17.png" alt="Upload expansion corpus button." width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_17.png" alt="Upload expansion corpus button." width="200"/>
 
 Navigate to the folder that contains the data for this tutorial and select the "December2020" folder, then select "Upload" when it asks you to upload the files. Your files should population below the Expansion Corpus section.
 
 Next, let adjust the Background Corpus on the Parameters tab.  All of the parameters are going to stay the same EXCEPT the Background Corpus, which needs to be changed to "Both". Navigate back to the "Load Data" tab and click the "Run TopEx!" button.
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_18.png" alt="Changing background corpus to Both." width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_18.png" alt="Changing background corpus to Both." width="200"/>
 
 Your scatter plot should produce something similar to the following:
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_19.png" alt="Scatter plot with background corpus." width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_19.png" alt="Scatter plot with background corpus." width="200"/>
 
 Having 30 clusters again looks like too many, so lets use the Re-Cluster tab to bring this down to 15 clusters.
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_20.png" alt="reclustered scatter plot." width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_20.png" alt="reclustered scatter plot." width="200"/>
 
 Exploring this data reveals similar clusters to the original results using only the March data; however, we now have more compact clusters and a nicer figure.  Note that including additional data in an expansion corpus can be beneficial or detrimental to your analysis.  As this is an exploratory tool there is no right or wrong way, so try a few variations and pick which you think is the most helpful!
 
@@ -154,7 +154,7 @@ Exploring this data reveals similar clusters to the original results using only 
 
 Now that we have our March Tweets analyzed we need to run the same analysis for December.  Open up a new TopEx instance in your browser, and run the same analysis with the similar settings on the December Tweets, using the March Tweets as the Expansion Corpus, and change the number of clusters to 8 this time.  Make sure you set the Background Corpus to "Both".  You should end up with a scatter plot similar to the following with 8 clusters:
 
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_21.png" alt="December scatter plot." width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_21.png" alt="December scatter plot." width="200"/>
 
 Notice the number of clusters is reduced from 15 to 8.  This is because in December there were fewer main focal points of discussion.  Explore the data and try to identify which cluster of Tweets discuss the following:
 
@@ -170,7 +170,7 @@ In comparing these topics to those from March it is easy to quickly identify how
 
 Now that we have analyzed our Tweets we will want to save this data for future analysis.  TopEx has multiple ways to export data on the Import/Export tab that are described below:
                                                                                                                          
-<img src="https://github.com/VCUWrightCenter/TopExApp/docs/figs/tutorial_22.png" alt="Data download tab." width="200"/>
+<img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_22.png" alt="Data download tab." width="200"/>
                                                                                                                          
 
  1) Export Clustering (.topex): The .topex file allows you to export the current TopEx settings and data view.  You can export then import this file back into TopEx at a later data and have re-clustering functionality and well as data export capabilities.
