@@ -5,8 +5,8 @@ TopEx is a domain agnostic NLP application that facilitates the exploration of t
 ## Start Exploring
 
 Choose your access:
- - Public web server: [topex.cctr.vcu.edu](topex.cctr.vcu.edu)
- - Local installation: [TopExApp on GitHub](github.com/VCUWrightCenter/TopExApp)
+ - Public web server: [topex.cctr.vcu.edu](http://topex.cctr.vcu.edu/)
+ - Local installation: [TopExApp on GitHub](https://github.com/VCUWrightCenter/TopExApp)
 
 To get started with TopEx you can follow one of our TopEx Tutorials or read the detailed instruction manual. 
 
@@ -14,11 +14,6 @@ To get started with TopEx you can follow one of our TopEx Tutorials or read the 
 #### [Exploring COVID-19 pandemic tweets.](https://vcuwrightcenter.github.io/TopExApp/tutorial_covidTweets)
 
 In this tutorial you will import a sample of Tweets from 2020 that are discussing the COVID-19 pandemic and will compare the topics discussed in March versus December.
-
-
-<> #### [Identifying main topics from abstracts in a PubMed search.]()
-
-<> In this tutorial you will learn how to run a PubMed search within TopEx and identify the main topics present in the returned abstracts.  You will also learn how to import your own PubMed search results into TopEx as a MEDLINE formatted file for exploration.
 
 ### User's Manual
 
