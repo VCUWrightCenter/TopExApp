@@ -11,18 +11,18 @@ Choose your access:
 To get started with TopEx you can follow one of our TopEx Tutorials or read the detailed instruction manual. 
 
 ### Tutorials
-#### [Exploring COVID-19 pandemic tweets.]()
+#### [Exploring COVID-19 pandemic tweets.](https://vcuwrightcenter.github.io/TopExApp/tutorial_covidTweets)
 
 In this tutorial you will import a sample of Tweets from 2020 that are discussing the COVID-19 pandemic and will compare the topics discussed in March versus December.
 
 
-#### [Identifying main topics from abstracts in a PubMed search.]()
+<> #### [Identifying main topics from abstracts in a PubMed search.]()
 
-In this tutorial you will learn how to run a PubMed search within TopEx and identify the main topics present in the returned abstracts.  You will also learn how to import your own PubMed search results into TopEx as a MEDLINE formatted file for exploration.
+<> In this tutorial you will learn how to run a PubMed search within TopEx and identify the main topics present in the returned abstracts.  You will also learn how to import your own PubMed search results into TopEx as a MEDLINE formatted file for exploration.
 
 ### User's Manual
 
-The Users Manual contains detailed descriptions of all options avaliable in TopEx, including installation instructions for running TopEx locally.
+The [Users Manual](https://vcuwrightcenter.github.io/TopExApp/manual) contains detailed descriptions of all options avaliable in TopEx, including installation instructions for running TopEx locally.
 
 ## Support
 
