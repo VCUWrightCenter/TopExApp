@@ -17,7 +17,7 @@ A sample of Tweets from March and December 2020 are provided as a zip file in th
 
 ### Starting TopEx
 
-Go to [topex.cctr.vcu.edu](topex.cctr.vcu.edu) to start TopEx.  You may open TopEx in multiple browser windows as well if you want to run and compare multiple text corpora, such as different months of Tweets.
+Go to [topex.cctr.vcu.edu](http://topex.cctr.vcu.edu/) to start TopEx.  You may open TopEx in multiple browser windows as well if you want to run and compare multiple text corpora, such as different months of Tweets.
 
 Once loaded, you should see a window similar to the following:
 
