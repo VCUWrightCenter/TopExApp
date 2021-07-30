@@ -4,8 +4,12 @@
 - [TopEx Overview](#overview)
 - [Installation](#install)
 - [Usage Instructions](#usage)
-  * [0: Pre-process and Format Input](usage0)
-  * [1: Importing Document Corpus or Previous Analysis File](usage1)
+  * [0: Pre-process and Format Input](#usage0)
+    + [Text Files](#usage01)
+    + [CSV File](#usage02)
+    + [MEDLINE File](#usage03)
+    + [PubMed Search](#usage04)
+  * [1: Importing Document Corpus or Previous Analysis File](#usage1)
     + [Import Document Corpus](#usage11)
     + [Import Previous Analysis](#usage12)
   * [2: Setting Analysis and Visualization Parameters](#usage2)
@@ -57,21 +61,21 @@ The "input corpus" is the set of text documents you want to analyze.  TopEx acce
   - MEDLINE formatted file
   - PubMed search from within TopEx
 
-### Text file input
+### Text file input <a name="usage01">
   
  If inputting text files, TopExApp expects each document to be in its own plain text file with the extension ".txt". All text files should be located in a single folder with no other files present. When selecting to upload documents, just choose the folder that contains your corpus.
   
   Some files may require pre-processing, which is generally project specific.  In general, you want to ensure there are no odd characters in the data, and remove text that could skew your results.  For example, in the Acting Intern corpus from [(Olex et al 2020)](#paper), many of the students copied the prompt question into their reply. This is extra information that was not needed and would interfere with the analysis; thus, all of these repetitive statements were removed prior to analysis. If it is not clear what type, if any, preprocessing is needed for your corpus, you can input it as is and use the results to identify repetative or unhelpful statements to remove prior to a final analysis.  
 
-### CSV formatted file
+### CSV formatted file <a name="usage02">
   
   When selecting a CSV formatted file you should have the document ID in the first column and the entire text of the document in a single cell in the second column.  The same pre-processing suggestions apply for this data as for the individual text file import option.
   
-### MEDLINE formatted file
+### MEDLINE formatted file <a name="usage03">
   
   The MEDLINE format is provided for those who want to explore topics in a set of PubMed search results.  When you are in PubMed, select to save your search results in a MEDLINE format.  This will save the publication information, including the abstract.  Once uploaded to TopEx, the abstract will be automatically extracted and run through TopEx, and no pre-processing is required.
   
-### PubMed Search
+### PubMed Search <a name="usage04">
   
   TopEx also provides the ability to run a PubMed search directly from the application.  If using this option you can enter your search terms in the box and then select how many results to analyze.  It is suggested you use at least 100 as choosing fewer does not provid enough information for the sentence embedding process.
 
