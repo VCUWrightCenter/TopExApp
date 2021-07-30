@@ -30,7 +30,7 @@ The TopExApp was built as a graphical user interface for the [TopEx Python libra
 
 # Installation <a name="install">
 
-TopEx can be accessed on the web at [topex.cctr.vcu.edu](topex.cctr.vcu.edu), which requires no installation.  If analyzing documents with PHI or other sensitive information you can install TopExApp and run it locally as a web app within a Docker container. To install TopExApp locally refer to the [TopExApp Installation Instructions](https://github.com/VCUWrightCenter/TopExApp/docs/installation.md).
+TopEx can be accessed on the web at [topex.cctr.vcu.edu](http://topex.cctr.vcu.edu/), which requires no installation.  If analyzing documents with PHI or other sensitive information you can install TopExApp and run it locally as a web app within a Docker container. To install TopExApp locally refer to the [TopExApp Installation Instructions](https://vcuwrightcenter.github.io/TopExApp/installation).
 
 
 # Usage Instructions <a name="usage">
