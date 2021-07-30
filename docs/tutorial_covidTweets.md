@@ -65,7 +65,7 @@ Select the "March 2020" folder, then click "Upload".  It will ask you if you wan
 
 ## Clustering Sentences <a name="clustering">
 
-Once your files have been imported, click on the "Parameters" tab in the left side menu bar. This tab provides you many options for tuning the various stages of transforming each sentence into a numerical vector.  For a detailed explanation of each option, please read the [TopEx User's Manual](https://github.com/VCUWrightCenter/TopExApp/docs/manual.md).  For this tutorial, set the options as shown below:
+Once your files have been imported, click on the "Parameters" tab in the left side menu bar. This tab provides you many options for tuning the various stages of transforming each sentence into a numerical vector.  For a detailed explanation of each option, please read the [TopEx User's Manual](https://vcuwrightcenter.github.io/TopExApp/manual).  For this tutorial, set the options as shown below:
 
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_7.png" alt="Parameters Tab" width="300"/>
 
@@ -81,7 +81,7 @@ TopEx displays results in two ways: an interactive scatter plot and word clouds.
 
 ### Exploring the scatter plot <a name="scatter">
 
-In the scatter plot view, each dot represents one sentence from your input. The location of each dot is determined by reducing the distance matrix from the Sentence Clustering step down to 2 dimensions using one of the reduction methods listed under the "Vizualization Method" parameter in the Parameters tab (UMAP, tSNE, SVD, or MDS).  For this tutorial we chose to use UMAP, which is the default and recommended method.  In a UMAP plot, the closer in space two dots are, the more similar they should be.  In the scatter plot results for COVID-19 Tweets in March 2020 we can see one large cluster in the center with several smaller clusters farther out.  The colors of each dot represent the cluster they are in, which is reflected in the information on the right side panel.
+In the scatter plot view, each dot represents one sentence from your input. The location of each dot is determined by reducing the distance matrix from the Sentence Clustering step down to 2 dimensions using one of the reduction methods listed under the "Visualization Method" parameter in the Parameters tab (UMAP, tSNE, SVD, or MDS).  For this tutorial we chose to use UMAP, which is the default and recommended method.  In a UMAP plot, the closer in space two dots are, the more similar they should be.  In the scatter plot results for COVID-19 Tweets in March 2020 we can see one large cluster in the center with several smaller clusters farther out.  The colors of each dot represent the cluster they are in, which is reflected in the information on the right side panel.
 
 Hovering your mouse over a dot displays the information about that sentence in a panel to the right of the plot.  This information includes:
 
@@ -91,11 +91,11 @@ Hovering your mouse over a dot displays the information about that sentence in a
  - The full original sentence.
  - This cluster's topic with the top N topic words present in the cluster (can be adjusted using the Re-Cluster Tab).
 
-For example, hovering over the orange Cluster 3 at the center top displays the Cluster Topic that includes key words "coronavirus" and "spread".  Looking around there are several distinct groupings of sentences; however, they are not all assiged to the same cluster (i.e. have the same color).  This is an indication that we may have too many clusters, or need to change our visualization parameters to reflect the clusters that are present (See Re-Clustering section below).  
+For example, hovering over the orange Cluster 3 at the center top displays the Cluster Topic that includes key words "coronavirus" and "spread".  Looking around there are several distinct groupings of sentences; however, they are not all assigned to the same cluster (i.e. have the same color).  This is an indication that we may have too many clusters, or need to change our visualization parameters to reflect the clusters that are present (See Re-Clustering section below).  
 
 ### Word Clouds <a name="clouds">
  
- Another way to explore the topics present in a set of texts is thorugh the Word Cloud visualization.  Click on the "Word Cloud" toggle at the top of the scatter plot.  You should see a screen similar to the following:
+ Another way to explore the topics present in a set of texts is through the Word Cloud visualization.  Click on the "Word Cloud" toggle at the top of the scatter plot.  You should see a screen similar to the following:
  
  <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_10.png" alt="Word Cloud view." width="600"/>
  
@@ -109,9 +109,9 @@ The Re-Cluster tab allows you to re-group sentences into a different number of c
  
  <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_11.png" alt="Recluster Tab" width="300"/>
  
- The first option "Height or K" allows you to choose the number of clusters you want (K) the data grouped into if using K-means, or the height of the dendrogram if using Hierarchical clustering (Height).  For Hierarchical clustering, smaller numbers will results in MORE clusters and larger numbers will results in FEWER clusters, while for K-means the number you enter is the number of clusters that will be returned.
+ The first option "Height or K" allows you to choose the number of clusters you want (K) the data grouped into if using K-means, or the height of the dendrogram if using Hierarchical clustering (Height).  For Hierarchical clustering, smaller numbers will result in MORE clusters and larger numbers will result in FEWER clusters, while for K-means the number you enter is the number of clusters that will be returned.
  
- The second option determins the number of key words to display for the cluster topic.  The default is 10, so we will use that, however, if you want more or fewer that can be adjusted here.
+ The second option determines the number of keywords to display for the cluster topic.  The default is 10, so we will use that, however, if you want more or fewer that can be adjusted here.
  
  The third option aids in cleaning up the scatter plot to remove clusters that only contain a few sentences.  For example, if set to 10 then only clusters with at least 10 sentences will be displayed.  For this tutorial we will set it at 1, which includes all clusters.
  
@@ -131,7 +131,7 @@ These terms are uninformative because the Tweets were selected specifically beca
 
 Stopwords are words that are uninfomrative for a particular analysis and are removed from an analysis.  TopEx by default removes a host of standard stopwords such as "the" or "and", however, there are generally domain-specific stopwords, such as "covid19", that also need to be removed.  Thus, we need to create and upload a custom stopwords file for this analysis so that TopEx will ignore terms like "coronavirus" during it's analysis.
 
-A Stopword file is simply a text file with one term per line.  As TopEx does not yet have concept mapping, you will need to enter in all variations of a term in order for it to be removed.  For example, the file should contain both "COVID-19" and "COVID19".  For this tutorial we have already created a stopwords file named "CovidTweetCustomStopWords.txt".  Navigate back to the Parameters tab, and scroll down to the "Custom stopwords file" section.  Click on the "Upload stopwords file" button, then navigate to the file and select it. A successful upload will results in the file name appearing below the "Reset" button.
+A Stopword file is simply a text file with one term per line.  As TopEx does not yet have concept mapping, you will need to enter in all variations of a term in order for it to be removed.  For example, the file should contain both "COVID-19" and "COVID19".  For this tutorial we have already created a stopwords file named "CovidTweetCustomStopWords.txt" located in the [tutorial_data](https://github.com/VCUWrightCenter/TopExApp/tree/master/tutorial_data) folder on the GitHub page.  Navigate back to the Parameters tab, and scroll down to the "Custom stopwords file" section.  Click on the "Upload stopwords file" button, then navigate to the file and select it. A successful upload will results in the file name appearing below the "Reset" button.
 
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_14.png" alt="Stopword loading screen." width="600"/>
 
@@ -139,22 +139,22 @@ If uploading a stopwords file, then the NLP algorithm has to be run again.  Navi
 
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_15.png" alt="Loading stopword file." width="600"/>
 
-Note that with the first scatter plot 30 clusters looked like too many, however, 30 clusters for this plot looks ok.  They are small, but reading through the Word Clouds finds a few that are informative.  For example, Cluster 7 is all about helping to stop the spread of the virus. Cluster 1 is about new case confirmations while the closly related Cluster 5 focuses more on the death toll and Cluster 21 is about testing positive. Continue to explore the other clusters to see what else you can identify.  Also, remember that there are no "correct" number of clusters here.  Feel free to play with the reclustering and the NLP parameters to see how that affects your results!
+Note that with the first scatter plot 30 clusters looked like too many, however, 30 clusters for this plot looks ok.  They are small, but reading through the Word Clouds finds a few that are informative.  For example, Cluster 7 is all about helping to stop the spread of the virus. Cluster 1 is about new case confirmations while the closely related Cluster 5 focuses more on the death toll and Cluster 21 is about testing positive. Continue to explore the other clusters to see what else you can identify.  Also, remember that there are no "correct" number of clusters here.  Feel free to play with the reclustering and the NLP parameters to see how that affects your results!
 
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_16.png" alt="Sample word clouds after using stopwords." width="800"/>
 
 
 ## Using an Expansion Corpus <a name="expansion">
 
-The results from the steps above utilize the input texts as the background corpus to generate numerical representations for each sentence; however, sometimes your input corpus may at times be small and you need additional background context in order to get good sentence representations, or you want to use the same documents as your background for clustering multiple input corpora. This is where the Expansion corpus comes in.  For this tutorial, we are going to import the December Tweets as our expansion corpus and generate the sentences representations using both the Tweets from March and December.
+The results from the steps above utilize the input texts as the background corpus to generate numerical representations for each sentence; however, sometimes your input corpus may at times be small and you need additional background context in order to get good sentence representations, or you want to use the same documents as your background for clustering multiple input corpora. This is where the Expansion corpus comes in.  For this tutorial, we are going to import the December Tweets as our expansion corpus and generate the sentence representations using both the Tweets from March and December.
 
 To get started, navigate to the "Load Data" tab and scroll down to the "Expansion Corpus" section at the bottom of the panel, then click on the "Upload Expansion Docs" button.
 
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_17.png" alt="Upload expansion corpus button." width="300"/>
 
-Navigate to the folder that contains the data for this tutorial and select the "December2020" folder, then select "Upload" when it asks you to upload the files. Your files should population below the Expansion Corpus section.
+Navigate to the folder that contains the data for this tutorial and select the "December2020" folder, then select "Upload" when it asks you to upload the files. Your files should populate below the Expansion Corpus section.
 
-Next, let adjust the Background Corpus on the Parameters tab.  All of the parameters are going to stay the same EXCEPT the Background Corpus, which needs to be changed to "Both". Navigate back to the "Load Data" tab and click the "Run TopEx!" button.
+Next, let's adjust the Background Corpus on the Parameters tab.  All of the parameters are going to stay the same EXCEPT the Background Corpus, which needs to be changed to "Both". Navigate back to the "Load Data" tab and click the "Run TopEx!" button.
 
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_18.png" alt="Changing background corpus to Both." width="300"/>
 
@@ -162,7 +162,7 @@ Your scatter plot should produce something similar to the following:
 
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_19.png" alt="Scatter plot with background corpus." width="600"/>
 
-Having 30 clusters again looks like too many, so lets use the Re-Cluster tab to bring this down to 15 clusters.
+Having 30 clusters again looks like too many, so let's use the Re-Cluster tab to bring this down to 15 clusters.
 
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_20.png" alt="reclustered scatter plot." width="600"/>
 
@@ -191,17 +191,17 @@ Now that we have analyzed our Tweets we will want to save this data for future a
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_22.png" alt="Data download tab." width="600"/>
                                                                                                                          
 
- - Export Clustering (.topex): The .topex file allows you to export the current TopEx settings and data view.  You can export then import this file back into TopEx at a later data and have re-clustering functionality and well as data export capabilities.
- - Export Sentences (.csv): This option just exports a list of all the sentences that were analyzed.
- - Export Row-Level Results (.txt): This is the most useful file for further analysis of TopEx results.  This option downloads a pipe-delimited text file that can be uploaded into programs like Excel.  Data includes the raw text, assigned cluster, chosen phrase, and topic key words for each sentence that was processed.  Sentence clusters can be analyzed in detail using this output option.
- - Export Scatterplot Data (.txt): This option exports a delimited text file with the coordinates and cluster assignment for each sentence so you can re-create the scatterplot in external tools like R for publications.
- - Export Word Cloud Data (.txt): This is similar to the scatterplot file where the raw word frequencies are saved in a delimied file so that word clouds can be generated in external tools for publication.
+ - **Export Clustering (.topex):** The .topex file allows you to export the current TopEx settings and data view.  You can export then import this file back into TopEx at a later data and have re-clustering functionality as well as data export capabilities.
+ - **Export Sentences (.csv):** This option just exports a list of all the sentences that were analyzed.
+ - **Export Row-Level Results (.txt):** This is the most useful file for further analysis of TopEx results.  This option downloads a pipe-delimited text file that can be uploaded into programs like Excel.  Data includes the raw text, assigned cluster, chosen phrase, and topic key words for each sentence that was processed.  Sentence clusters can be analyzed in detail using this output option.
+ - **Export Scatterplot Data (.txt):** This option exports a delimited text file with the coordinates and cluster assignment for each sentence so you can re-create the scatterplot in external tools like R for publications.
+ - **Export Word Cloud Data (.txt):** This is similar to the scatterplot file where the raw word frequencies are saved in a delimited file so that word clouds can be generated in external tools for publication.
 
 Finally, on each of the visualization screens you can export a low resolution snapshot of the scatterplot or word clouds for documentation purposes.
 
 ## Parameter Exploration <a name="explore">
 
-This tutorial didn't explore all the parameters that you have the ability to change.  For example, the "Windoe Size" parameter affects the sentence representations by using more or fewer words to represent a sentence.  As Tweets are generally shorter that normal sentences you could try to adjust this parameter down to get more Tweets in your analysis (TopEx ignores sentences that are too short to meet the minimum phrase length).  Now that you have a general understanding of how TopEx works, play with some of these parameters to see if they are helpful in analyzing these Tweets.
+This tutorial didn't explore all the parameters that you have the ability to change.  For example, the "Window Size" parameter affects the sentence representations by using more or fewer words to represent a sentence.  As Tweets are generally shorter that normal sentences you could try to adjust this parameter down to get more Tweets in your analysis (TopEx ignores sentences that are too short to meet the minimum phrase length).  Now that you have a general understanding of how TopEx works, play with some of these parameters to see if they are helpful in analyzing these Tweets.
 
 
 
