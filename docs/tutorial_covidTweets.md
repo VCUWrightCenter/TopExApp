@@ -10,12 +10,30 @@ This tutorial uses a random sample of public Tweets about COVID-19 from March-De
  * Use an expansion corpus.
  * Identify main topic shifts in COVID-19 Tweets between months.
  * Download results.
+
+## Table of Contents
+
++ [Input Files](#input)
++ [Starting TopEx](#start)
++ [Loading Data](#loading)
++ [Clustering Sentences](#clustering)
++ [Navigating TopEx Results](#nav)
+  - [Exploring the scatter plot](#scatter)
+  - [Word Clouds](#clouds)
++ [Re-Clustering](#recluster)
++ [Using Stopwords](#stopwords)
++ [Using an Expansion Corpus](#expansion)
++ [Topic Comparisons Between Months](#comparison)
++ [Downloading Data](#download)
++ [Parameter Exploration](#explore)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
  
-### Input Files
+### Input Files <a name="input">
 
 A sample of Tweets from March and December 2020 are provided as a zip file in the TopExApp GitHub repository under the [tutorial_data](https://github.com/VCUWrightCenter/TopExApp/tree/master/tutorial_data) folder.  Before starting the tutorial, download and unzip the Tweets to a folder of your choice on your local machine.  Be sure you can navigate to this folder.
 
-### Starting TopEx
+### Starting TopEx <a name="start">
 
 Go to [topex.cctr.vcu.edu](http://topex.cctr.vcu.edu/) to start TopEx.  You may open TopEx in multiple browser windows as well if you want to run and compare multiple text corpora, such as different months of Tweets.
 
@@ -23,7 +41,7 @@ Once loaded, you should see a window similar to the following:
 
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_1.png" alt="TopEx welcome screen." width="600"/>
 
-### Loading Data
+### Loading Data <a name="loading">
 
 To start uploading data, click on "Get Started", then click on the hamburger menu in the upper left corner of the TopEx window.
 
@@ -45,7 +63,7 @@ Select the "March 2020" folder, then click "Upload".  It will ask you if you wan
 
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_6.png" alt="Load Data tab with input files listed." width="300"/>
 
-### Clustering Sentences
+### Clustering Sentences <a name="clustering">
 
 Once your files have been imported, click on the "Parameters" tab in the left side menu bar. This tab provides you many options for tuning the various stages of transforming each sentence into a numerical vector.  For a detailed explanation of each option, please read the [TopEx User's Manual](https://github.com/VCUWrightCenter/TopExApp/docs/manual.md).  For this tutorial, set the options as shown below:
 
@@ -55,13 +73,13 @@ Now navigate back to the "Load Data" tab and click the "Run Topex!" button.  Whe
 
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_8.png" alt="Scatter plot results" width="600"/>
 
-### Navigating TopEx Results
+### Navigating TopEx Results <a name="nav">
 
 TopEx displays results in two ways: an interactive scatter plot and word clouds.  The scatter plot is shown by default, however you can switch to the word cloud view using the toggle at the center top of the page.
 
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_9.png" alt="Word cloud button" width="600"/>
 
-#### Exploring the scatter plot
+#### Exploring the scatter plot <a name="scatter">
 
 In the scatter plot view, each dot represents one sentence from your input. The location of each dot is determined by reducing the distance matrix from the Sentence Clustering step down to 2 dimensions using one of the reduction methods listed under the "Vizualization Method" parameter in the Parameters tab (UMAP, tSNE, SVD, or MDS).  For this tutorial we chose to use UMAP, which is the default and recommended method.  In a UMAP plot, the closer in space two dots are, the more similar they should be.  In the scatter plot results for COVID-19 Tweets in March 2020 we can see one large cluster in the center with several smaller clusters farther out.  The colors of each dot represent the cluster they are in, which is reflected in the information on the right side panel.
 
@@ -75,7 +93,7 @@ Hovering your mouse over a dot displays the information about that sentence in a
 
 For example, hovering over the orange Cluster 3 at the center top displays the Cluster Topic that includes key words "coronavirus" and "spread".  Looking around there are several distinct groupings of sentences; however, they are not all assiged to the same cluster (i.e. have the same color).  This is an indication that we may have too many clusters, or need to change our visualization parameters to reflect the clusters that are present (See Re-Clustering section below).  
 
-#### Word Clouds
+#### Word Clouds <a name="clouds">
  
  Another way to explore the topics present in a set of texts is thorugh the Word Cloud visualization.  Click on the "Word Cloud" toggle at the top of the scatter plot.  You should see a screen similar to the following:
  
@@ -83,7 +101,7 @@ For example, hovering over the orange Cluster 3 at the center top displays the C
  
  Word Clouds show word frequencies in a set of texts with the largest words being those that are the most frequent.  You can toggle between the different clusters using the drop down at the top of the page.  Scanning through all the clusters you can get a general idea of what each is about just by looking at the most frequent words in each Word Cloud.
 
-### Re-Clustering
+### Re-Clustering <a name="recluster">
 
 In the current results there are too many clusters as some of our breakout groups of sentences are assigned to different clusters.  Ideally we would like to see these breakout groups in the scatter plot all be placed in the same cluster (like orange cluster 3), so lets go to the "Re-Cluster" tab and group sentences into fewer clusters. 
  
@@ -103,7 +121,7 @@ The Re-Cluster tab allows you to re-group sentences into a different number of c
  
  Notice that now many of the sentence groupings that were assigned to multiple clusters are now assigned to a single cluster and the plot looks much cleaner!
  
-### Using Stopwords
+### Using Stopwords <a name="stopwords">
  
  While re-clustering helped a bit, there are still some issues with the current analysis.  Using the Word Cloud visualization, we can see that many of the clusters are dominated by uninformative words, including "coronavirus" in Cluster 7, "covid19" in Cluster 2, and "people" in Cluster 11.
  
@@ -126,7 +144,7 @@ Note that with the first scatter plot 30 clusters looked like too many, however,
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_16.png" alt="Sample word clouds after using stopwords." width="800"/>
 
 
-### Using an Expansion Corpus
+### Using an Expansion Corpus <a name="expansion">
 
 The results from the steps above utilize the input texts as the background corpus to generate numerical representations for each sentence; however, sometimes your input corpus may at times be small and you need additional background context in order to get good sentence representations, or you want to use the same documents as your background for clustering multiple input corpora. This is where the Expansion corpus comes in.  For this tutorial, we are going to import the December Tweets as our expansion corpus and generate the sentences representations using both the Tweets from March and December.
 
@@ -150,7 +168,7 @@ Having 30 clusters again looks like too many, so lets use the Re-Cluster tab to 
 
 Exploring this data reveals similar clusters to the original results using only the March data; however, we now have more compact clusters and a nicer figure.  Note that including additional data in an expansion corpus can be beneficial or detrimental to your analysis.  As this is an exploratory tool there is no right or wrong way, so try a few variations and pick which you think is the most helpful!
 
-### Topic Comparisons Between Months
+### Topic Comparisons Between Months <a name="comparison">
 
 Now that we have our March Tweets analyzed we need to run the same analysis for December.  Open up a new TopEx instance in your browser, and run the same analysis with the similar settings on the December Tweets, using the March Tweets as the Expansion Corpus, and change the number of clusters to 8 this time.  Make sure you set the Background Corpus to "Both".  You should end up with a scatter plot similar to the following with 8 clusters:
 
@@ -166,7 +184,7 @@ Notice the number of clusters is reduced from 15 to 8.  This is because in Decem
 In comparing these topics to those from March it is easy to quickly identify how the main topics have shifted over the course of the pandemic.
 
 
-### Downloading Data
+### Downloading Data <a name="download">
 
 Now that we have analyzed our Tweets we will want to save this data for future analysis.  TopEx has multiple ways to export data on the Import/Export tab that are described below:
                                                                                                                          
@@ -181,7 +199,7 @@ Now that we have analyzed our Tweets we will want to save this data for future a
 
 Finally, on each of the visualization screens you can export a low resolution snapshot of the scatterplot or word clouds for documentation purposes.
 
-### Parameter Exploration
+### Parameter Exploration <a name="explore">
 
 This tutorial didn't explore all the parameters that you have the ability to change.  For example, the "Windoe Size" parameter affects the sentence representations by using more or fewer words to represent a sentence.  As Tweets are generally shorter that normal sentences you could try to adjust this parameter down to get more Tweets in your analysis (TopEx ignores sentences that are too short to meet the minimum phrase length).  Now that you have a general understanding of how TopEx works, play with some of these parameters to see if they are helpful in analyzing these Tweets.
 
