@@ -1,6 +1,6 @@
 # TopEx Tutorial: Exploring COVID-19 Tweets
 
-Detailed usage instructions can be found in the [TopEx User's Manual](https://github.com/VCUWrightCenter/TopExApp/docs/manual.md).
+Detailed usage instructions can be found in the [TopEx User's Manual](https://vcuwrightcenter.github.io/TopExApp/manual).
 
 This tutorial uses a random sample of public Tweets about COVID-19 from March-December 2020 to identify shifts in topics over the course of the pandemic.  Upon completion of this tutorial you will be able to:
 
@@ -13,7 +13,7 @@ This tutorial uses a random sample of public Tweets about COVID-19 from March-De
  
 ### Input Files
 
-A sample of Tweets from March and December 2020 are provided as a zip file in the TopExApp GitHub repository under the [tutorial_data](https://github.com/VCUWrightCenter/TopExApp/tutorial_data_tweets) folder.  Before starting the tutorial, download and unzip the Tweets to a folder of your choice on your local machine.  Be sure you can navigate to this folder.
+A sample of Tweets from March and December 2020 are provided as a zip file in the TopExApp GitHub repository under the [tutorial_data](https://github.com/VCUWrightCenter/TopExApp/tree/master/tutorial_data) folder.  Before starting the tutorial, download and unzip the Tweets to a folder of your choice on your local machine.  Be sure you can navigate to this folder.
 
 ### Starting TopEx
 
