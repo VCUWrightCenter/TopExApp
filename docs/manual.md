@@ -3,6 +3,7 @@
 
 - [TopEx Overview](#overview)
 - [Installation](#install)
+- [Tutorials](#tutorial)
 - [Usage Instructions](#usage)
   * [0: Pre-process and Format Input](#usage0)
     + [Text Files](#usage01)
@@ -36,6 +37,12 @@ The TopExApp was built as a graphical user interface for the [TopEx Python libra
 
 TopEx can be accessed on the web at [topex.cctr.vcu.edu](http://topex.cctr.vcu.edu/), which requires no installation.  If analyzing documents with PHI or other sensitive information you can install TopExApp and run it locally as a web app within a Docker container. To install TopExApp locally refer to the [TopExApp Installation Instructions](https://vcuwrightcenter.github.io/TopExApp/installation).
 
+# Tutorials <a name="tutorial">
+ 
+This manual includes detailed descriptions of all TopEx options and parameters.  If you would prefer a walk-through of how to use TopEx with some sample data, please complete one of the [TopEx Tutorials](https://vcuwrightcenter.github.io/TopExApp/).
+ 
+  * [Exploring COVID-19 Tweets:](https://vcuwrightcenter.github.io/TopExApp/tutorial_covidTweets) In this tutorial you will import a sample of Tweets from 2020 that are discussing the COVID-19 pandemic and will compare the topics discussed in March versus December.
+  * More tutorials coming soon...
 
 # Usage Instructions <a name="usage">
   
