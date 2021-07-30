@@ -3,6 +3,7 @@
 .DS_Store
 Api/env
 env
+venv
 **/.vscode
 **/__pycache__
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
