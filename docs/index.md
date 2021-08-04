@@ -1,37 +1,36 @@
-## Welcome to GitHub Pages
+## Welcome to TopEx!
 
-You can use the [editor on GitHub](https://github.com/VCUWrightCenter/TopExApp/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
+TopEx is a domain agnostic NLP application that facilitates the exploration of topics and keywords in a set of texts. Programming/NLP knowledge is not required! 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Start Exploring
 
-### Markdown
+Choose your access:
+ - Public web server: [topex.cctr.vcu.edu](http://topex.cctr.vcu.edu/)
+ - Local installation: [TopExApp on GitHub](https://github.com/VCUWrightCenter/TopExApp)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+To get started with TopEx you can follow one of our TopEx Tutorials or read the detailed instruction manual. 
 
-```markdown
-Syntax highlighted code block
+### Tutorials
+#### [Exploring COVID-19 pandemic tweets.](https://vcuwrightcenter.github.io/TopExApp/tutorial_covidTweets)
 
-# Header 1
-## Header 2
-### Header 3
+In this tutorial you will import a sample of Tweets from 2020 that are discussing the COVID-19 pandemic and will compare the topics discussed in March versus December.
 
-- Bulleted
-- List
+### User's Manual
 
-1. Numbered
-2. List
+The [Users Manual](https://vcuwrightcenter.github.io/TopExApp/manual) contains detailed descriptions of all options avaliable in TopEx, including installation instructions for running TopEx locally.
 
-**Bold** and _Italic_ and `Code` text
+## Support
 
-[Link](url) and ![Image](src)
-```
+For support with TopEx please submit an issue on the [TopExApp GitHub page](https://github.com/VCUWrightCenter/TopExApp/issues).
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Acknowledgements
 
-### Jekyll Themes
+TopExApp (previously MedTop) was initially developed as a web app through the 2019-2020 CapStone program by Seniors in VCU's Computer Science Department under the supervision of Dr. Bridget McInnes and Amy Olex. We wish to thank Sean Kotrola, Aidan Myers, and Suzanne Prince for their excellent work in getting this application up and running! Here are links to the team's CapStone [Poster](https://drive.google.com/file/d/1TGCaM7oXPxFwEJ5B5_nrGZqNnUetWPFB/view) and [Application Demonstration](https://drive.google.com/file/d/1xRYlLpiYnCnI9Pdi6vbE4eTDUu0e09qB/view). 
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/VCUWrightCenter/TopExApp/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+In addition, Evan French and Peter Burdette from VCU's Wright Center for Clinical and Translational Research Informatics Core have been working tirelessly with Amy Olex to get TopEx ready for public release.  Thanks to both of you for your amazing work!
 
-### Support or Contact
+## Citation
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+If you use TopExApp in your research, please cite:
+
+Olex A, DiazGranados D, McInnes BT, and Goldberg S. Local Topic Mining for Reflective Medical Writing. Full Length Paper. AMIA Jt Summits Transl Sci Proc 2020;2020:459–68. PMCID: [PMC7233034](https://www-ncbi-nlm-nih-gov.proxy.library.vcu.edu/pmc/articles/PMC7233034/)
