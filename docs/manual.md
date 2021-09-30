@@ -74,9 +74,10 @@ The "input corpus" is the set of text documents you want to analyze.  TopEx acce
   
   Some files may require pre-processing, which is generally project specific.  In general, you want to ensure there are no odd characters in the data, and remove text that could skew your results.  For example, in the Acting Intern corpus from [(Olex et al 2020)](#paper), many of the students copied the prompt question into their reply. This is extra information that was not needed and would interfere with the analysis; thus, all of these repetitive statements were removed prior to analysis. If it is not clear what type, if any, preprocessing is needed for your corpus, you can input it as is and use the results to identify repetative or unhelpful statements to remove prior to a final analysis.  
 
-### CSV formatted file <a name="usage02">
+### CSV formatted file (currently unavaliable)<a name="usage02">
   
-  When selecting a CSV formatted file you should have the document ID in the first column and the entire text of the document in a single cell in the second column.  The same pre-processing suggestions apply for this data as for the individual text file import option.
+  **This feature is currently buggy. We are working to resolve it.** 
+ When selecting a CSV formatted file you should have the document ID in the first column and the entire text of the document in a single cell in the second column.  The same pre-processing suggestions apply for this data as for the individual text file import option.
   
 ### MEDLINE formatted file <a name="usage03">
   
