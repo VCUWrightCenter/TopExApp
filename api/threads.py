@@ -3,7 +3,7 @@ import json
 import numpy as np
 import pandas as pd
 import re
-from response import Response
+from .response import Response
 from pymed import PubMed
 import threading
 import topex.core as topex

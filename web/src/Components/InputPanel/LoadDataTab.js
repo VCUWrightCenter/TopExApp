@@ -30,7 +30,9 @@ class LoadDataTab extends Component {
 
     // Upload input document(s) from user input
     uploadInput(uploads, inputType) {
+        console.log('uploadInput',uploads, inputType)
         let files = this.mapFiles(uploads);
+        console.log('uploadInput',files)
         this.setState({
             corpusDocs: files,
             inputType: inputType
