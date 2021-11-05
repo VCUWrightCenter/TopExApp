@@ -93,9 +93,9 @@ class ImportExportTab extends Component {
 
         // Create .csv body from scatterplot data
         let results = JSON.parse(data.data);
-        let body = "id|cluster|phrase|tokens|text|cluster_topics\n"
+        let body = "id|cluster|phrase|tokens|text|cluster_topics|doc_name\n"
         for (let i = 0; i < data.count; i++) {
-            body += `${results.id[i]}|${results.cluster[i]}|${results.phrase[i]}|${results.tokens[i]}|${results.text[i]}|${data.main_cluster_topics[results.cluster[i]]}\n`;
+            body += `${results.id[i]}|${results.cluster[i]}|${results.phrase[i]}|${results.tokens[i]}|${results.text[i]}|${data.main_cluster_topics[results.cluster[i]]}|${results.doc_name[i]}\n`;
         }
         util.exportPipeDelimited(body, filename);
     }

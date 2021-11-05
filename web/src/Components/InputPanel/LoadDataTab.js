@@ -118,7 +118,6 @@ class LoadDataTab extends Component {
         this.setState({ runningScript: true })
 
         var response = await this.postCluster(formData, params)
-
         this.setState({ graphData: response })
 
         // Propogate graphData back up to parent
@@ -173,6 +172,7 @@ class LoadDataTab extends Component {
 
         this.setState({ status: 'Idle' })
         let response = await promise
+        console.log(response)
         return response == null ? null : response
     }
 
@@ -187,7 +187,6 @@ class LoadDataTab extends Component {
                     variant="contained"
                     color="primary"
                     disabled={this.state.runningScript || this.state.inputType==null}
-                    loading={this.state.runningScript}
                     onClick={() => this.cluster()}
                     className='vspace'
                 >Run TopEx!</Button>
@@ -205,7 +204,6 @@ class LoadDataTab extends Component {
                     <Button
                         variant="contained"
                         color='secondary'
-                        loading={this.state.runningScript}
                         onClick={() => {
                             this.resetClusteringCorpus()
                             document.getElementById('multiDocInput').click();
@@ -239,7 +237,6 @@ class LoadDataTab extends Component {
                     <Button
                         variant="contained"
                         color='secondary'
-                        loading={this.state.runningScript}
                         onClick={() => {
                             this.resetClusteringCorpus()
                             this.setState({ inputType: 'psv' });
@@ -270,7 +267,6 @@ class LoadDataTab extends Component {
                     <Button
                         variant="contained"
                         color='secondary'
-                        loading={this.state.runningScript}
                         onClick={() => {
                             this.resetClusteringCorpus()
                             this.setState({ inputType: 'medline' });
@@ -342,7 +338,6 @@ class LoadDataTab extends Component {
                     <Button
                         variant="contained"
                         color='secondary'
-                        loading={this.state.runningScript}
                         onClick={() => { document.getElementById('uploadExpansionDocsInput').click(); }}
                         startIcon={<CloudUploadIcon />}
                     >Upload expansion docs</Button>

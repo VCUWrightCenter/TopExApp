@@ -25,15 +25,16 @@ export default class MainPanel extends Component {
     componentDidUpdate() {
         // TODO: Add some unique RUN_ID to the result object
         if (this.props.apiResult !== this.state.apiResult) {
-            // let apiResult = JSON.parse(this.props.jsonApiResult);
             let apiResult = this.props.apiResult;
             let viz_df = JSON.parse(apiResult.viz_df);
+            console.log('apiResult',viz_df)
             let cluster_topics = apiResult.main_cluster_topics;
             let dataPoints = [];
 
             for (var i = 0; i < apiResult.count; i++) {
                 dataPoints.push(createPointObject(viz_df, cluster_topics, i));
             }
+            console.log('dataPoints',dataPoints)
 
             let panes = [
                 { menuItem: 'Scatterplot',  pane: { key: 'pane1', content: <Scatterplot data={dataPoints} runtime={this.props.apiResult.runtime} pointData={this.pointDataCallback} visualizationMethod={apiResult["visualizationMethod"]}/> }, className:'fullWindow'},

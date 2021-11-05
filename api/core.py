@@ -300,7 +300,7 @@ def visualize_clustering(data:DataFrame, method:str = "umap", dist_metric:str = 
         raise Exception(f"Unrecognized method: '{method}'")
 
     visualization_df = DataFrame(dict(label=list(data.id), cluster=list(data.cluster), phrase=list(data.phrase),
-                                      text=list(data.text), x=x, y=y))
+                                      text=list(data.text), x=x, y=y, doc_id=list(data.doc_id)))
     # To keep the visualization legible, limit
     max_phrase = 10
     vis_df = visualization_df.copy()

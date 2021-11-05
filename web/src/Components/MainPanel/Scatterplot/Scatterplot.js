@@ -33,6 +33,7 @@ class Scatterplot extends Component {
     async drawChart(data) {
         // Filter out points for clusters with < min_cluster_size
         data = data.filter(p => p.valid);
+        console.log(data)
 
         let xArr = data.map((obj) => obj.x)
         let yArr = data.map((obj) => obj.y)

@@ -99,6 +99,7 @@ export function createPointObject(data, cluster_topics, i) {
     return {
         cluster: data.cluster[i],
         cluster_topic: cluster_topics[data.cluster[i]],
+        doc_name: data.doc_name[i],
         label: data.label[i],
         phrase: data.phrase[i],
         raw_sent: data.text[i],

@@ -127,12 +127,14 @@ class ClusterThread(threading.Thread):
         viz_df['valid'] = True
         data['valid'] = True # Show all points on the first run
         cluster_df = topex.get_cluster_topics(data, doc_df)
-        res.viz_df = viz_df.to_json()
 
         # Append doc names
         doc_names = doc_df[['id','doc_name']]
         doc_names.columns = ['doc_id','doc_name']
         data = data.merge(doc_names,on='doc_id')
+
+        viz_df = viz_df.merge(doc_names,on='doc_id')
+        res.viz_df = viz_df.to_json()
 
         res.data = data[['id','text','tokens','phrase','vec','cluster', 'valid','doc_name']].to_json() #only return the needed subset of data columns
         res.linkage_matrix = [list(row) for row in list(linkage_matrix)] if linkage_matrix is not None else []
