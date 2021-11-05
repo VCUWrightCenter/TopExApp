@@ -22,17 +22,18 @@ class LoadDataTab extends Component {
 
     // Gets file names from uploads and filters
     mapFiles(uploads) {
+        let typeFilter = this.state.inputType === 'psv' ? '.psv' : (this.state.inputType === 'xlsx' ? '.xlsx' : '.txt')
         let files = Array.from(uploads)
-            .filter(f => f !== undefined && f.name.includes(this.state.inputType === 'psv' ? '.psv' : '.txt'));
+            .filter(f => f !== undefined && f.name.includes(typeFilter));
         files.forEach(f => f.checked = true);
         return files;
     }
 
     // Upload input document(s) from user input
     uploadInput(uploads, inputType) {
-        console.log('uploadInput',uploads, inputType)
+        console.log('uploadInput', uploads, inputType)
         let files = this.mapFiles(uploads);
-        console.log('uploadInput',files)
+        console.log('uploadInput', files)
         this.setState({
             corpusDocs: files,
             inputType: inputType
@@ -186,7 +187,7 @@ class LoadDataTab extends Component {
                 <Button
                     variant="contained"
                     color="primary"
-                    disabled={this.state.runningScript || this.state.inputType==null}
+                    disabled={this.state.runningScript || this.state.inputType == null}
                     onClick={() => this.cluster()}
                     className='vspace'
                 >Run TopEx!</Button>
@@ -263,7 +264,37 @@ class LoadDataTab extends Component {
                         </div>
                     }
 
-                    <Header as="h4">3. From MEDLINE Formatted File</Header>
+                    <Header as='h4'>3. From Excel File</Header>
+                    <Button
+                        variant="contained"
+                        color='secondary'
+                        onClick={() => {
+                            this.resetClusteringCorpus()
+                            this.setState({ inputType: 'xlsx' });
+                            document.getElementById('singleDocInput').click();
+                        }}
+                        startIcon={<CloudUploadIcon />}
+                    >Upload .xlsx to cluster</Button>
+
+                    {
+                        this.state.inputType === 'xlsx' &&
+                        <div id="excelFileList" className='fileList'>
+                            <div>
+                                {this.state.corpusDocs.map((file) => {
+                                    return (
+                                        <div className='fileListEntry' key={file.name}>
+                                            <label htmlFor={file.name} className='file-list-label' >{file.name}</label> &nbsp;
+                                            <input id={file.name} type='checkBox' disabled className='file-list-checkbox' defaultChecked
+                                                onChange={(e) => this.toggleCorpusCheck(file.name)} />
+                                        </div>
+                                    )
+                                })
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <Header as="h4">4. From MEDLINE Formatted File</Header>
                     <Button
                         variant="contained"
                         color='secondary'
@@ -297,7 +328,7 @@ class LoadDataTab extends Component {
                         <input id='singleDocInput' type="file" hidden onChange={(e) => this.uploadInput(e.target.files, this.state.inputType)} />
                     </form>
 
-                    <Header as='h4'>4. From PubMed Search</Header>
+                    <Header as='h4'>5. From PubMed Search</Header>
                     <p>Search PubMed for abstracts related to keywords.</p>
                     <div className='InputPanelContainer scriptArgsTab'>
                         <div className='spacing'>

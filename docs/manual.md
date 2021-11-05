@@ -8,8 +8,9 @@
   * [0: Pre-process and Format Input](#usage0)
     + [Text Files](#usage01)
     + [PSV File](#usage02)
-    + [MEDLINE File](#usage03)
-    + [PubMed Search](#usage04)
+    + [Excel File](#usage03)
+    + [MEDLINE File](#usage04)
+    + [PubMed Search](#usage05)
   * [1: Importing Document Corpus or Previous Analysis File](#usage1)
     + [Import Document Corpus](#usage11)
     + [Import Previous Analysis](#usage12)
@@ -65,6 +66,7 @@ The "input corpus" is the set of text documents you want to analyze.  TopEx acce
   
   - Individual text files
   - PSV formatted file
+  - Excel file
   - MEDLINE formatted file
   - PubMed search from within TopEx
 
@@ -82,11 +84,15 @@ id|text|doc_name
 
 001|Complete document text here|file001.txt
 
-### MEDLINE formatted file <a name="usage03">
+### Excel file <a name="usage03">
+  
+  When selecting an Excel formatted file you should have the document ID in the first column and the entire text of the document in a single cell in the second column.  The same pre-processing suggestions apply for this data as for the individual text file import option.
+
+### MEDLINE formatted file <a name="usage04">
   
   The MEDLINE format is provided for those who want to explore topics in a set of PubMed search results.  When you are in PubMed, select to save your search results in a MEDLINE format.  This will save the publication information, including the abstract.  Once uploaded to TopEx, the abstract will be automatically extracted and run through TopEx, and no pre-processing is required.
   
-### PubMed Search <a name="usage04">
+### PubMed Search <a name="usage05">
   
   TopEx also provides the ability to run a PubMed search directly from the application.  If using this option you can enter your search terms in the box and then select how many results to analyze.  It is suggested you use at least 100 as choosing fewer does not provid enough information for the sentence embedding process.
 
@@ -100,9 +106,9 @@ id|text|doc_name
 In TopEx, you are required to submit a Clustering Corpus.  This is the set of documents containing the sentences you want analyzed and clustered.  To do this follow these steps:     
 
  1) Select the "Load Data" tab in TopEx.
- 2) Choose one of the 4 options for a Clustering Corpus: text files, PSV file, MEDLINE file, or PubMed Search.
+ 2) Choose one of the 5 options for a Clustering Corpus: text files, PSV file, Excel file, MEDLINE file, or PubMed Search.
  3) If choosing the text file option, click the "Upload docs to cluster" button. Navigate to the directory with the corpus. Select the directory and the click "Upload" (it may appear greyed out, but this is ok as you can still select it).
- 4) Otherwise, click the appropriate button then navigate to the PSV or MEDLINE file of interest.
+ 4) Otherwise, click the appropriate button then navigate to the PSV, Excel, or MEDLINE file of interest.
  
 A Clustering Corpus is required, and must contain a **minimum of 3 documents**, however, a larger set is recommended.  By default, the imported Clustering Corpus is automatically used as the Background Corpus as well.  The _Background Corpus_ is the set of documents used to create the TF-IDF matrix that contains the distribution of each word across a set of documents.  This matrix is used in two ways by TopEx: 1) Identification of the most informative phrase for each sentence to be used for sentence representation. 2) Creation of word embeddings, which generate the final sentence embeddings (i.e. numerical sentence representations) for clustering.  Thus, _the source corpus of the TF-IDF is very important as it is the backdrop for TopEx_.
 
