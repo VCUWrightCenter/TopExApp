@@ -1,9 +1,7 @@
-__all__ = ['nlp', 'token_filter', 'preprocess_docs', 'get_stop_words']
-
 import os
 import spacy
 from pandas import DataFrame
-from .internal import internal
+from . import internal
 nlp = spacy.load('en_core_web_sm', disable=["parser","ner"])
 nlp.add_pipe(nlp.create_pipe("sentencizer")) # Add sentence break parser
 

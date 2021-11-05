@@ -1,12 +1,8 @@
-__all__ = ['import_data', 'import_from_files', 'import_from_csv', 'create_tfidf', 'get_phrases', 'get_vectors',
-           'assign_clusters', 'reassign_hac_clusters', 'reassign_kmeans_clusters', 'visualize_clustering',
-           'visualize_df', 'get_cluster_topics', 'recluster', 'get_doc_topics', 'evaluate']
-
 import gensim
 from gensim import corpora, models, matutils
 import matplotlib.pyplot as plt
-from .internal import internal
-from .preprocessing import preprocessing
+from . import internal
+from . import preprocessing
 import numpy as np
 import os
 import pandas as pd

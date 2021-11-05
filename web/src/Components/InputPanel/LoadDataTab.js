@@ -23,7 +23,7 @@ class LoadDataTab extends Component {
     // Gets file names from uploads and filters
     mapFiles(uploads) {
         let files = Array.from(uploads)
-            .filter(f => f !== undefined && f.name.includes(this.state.inputType === 'csv' ? '.csv' : '.txt'));
+            .filter(f => f !== undefined && f.name.includes(this.state.inputType === 'psv' ? '.psv' : '.txt'));
         files.forEach(f => f.checked = true);
         return files;
     }
@@ -235,21 +235,21 @@ class LoadDataTab extends Component {
                         <input id='multiDocInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" hidden onChange={(e) => this.uploadInput(e.target.files, 'multi')} />
                     </form>
 
-                    <Header as='h4'>2. From CSV File</Header>
+                    <Header as='h4'>2. From PSV File</Header>
                     <Button
                         variant="contained"
                         color='secondary'
                         loading={this.state.runningScript}
                         onClick={() => {
                             this.resetClusteringCorpus()
-                            this.setState({ inputType: 'csv' });
+                            this.setState({ inputType: 'psv' });
                             document.getElementById('singleDocInput').click();
                         }}
                         startIcon={<CloudUploadIcon />}
-                    >Upload .csv to cluster</Button>
+                    >Upload .psv to cluster</Button>
 
                     {
-                        this.state.inputType === 'csv' &&
+                        this.state.inputType === 'psv' &&
                         <div id="csvFileList" className='fileList'>
                             <div>
                                 {this.state.corpusDocs.map((file) => {

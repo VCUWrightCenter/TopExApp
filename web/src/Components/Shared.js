@@ -36,7 +36,7 @@ export function exportPipeDelimited(body, filename) {
     let link = document.createElement("a");
     var url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
-    link.setAttribute("download", `${filename}.csv`);
+    link.setAttribute("download", `${filename}.psv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();

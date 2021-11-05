@@ -6,7 +6,7 @@ import re
 from .response import Response
 from pymed import PubMed
 import threading
-import topex.core as topex
+from . import core as topex
 
 def cast_int(param: str):
     "Casts valid int parameter"
@@ -63,7 +63,7 @@ class ClusterThread(threading.Thread):
                 names.append(fileob.filename)
             docs = [doc.replace('\n',' ').replace('\r',' ') for doc in docs]
             df = pd.DataFrame(dict(doc_name=names, text=docs))
-        elif inputType == 'csv':
+        elif inputType == 'psv':
             df = pd.read_csv(list(files.values())[0],sep='|',names=['doc_name','text'],skiprows=1,usecols=[0,1],quoting=csv.QUOTE_NONE)
         elif inputType == 'medline':
             medline = list(files.values())[0].read().decode()

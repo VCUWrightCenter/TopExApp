@@ -1,7 +1,7 @@
 from flask import request, Flask, jsonify, make_response
 from flask_cors import CORS
 import sys
-from threads import ClusterThread, ReclusterThread
+from .threads import ClusterThread, ReclusterThread
 
 threads = {}    
 app = Flask(__name__)
