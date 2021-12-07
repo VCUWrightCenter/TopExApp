@@ -3,7 +3,7 @@ import spacy
 from pandas import DataFrame
 from . import internal
 nlp = spacy.load('en_core_web_sm', disable=["parser","ner"])
-nlp.add_pipe(nlp.create_pipe("sentencizer")) # Add sentence break parser
+nlp.add_pipe("sentencizer") # Add sentence break parser
 
 def token_filter(token, stopwords:list, custom_stopwords_only:bool=False):
     "Filters out stopwords and tokens without alpha characters"
