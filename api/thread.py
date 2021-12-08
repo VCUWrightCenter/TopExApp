@@ -3,10 +3,10 @@ import json
 import numpy as np
 import pandas as pd
 import re
-from .response import Response
-from pymed import PubMed
+import response
+import pymed
 import threading
-from . import core as topex
+import topex
 
 def cast_int(param: str):
     "Casts valid int parameter"
@@ -29,7 +29,7 @@ def read_medline(text):
 
 def query_pubmed(query, max_results):
     "Queries PubMed for abstracts containing query keywords"
-    results = PubMed().query(query, max_results=max_results)
+    results = pymed.PubMed().query(query, max_results=max_results)
     data = [(p.pubmed_id,p.abstract) for p in results if len(p.abstract or "")>0 and p.pubmed_id.isnumeric()]
     return pd.DataFrame(data, columns=["doc_name","text"])
 
@@ -42,7 +42,7 @@ class ClusterThread(threading.Thread):
         super().__init__()
 
     def run(self):
-        res = Response()
+        res = response.Response()
         params = self.params
         files = self.files
 

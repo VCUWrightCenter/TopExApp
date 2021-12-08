@@ -101,8 +101,8 @@ From the command line, run the following:
 
     ~/api> python -m spacy download en_core_web_sm
 
-    ~/api> flask run 
+    ~/api> gunicorn app:app -w 2 -b localhost:8080 -t 90
 
     ~/web> npm install
 
-    ~/web> npm start
+    ~/web> npm run local

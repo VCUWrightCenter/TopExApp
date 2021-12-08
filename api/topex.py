@@ -1,8 +1,8 @@
 import gensim
 from gensim import corpora, models, matutils
 import matplotlib.pyplot as plt
-from . import internal
-from . import preprocessing
+import internal
+import preprocessing
 import numpy as np
 import os
 import pandas as pd
