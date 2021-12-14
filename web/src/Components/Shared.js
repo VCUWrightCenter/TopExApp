@@ -36,7 +36,7 @@ export function exportPipeDelimited(body, filename) {
     let link = document.createElement("a");
     var url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
-    link.setAttribute("download", `${filename}.csv`);
+    link.setAttribute("download", `${filename}.psv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
@@ -99,6 +99,7 @@ export function createPointObject(data, cluster_topics, i) {
     return {
         cluster: data.cluster[i],
         cluster_topic: cluster_topics[data.cluster[i]],
+        doc_name: data.doc_name[i],
         label: data.label[i],
         phrase: data.phrase[i],
         raw_sent: data.text[i],

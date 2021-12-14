@@ -3,10 +3,10 @@ import json
 import numpy as np
 import pandas as pd
 import re
-from response import Response
-from pymed import PubMed
+import response
+import pymed
 import threading
-import topex.core as topex
+import topex
 
 def cast_int(param: str):
     "Casts valid int parameter"
@@ -29,7 +29,7 @@ def read_medline(text):
 
 def query_pubmed(query, max_results):
     "Queries PubMed for abstracts containing query keywords"
-    results = PubMed().query(query, max_results=max_results)
+    results = pymed.PubMed().query(query, max_results=max_results)
     data = [(p.pubmed_id,p.abstract) for p in results if len(p.abstract or "")>0 and p.pubmed_id.isnumeric()]
     return pd.DataFrame(data, columns=["doc_name","text"])
 
@@ -42,7 +42,7 @@ class ClusterThread(threading.Thread):
         super().__init__()
 
     def run(self):
-        res = Response()
+        res = response.Response()
         params = self.params
         files = self.files
 
@@ -63,8 +63,10 @@ class ClusterThread(threading.Thread):
                 names.append(fileob.filename)
             docs = [doc.replace('\n',' ').replace('\r',' ') for doc in docs]
             df = pd.DataFrame(dict(doc_name=names, text=docs))
-        elif inputType == 'csv':
+        elif inputType == 'psv':
             df = pd.read_csv(list(files.values())[0],sep='|',names=['doc_name','text'],skiprows=1,usecols=[0,1],quoting=csv.QUOTE_NONE)
+        elif inputType == 'xlsx':
+            df = pd.read_excel(list(files.values())[0],names=['doc_name','text'],usecols=[0,1], engine='openpyxl')
         elif inputType == 'medline':
             medline = list(files.values())[0].read().decode()
             df = read_medline(medline)
@@ -127,12 +129,14 @@ class ClusterThread(threading.Thread):
         viz_df['valid'] = True
         data['valid'] = True # Show all points on the first run
         cluster_df = topex.get_cluster_topics(data, doc_df)
-        res.viz_df = viz_df.to_json()
 
         # Append doc names
         doc_names = doc_df[['id','doc_name']]
         doc_names.columns = ['doc_id','doc_name']
         data = data.merge(doc_names,on='doc_id')
+
+        viz_df = viz_df.merge(doc_names,on='doc_id')
+        res.viz_df = viz_df.to_json()
 
         res.data = data[['id','text','tokens','phrase','vec','cluster', 'valid','doc_name']].to_json() #only return the needed subset of data columns
         res.linkage_matrix = [list(row) for row in list(linkage_matrix)] if linkage_matrix is not None else []

@@ -1,7 +1,7 @@
 from flask import request, Flask, jsonify, make_response
 from flask_cors import CORS
 import sys
-from threads import ClusterThread, ReclusterThread
+import thread
 
 threads = {}    
 app = Flask(__name__)
@@ -31,7 +31,7 @@ def cluster():
     global threads
     try:
         tid = 1
-        threads[tid] = ClusterThread(params=request.form, files=request.files)
+        threads[tid] = thread.ClusterThread(params=request.form, files=request.files)
         threads[tid].start()
         threads[tid].join()
     except:
@@ -49,7 +49,7 @@ def recluster():
     "Re-clusters data"
     try:
         tid = 2
-        threads[tid] = ReclusterThread(params=request.form)
+        threads[tid] = thread.ReclusterThread(params=request.form)
         threads[tid].start()
         threads[tid].join()
     except:
@@ -62,3 +62,5 @@ def recluster():
 
     return response
 
+if __name__ == "__main__":
+    app.run(debug=True)

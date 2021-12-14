@@ -150,7 +150,6 @@ class ParametersTab extends Component {
                     <Button
                         color="secondary"
                         variant="contained"
-                        loading={this.state.runningScript}
                         onClick={() => { document.getElementById('uploadStopwordsInput').click(); }}
                         startIcon={<CloudUploadIcon />}
                     >Upload stopwords file</Button>

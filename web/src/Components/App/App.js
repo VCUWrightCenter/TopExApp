@@ -34,6 +34,7 @@ class App extends Component {
   // Callback for passing jsonApiResult from child components back up to App
   graphDataCallback = (apiResult) => {
     this.setState({apiResult: apiResult})
+    console.log('App', JSON.parse(apiResult.viz_df))
   }
 
   //Used for passing data to right sidebar for display

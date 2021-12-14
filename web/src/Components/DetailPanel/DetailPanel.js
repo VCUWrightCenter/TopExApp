@@ -19,6 +19,7 @@ class DetailPanel extends Component {
     componentDidUpdate() {    
         if (this.props.pointData) {
             let pointInfo = JSON.parse(this.props.pointData)
+            console.log('pointInfo',pointInfo)
             let clusterColor = {
                 background: util.getClusterColor(pointInfo)
             };
@@ -35,6 +36,7 @@ class DetailPanel extends Component {
                             <div><span>Label</span> <h3>{pointInfo.label}</h3></div>
                             <div><span>Cluster <div className="circle" style={clusterColor}></div></span> <h3>{pointInfo.cluster}</h3></div>
                         </div>
+                        <div className="card"><h4>Document Name</h4> {pointInfo.doc_name}</div>
                         <div className="card"><h4>Phrase</h4> {phrase}</div>
                         <div className="card"><h4>Raw Sentence</h4> {pointInfo.raw_sent}</div>
                         <div className="card"><h4>Cluster Topic</h4> {cluster_topic}</div>
