@@ -83,6 +83,7 @@ class ClusterThread(threading.Thread):
         tfidf_corpus = params['tfidfCorpus'] if str_valid(params['tfidfCorpus']) else 'both'
         include_sentiment = params['include_sentiment'] != 'false'
         custom_stopwords_only = params['custom_stopwords_only'] != 'false'
+        ner = params['ner'] != 'false'
 
         clustering_method = params['clusteringMethod']
         cluster_dist_metric = params['cluster_dist_metric'] if str_valid(params['cluster_dist_metric']) else 'euclidean'
@@ -104,7 +105,7 @@ class ClusterThread(threading.Thread):
 
         # Cluster the sentences in a dataframe
         self.status = 'Importing data'
-        data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_list=stopwords, custom_stopwords_only=custom_stopwords_only, ner=True)
+        data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_list=stopwords, custom_stopwords_only=custom_stopwords_only, ner=ner)
         self.status = 'Creating TF-IDF'
         tfidf, dictionary = topex.create_tfidf(tfidf_corpus, doc_df, expansion_df=expansion_df)
 

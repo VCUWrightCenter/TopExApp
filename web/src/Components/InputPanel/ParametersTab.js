@@ -36,6 +36,7 @@ class ParametersTab extends Component {
             'dimensions': document.getElementById('dimensions').value === '' ? null : document.getElementById('dimensions').value,
             'include_sentiment': document.getElementById('include_sentiment').checked,
             'custom_stopwords_only': document.getElementById('custom_stopwords_only').checked,
+            'ner': document.getElementById('ner').checked,
 
             // Sentence clustering parameters
             'clusteringMethod': (this.state.clusteringMethod == null) ? "kmeans" : this.state.clusteringMethod,
@@ -141,6 +142,12 @@ class ParametersTab extends Component {
                     <Checkbox id='custom_stopwords_only' label="Custom stopwords only?" title="" />
                     &nbsp;
                     <span className="tooltip" data-tooltip="Checking this box means that only stopwords explicitly listed in the custom stopwords file will be removed during preprocessing."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                </div>
+
+                <div className='spacing'>
+                    <Checkbox id='ner' label="Biomedical Named Entity Recognition?" title="" />
+                    &nbsp;
+                    <span className="tooltip" data-tooltip="Checking this box will cause sentences to be represented by biomedical entities they contain."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <Header as='h4'>Custom stopwords file (Optional)</Header>
