@@ -104,7 +104,7 @@ class ClusterThread(threading.Thread):
 
         # Cluster the sentences in a dataframe
         self.status = 'Importing data'
-        data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_list=stopwords, custom_stopwords_only=custom_stopwords_only)
+        data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_list=stopwords, custom_stopwords_only=custom_stopwords_only, ner=True)
         self.status = 'Creating TF-IDF'
         tfidf, dictionary = topex.create_tfidf(tfidf_corpus, doc_df, expansion_df=expansion_df)
 

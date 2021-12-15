@@ -16,7 +16,7 @@ from sklearn.decomposition import TruncatedSVD
 import umap.umap_ as umap
 
 def import_data(raw_docs:DataFrame, save_results:bool=False, file_name:str=None, stop_words_file:str=None,
-                stop_words_list:list=None, custom_stopwords_only:bool=False):
+                stop_words_list:list=None, custom_stopwords_only:bool=False, ner:bool=False):
     """
     Imports and pre-processes the documents from the `raw_docs` dataframe
 
@@ -28,7 +28,7 @@ def import_data(raw_docs:DataFrame, save_results:bool=False, file_name:str=None,
 
     raw_docs['id'] = range(len(raw_docs))
     data, doc_df = preprocessing.preprocess_docs(raw_docs, save_results, file_name, stop_words_file=stop_words_file,
-                               stop_words_list=stop_words_list, custom_stopwords_only=custom_stopwords_only)
+                               stop_words_list=stop_words_list, custom_stopwords_only=custom_stopwords_only, ner=ner)
 
     # Optionally save the results to disk
     if save_results:
