@@ -166,7 +166,7 @@ class ImportExportTab extends Component {
                     </form>
                 </div>
                 <Header as='h3'>Export</Header>
-                <p>Export results.</p>
+                <p>Results are exported in three formats: 1) The .topex file can only be read by the TopEx application and is used to reload saved results for exploration.  2) Files with a .tsv extension are pipe-delimited files (not tab-delimited) and will require the default delimiter in Excel/Numbers/Google Sheets to be explicitly changed (see User's Manual). 3) Raw data for images are exported as comma-delimited (.csv) files. </p>
                 <div className='file-input'>
                         <Button
                             variant="contained"
@@ -178,7 +178,7 @@ class ImportExportTab extends Component {
                             style={{backgroundColor: '#000', color: '#FFF'}}
                             onClick={(e) => this.exportCSV(this.props.graphData)}
                             className='vspace'
-                        >Export sentences (.psv)</Button>
+                        >Export sentences (.tsv)</Button>
                         <Button
                             variant="contained"
                             style={{backgroundColor: '#000', color: '#FFF'}}

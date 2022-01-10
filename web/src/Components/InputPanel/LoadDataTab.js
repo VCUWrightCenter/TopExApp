@@ -22,7 +22,7 @@ class LoadDataTab extends Component {
 
     // Gets file names from uploads and filters
     mapFiles(uploads) {
-        let typeFilter = this.state.inputType === 'psv' ? '.psv' : (this.state.inputType === 'xlsx' ? '.xlsx' : '.txt')
+        let typeFilter = this.state.inputType === 'tsv' ? '.tsv' : (this.state.inputType === 'xlsx' ? '.xlsx' : '.txt')
         let files = Array.from(uploads)
             .filter(f => f !== undefined && f.name.includes(typeFilter));
         files.forEach(f => f.checked = true);
@@ -201,7 +201,11 @@ class LoadDataTab extends Component {
                 <br />
 
                 <div className='file-input spacing file-manager'>
-                    <Header as='h4'>1. From Text Files</Header>
+                    <Header as="h4">
+                        1. From Text Files
+                        &nbsp;
+                        <span className="tooltip" data-tooltip="Each document must be in it's own UTF-8 encoded text file with a .txt extension. All text documents must be in the same folder with no other files."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                    </Header>
                     <Button
                         variant="contained"
                         color='secondary'
@@ -234,20 +238,24 @@ class LoadDataTab extends Component {
                         <input id='multiDocInput' type="file" webkitdirectory="" mozdirectory="" multiple name="file" hidden onChange={(e) => this.uploadInput(e.target.files, 'multi')} />
                     </form>
 
-                    <Header as='h4'>2. From PSV File</Header>
+                    <Header as="h4">
+                        2. From Tab-Delimited File
+                        &nbsp;
+                        <span className="tooltip" data-tooltip="File has 2 columns (DocID and Text) and a .tsv extension, but columns are delimited by the pipe '|' character."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                    </Header>
                     <Button
                         variant="contained"
                         color='secondary'
                         onClick={() => {
                             this.resetClusteringCorpus()
-                            this.setState({ inputType: 'psv' });
+                            this.setState({ inputType: 'tsv' });
                             document.getElementById('singleDocInput').click();
                         }}
                         startIcon={<CloudUploadIcon />}
-                    >Upload .psv to cluster</Button>
+                    >Upload .tsv to cluster</Button>
 
                     {
-                        this.state.inputType === 'psv' &&
+                        this.state.inputType === 'tsv' &&
                         <div id="csvFileList" className='fileList'>
                             <div>
                                 {this.state.corpusDocs.map((file) => {
@@ -264,7 +272,11 @@ class LoadDataTab extends Component {
                         </div>
                     }
 
-                    <Header as='h4'>3. From Excel File</Header>
+                    <Header as="h4">
+                        3. From Excel File
+                        &nbsp;
+                        <span className="tooltip" data-tooltip="File has 2 columns (DocID and Text) located on a single sheet and saved with a .xlsx extension."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                    </Header>
                     <Button
                         variant="contained"
                         color='secondary'
@@ -294,7 +306,11 @@ class LoadDataTab extends Component {
                         </div>
                     }
 
-                    <Header as="h4">4. From MEDLINE Formatted File</Header>
+                    <Header as="h4">
+                        4. From MEDLINE Formatted File
+                        &nbsp;
+                        <span className="tooltip" data-tooltip="File is a text file with .txt extension in PubMed MEDLINE format."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                    </Header>
                     <Button
                         variant="contained"
                         color='secondary'
@@ -328,8 +344,11 @@ class LoadDataTab extends Component {
                         <input id='singleDocInput' type="file" hidden onChange={(e) => this.uploadInput(e.target.files, this.state.inputType)} />
                     </form>
 
-                    <Header as='h4'>5. From PubMed Search</Header>
-                    <p>Search PubMed for abstracts related to keywords.</p>
+                    <Header as="h4">
+                        5. From PubMed Search
+                        &nbsp;
+                        <span className="tooltip" data-tooltip="Perform and in-app search of PubMed using keywords."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                    </Header>
                     <div className='InputPanelContainer scriptArgsTab'>
                         <div className='spacing'>
                             <label htmlFor="MaxResults">Max Results</label>

@@ -63,7 +63,7 @@ class ClusterThread(threading.Thread):
                 names.append(fileob.filename)
             docs = [doc.replace('\n',' ').replace('\r',' ') for doc in docs]
             df = pd.DataFrame(dict(doc_name=names, text=docs))
-        elif inputType == 'psv':
+        elif inputType == 'tsv':
             df = pd.read_csv(list(files.values())[0],sep='|',names=['doc_name','text'],skiprows=1,usecols=[0,1],quoting=csv.QUOTE_NONE)
         elif inputType == 'xlsx':
             df = pd.read_excel(list(files.values())[0],names=['doc_name','text'],usecols=[0,1], engine='openpyxl')

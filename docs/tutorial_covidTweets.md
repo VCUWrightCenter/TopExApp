@@ -192,7 +192,7 @@ Now that we have analyzed our Tweets we will want to save this data for future a
                                                                                                                          
 
  - **Export Clustering (.topex):** The .topex file allows you to export the current TopEx settings and data view.  You can export then import this file back into TopEx at a later data and have re-clustering functionality as well as data export capabilities.
- - **Export Sentences (.psv):** This option just exports a list of all the sentences that were analyzed.
+ - **Export Sentences (.tsv):** This option just exports a list of all the sentences that were analyzed.
  - **Export Row-Level Results (.txt):** This is the most useful file for further analysis of TopEx results.  This option downloads a pipe-delimited text file that can be uploaded into programs like Excel.  Data includes the raw text, assigned cluster, chosen phrase, topic key words for each sentence that was processed, and document name.  Sentence clusters can be analyzed in detail using this output option.
  - **Export Scatterplot Data (.txt):** This option exports a delimited text file with the coordinates and cluster assignment for each sentence so you can re-create the scatterplot in external tools like R for publications.
  - **Export Word Cloud Data (.txt):** This is similar to the scatterplot file where the raw word frequencies are saved in a delimited file so that word clouds can be generated in external tools for publication.
