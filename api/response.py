@@ -9,6 +9,7 @@ class Response():
         self.max_thresh = max_thresh
         self.thresh = thresh
         self.msg = ''
+        self.error = False
 
     def __iter__(self):
         yield 'viz_df', self.viz_df
@@ -19,3 +20,4 @@ class Response():
         yield 'max_thresh', self.max_thresh
         yield 'thresh', self.thresh
         yield 'msg', self.msg
+        yield 'error', self.error
