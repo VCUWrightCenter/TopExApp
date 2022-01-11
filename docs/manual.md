@@ -7,7 +7,7 @@
 - [Usage Instructions](#usage)
   * [0: Pre-process and Format Input](#usage0)
     + [Text Files](#usage01)
-    + [TSV File](#usage02)
+    + [Delimited File](#usage02)
     + [Excel File](#usage03)
     + [MEDLINE File](#usage04)
     + [PubMed Search](#usage05)
@@ -32,49 +32,57 @@
 
 # TopEx Overview <a name="overview">
 
-The TopExApp was built as a graphical user interface for the [TopEx Python library](https://pypi.org/project/topex/) (TopEx GitHub repository is [here](https://github.com/VCUWrightCenter/TopEx)).  This application allows users to explore the topics present in a set of documents without having to program or be an NLP expert.  The algorithm and technical details behind TopEx are described in detail in [(Olex et al 2020)](#paper).  TopEx operates by assuming  each sentence in a document discusses a different topic.  Each sentence is summarized as a key phrase, which is then represented numerically and clustered into groups.  Sentences discussing similar topics should have numerically similar representations and be placed in the same group/cluster.  A topic analysis is then run on each cluster to identify the key words associated with that group of sentences.  Clustering results are visualized as a scatter plot where each dot represents one sentence, or as a word cloud to aid in identifying which word are the most frequent in a given group a sentences. Results can be downloaded either as a figure or as a delimited text file for further in-depth analyses of each cluster of sentences to identify common themes and topics in the analyzed corpus.
+The TopExApp was built as a graphical user interface for the [TopEx Python library](https://pypi.org/project/topex/) (TopEx GitHub repository is [here](https://github.com/VCUWrightCenter/TopEx)).  This application allows users to explore the topics present in a set of documents without having to program or be an NLP expert.  The algorithm and technical details behind TopEx are described in detail in [(Olex et al 2020)](#paper), and various use cases along with a high-level algorithm overview and the results of user evaluations for the [BioCreative VII Challenge](https://biocreative.bioinformatics.udel.edu/tasks/biocreative-vii/track-4/) can be found in [(Olex et al 2021)](#paper).  Figure 1 below illustrates the TopEx pipeline. TopEx operates by assuming  each sentence in a document discusses a different topic.  Each sentence is summarized as a key phrase, which is then represented numerically and clustered into groups.  Sentences discussing similar topics should have numerically similar representations and be placed in the same group/cluster.  A topic analysis is then run on each cluster to identify the key words associated with that group of sentences.  Clustering results are visualized as a scatter plot where each dot represents one sentence, or as a word cloud to aid in identifying which word are the most frequent in a given group a sentences. Results can be downloaded either as a figure or as a delimited text file for further in-depth analyses of each cluster of sentences to identify common themes and topics in the analyzed corpus.
+ 
+ 
+ <img src="https://vcuwrightcenter.github.io/TopExApp/NLP_Pipeline_Color2_vertical.png" alt="TopEx Pipeline" width="600"/>
+ 
 
 # Installation <a name="install">
 
-TopEx can be accessed on the web at [topex.cctr.vcu.edu](http://topex.cctr.vcu.edu/), which requires no installation.  If analyzing documents with PHI or other sensitive information you can install TopExApp and run it locally as a web app within a Docker container. To install TopExApp locally refer to the [TopExApp Installation Instructions](https://vcuwrightcenter.github.io/TopExApp/installation).
+TopEx can be accessed on the web at [topex.cctr.vcu.edu](http://topex.cctr.vcu.edu/), which requires no installation.  If analyzing documents with Protected Health Information (PHI) or other sensitive information you can install TopExApp and run it locally as a web app within a Docker container. To install TopExApp locally refer to the [TopExApp Installation Instructions](https://vcuwrightcenter.github.io/TopExApp/installation).
 
 # Tutorials <a name="tutorial">
  
-This manual includes detailed descriptions of all TopEx options and parameters.  If you would prefer a walk-through of how to use TopEx with some sample data, please complete one of the [TopEx Tutorials](https://vcuwrightcenter.github.io/TopExApp/).
+This manual includes detailed descriptions of all TopEx options and parameters.  If you would prefer a walk-through of how to use TopEx with some sample data, please complete one of the [TopEx Tutorials](https://vcuwrightcenter.github.io/TopExApp/) or watch the [TopEx Demo](https://www.youtube.com/watch?v=7i4I2RTNVoY).
  
   * [Exploring COVID-19 Tweets:](https://vcuwrightcenter.github.io/TopExApp/tutorial_covidTweets) In this tutorial you will import a sample of Tweets from 2020 that are discussing the COVID-19 pandemic and will compare the topics discussed in March versus December.
-  * More tutorials coming soon...
+  * More tutorials TBD...
 
 # Usage Instructions <a name="usage">
   
-It is _highly recommended_ that new users start by following one of the TopEx Tutorials ([Tweets]() or [PubMed]()) in order to get a general understanding of how TopEx operates.  This manual goes into detail on each of the parameters and options to help users fine-tune them in order to obtain better or more relevant results.  The most influential option is the selection of stopwords.
+It is _highly recommended_ that new users start by following one of the [TopEx Tutorials](https://vcuwrightcenter.github.io/TopExApp/) or watch the [TopEx Demo](https://www.youtube.com/watch?v=7i4I2RTNVoY) in order to get a general understanding of how TopEx operates.  This manual goes into detail on each of the parameters and options to help users fine-tune them in order to obtain better or more relevant results.  The most influential option is the selection of stopwords.
 
 NLP projects generally have an iterative workflow as the best settings for various parameters are project-specific.  TopEx is no exception.  The most influential parameters for TopEx are the Sentence Embedding Parameters, including choice of stopwords, Expansion Corpus, and summary phrase length (i.e. Window Size parameter). Default parameters have been set based on the best parameters for the initial use-case described in [(Olex et al 2020)](#paper); however, these may not work well with new data sets that have different properties.  This tool is for exploration of a corpus (i.e. set of texts), thus users should expect to run and re-run a few times before optimal results are obtained.  
 
 The general workflow for TopEx is as follows:
 
- 0) Format Input Corpus
+ 0) Clean and Format Input Corpus
  1) Import document corpus or previous analysis
  2) Set algorithm and visualization parameters
  3) Run analysis
  4) Explore results
  5) Tweak parameters and run again
 
-## 0: Format Input Corpus <a name="usage0">
+## 0: Clean and Format Input Corpus <a name="usage0">
 
-The "input corpus" is the set of text documents you want to analyze.  TopEx accepts 4 types of input:
+The "input corpus" is the set of text documents you want to analyze.  TopEx accepts several types of input:
   
-  - Individual text files
-  - TSV formatted file
-  - Excel file
-  - MEDLINE formatted file
+  - Individual text files (.txt)
+  - Pipe-delimited text file (.tsv)
+  - Excel file (.xlsx)
+  - MEDLINE formatted file (.txt)
   - PubMed search from within TopEx
+
+Some files may require cleaning and pre-processing, which is generally project specific.  In general, you want to ensure there are no odd characters in the data, and remove text that could skew your results.  For example, in the Acting Intern corpus from [(Olex et al 2020)](#paper), many of the students copied the prompt question into their reply. This is extra information that was not needed and would interfere with the analysis; thus, all of these repetitive statements were removed prior to analysis. If it is not clear what type, if any, preprocessing is needed for your corpus, you can input it as is and use the results to identify repetative or unhelpful statements to remove prior to a final analysis. 
 
 ### Text file input <a name="usage01">
   
- If inputting text files, TopExApp expects each document to be in its own plain text file with the extension ".txt". All text files should be located in a single folder with no other files present. When selecting to upload documents, just choose the folder that contains your corpus.
-  
-  Some files may require pre-processing, which is generally project specific.  In general, you want to ensure there are no odd characters in the data, and remove text that could skew your results.  For example, in the Acting Intern corpus from [(Olex et al 2020)](#paper), many of the students copied the prompt question into their reply. This is extra information that was not needed and would interfere with the analysis; thus, all of these repetitive statements were removed prior to analysis. If it is not clear what type, if any, preprocessing is needed for your corpus, you can input it as is and use the results to identify repetative or unhelpful statements to remove prior to a final analysis.  
+ If inputting text files, TopExApp expects each document to be in its own plain text file with the extension ".txt". All text files should be located in a single folder with no other files present. When selecting to upload documents, just choose the folder that contains your corpus. 
+ 
+ <span style="color:red">**IMPORTANT:**</span> Text files MUST be encoded using UTF-8 encoding.  Python will incorrectly process files that use a different encoding.  To ensure your files are UTF-8 encoded you can open the file, then click on "Save As.." and look at the selected encoding.  If it is anything other than UTF-8 then all files need to be converted.  On the command line (tested on a Mac) you can do this automatically to all text files in a folder with the following command:
+ 
+ > ls | while read file; do iconv -f utf-16le -t utf-8 $file > $file-utf8.txt;  done
 
 ### TSV formatted file <a name="usage02">
   
@@ -252,7 +260,12 @@ In addition, Evan French and Peter Burdette from VCU's Wright Center for Clinica
 If you use TopExApp in your research, please cite:
 
 Olex A, DiazGranados D, McInnes BT, and Goldberg S. Local Topic Mining for Reflective Medical Writing. Full Length Paper. AMIA Jt Summits Transl Sci Proc 2020;2020:459–68. PMCID: [PMC7233034](https://www-ncbi-nlm-nih-gov.proxy.library.vcu.edu/pmc/articles/PMC7233034/)
-
+ 
+Olex, A.L., French, E., Burdette, P., Sagiraju, S., Neumann, T., Gal, T.S., McInnes, B.T., Kenneth, C., 2021. TopEx: Topic Exploration of COVID-19 Corpora - Results from the BioCreative VII Challenge Track 4, in: Proceedings of the BioCreative VII Challenge Evaluation Workshop. Presented at the BioCreative VII Workshop, Virtual, pp. 238–242. 
+ 
 # References <a name="paper">
 
 Olex A, DiazGranados D, McInnes BT, and Goldberg S. Local Topic Mining for Reflective Medical Writing. Full Length Paper. AMIA Jt Summits Transl Sci Proc 2020;2020:459–68. PMCID: [PMC7233034](https://www-ncbi-nlm-nih-gov.proxy.library.vcu.edu/pmc/articles/PMC7233034/)
+ 
+Olex, A.L., French, E., Burdette, P., Sagiraju, S., Neumann, T., Gal, T.S., McInnes, B.T., Kenneth, C., 2021. TopEx: Topic Exploration of COVID-19 Corpora - Results from the BioCreative VII Challenge Track 4, in: Proceedings of the BioCreative VII Challenge Evaluation Workshop. Presented at the BioCreative VII Workshop, Virtual, pp. 238–242. [PDF](https://biocreative.bioinformatics.udel.edu/media/store/files/2021/Track4_pos_3_BC7_submission_192-4.pdf)
+
