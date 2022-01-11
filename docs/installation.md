@@ -7,7 +7,7 @@
 
 # Introduction <a name="intro">
 
-TopExApp provides a graphical user interface for the [TopEx Python library](https://pypi.org/project/topex/), and is an application designed for the exploration of topics in large sets of text. Originally designed to identify common challenges experienced by acting interns through their reflective writing responses [(Olex et al 2020)](#paper), this application can also be used for the exploration of topics in any set of texts.
+TopExApp provides a graphical user interface for the [TopEx Python library](https://pypi.org/project/topex/), and is an application designed for the exploration of topics in large sets of text. Originally designed to identify common challenges experienced by acting interns through their reflective writing responses [(Olex et al 2020)](#paper), this application can also be used for the exploration of topics in any set of texts [(Olex et al 2021)](#paper).
 
 # Installation <a name="install">
   
@@ -89,20 +89,38 @@ If after an update TopEx fails to compile and run, you may need to re-generate y
 - node 6.9.0
 
 ### Run Script
-From the command line, run the following:
+From the command line, run the following in the top-level TopExApp directory:
     
-    ~/api> virtualenv env
+    ~> cd api
+ 
+ Create a Python environment. Make sure it is Python 3.x and above:
+ 
+    ~/api> python -m venv env 
 
     ~/api> env\Scripts\activate (Windows)
 
     ~/api> source env/bin/activate (Mac/Linux)
+ 
+ Install required libraries to Python environment and start app (this take a few minutes):
 
-    ~/api> pip install -r requirements.txt
+    (env) ~/api> pip install --upgrade pip
+ 
+    (env) ~/api> pip install -r requirements.txt
 
-    ~/api> python -m spacy download en_core_web_sm
+    (env) ~/api> python -m spacy download en_core_web_sm
 
-    ~/api> gunicorn app:app -w 2 -b localhost:8080 -t 90
+    (env) ~/api> gunicorn app:app -w 2 -b localhost:8080 -t 90
+ 
+ Open a second terminal window and install/run npm:
+ 
+    ~> cd ../web
 
     ~/web> npm install
 
     ~/web> npm run local
+ 
+# References <a name="paper">
+
+Olex A, DiazGranados D, McInnes BT, and Goldberg S. Local Topic Mining for Reflective Medical Writing. Full Length Paper. AMIA Jt Summits Transl Sci Proc 2020;2020:459–68. PMCID: [PMC7233034](https://www-ncbi-nlm-nih-gov.proxy.library.vcu.edu/pmc/articles/PMC7233034/)
+ 
+Olex, A.L., French, E., Burdette, P., Sagiraju, S., Neumann, T., Gal, T.S., McInnes, B.T., Kenneth, C., 2021. TopEx: Topic Exploration of COVID-19 Corpora - Results from the BioCreative VII Challenge Track 4, in: Proceedings of the BioCreative VII Challenge Evaluation Workshop. Presented at the BioCreative VII Workshop, Virtual, pp. 238–242. [PDF](https://biocreative.bioinformatics.udel.edu/media/store/files/2021/Track4_pos_3_BC7_submission_192-4.pdf)
