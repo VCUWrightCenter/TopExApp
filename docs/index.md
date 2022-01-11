@@ -15,6 +15,10 @@ To get started with TopEx you can follow one of our TopEx Tutorials or read the 
 
 In this tutorial you will import a sample of Tweets from 2020 that are discussing the COVID-19 pandemic and will compare the topics discussed in March versus December.
 
+### Demo Videos and Presentations
+#### [TopEx Demo](https://www.youtube.com/watch?v=7i4I2RTNVoY)
+#### [BioCreative VII Challenge TopEx Presentation](https://www.youtube.com/watch?v=oKCmZoXwhSU&list=PL5uSCzf1azhBcf08IFsi-76Yfb27-jtcf&index=26)
+
 ### User's Manual
 
 The [Users Manual](https://vcuwrightcenter.github.io/TopExApp/manual) contains detailed descriptions of all options avaliable in TopEx, including installation instructions for running TopEx locally.
@@ -25,7 +29,7 @@ For support with TopEx please submit an issue on the [TopExApp GitHub page](http
 
 ## Acknowledgements
 
-TopExApp (previously MedTop) was initially developed as a web app through the 2019-2020 CapStone program by Seniors in VCU's Computer Science Department under the supervision of Dr. Bridget McInnes and Amy Olex. We wish to thank Sean Kotrola, Aidan Myers, and Suzanne Prince for their excellent work in getting this application up and running! Here are links to the team's CapStone [Poster](https://drive.google.com/file/d/1TGCaM7oXPxFwEJ5B5_nrGZqNnUetWPFB/view) and [Application Demonstration](https://drive.google.com/file/d/1xRYlLpiYnCnI9Pdi6vbE4eTDUu0e09qB/view). 
+TopExApp (previously MedTop) was initially developed as a web app through the 2019-2020 CapStone program by Seniors in VCU's Computer Science Department under the supervision of Dr. Bridget McInnes and Ms. Amy Olex. We wish to thank Sean Kotrola, Aidan Myers, and Suzanne Prince for their excellent work in getting this application up and running! Here are links to the team's CapStone [Poster](https://drive.google.com/file/d/1TGCaM7oXPxFwEJ5B5_nrGZqNnUetWPFB/view) and [Application Demonstration](https://drive.google.com/file/d/1xRYlLpiYnCnI9Pdi6vbE4eTDUu0e09qB/view). 
 
 In addition, Evan French and Peter Burdette from VCU's Wright Center for Clinical and Translational Research Informatics Core have been working tirelessly with Amy Olex to get TopEx ready for public release.  Thanks to both of you for your amazing work!
 
@@ -34,3 +38,5 @@ In addition, Evan French and Peter Burdette from VCU's Wright Center for Clinica
 If you use TopExApp in your research, please cite:
 
 Olex A, DiazGranados D, McInnes BT, and Goldberg S. Local Topic Mining for Reflective Medical Writing. Full Length Paper. AMIA Jt Summits Transl Sci Proc 2020;2020:459–68. PMCID: [PMC7233034](https://www-ncbi-nlm-nih-gov.proxy.library.vcu.edu/pmc/articles/PMC7233034/)
+
+Olex, A.L., French, E., Burdette, P., Sagiraju, S., Neumann, T., Gal, T.S., McInnes, B.T., Kenneth, C., 2021. TopEx: Topic Exploration of COVID-19 Corpora - Results from the BioCreative VII Challenge Track 4, in: Proceedings of the BioCreative VII Challenge Evaluation Workshop. Presented at the BioCreative VII Workshop, Virtual, pp. 238–242.
