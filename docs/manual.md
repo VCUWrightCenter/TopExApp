@@ -74,19 +74,21 @@ The "input corpus" is the set of text documents you want to analyze.  TopEx acce
   - MEDLINE formatted file (.txt)
   - PubMed search from within TopEx
 
-Some files may require cleaning and pre-processing, which is generally project specific.  In general, you want to ensure there are no odd characters in the data, and remove text that could skew your results.  For example, in the Acting Intern corpus from [(Olex et al 2020)](#paper), many of the students copied the prompt question into their reply. This is extra information that was not needed and would interfere with the analysis; thus, all of these repetitive statements were removed prior to analysis. If it is not clear what type, if any, preprocessing is needed for your corpus, you can input it as is and use the results to identify repetative or unhelpful statements to remove prior to a final analysis. 
+Some files may require cleaning and pre-processing that is project specific.  In general, you want to ensure there are no odd characters in the data, and remove text that could skew your results.  For example, in the Acting Intern corpus from [(Olex et al 2020)](#paper), many of the students copied the prompt question into their reply. This extra information was not needed and would interfere with the analysis; thus, all of these repetitive statements were removed prior to analysis. If it is not clear what type of, if any, preprocessing is needed for your corpus, you can input it as is and use the results to identify repetative or unhelpful statements to remove prior to a final analysis. 
+ 
+ <span style="color:blue">**NOTE:**</span> When selecting files, TopEx will always display the file name(s) below the button that was pressed (except for PubMed search option). Thus, if you don't see your file name(s) listed after selection then TopEx did not import your file(s).
 
 ### Text file input <a name="usage01">
   
- If inputting text files, TopExApp expects each document to be in its own plain text file with the extension ".txt". All text files should be located in a single folder with no other files present. When selecting to upload documents, just choose the folder that contains your corpus. 
+ If using text files, TopEx expects each document to be in its own plain text file with the extension ".txt". All text files should be located in a single folder with no other files present. When selecting to upload documents, just choose the folder that contains your corpus. 
  
  <span style="color:red">**IMPORTANT:**</span> Text files MUST be encoded using UTF-8 encoding.  Python will incorrectly process files that use a different encoding.  To ensure your files are UTF-8 encoded you can open the file, then click on "Save As.." and look at the selected encoding.  If it is anything other than UTF-8 then all files need to be converted.  On the command line (tested on a Mac) you can do this automatically to all text files in a folder with the following command:
  
  > ls | while read file; do iconv -f utf-16le -t utf-8 $file > $file-utf8.txt;  done
 
-### TSV formatted file <a name="usage02">
+### Pipe-Delimited File <a name="usage02">
   
-  TSV stands for Tab Separated Values. However, values must be delimited by a "|" character (not tabs) to avoid the formatting ambiguity that would arise from text fields containing other common delimiters such as commas or tabs. When selecting a TSV formatted file you should have the document ID in the first column and the entire text of the document in a single cell in the second column.  The same pre-processing suggestions apply for this data as for the individual text file import option.
+  A pipe-delimited file is a text file where each column is delimited by the pipe "|" symbol and the file extention is ".tsv". TopEx uses the pipe as a delimitor because it is rarely used in general writing versus the commonly used comma or tab characters, which are standard delimitors.  Thus, for TopEx columns must be delimited by a "|" character (not tabs or commas). This type of file can be generated from a spreadsheet application, such as Excel, Numbers, or Google Sheets, by changing the default delimitor used when exporting the data.  However, TopEx does support native Excel file import, which may be more straighforward. An example of a pipe-delimited file is below.
   
 id|text
 
@@ -94,17 +96,19 @@ id|text
 
 002|Another document text here
 
-### Excel file <a name="usage03">
+### Excel File <a name="usage03">
   
-  When selecting an Excel formatted file you should have the document ID in the first column and the entire text of the document in a single cell in the second column.  The same pre-processing suggestions apply for this data as for the individual text file import option.
+  An Excel formatted file must contain 2 columns, with the first row containing the column titles, and have the extension of ".xlsx".  The document ID should be in the first column and the entire text of the document in a single cell in the second column. Note that all IDs must have some sort of text in the second column.  If a document ID is present, but the text column is empty TopEx will throw an error.  Additionally, the extension must be ".xlsx" as the older ".xls" extension will not be recognized. 
 
-### MEDLINE formatted file <a name="usage04">
+### MEDLINE File <a name="usage04">
   
   The MEDLINE format is provided for those who want to explore topics in a set of PubMed search results.  When you are in PubMed, select to save your search results in a MEDLINE format.  This will save the publication information, including the abstract.  Once uploaded to TopEx, the abstract will be automatically extracted and run through TopEx, and no pre-processing is required.
   
 ### PubMed Search <a name="usage05">
   
   TopEx also provides the ability to run a PubMed search directly from the application.  If using this option you can enter your search terms in the box and then select how many results to analyze.  It is suggested you use at least 100 as choosing fewer does not provid enough information for the sentence embedding process.
+ 
+ <span style="color:red">**IMPORTANT:**</span> This feature is limited in its search capability, so it is recommended to run a search through the PubMed interface and then save the results in a MEDLINE formatted text file. If using this feature then note that the first N documents matching your search will be returned regardless of if they actually contain any abstract information.  Those that do not contain abstract information will not be included in the TopEx analysis, so while you may have selected for 100 documents to be returned, TopEx may have clustered fewer than what was specified.
 
 
 ## 1: Importing Document Corpus or Previous Analysis File <a name="usage1">
@@ -116,11 +120,11 @@ id|text
 In TopEx, you are required to submit a Clustering Corpus.  This is the set of documents containing the sentences you want analyzed and clustered.  To do this follow these steps:     
 
  1) Select the "Load Data" tab in TopEx.
- 2) Choose one of the 5 options for a Clustering Corpus: text files, TSV file, Excel file, MEDLINE file, or PubMed Search.
+ 2) Choose one of the 5 options for a Clustering Corpus: text files, pipe-delimited file, Excel file, MEDLINE file, or PubMed Search.
  3) If choosing the text file option, click the "Upload docs to cluster" button. Navigate to the directory with the corpus. Select the directory and the click "Upload" (it may appear greyed out, but this is ok as you can still select it).
- 4) Otherwise, click the appropriate button then navigate to the TSV, Excel, or MEDLINE file of interest.
+ 4) Otherwise, click the appropriate button then navigate to the pipe-delimited, Excel, or MEDLINE file of interest.
  
-A Clustering Corpus is required, and must contain a **minimum of 3 documents**, however, a larger set is recommended.  By default, the imported Clustering Corpus is automatically used as the Background Corpus as well.  The _Background Corpus_ is the set of documents used to create the TF-IDF matrix that contains the distribution of each word across a set of documents.  This matrix is used in two ways by TopEx: 1) Identification of the most informative phrase for each sentence to be used for sentence representation. 2) Creation of word embeddings, which generate the final sentence embeddings (i.e. numerical sentence representations) for clustering.  Thus, _the source corpus of the TF-IDF is very important as it is the backdrop for TopEx_.
+A Clustering Corpus is required, and must contain a **minimum of 3 documents**, however, a larger set is highly recommended.  By default, the imported Clustering Corpus is automatically used as the Background Corpus as well.  The _Background Corpus_ is the set of documents used to create the TF-IDF matrix that contains the distribution of each word across a set of documents.  This matrix is used in two ways by TopEx: 1) Identification of the most informative phrase for each sentence to be used for sentence representation. 2) Creation of word embeddings, which generate the final sentence embeddings (i.e. numerical sentence representations) for clustering.  Thus, _the source corpus of the TF-IDF is very important as it is the backdrop for TopEx_.
 
 **A Note on the Background Corpus**
 
@@ -143,7 +147,7 @@ Finally, you have the option of using one corpus for clustering and a completely
     
 ### Import Previous Analysis <a name="usage12">
 
-Analyses can be saved into a TopEx formatted file.  If you need to import an analysis file do the following:
+Analyses can be saved into a TopEx formatted file, which can then be reloaded into the TopEx interface for further exploration.  If you need to import an analysis file do the following:
 
  1) _Make sure you do not have any files loaded in the File Manager tab!_ If you do, then hit your browser's reload button to clear all loaded data.
  2) Select the "Import/Export" tab in TopEx.
