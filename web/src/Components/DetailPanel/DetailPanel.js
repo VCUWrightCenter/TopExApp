@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import AcknowledgementsDialog from '../Dialog/AcknowledgementsDialog';
 import InformationDialog from '../Dialog/InformationDialog';
+import FAQDialog from '../Dialog/FAQDialog';
 import './DetailPanel.css';
 import * as util from '../Shared';
 
@@ -51,6 +52,7 @@ class DetailPanel extends Component {
         return (
             <div className='right-sidebar'>
                 {this.state.pointDisplay}
+                <FAQDialog />
                 <InformationDialog />
                 <AcknowledgementsDialog />
             </div>
