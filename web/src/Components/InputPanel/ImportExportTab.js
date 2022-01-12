@@ -184,7 +184,7 @@ class ImportExportTab extends Component {
                             style={{backgroundColor: '#000', color: '#FFF'}}
                             onClick={(e) => this.exportResults(this.props.graphData)}
                             className='vspace'
-                        >Export row-level results (.txt)</Button>
+                        >Export row-level results (.tsv)</Button>
                         <Button
                             variant="contained"
                             style={{backgroundColor: '#000', color: '#FFF'}}
