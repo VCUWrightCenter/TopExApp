@@ -89,17 +89,17 @@ Some files may require cleaning and pre-processing that is project specific.  In
  
  <span style="color:red">**IMPORTANT:**</span> Text files MUST be encoded using UTF-8 encoding.  Python will incorrectly process files that use a different encoding.  To ensure your files are UTF-8 encoded you can open the file, then click on "Save As.." and look at the selected encoding.  If it is anything other than UTF-8 then all files need to be converted.  On the command line (tested on a Mac) you can do this automatically to all text files in a folder with the following command:
  
- > ls \| while read file; do iconv -f utf-16le -t utf-8 $file > $file-utf8.txt;  done
+    > ls \| while read file; do iconv -f utf-16le -t utf-8 $file > $file-utf8.txt;  done
 
 ### Pipe-Delimited File <a name="usage02">
   
   A pipe-delimited file is a text file where each column is delimited by the pipe "\|" symbol and the file extention is ".tsv". TopEx uses the pipe as a delimitor because it is rarely used in general writing versus the commonly used comma or tab characters, which are standard delimitors.  Thus, for TopEx columns must be delimited by a "\|" character (not tabs or commas). This type of file can be generated from a spreadsheet application, such as Excel, Numbers, or Google Sheets, by changing the default delimitor used when exporting the data.  However, TopEx does support native Excel file import, which may be more straighforward. An example of a pipe-delimited file is below.
   
-> id\|text
+   > id\|text
  
-> 001\|Complete document text here
+   > 001\|Complete document text here
  
-> 002\|Another document text here
+   > 002\|Another document text here
 
 ### Excel File <a name="usage03">
   
