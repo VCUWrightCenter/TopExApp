@@ -47,7 +47,7 @@ TopExApp runs as a web app within a Docker container and can be run as an end-us
 
 When an updated version of TopExApp is released, navigate to the TopExApp GitHub repository using your terminal and download the updated application using:
 
- > git pull
+    > git pull
 
 Then open the Docker Desktop Dashboard and restart the TopEx container.
 
