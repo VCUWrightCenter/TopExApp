@@ -6,7 +6,7 @@ TopEx is a domain agnostic NLP application that facilitates the exploration of t
 
 Choose your access:
  - Public web server: [topex.cctr.vcu.edu](http://topex.cctr.vcu.edu/)
- - Local installation: [TopExApp on GitHub](https://github.com/VCUWrightCenter/TopExApp)
+ - Local installation: [TopExApp on GitHub](https://github.com/VCUWrightCenter/TopExApp) ([local installation guide](https://vcuwrightcenter.github.io/TopExApp/installation))
 
 To get started with TopEx you can follow the [Quick Start Guide](https://vcuwrightcenter.github.io/TopExApp/quick_start), one of our TopEx Tutorials, or read the detailed [User's Manual](https://vcuwrightcenter.github.io/TopExApp/manual). 
 
@@ -26,6 +26,8 @@ In this tutorial you will import a sample of Tweets from 2020 that are discussin
 ### User's Manual
 
 The [Users Manual](https://vcuwrightcenter.github.io/TopExApp/manual) contains detailed descriptions of all options avaliable in TopEx, including installation instructions for running TopEx locally.
+
+
 
 ## Support
 
