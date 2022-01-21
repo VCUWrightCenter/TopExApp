@@ -166,10 +166,33 @@ Analyses can be saved into a TopEx formatted file, which can then be reloaded in
 
 TopEx has a variety of parameters that can be set to customize your analysis.  There are parameters associated with how sentences are represented, how clustering is performed, and how the scatter plot is visualized.  To change the default parameters go to the "Parameters" tab in TopEx.  The list below explains what each parameter's function is.
 
-### Sentence Embedding Parameters <a name="usage12">
+### Basic Parameters
+ 
+#### Number of Clusters
+ When only using the basic parameters, the default clustering method is K-Means. Adjusting the number of clusters, k, will divide your sentences into exactly k clusters.  See the Advanced Parameter Threshold description if you change the clustering method to HAC. Also see the **[Re-Cluster](#usage43)** tab options below to adjust this parameter without having to re-process the entire data set (recommended for large data sets).
+ 
+#### Stopwords <a name="stopwords">
+  Stopwords are essentially a list of uninformative words that you want the algorithm to ignore.  This list includes domain-agnostic words like "the", "and", "or", as well as domain-specific words such as "COVID-19" or "patient".  In TopEx you have three options related to the utilization of stopwords:
+  
+ 1. Use the default stopword list that contains domain-agnostic stopword (default behavior).
+ 2. Add additional domain-specific stopwords (upload a stopwords text file).
+ 3. Only use domain-specific stopwords without the default stopword list (upload a stopwords text file and check the "Custom stopwords only?" box).
+ 
+  _Stopword removal is one of the most influential parameters that should be explored when analyzing a new corpus_.  Stopwords are specified in a text file with one word per line.  An example file for COVID tweets can be found **[here](https://github.com/VCUWrightCenter/TopExApp/tutorial_data/tweets/covid_stopwords.txt)**.  Note that the COVID tweets stopwords include the word "COVID-19", which one may think is important; however, we already know the tweets are about COVID-19 as they were selected that way, thus, we don't need to cluster sentences with this term as we instead want the topics within the COVID-19 theme.  
+  
+  To obtain a list of domain-specific stopwords for your project we recommend running TopEx without any custom stopwords, see what the most influential terms are (those that are driving the clusters), then add those as stopwords and run TopEx again.  This can repeat until you are satified with the topics you are seeing.
+  
+**Include custom stopwords only?** This option is located in the Advanced Parameter section and will prevent the domain-agnostic stopwords from being removed and will only use the list of custom stopwords.  Users might want to choose this option if the list of default stopwords **[(TopEx uses SpaCy for stopword removal)](https://machinelearningknowledge.ai/tutorial-for-stopwords-in-spacy/)** contains some terms that are important to your study.
+  
+**Upload Custom Stopwords:** To upload a list of custom stopwords navigate to your file and select upload.  Your file name should appear below the upload button.
 
-These parameters control how a sentence is embeded into a numerical vector.  The TF-IDF matrix is created using all documents in the Background Corpus (see the **[Import Document Corpus](#usage11)** section for details). This TF-IDF is used to reduce sentences to their most informative phrase (see **[Olex et al 2020](#paper)** for details).
+ 
+ 
+ 
+### Sentence Embedding Parameters (Advanced) <a name="usage12">
 
+These parameters control how a sentence is embeded into a numerical vector, and are divided into Basic and Advanced parameters.  The TF-IDF matrix is created using all documents in the Background Corpus (see the **[Import Document Corpus](#usage11)** section for details). This TF-IDF is used to reduce sentences to their most informative phrase (see **[Olex et al 2020](#paper)** for details).
+  
 #### Biomedical Named Entity Recognition (NER)
 TopEx has the ability to utilize the individual words, or to first convert each sentence to Biomedical Named Entities, prior to building numerical representations of sentences for clustering.  For example, without biomedical NER the words "gene" and "expression" in the phrase "gene expression" would be processed individually; however, with Biomedical NER turned on, the concept of gene expression would not be split up and would appear in the analysis as the full concept "gene expression". To turn Biomedical NER on, just CHECK the box on the Parameters tab.
 
@@ -190,22 +213,8 @@ Determines the number of dimensions a word embedding will be for sentence repres
 #### Include sentiment?
 The calculation to identify the most informative phrase of a sentence includes a weighting factor for words associated with positive or negative sentiment so that these words are more likely to end up in the chosen phrase to represent a sentence. By default, this sentiment weighting factor is included in the calculation. To disable this feature and ignore the sentiment of words, UNCHECK the box beside "Include sentiment?".  Including sentiment in the phrase calculation is task specific.  In the use case discussed in **[(Olex et al 2020)](#paper)** words with sentiment were more likely to elucidate challenges faced by medical students during their intership; however, if exploring texts discussing medical symptoms or some other factual corpus, sentiment may not be as important, or even detrimental, to identifying the most informative phrase with which to represent a sentence.
 
-#### Stopwords <a name="stopwords">
-  Stopwords are essentially a list of uninformative words that you want the algorithm to ignore.  This list includes domain-agnostic words like "the", "and", "or", as well as domain-specific words such as "COVID-19" or "patient".  In TopEx you have three options related to the utilization of stopwords:
   
- 1. Use the default stopword list that contains domain-agnostic stopword (default behavior).
- 2. Add additional domain-specific stopwords (upload a stopwords text file).
- 3. Only use domain-specific stopwords without the default stopword list (upload a stopwords text file and check the "Custom stopwords only?" box).
- 
-  _Stopword removal is one of the most influential parameters that should be explored when analyzing a new corpus_.  Stopwords are specified in a text file with one word per line.  An example file for COVID tweets can be found **[here](https://github.com/VCUWrightCenter/TopExApp/tutorial_data/tweets/covid_stopwords.txt)**.  Note that the COVID tweets stopwords include the word "COVID-19", which one may think is important; however, we already know the tweets are about COVID-19 as they were selected that way, thus, we don't need to cluster sentences with this term as we instead want the topics within the COVID-19 theme.  
-  
-  To obtain a list of domain-specific stopwords for your project we recommend running TopEx without any custom stopwords, see what the most influential terms are (those that are driving the clusters), then add those as stopwords and run TopEx again.  This can repeat until you are satified with the topics you are seeing.
-  
-**Include custom stopwords only?** This option will prevent the domain-agnostic stopwords from being removed and will only use the list of custom stopwords.  Users might want to choose this option if the list of default stopwords **[(TopEx uses SpaCy for stopword removal)](https://machinelearningknowledge.ai/tutorial-for-stopwords-in-spacy/)** contains some terms that are important to your study.
-  
-**Upload Custom Stopwords:** To upload a list of custom stopwords navigate to your file and select upload.  Your file name should appear below the upload button.
-  
-### Sentence Clustering Parameters <a name="usage13">
+### Sentence Clustering Parameters (Advanced) <a name="usage13">
 The sentence clustering parameters control how sentence embeddings are grouped together. By default, the K-means clustering algorithm is used, which requires Euclidean distance as the distance metric, to group sentences into clusters.
 
 #### Clustering Method
@@ -221,10 +230,10 @@ Specifies the method used for determining sentence similarity. Options include:
 * **correlation:** Calculates the absolute value of Pearson's correlation coefficient, which primary looks at similar patterns of vector elements and ignores magnitude.
 * **cosine:** Treats embeddings as vectors and calculates the angle between the two vectors. This metric is frequently used in NLP.
 
-#### Threshold
-The threshold is either 1) the number of clusters, k, for K-Means clustering, or 2) the height of the dendrogram to cut in HAC.  Note that if using k-means you will get exactly k clusters; however, using HAC may take sone trial and error as the max height of the tree changes with each data set.  Default is set to 20, which is reasonable for both methods, but it is recommended all users should play with this parameter to identify the optimal value for their corpus.  See the **[Re-Cluster](#usage43)** tab options below to adjust this parameter without having to re-process the entire data set (recommended for large data sets).
+#### Threshold (see Number of Clusters in Basic Parameter section)
+To adjust the threshold, edit the "Number of Clusters" option in the Basic Parameter's section.  The threshold is either 1) the number of clusters, k, for K-Means clustering (default), or 2) the height of the dendrogram to cut in HAC.  Note that if using k-means you will get exactly k clusters; however, using HAC may take sone trial and error as the max height of the tree changes with each data set.  Default is set to 20, which is reasonable for both methods, but it is recommended all users should play with this parameter to identify the optimal value for their corpus.  See the **[Re-Cluster](#usage43)** tab options below to adjust this parameter without having to re-process the entire data set (recommended for large data sets).
 
-### Visualization Parameters <a name="usage14">
+### Visualization Parameters (Advanced) <a name="usage14">
 These parameters control how the scatter plot is created for visualization of the clusters.  The scatter plot data is a compression of the clustering distance matrix down to 2 dimensions.  It is NOT a direct vizualization of the compressed/raw TF-IDF.  Thus, the user may choose a different compression method for visualization.  Through many trials, we have found that UMAP using a cosine distance metric generates good visualizations that generally correspond to sentence clusters found using SVD compression; thus, UMAP is the default; however, other options can be explored.  Note, compression is always to 2 dimensions for 2-D scatter plot visualization.
 
 #### Visualization Method
