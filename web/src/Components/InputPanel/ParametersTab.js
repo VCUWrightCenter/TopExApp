@@ -4,6 +4,12 @@ import { Input, Header, Dropdown, Checkbox } from 'semantic-ui-react';
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import * as shared from '../Shared';
+import { makeStyles } from '@material-ui/core/styles';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 class ParametersTab extends Component {
     constructor(props) {
@@ -75,79 +81,31 @@ class ParametersTab extends Component {
         }
     }
 
+
     render() {
+        const classes = makeStyles((theme) => ({
+            root: {
+                width: '100%',
+            },
+            heading: {
+                fontSize: theme.typography.pxToRem(15),
+                fontWeight: theme.typography.fontWeightRegular,
+            },
+        }));
+
         return (
             <div className='InputPanelContainer scriptArgsTab'>
-                <Header as='h3'>Sentence Embedding Parameters</Header>
-
                 <div className='spacing'>
-                    <label htmlFor="windowSize">Window Size</label>
+                    <label htmlFor="threshold">Number of Clusters</label>
                     <Input
                         type='number'
-                        placeholder='Window Size'
-                        defaultValue='6'
-                        id='windowSize'
+                        placeholder='Threshold'
+                        defaultValue='20'
+                        id='threshold'
                         min='0'
                     />
                     &nbsp;
-                    <span className="tooltip" data-tooltip="Length of phrase extracted from each sentence."><i aria-hidden="true" className="question circle fitted icon"></i></span>
-                </div>
-
-                <div className='spacing'>
-                    <label htmlFor="vectorizationMethod">Vectorization Method</label>
-                    <Dropdown placeholder='Select a method'
-                        clearable
-                        fluid
-                        selection
-                        id="vectorizationMethod"
-                        options={shared.getVectorizationMethod("vectorizationMethod")}
-                        onChange={this.getDropdownValue} />
-                    &nbsp;
-                    <span className="tooltip" data-tooltip="Method used for generating phrase vectors."><i aria-hidden="true" className="question circle fitted icon"></i></span>
-                </div>
-
-                <div className='spacing'>
-                    <label htmlFor="tfidfCorpus">Background Corpus</label>
-                    <Dropdown placeholder='Select set of background corpus docs'
-                        clearable
-                        fluid
-                        selection
-                        id="tfidfCorpus"
-                        options={shared.getTfidfCorpus("tfidfCorpus")}
-                        onChange={this.getDropdownValue} />
-                    &nbsp;
-                    <span className="tooltip" data-tooltip="Set(s) of documents used to generate the TF-IDF."><i aria-hidden="true" className="question circle fitted icon"></i></span>
-                </div>
-
-                <div className='spacing'>
-                    <label htmlFor="dimensions">Dimensions</label>
-                    <Input
-                        type='number'
-                        placeholder='Dimensions'
-                        defaultValue='200'
-                        id='dimensions'
-                        min='0'
-                    />
-                    &nbsp;
-                    <span className="tooltip" data-tooltip="Only relevant for UMAP and SVD clustering. Dimensions to which the tfidf matrix is reduced."><i aria-hidden="true" className="question circle fitted icon"></i></span>
-                </div>
-
-                <div className='spacing'>
-                    <Checkbox id='include_sentiment' label="Include sentiment?" title="" defaultChecked />
-                    &nbsp;
-                    <span className="tooltip" data-tooltip="Checking this box means that part of speech and sentiment will be used to weight the importance of tokens."><i aria-hidden="true" className="question circle fitted icon"></i></span>
-                </div>
-
-                <div className='spacing'>
-                    <Checkbox id='custom_stopwords_only' label="Custom stopwords only?" title="" />
-                    &nbsp;
-                    <span className="tooltip" data-tooltip="Checking this box means that only stopwords explicitly listed in the custom stopwords file will be removed during preprocessing."><i aria-hidden="true" className="question circle fitted icon"></i></span>
-                </div>
-
-                <div className='spacing'>
-                    <Checkbox id='ner' label="Biomedical Named Entity Recognition?" title="" />
-                    &nbsp;
-                    <span className="tooltip" data-tooltip="Checking this box will cause sentences to be represented by biomedical entities they contain."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                    <span className="tooltip" data-tooltip="Corresponds to the cut height of the dendrogram for HAC clustering and K for k-means clustering."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                 </div>
 
                 <Header as='h4'>Custom stopwords file (Optional)</Header>
@@ -162,7 +120,7 @@ class ParametersTab extends Component {
                     >Upload stopwords file</Button>
                     <br />
                     <Button
-                        style={{backgroundColor: '#6b6b6b', color: '#FFF'}}
+                        style={{ backgroundColor: '#6b6b6b', color: '#FFF' }}
                         variant="contained"
                         onClick={() => { this.resetStopwords() }}
                         className='vspace'
@@ -185,91 +143,165 @@ class ParametersTab extends Component {
                     </form>
                 </div>
 
-                <Header as='h3'>Sentence Clustering Parameters</Header>
+                <div className={classes.root}>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Typography className={classes.heading}>Advanced Parameters</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Typography>
+                                DISCLAIMER: Advanced parameter defaults are set to values that work well for many corpora. Users should read the User's Manual and have some basic understanding of NLP algorithms, including the generation and usage of word embeddings, TF-IDF matrix construction, data reduction strategies, and clustering before proceeding to alter these settings.
+                                <Header as='h3'>Sentence Embedding Parameters</Header>
+                                <div className='spacing'>
+                                    <label htmlFor="windowSize">Window Size</label>
+                                    <Input
+                                        type='number'
+                                        placeholder='Window Size'
+                                        defaultValue='6'
+                                        id='windowSize'
+                                        min='0'
+                                    />
+                                    &nbsp;
+                                    <span className="tooltip" data-tooltip="Length of phrase extracted from each sentence."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                                </div>
 
-                <div className='spacing'>
-                    <label htmlFor="clusteringMethod">Clustering Method</label>
-                    <Dropdown placeholder='Select a method'
-                        fluid
-                        clearable
-                        selection
-                        id="clusteringMethod"
-                        options={shared.getClusteringMethods("clusteringMethod")}
-                        onChange={this.getDropdownValue}>
-                    </Dropdown>
-                    &nbsp;
-                    <span className="tooltip" data-tooltip="Method used to cluster word vectors."><i aria-hidden="true" className="question circle fitted icon"></i></span>
-                </div>
+                                <div className='spacing'>
+                                    <label htmlFor="vectorizationMethod">Vectorization Method</label>
+                                    <Dropdown placeholder='Select a method'
+                                        clearable
+                                        fluid
+                                        selection
+                                        id="vectorizationMethod"
+                                        options={shared.getVectorizationMethod("vectorizationMethod")}
+                                        onChange={this.getDropdownValue} />
+                                    &nbsp;
+                                    <span className="tooltip" data-tooltip="Method used for generating phrase vectors."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                                </div>
 
-                <div id="note">
-                    <p><i aria-hidden="true" className="exclamation circle fitted icon"></i> Please note that the K-Means clustering algorithm only uses Euclidean distance.</p>
-                </div>
+                                <div className='spacing'>
+                                    <label htmlFor="tfidfCorpus">Background Corpus</label>
+                                    <Dropdown placeholder='Select set of background corpus docs'
+                                        clearable
+                                        fluid
+                                        selection
+                                        id="tfidfCorpus"
+                                        options={shared.getTfidfCorpus("tfidfCorpus")}
+                                        onChange={this.getDropdownValue} />
+                                    &nbsp;
+                                    <span className="tooltip" data-tooltip="Set(s) of documents used to generate the TF-IDF."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                                </div>
 
-                <div className='spacing'>
-                    <label htmlFor="cluster_dist_metric">Distance Metric for Clustering</label>
-                    <Dropdown placeholder='Select distance metric'
-                        fluid
-                        clearable
-                        selection
-                        id="cluster_dist_metric"
-                        options={shared.getDistanceMetric("cluster_dist_metric")}
-                        onChange={this.getDropdownValue} />
-                    &nbsp;
-                    <span className="tooltip" data-tooltip="This distance metric is used to compare points for clustering."><i aria-hidden="true" className="question circle fitted icon"></i></span>
-                </div>
+                                <div className='spacing'>
+                                    <label htmlFor="dimensions">Dimensions</label>
+                                    <Input
+                                        type='number'
+                                        placeholder='Dimensions'
+                                        defaultValue='200'
+                                        id='dimensions'
+                                        min='0'
+                                    />
+                                    &nbsp;
+                                    <span className="tooltip" data-tooltip="Only relevant for UMAP and SVD clustering. Dimensions to which the tfidf matrix is reduced."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                                </div>
 
-                <div className='spacing'>
-                    <label htmlFor="threshold">Threshold</label>
-                    <Input
-                        type='number'
-                        placeholder='Threshold'
-                        defaultValue='20'
-                        id='threshold'
-                        min='0'
-                    />
-                    &nbsp;
-                    <span className="tooltip" data-tooltip="Corresponds to the cut height of the dendrogram for HAC clustering and K for k-means clustering."><i aria-hidden="true" className="question circle fitted icon"></i></span>
-                </div>
+                                <div className='spacing'>
+                                    <Checkbox id='include_sentiment' label="Include sentiment?" title="" defaultChecked />
+                                    &nbsp;
+                                    <span className="tooltip" data-tooltip="Checking this box means that part of speech and sentiment will be used to weight the importance of tokens."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                                </div>
 
-                <Header as='h3'>Visualization Parameters</Header>
+                                <div className='spacing'>
+                                    <Checkbox id='custom_stopwords_only' label="Custom stopwords only?" title="" />
+                                    &nbsp;
+                                    <span className="tooltip" data-tooltip="Checking this box means that only stopwords explicitly listed in the custom stopwords file will be removed during preprocessing."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                                </div>
 
-                <div className='spacing'>
-                    <label htmlFor="visualizationMethod">Visualization Method</label>
-                    <Dropdown placeholder='Select Visualization Method'
-                        fluid
-                        clearable
-                        selection
-                        id="visualizationMethod"
-                        options={shared.getVisualizationMethods("visualizationMethod")}
-                        onChange={this.getDropdownValue} />
-                    &nbsp;
-                    <span className="tooltip" data-tooltip="Method used for projecting points into two dimensions for visualization."><i aria-hidden="true" className="question circle fitted icon"></i></span>
-                </div>
+                                <div className='spacing'>
+                                    <Checkbox id='ner' label="Biomedical Named Entity Recognition?" title="" />
+                                    &nbsp;
+                                    <span className="tooltip" data-tooltip="Checking this box will cause sentences to be represented by biomedical entities they contain."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                                </div>
 
-                <div className='spacing'>
-                    <label htmlFor="viz_dist_metric">Distance Metric for Visualization</label>
-                    <Dropdown placeholder='Select distance metric'
-                        fluid
-                        clearable
-                        selection
-                        id="viz_dist_metric"
-                        options={shared.getDistanceMetric("viz_dist_metric")}
-                        onChange={this.getDropdownValue} />
-                    &nbsp;
-                    <span className="tooltip" data-tooltip="This distance metric is used to compare points for visualization"><i aria-hidden="true" className="question circle fitted icon"></i></span>
-                </div>
+                                <Header as='h3'>Sentence Clustering Parameters</Header>
 
-                <div className='spacing'>
-                    <label htmlFor="umap_neighbors">Umap Neighbors</label>
-                    <Input
-                        type='number'
-                        placeholder='Umap Neighbors'
-                        defaultValue='15'
-                        id='umap_neighbors'
-                        min='0'
-                    />
-                    &nbsp;
-                    <span className="tooltip" data-tooltip="Only relevant for UMAP clustering."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                                <div className='spacing'>
+                                    <label htmlFor="clusteringMethod">Clustering Method</label>
+                                    <Dropdown placeholder='Select a method'
+                                        fluid
+                                        clearable
+                                        selection
+                                        id="clusteringMethod"
+                                        options={shared.getClusteringMethods("clusteringMethod")}
+                                        onChange={this.getDropdownValue}>
+                                    </Dropdown>
+                                    &nbsp;
+                                    <span className="tooltip" data-tooltip="Method used to cluster word vectors."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                                </div>
+
+                                <div id="note">
+                                    <p><i aria-hidden="true" className="exclamation circle fitted icon"></i> Please note that the K-Means clustering algorithm only uses Euclidean distance.</p>
+                                </div>
+
+                                <div className='spacing'>
+                                    <label htmlFor="cluster_dist_metric">Distance Metric for Clustering</label>
+                                    <Dropdown placeholder='Select distance metric'
+                                        fluid
+                                        clearable
+                                        selection
+                                        id="cluster_dist_metric"
+                                        options={shared.getDistanceMetric("cluster_dist_metric")}
+                                        onChange={this.getDropdownValue} />
+                                    &nbsp;
+                                    <span className="tooltip" data-tooltip="This distance metric is used to compare points for clustering."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                                </div>
+
+                                <Header as='h3'>Visualization Parameters</Header>
+
+                                <div className='spacing'>
+                                    <label htmlFor="visualizationMethod">Visualization Method</label>
+                                    <Dropdown placeholder='Select Visualization Method'
+                                        fluid
+                                        clearable
+                                        selection
+                                        id="visualizationMethod"
+                                        options={shared.getVisualizationMethods("visualizationMethod")}
+                                        onChange={this.getDropdownValue} />
+                                    &nbsp;
+                                    <span className="tooltip" data-tooltip="Method used for projecting points into two dimensions for visualization."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                                </div>
+
+                                <div className='spacing'>
+                                    <label htmlFor="viz_dist_metric">Distance Metric for Visualization</label>
+                                    <Dropdown placeholder='Select distance metric'
+                                        fluid
+                                        clearable
+                                        selection
+                                        id="viz_dist_metric"
+                                        options={shared.getDistanceMetric("viz_dist_metric")}
+                                        onChange={this.getDropdownValue} />
+                                    &nbsp;
+                                    <span className="tooltip" data-tooltip="This distance metric is used to compare points for visualization"><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                                </div>
+
+                                <div className='spacing'>
+                                    <label htmlFor="umap_neighbors">Umap Neighbors</label>
+                                    <Input
+                                        type='number'
+                                        placeholder='Umap Neighbors'
+                                        defaultValue='15'
+                                        id='umap_neighbors'
+                                        min='0'
+                                    />
+                                    &nbsp;
+                                    <span className="tooltip" data-tooltip="Only relevant for UMAP clustering."><i aria-hidden="true" className="question circle fitted icon"></i></span>
+                                </div>
+                            </Typography>
+                        </AccordionDetails>
+                    </Accordion>
                 </div>
             </div >
         )

@@ -108,11 +108,11 @@ class ImportExportTab extends Component {
 
         // Create .csv body from scatterplot data
         let scatterplotData = JSON.parse(data.viz_df);
-        let body = "x|y|cluster\n"
+        let body = "x,y,cluster\n"
         for (let i = 0; i < data.count; i++) {
-            body += `${scatterplotData.x[i]}|${scatterplotData.y[i]}|${scatterplotData.cluster[i]}\n`;
+            body += `${scatterplotData.x[i]},${scatterplotData.y[i]},${scatterplotData.cluster[i]}\n`;
         }
-        util.exportPipeDelimited(body, filename);
+        util.exportCommaDelimited(body, filename);
     }
 
     exportWordcloudData(data)  {
@@ -133,11 +133,11 @@ class ImportExportTab extends Component {
         }
     
         // Create .csv body from scatterplot data
-        let body = "cluster|phrase|count\n"
+        let body = "cluster,phrase,count\n"
         for (var k = 0; k < results.length; k++) {
-            body += `${results[k].cluster}|${results[k].phrase}|${results[k].value}\n`;
+            body += `${results[k].cluster},${results[k].phrase},${results[k].value}\n`;
         }
-        util.exportPipeDelimited(body, filename);
+        util.exportCommaDelimited(body, filename);
     }
 
     render() {
@@ -190,13 +190,13 @@ class ImportExportTab extends Component {
                             style={{backgroundColor: '#000', color: '#FFF'}}
                             onClick={(e) => this.exportScatterplotData(this.props.graphData)}
                             className='vspace'
-                        >Export scatterplot data (.txt)</Button>
+                        >Export scatterplot data (.csv)</Button>
                         <Button
                             variant="contained"
                             style={{backgroundColor: '#000', color: '#FFF'}}
                             onClick={(e) => this.exportWordcloudData(this.props.graphData)}
                             className='vspace'
-                        >Export word cloud data (.txt)</Button>
+                        >Export word cloud data (.csv)</Button>
                 </div>
             </div>)
     }
