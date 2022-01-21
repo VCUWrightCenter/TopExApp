@@ -1,9 +1,9 @@
 //This is where the data is diplayed when you click on a data point. 
 
 import React, { Component } from "react";
+import Button from '@material-ui/core/Button';
 import AcknowledgementsDialog from '../Dialog/AcknowledgementsDialog';
 import InformationDialog from '../Dialog/InformationDialog';
-import FAQDialog from '../Dialog/FAQDialog';
 import './DetailPanel.css';
 import * as util from '../Shared';
 
@@ -52,7 +52,7 @@ class DetailPanel extends Component {
         return (
             <div className='right-sidebar'>
                 {this.state.pointDisplay}
-                <FAQDialog />
+                <Button id="faqs-button" variant="contained" style={{backgroundColor: '#3f51b5', color: '#FFF'}} onClick={()=> window.open("https://vcuwrightcenter.github.io/TopExApp/quick_start", "_blank")}>Quick Start</Button>
                 <InformationDialog />
                 <AcknowledgementsDialog />
             </div>
