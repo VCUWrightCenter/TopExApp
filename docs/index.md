@@ -41,6 +41,6 @@ In addition, Evan French and Peter Burdette from VCU's Wright Center for Clinica
 
 If you use TopExApp in your research, please cite:
 
-Olex A, DiazGranados D, McInnes BT, and Goldberg S. Local Topic Mining for Reflective Medical Writing. Full Length Paper. AMIA Jt Summits Transl Sci Proc 2020;2020:459–68. PMCID: [PMC7233034](https://www-ncbi-nlm-nih-gov.proxy.library.vcu.edu/pmc/articles/PMC7233034/)
+Olex A, DiazGranados D, McInnes BT, and Goldberg S. [Local Topic Mining for Reflective Medical Writing.](https://www-ncbi-nlm-nih-gov.proxy.library.vcu.edu/pmc/articles/PMC7233034/) Full Length Paper. AMIA Jt Summits Transl Sci Proc 2020;2020:459–68. PMCID: [PMC7233034](https://www-ncbi-nlm-nih-gov.proxy.library.vcu.edu/pmc/articles/PMC7233034/)
 
-Olex, A.L., French, E., Burdette, P., Sagiraju, S., Neumann, T., Gal, T.S., McInnes, B.T., Kenneth, C., 2021. TopEx: Topic Exploration of COVID-19 Corpora - Results from the BioCreative VII Challenge Track 4, in: Proceedings of the BioCreative VII Challenge Evaluation Workshop. Presented at the BioCreative VII Workshop, Virtual, pp. 238–242.
+Olex, A.L., French, E., Burdette, P., Sagiraju, S., Neumann, T., Gal, T.S., McInnes, B.T., Kenneth, C., 2021. [TopEx: Topic Exploration of COVID-19 Corpora - Results from the BioCreative VII Challenge Track 4](https://biocreative.bioinformatics.udel.edu/media/store/files/2021/Track4_pos_3_BC7_submission_192-4.pdf), in: Proceedings of the BioCreative VII Challenge Evaluation Workshop. Presented at the BioCreative VII Workshop, Virtual, pp. 238–242.
