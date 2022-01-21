@@ -18,11 +18,11 @@
 ## 1) Data Cleaning and Formatting <a name="clean">
   Having your data in the right format and cleaned is a very important step in successfully running TopEx.  
   
-### Data Cleaning
+### Data Cleaning <a name="clean1">
 
  Some files may require cleaning and pre-processing that is project specific.  In general, you want to ensure there are no odd characters in the data, and remove text that could skew your results.  For example, if analyzing responses to a survey question, make sure the actual survey question text is NOT included in the text that is input into TopEx. If importing using an Excel or delimited file, make sure all rows with a document ID have text in the second column. If not, then delete that row as it will cause TopEx to fail.
   
-### File Formats
+### File Formats <a name="clean2">
 
  The two recommended data format options for TopEx are an MS Excel file or a text file with MEDLINE formatted PubMed search results (see descriptions below). 
   
@@ -42,11 +42,9 @@
   
   **Stopwords:** Easily the _most influential_ setting for a TopEx analysis!  Stopwords are essentially a list of uninformative words that you want the algorithm to ignore.  This list includes words like "the", "and", "or", as well as domain-specific words such as "COVID-19" or "patient".  In TopEx you have three options related to the utilization of stopwords:
   
- 1) Use the default stopword list that contains domain-agnostic stopword (default behavior).
- 
- 2) Add additional domain-specific stopwords (upload a stopwords text file).
- 
- 3) Only use domain-specific stopwords without the default stopword list (upload a stopwords text file and check the "Custom stopwords only?" box).
+ 1. Use the default stopword list that contains domain-agnostic stopword (default behavior).
+ 2. Add additional domain-specific stopwords (upload a stopwords text file).
+ 3. Only use domain-specific stopwords without the default stopword list (upload a stopwords text file and check the "Custom stopwords only?" box).
  
  Stopwords are specified in a text file with one word per line. If you have a stopwords file, click the button and navigate to the files, then click upload. Your file name should appear below the stopword button if it was successfully imported.
   
