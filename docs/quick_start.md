@@ -18,11 +18,13 @@
 ## 1) Data Cleaning and Formatting <a name="clean">
   Having your data in the right format and cleaned is a very important step in successfully running TopEx.  
   
-  ### Data Cleaning
-  Some files may require cleaning and pre-processing that is project specific.  In general, you want to ensure there are no odd characters in the data, and remove text that could skew your results.  For example, if analyzing responses to a survey question, make sure the actual survey question text is NOT included in the text that is input into TopEx. If importing using an Excel or delimited file, make sure all rows with a document ID have text in the second column. If not, then delete that row as it will cause TopEx to fail.
+### Data Cleaning
+
+ Some files may require cleaning and pre-processing that is project specific.  In general, you want to ensure there are no odd characters in the data, and remove text that could skew your results.  For example, if analyzing responses to a survey question, make sure the actual survey question text is NOT included in the text that is input into TopEx. If importing using an Excel or delimited file, make sure all rows with a document ID have text in the second column. If not, then delete that row as it will cause TopEx to fail.
   
-  ### File Formats
-  The two recommended data format options for TopEx are an MS Excel file or a text file with MEDLINE formatted PubMed search results (see descriptions below). 
+### File Formats
+
+ The two recommended data format options for TopEx are an MS Excel file or a text file with MEDLINE formatted PubMed search results (see descriptions below). 
   
   **Excel File:** An Excel formatted file must contain 2 columns, with the first row containing the column titles, and have the extension of ".xlsx".  The document ID should be in the first column and the entire text of the document in a single cell in the second column. _Note that all IDs must have some sort of text in the second column._  If a document ID is present, but the text column is empty TopEx will throw an error.  Additionally, the extension must be ".xlsx" as the older ".xls" extension will not be recognized. 
 
@@ -41,7 +43,9 @@
   **Stopwords:** Easily the _most influential_ setting for a TopEx analysis!  Stopwords are essentially a list of uninformative words that you want the algorithm to ignore.  This list includes words like "the", "and", "or", as well as domain-specific words such as "COVID-19" or "patient".  In TopEx you have three options related to the utilization of stopwords:
   
  1) Use the default stopword list that contains domain-agnostic stopword (default behavior).
+ 
  2) Add additional domain-specific stopwords (upload a stopwords text file).
+ 
  3) Only use domain-specific stopwords without the default stopword list (upload a stopwords text file and check the "Custom stopwords only?" box).
  
  Stopwords are specified in a text file with one word per line. If you have a stopwords file, click the button and navigate to the files, then click upload. Your file name should appear below the stopword button if it was successfully imported.
@@ -51,6 +55,7 @@
   
 ## 5) Navigating Results <a name="results">
   Your results will automatically appear in the center TopEx panel. You can toggle between the scatterplot and wordcloud views by using the toggle buttons at the top of the panel.
+ 
   **Scatterplot:** Each dot in the scatter plot is an individual sentence clustered by TopEx.  You can hover over the dots to see information about that sentence appear in the right-hand panel, including the original raw sentence and the clustering topic assigned to that sentences cluster.
   
   **Wordclouds:** Wordclouds are numbers from zero (0) to N. Each wordcloud plots the count of each term that is present in the cluster of sentences. With wordclouds you can easily see terms that dominate a particular cluster.  Depending on the use case these may be words you want to exclude from the analysis.  If this is the case, you can update your stopwords list, re-upload it, and re-run the TopEx analysis.
