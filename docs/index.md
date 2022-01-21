@@ -8,7 +8,11 @@ Choose your access:
  - Public web server: [topex.cctr.vcu.edu](http://topex.cctr.vcu.edu/)
  - Local installation: [TopExApp on GitHub](https://github.com/VCUWrightCenter/TopExApp)
 
-To get started with TopEx you can follow one of our TopEx Tutorials or read the detailed instruction manual. 
+To get started with TopEx you can follow the [Quick Start Guide](https://vcuwrightcenter.github.io/TopExApp/quick_start), one of our TopEx Tutorials, or read the detailed [User's Manual](https://vcuwrightcenter.github.io/TopExApp/manual). 
+
+### Quick Start Guide
+
+This guide is meant to get users up and running with TopEx quickly using BASIC parameters. All other parameters are left at their default settings. It is recommended when changing other parameters the user should have a basic knowledge of NLP concepts and consult the detailed TopEx [User's Manual](https://vcuwrightcenter.github.io/TopExApp/manual).
 
 ### Tutorials
 #### [Exploring COVID-19 pandemic tweets.](https://vcuwrightcenter.github.io/TopExApp/tutorial_covidTweets)
