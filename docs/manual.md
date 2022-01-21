@@ -3,6 +3,7 @@
 
 - [TopEx Overview](#overview)
 - [Installation](#install)
+- [Quick Start Guide](#quick)
 - [Tutorials](#tutorial)
 - [Usage Instructions](#usage)
   * [0: Pre-process and Format Input](#usage0)
@@ -42,6 +43,10 @@ The TopExApp was built as a graphical user interface for the [TopEx Python libra
 
 TopEx can be accessed on the web at [topex.cctr.vcu.edu](http://topex.cctr.vcu.edu/), which requires no installation.  If analyzing documents with Protected Health Information (PHI) or other sensitive information you can install TopExApp and run it locally as a web app within a Docker container. To install TopExApp locally refer to the [TopExApp Installation Instructions](https://vcuwrightcenter.github.io/TopExApp/installation).
 
+# Quick Start Guide <a name="quick">
+ 
+ Access the TopEx Quick Start Guide [here](https://vcuwrightcenter.github.io/TopExApp/quick_start). This guide is meant to get users up and running with TopEx quickly using _BASIC_ parameters. All other parameters are left at their default settings. It is recommended when changing other parameters the user should have a basic knowledge of NLP concepts and consult the detailed TopEx User's Manual below.
+ 
 # Tutorials <a name="tutorial">
  
 This manual includes detailed descriptions of all TopEx options and parameters.  If you would prefer a walk-through of how to use TopEx with some sample data, please complete one of the [TopEx Tutorials](https://vcuwrightcenter.github.io/TopExApp/) or watch the [TopEx Demo](https://www.youtube.com/watch?v=7i4I2RTNVoY).
