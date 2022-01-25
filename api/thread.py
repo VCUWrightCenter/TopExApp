@@ -40,6 +40,13 @@ class ClusterThread(threading.Thread):
         self.params = params
         self.files = files
         super().__init__()
+        
+    def thread_error(self, res, msg):
+        print("THREAD ERROR", msg)
+        res.error = True
+        res.msg = msg
+        self.result = dict(res)
+        self.status = 'Complete'
 
     def run(self):
         res = response.Response()
@@ -73,7 +80,8 @@ class ClusterThread(threading.Thread):
         elif inputType == 'pubmed':
             df = query_pubmed(params['query'],int(params['maxResults']))
         else:
-            raise ValueError(f'Invalid inputType: {inputType}')
+            self.thread_error(res, f'Invalid inputType: {inputType}')
+            return
 
         self.status = 'Parsing params'
         stopwords = [s.strip() for s in params['stopwords'].split('\n')] if str_valid(params['stopwords']) else None
@@ -83,6 +91,7 @@ class ClusterThread(threading.Thread):
         tfidf_corpus = params['tfidfCorpus'] if str_valid(params['tfidfCorpus']) else 'both'
         include_sentiment = params['include_sentiment'] != 'false'
         custom_stopwords_only = params['custom_stopwords_only'] != 'false'
+        ner = params['ner'] != 'false'
 
         clustering_method = params['clusteringMethod']
         cluster_dist_metric = params['cluster_dist_metric'] if str_valid(params['cluster_dist_metric']) else 'euclidean'
@@ -104,7 +113,7 @@ class ClusterThread(threading.Thread):
 
         # Cluster the sentences in a dataframe
         self.status = 'Importing data'
-        data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_list=stopwords, custom_stopwords_only=custom_stopwords_only)
+        data, doc_df = topex.import_data(df, save_results=False, file_name=None, stop_words_list=stopwords, custom_stopwords_only=custom_stopwords_only, ner=ner)
         self.status = 'Creating TF-IDF'
         tfidf, dictionary = topex.create_tfidf(tfidf_corpus, doc_df, expansion_df=expansion_df)
 
@@ -115,6 +124,11 @@ class ClusterThread(threading.Thread):
 
         self.status = 'Getting phrases'
         data = topex.get_phrases(data, dictionary.token2id, tfidf, tfidf_corpus=tfidf_corpus, window_size=window_size, include_sentiment=include_sentiment)
+        
+        if len(data) < 4:
+            self.thread_error(res, "Insufficient data for clustering after filtering. Try importing a larger dataset or reducing the Window Size parameter.")
+            return
+
         self.status = 'Vectorizing phrases'
         data = topex.get_vectors(vectorization_method, data, dictionary = dictionary, tfidf = tfidf, dimensions=dimensions, umap_neighbors=umap_neighbors)
 
@@ -155,7 +169,6 @@ class ReclusterThread(threading.Thread):
         super().__init__()
 
     def run(self):
-        res = Response()
         params = self.params
 
         max_thresh = cast_int(params['max_thresh'])
@@ -177,7 +190,7 @@ class ReclusterThread(threading.Thread):
         viz_df['valid'] = data.valid
 
         # Return
-        res = Response()
+        res = response.Response()
         res.viz_df = viz_df.to_json()
         res.data = data[['id','text','tokens','phrase','vec','cluster','valid']].to_json() #only return the needed subset of data columns
         res.linkage_matrix = [list(row) for row in list(linkage_matrix)] if linkage_matrix is not None else []

@@ -27,6 +27,12 @@
     right: 200px;
 }
 
+#faqs-button {
+    position: absolute;
+    bottom: 25px;
+    right: 280px;
+}
+
 #information-button i.icon {
     height: auto;
 }

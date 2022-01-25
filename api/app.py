@@ -29,16 +29,12 @@ def status(thread_id):
 def cluster():
     "Processes input files into clusters."
     global threads
-    try:
-        tid = 1
-        threads[tid] = thread.ClusterThread(params=request.form, files=request.files)
-        threads[tid].start()
-        threads[tid].join()
-    except:
-        response = make_response(jsonify("Unexpected error: ", sys.exc_info()[0]))
-    else:
-        response = make_response(dict(threads[tid].result))
-
+    tid = 1
+    threads[tid] = thread.ClusterThread(params=request.form, files=request.files)
+    threads[tid].start()
+    threads[tid].join()
+    response = make_response(dict(threads[tid].result))
+    
     # Set thread status to idle
     threads[tid].status = 'Initializing'
 
@@ -47,15 +43,11 @@ def cluster():
 @app.route('/recluster', methods=["POST"])
 def recluster():
     "Re-clusters data"
-    try:
-        tid = 2
-        threads[tid] = thread.ReclusterThread(params=request.form)
-        threads[tid].start()
-        threads[tid].join()
-    except:
-        response = make_response(jsonify("Unexpected error: ", sys.exc_info()[0]))
-    else:
-        response = make_response(dict(threads[tid].result))
+    tid = 2
+    threads[tid] = thread.ReclusterThread(params=request.form)
+    threads[tid].start()
+    threads[tid].join()
+    response = make_response(dict(threads[tid].result))
 
     # Set thread status to idle
     threads[tid].status = 'Initializing'

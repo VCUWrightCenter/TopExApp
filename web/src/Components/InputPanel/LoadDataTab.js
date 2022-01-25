@@ -181,7 +181,7 @@ class LoadDataTab extends Component {
         return (
             <div className="InputPanelContainer">
                 <Header as='h3'>Clustering Corpus (Required)</Header>
-                <p>Choose the set of texts you want to analyze with TopEx. You must <strong><em>choose only one</em></strong> of the 4 options below. If you choose to run a PubMed search from within TopEx then your query will be run after pressing the Run button.</p>
+                <p>Choose the set of texts you want to analyze with TopEx. You must <strong><em>choose only one</em></strong> of the options below. If you choose to run a PubMed search from within TopEx then your query will be run after pressing the Run button.</p>
 
 
                 <Button
@@ -239,7 +239,7 @@ class LoadDataTab extends Component {
                     </form>
 
                     <Header as="h4">
-                        2. From Tab-Delimited File
+                        2. From Delimited File
                         &nbsp;
                         <span className="tooltip" data-tooltip="File has 2 columns (DocID and Text) and a .tsv extension, but columns are delimited by the pipe '|' character."><i aria-hidden="true" className="question circle fitted icon"></i></span>
                     </Header>
