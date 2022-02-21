@@ -7,10 +7,10 @@ import DetailPanel from '../DetailPanel/DetailPanel'
 import Header from '../Header/Header'
 import MainPanel from '../MainPanel/MainPanel'
 import WelcomeDialog from '../Dialog/WelcomeDialog';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { green, amber } from '@material-ui/core/colors/';
+import { ThemeProvider, StyledEngineProvider, createTheme, adaptV4Theme } from '@mui/material/styles';
+import { green, amber } from '@mui/material/colors/';
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme(adaptV4Theme({
   // theme settings
   palette: {
     primary: {
@@ -22,7 +22,7 @@ const customTheme = createMuiTheme({
         contrastText: '#000',
       }
   },
-});
+}));
 
 class App extends Component {
 
@@ -44,15 +44,17 @@ class App extends Component {
 
   render() {
     return (
-      <ThemeProvider theme={customTheme}>
-        <div className='main-content'>
-          <WelcomeDialog />
-          <Header />
-          <DetailPanel pointData={this.state.pointData} />
-          <MainPanel apiResult={this.state.apiResult} pointDataCallback={this.pointDataCallback} />
-          <InputPanel graphDataCallback={this.graphDataCallback} />
-        </div>
-      </ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={customTheme}>
+          <div className='main-content'>
+            <WelcomeDialog />
+            <Header />
+            <DetailPanel pointData={this.state.pointData} />
+            <MainPanel apiResult={this.state.apiResult} pointDataCallback={this.pointDataCallback} />
+            <InputPanel graphDataCallback={this.graphDataCallback} />
+          </div>
+        </ThemeProvider>
+      </StyledEngineProvider>
     );
   }
 }

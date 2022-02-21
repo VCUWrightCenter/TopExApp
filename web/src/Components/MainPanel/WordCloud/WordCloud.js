@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import './WordCloud.css'
 import * as util from '../../Shared'
 import { Dropdown } from 'semantic-ui-react'
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 
 class WordCloud extends Component {
 

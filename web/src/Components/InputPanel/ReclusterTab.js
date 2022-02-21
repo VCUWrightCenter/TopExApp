@@ -7,7 +7,7 @@ import React, { Component } from "react";
 import Axios from "axios";
 import './InputPanel.css';
 import { Input, Header } from 'semantic-ui-react';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 
 class ReclusterTab extends Component {
     constructor(props) {

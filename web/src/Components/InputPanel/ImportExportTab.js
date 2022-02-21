@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import './InputPanel.css';
 import { Header } from 'semantic-ui-react';
-import Button from '@material-ui/core/Button';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Button from '@mui/material/Button';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import * as util from '../Shared'
 
 class ImportExportTab extends Component {

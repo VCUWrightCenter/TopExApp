@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Axios from "axios";
 import './InputPanel.css';
 import { Input, Header } from 'semantic-ui-react';
-import Button from '@material-ui/core/Button';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Button from '@mui/material/Button';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import * as shared from '../Shared';
 
 class LoadDataTab extends Component {
