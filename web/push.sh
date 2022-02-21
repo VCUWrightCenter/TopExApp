@@ -3,4 +3,4 @@ docker build -t topex-app .
 docker tag topex-app:latest 110259620030.dkr.ecr.us-east-1.amazonaws.com/topex-app:latest
 docker push 110259620030.dkr.ecr.us-east-1.amazonaws.com/topex-app:latest
 cd aws_deploy
-eb deploy
+echo "Need to run eb deploy"
