@@ -2,14 +2,13 @@ import React, { Component } from "react";
 import './InputPanel.css';
 import { Input, Header, Dropdown, Checkbox } from 'semantic-ui-react';
 import Button from '@mui/material/Button';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { CloudUpload, ExpandMore } from '@mui/icons-material';
 import * as shared from '../Shared';
 import makeStyles from '@mui/styles/makeStyles';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 class ParametersTab extends Component {
     constructor(props) {
@@ -116,7 +115,7 @@ class ParametersTab extends Component {
                         color="secondary"
                         variant="contained"
                         onClick={() => { document.getElementById('uploadStopwordsInput').click(); }}
-                        startIcon={<CloudUploadIcon />}
+                        startIcon={<CloudUpload />}
                     >Upload stopwords file</Button>
                     <br />
                     <Button
@@ -146,7 +145,7 @@ class ParametersTab extends Component {
                 <div className={classes.root}>
                     <Accordion>
                         <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={<ExpandMore />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >

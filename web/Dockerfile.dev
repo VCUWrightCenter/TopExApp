@@ -1,6 +1,10 @@
-FROM node:alpine as builder
+FROM node:lts-alpine as builder
 WORKDIR /frontend
-COPY package.json ./
-RUN npm install
+
 COPY . .
-CMD ["npm", "start"]
+RUN echo $(node --version)
+RUN echo $(npm --version)
+RUN npm install
+RUN npm run build
+RUN npm install -g serve
+#CMD ["serve", "-s", "build"]

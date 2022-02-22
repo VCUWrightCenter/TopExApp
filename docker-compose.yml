@@ -15,7 +15,7 @@ services:
     build: 
       context: web
       dockerfile: Dockerfile.dev
-    command: ["npm", "start"]
+    command: ["serve", "-s", "build"]
     tty: true
     volumes:
       - ./web:/frontend
