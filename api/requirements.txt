@@ -2,9 +2,10 @@ blis==0.7.5
 catalogue==2.0.6
 certifi==2021.10.8
 charset-normalizer==2.0.12
-click==8.0.3
+click==8.0.4
 cycler==0.11.0
 cymem==2.0.6
+et-xmlfile==1.1.0
 Flask==2.0.3
 Flask-Cors==3.0.10
 fonttools==4.29.1
@@ -23,6 +24,7 @@ murmurhash==1.0.6
 nltk==3.7
 numba==0.55.1
 numpy==1.21.0
+openpyxl==3.0.9
 packaging==21.3
 pandas==1.4.1
 pathy==0.6.1
@@ -43,7 +45,7 @@ six==1.16.0
 sklearn==0.0
 smart-open==5.2.1
 spacy==3.2.2
-spacy-legacy==3.0.8
+spacy-legacy==3.0.9
 spacy-loggers==1.0.1
 srsly==2.4.2
 tenacity==8.0.1

@@ -1,6 +1,8 @@
 branch-defaults:
   default:
     environment: TopExApp
+  dev:
+    environment: TopExAppDev
 environment-defaults:
   TopExApp:
     branch: null
