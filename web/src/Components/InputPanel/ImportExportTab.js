@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import './InputPanel.css';
 import { Header } from 'semantic-ui-react';
-import Button from '@material-ui/core/Button';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Button from '@mui/material/Button';
+import { CloudUpload } from '@mui/icons-material';
 import * as util from '../Shared'
 
 class ImportExportTab extends Component {
@@ -150,14 +150,14 @@ class ImportExportTab extends Component {
                             variant="contained"
                             color='secondary'
                             onClick={() => document.getElementById('importFileInput').click()}
-                            startIcon={<CloudUploadIcon />}
+                            startIcon={<CloudUpload />}
                         >Upload file for import</Button>
                         <Button                            
                             variant="contained"
                             color='secondary'
                             disabled={this.state.ImportButtonDisabled}
                             onClick={(e) => this.importData(e)}
-                            startIcon={<CloudUploadIcon />}
+                            startIcon={<CloudUpload />}
                             className='vspace'
                         >Import clustering (.topex)</Button>
                     <form>

@@ -1,7 +1,7 @@
 //This is where the data is diplayed when you click on a data point. 
 
 import React, { Component } from "react";
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import AcknowledgementsDialog from '../Dialog/AcknowledgementsDialog';
 import InformationDialog from '../Dialog/InformationDialog';
 import './DetailPanel.css';

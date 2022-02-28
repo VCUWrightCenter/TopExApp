@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Axios from "axios";
 import './InputPanel.css';
 import { Input, Header } from 'semantic-ui-react';
-import Button from '@material-ui/core/Button';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Button from '@mui/material/Button';
+import { CloudUpload } from '@mui/icons-material';
 import * as shared from '../Shared';
 
 class LoadDataTab extends Component {
@@ -213,7 +213,7 @@ class LoadDataTab extends Component {
                             this.resetClusteringCorpus()
                             document.getElementById('multiDocInput').click();
                         }}
-                        startIcon={<CloudUploadIcon />}
+                        startIcon={<CloudUpload />}
                     >Upload docs to cluster</Button>
                     <br />
                     {
@@ -251,7 +251,7 @@ class LoadDataTab extends Component {
                             this.setState({ inputType: 'tsv' });
                             document.getElementById('singleDocInput').click();
                         }}
-                        startIcon={<CloudUploadIcon />}
+                        startIcon={<CloudUpload />}
                     >Upload .tsv to cluster</Button>
 
                     {
@@ -285,7 +285,7 @@ class LoadDataTab extends Component {
                             this.setState({ inputType: 'xlsx' });
                             document.getElementById('singleDocInput').click();
                         }}
-                        startIcon={<CloudUploadIcon />}
+                        startIcon={<CloudUpload />}
                     >Upload .xlsx to cluster</Button>
 
                     {
@@ -319,7 +319,7 @@ class LoadDataTab extends Component {
                             this.setState({ inputType: 'medline' });
                             document.getElementById('singleDocInput').click();
                         }}
-                        startIcon={<CloudUploadIcon />}
+                        startIcon={<CloudUpload />}
                     >Upload MEDLINE file to cluster</Button>
 
                     {
@@ -389,7 +389,7 @@ class LoadDataTab extends Component {
                         variant="contained"
                         color='secondary'
                         onClick={() => { document.getElementById('uploadExpansionDocsInput').click(); }}
-                        startIcon={<CloudUploadIcon />}
+                        startIcon={<CloudUpload />}
                     >Upload expansion docs</Button>
                     <br />
                     <Button

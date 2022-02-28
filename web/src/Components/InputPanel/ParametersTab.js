@@ -1,15 +1,14 @@
 import React, { Component } from "react";
 import './InputPanel.css';
 import { Input, Header, Dropdown, Checkbox } from 'semantic-ui-react';
-import Button from '@material-ui/core/Button';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Button from '@mui/material/Button';
+import { CloudUpload, ExpandMore } from '@mui/icons-material';
 import * as shared from '../Shared';
-import { makeStyles } from '@material-ui/core/styles';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import makeStyles from '@mui/styles/makeStyles';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
 
 class ParametersTab extends Component {
     constructor(props) {
@@ -116,7 +115,7 @@ class ParametersTab extends Component {
                         color="secondary"
                         variant="contained"
                         onClick={() => { document.getElementById('uploadStopwordsInput').click(); }}
-                        startIcon={<CloudUploadIcon />}
+                        startIcon={<CloudUpload />}
                     >Upload stopwords file</Button>
                     <br />
                     <Button
@@ -146,7 +145,7 @@ class ParametersTab extends Component {
                 <div className={classes.root}>
                     <Accordion>
                         <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={<ExpandMore />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
