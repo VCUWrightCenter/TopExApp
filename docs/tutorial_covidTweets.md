@@ -22,10 +22,10 @@ This tutorial uses a random sample of public Tweets about COVID-19 from March-De
   - [Word Clouds](#clouds)
 + [Re-Clustering](#recluster)
 + [Using Stopwords](#stopwords)
-+ [Using an Expansion Corpus](#expansion)
 + [Topic Comparisons Between Months](#comparison)
 + [Downloading Data](#download)
 + [Parameter Exploration](#explore)
++ <!-- + [Using an Expansion Corpus](#expansion) -->
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
  
@@ -144,6 +144,7 @@ Note that with the first scatter plot 30 clusters looked like too many, however,
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_16.png" alt="Sample word clouds after using stopwords." width="800"/>
 
 
+<!-- 
 ## Using an Expansion Corpus <a name="expansion">
 
 The results from the steps above utilize the input texts as the background corpus to generate numerical representations for each sentence; however, sometimes your input corpus may at times be small and you need additional background context in order to get good sentence representations, or you want to use the same documents as your background for clustering multiple input corpora. This is where the Expansion corpus comes in.  For this tutorial, we are going to import the December Tweets as our expansion corpus and generate the sentence representations using both the Tweets from March and December.
@@ -168,9 +169,11 @@ Having 30 clusters again looks like too many, so let's use the Re-Cluster tab to
 
 Exploring this data reveals similar clusters to the original results using only the March data; however, we now have more compact clusters and a nicer figure.  Note that including additional data in an expansion corpus can be beneficial or detrimental to your analysis.  As this is an exploratory tool there is no right or wrong way, so try a few variations and pick which you think is the most helpful!
 
+--> 
+  
 ## Topic Comparisons Between Months <a name="comparison">
 
-Now that we have our March Tweets analyzed we need to run the same analysis for December.  Open up a new TopEx instance in your browser, and run the same analysis with the similar settings on the December Tweets, using the March Tweets as the Expansion Corpus, and change the number of clusters to 8 this time.  Make sure you set the Background Corpus to "Both".  You should end up with a scatter plot similar to the following with 8 clusters:
+Now that we have our March Tweets analyzed we need to run the same analysis for December.  Open up a new TopEx instance in your browser, and run the same analysis with the similar settings on the December Tweets,<!-- using the March Tweets as the Expansion Corpus, --> and change the number of clusters to 8 this time.  <!-- Make sure you set the Background Corpus to "Both". -->  You should end up with a scatter plot with 8 clusters:
 
 <img src="https://vcuwrightcenter.github.io/TopExApp/figs/tutorial_21.png" alt="December scatter plot." width="600"/>
 
