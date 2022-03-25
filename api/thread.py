@@ -154,7 +154,7 @@ class ClusterThread(threading.Thread):
 
         res.data = data[['id','text','tokens','phrase','vec','cluster', 'valid','doc_name']].to_json() #only return the needed subset of data columns
         res.linkage_matrix = [list(row) for row in list(linkage_matrix)] if linkage_matrix is not None else []
-        res.main_cluster_topics = list(cluster_df.topics)
+        res.main_cluster_topics = cluster_df.set_index('cluster').to_dict()['topics']
         res.count = len(data)
         res.max_thresh = max_thresh
         res.thresh = thresh

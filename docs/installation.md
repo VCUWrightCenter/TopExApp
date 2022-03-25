@@ -109,7 +109,7 @@ From the command line, run the following in the top-level TopExApp directory:
 
     (env) ~/api> python -m spacy download en_core_web_sm
 
-    (env) ~/api> gunicorn app:app -w 2 -b localhost:8080 -t 90
+    (env) ~/api> python app.py
  
  Open a second terminal window and install/run npm:
  
