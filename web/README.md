@@ -3,11 +3,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Install requirements
 ~/web> npm install
 ~/api> virtualenv env
+~/api> env\Scripts\activate.bat (Windows)
+~/api> source env/bin/activate (Linux/Mac)
 ~/api> pip install -r requirements.txt
 
 ## To run
 In first terminal:
-~/api> flask run
+~/api> python app.py
 
 In second terminal:
-~/web> npm start
+~/web> npm run local
