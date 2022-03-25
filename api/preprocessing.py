@@ -2,14 +2,15 @@ import os
 import spacy
 from pandas import DataFrame
 import internal
-#from scispacy.abbreviation import AbbreviationDetector
-#from scispacy.linking import EntityLinker
+from scispacy.abbreviation import AbbreviationDetector
+from scispacy.linking import EntityLinker
 
 #nlp = spacy.load('en_core_web_sm', disable=["parser","ner"])
 nlp = spacy.load('en_core_sci_sm', disable=["parser"])
-nlp.add_pipe("sentencizer") # Add sentence break parser
-#nlp.add_pipe("scispacy_linker", config={"resolve_abbreviations": True, "linker_name": "mesh"})
-#linker = nlp.get_pipe("scispacy_linker")
+nlp.add_pipe("sentencizer")
+nlp.add_pipe("abbreviation_detector")
+nlp.add_pipe("scispacy_linker", config={"resolve_abbreviations": True, "linker_name": "mesh"})
+linker = nlp.get_pipe("scispacy_linker")
 
 def token_filter(token, stopwords:list, custom_stopwords_only:bool=False):
     "Filters out stopwords and tokens without alpha characters"
@@ -22,14 +23,11 @@ def token_filter(token, stopwords:list, custom_stopwords_only:bool=False):
     return include_token
 
 def normalize_entity(entity):
-    name = ''
     name = entity.lemma_
-#    if len(entity._.kb_ents) > 0 and entity._.kb_ents[0][1] > .8:
-#        cui = entity._.kb_ents[0][0]
-#        linked = linker.kb.cui_to_entity[cui]
-#        name = linked.canonical_name
-#    else:
-#        name = entity.lemma_
+    if len(entity._.kb_ents) > 0 and entity._.kb_ents[0][1] > .8:
+       cui = entity._.kb_ents[0][0]
+       linked = linker.kb.cui_to_entity[cui]
+       name = linked.canonical_name
     return name.lower()
 
 def preprocess_docs(doc_df:DataFrame, save_results:bool=False, file_name:str=None, stop_words_file:str=None,
