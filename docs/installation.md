@@ -21,7 +21,7 @@ TopExApp runs as a web app within a Docker container and can be run as an end-us
 
   * Mac OSX 10.13 or higher with 2010 hardware or newer required. See specifications [here](https://docs.docker.com/docker-for-mac/install/).
  
-  * Widnows 10 or higher required. See specifications [here](https://docs.docker.com/docker-for-windows/install/).
+  * Windows 10 or higher required. See specifications [here](https://docs.docker.com/docker-for-windows/install/).
  
  * Internet Browser
 
