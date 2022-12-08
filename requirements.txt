@@ -2,7 +2,7 @@ appnope==0.1.2
 backcall==0.2.0
 blis==0.7.5
 catalogue==2.0.6
-certifi==2021.10.8
+certifi==2022.12.7
 charset-normalizer==2.0.9
 click==8.0.3
 cycler==0.11.0
