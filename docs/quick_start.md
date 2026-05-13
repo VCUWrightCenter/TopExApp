@@ -1,3 +1,5 @@
+# NOTICE: TopEx is no longer maintained and the website at topex.cctr.vcu.edu may be decommissioned in the near future.
+
 # TopEx Quick Start Guide
 
 - [STOP!! Read Me First](#stop)
