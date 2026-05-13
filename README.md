@@ -1,3 +1,5 @@
+# NOTICE: This app is no longer maintained and the deployed version at topex.cctr.vcu.edu may be decommissioned.
+
 # Introduction <a name="intro">
 
 TopExApp provides a graphical user interface for the [TopEx Python library](https://pypi.org/project/topex/), and is an application designed for the exploration of topics in large sets of text. Originally designed to identify common challenges experienced by acting interns through their reflective writing responses [(Olex et al 2020)](#paper), this application can also be used for the exploration of topics in any set of texts.
