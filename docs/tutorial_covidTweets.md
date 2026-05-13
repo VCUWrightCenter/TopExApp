@@ -1,3 +1,5 @@
+# NOTICE: TopEx is no longer maintained and the website at topex.cctr.vcu.edu may be decommissioned in the near future.
+
 # TopEx Tutorial: Exploring COVID-19 Tweets
 
 Detailed usage instructions can be found in the [TopEx User's Manual](https://vcuwrightcenter.github.io/TopExApp/manual).
