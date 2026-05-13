@@ -1,3 +1,5 @@
+# NOTICE: TopEx is no longer maintained and the website at topex.cctr.vcu.edu may be decommissioned in the near future.
+
 ## Welcome to TopEx!
 
 TopEx is a domain agnostic NLP application that facilitates the exploration of topics and keywords in a set of texts. Programming/NLP knowledge is not required! 
